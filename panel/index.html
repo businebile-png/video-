@@ -913,7 +913,7 @@ function renderSettings() {
   cats.append(list);
 
   const voices = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Voix off'}), h('div', {class: 'hint', text: 'Écoutez les essais avec le son. Une vidéo n’est produite qu’avec une voix que vous avez approuvée.'}));
-  if (!S.voices.length) voices.append(h('div', {class: 'hint', text: 'Aucun essai de voix pour l’instant : la production en dépose ici dès que la clé de voix gratuite (Azure Speech) est configurée.'}));
+  if (!S.voices.length) voices.append(h('div', {class: 'hint', text: 'Aucun essai de voix pour l’instant : la production en dépose ici à son prochain passage.'}));
   for (const v of S.voices) {
     const url = blobUrl(v.sample);
     voices.append(h('div', {class: 'netrow'},
@@ -924,7 +924,7 @@ function renderSettings() {
   }
 
   const prod = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Production quotidienne'}));
-  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois les clés gratuites (Pexels, Azure Speech) et le lien affilié en place.'}));
+  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois la clé Pexels et le lien affilié en place.'}));
   else {
     const t = S.ui.trigger;
     prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${t.next ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
@@ -960,12 +960,13 @@ function setupSteps() {
   const approved = (st.approvedVoices || []).length > 0 || S.voices.some((v) => v.status === 'approved');
   const linkOk = linkProblems(st.affiliateUrl || '').length === 0;
   const t = S.ui.trigger;
-  const keysOk = setup.azure === 'ok' && setup.pexels === 'ok';
+  const azureNeeded = setup.voiceProvider === 'azure';
+  const keysOk = setup.pexels === 'ok' && (!azureNeeded || setup.azure === 'ok');
   return [
-    {key: 'azure', state: setup.azure === 'ok' ? 'done' : 'todo', title: 'Clé de voix gratuite (Azure Speech)',
-      why: 'Donne une voix française naturelle à vos vidéos, sans payer : 500 000 caractères par mois gratuits, usage commercial autorisé.',
-      how: ['Créez un compte Azure gratuit (Microsoft demande une carte pour vérifier votre identité ; le niveau gratuit ne facture rien).', 'Dans le portail Azure : Créer une ressource → « Speech » → région France Central → niveau « Free F0 ».', 'Dans la ressource : « Clés et point de terminaison » → copiez la Clé 1.', 'Dites « c’est fait » à Claude dans la session : il ouvre un formulaire sécurisé pour la clé. Ne la collez jamais dans une conversation.'],
-      links: [['Créer un compte Azure gratuit', 'https://azure.microsoft.com/fr-fr/free/'], ['Ouvrir le portail Azure', 'https://portal.azure.com/']]},
+    ...(azureNeeded ? [{key: 'azure', state: setup.azure === 'ok' ? 'done' : 'todo', title: 'Clé de voix Azure Speech (option choisie)',
+      why: 'Vous avez choisi la voix Azure à la place de la voix gratuite intégrée : elle demande une clé.',
+      how: ['Portail Azure : Créer une ressource → « Speech » → région France Central → niveau « Free F0 ».', 'Dans la ressource : « Clés et point de terminaison » → copiez la Clé 1.', 'Dites « c’est fait » à Claude dans la session : il ouvre un formulaire sécurisé pour la clé. Ne la collez jamais dans une conversation.'],
+      links: [['Ouvrir le portail Azure', 'https://portal.azure.com/']]}] : []),
     {key: 'pexels', state: setup.pexels === 'ok' ? 'done' : 'todo', title: 'Clé Pexels gratuite (séquences vidéo réelles)',
       why: 'Les plans filmés de vos vidéos viennent de Pexels : vidéos réelles, usage commercial autorisé, gratuit.',
       how: ['Créez un compte sur pexels.com, puis demandez une clé API (instantané).', 'Dans Claude Code : environnement « Studio vidéo businebile » → Modifier → Network secrets → ajoutez l’hôte api.pexels.com, en-tête Authorization, la clé sans préfixe (Pexels refuse « Bearer »).'],
@@ -976,9 +977,9 @@ function setupSteps() {
     {key: 'bio', state: st.bioLinkCheckedOn ? 'done' : 'todo', title: 'Le même lien dans votre bio TikTok (et Instagram)',
       why: 'Les vidéos disent « lien en bio » : c’est là que les spectateurs cliquent.',
       how: ['Sur TikTok, le lien cliquable en bio demande un compte Business (gratuit) ou 1 000 abonnés.', 'Une fois fait, cliquez dans Réglages sur « Le lien de ma bio TikTok/Instagram est bien celui-ci ».'], goto: ['reglages', 'Ouvrir les réglages']},
-    {key: 'voice', state: approved ? 'done' : S.voices.length ? 'todo' : 'wait', title: 'Choisir la voix à l’oreille',
-      why: 'Aucune vidéo ne sort avec une voix que vous n’avez pas approuvée.',
-      how: S.voices.length ? ['Des essais vous attendent : écoutez-les avec le son dans Réglages → Voix off, puis approuvez celle qui sonne le plus naturel.'] : ['Les essais (Vivienne, Rémy, Denise, Henri…) arrivent dès que la clé Azure est en place et qu’une production est lancée.'],
+    {key: 'voice', state: approved ? 'done' : S.voices.length ? 'todo' : 'wait', title: 'Voix off gratuite, choisie à l’oreille',
+      why: 'Voix française intégrée au studio : gratuite, sans compte ni clé, usage commercial autorisé. Aucune vidéo ne sort avec une voix que vous n’avez pas approuvée.',
+      how: S.voices.length ? ['Écoutez l’essai avec le son dans Réglages → Voix off, puis approuvez-le.'] : ['L’essai arrive au prochain passage de la production.'],
       goto: S.voices.length ? ['reglages', 'Écouter les voix'] : null},
     {key: 'daily', state: t && t.enabled === 'true' ? 'done' : 'todo', title: 'Activer la production quotidienne',
       why: 'Chaque matin vers 7 h 45, la vidéo du jour arrive dans « À valider » ; vous la programmez d’un clic.',
@@ -1033,6 +1034,7 @@ function renderSetup() {
     h('div', {class: 'lbl', text: 'Déjà en place'}),
     h('ul', {style: 'margin:0;padding-left:18px;display:grid;gap:4px'},
       h('li', {text: `${setup.factsVerified ?? '–'} faits vérifiés mot pour mot sur systeme.io (fonctionnalités, plan gratuit, frais, lien affilié).` + (setup.pricesVerified ? '' : ' Les prix des formules restent à confirmer : aucune vidéo ne les citera d’ici là.')}),
+      h('li', {text: 'Voix off française gratuite installée automatiquement, prononciation vérifiée par transcription à chaque vidéo.'}),
       h('li', {text: 'Environnement « Studio vidéo businebile » : accès à Pexels, systeme.io et GitHub déjà ouvert.'}),
       h('li', {text: 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool d’un clic : prêts.'}),
       h('li', {text: setup.capturesCount ? `${setup.capturesCount} capture(s) réelle(s) de Systeme.io disponibles pour les démonstrations.` : 'Facultatif : enregistrez quelques captures d’écran vidéo de votre compte Systeme.io pour des démonstrations à l’écran.'})));
@@ -1051,7 +1053,7 @@ function renderSetup() {
 
   const cost = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Coût : 0 €'}),
     h('div', {class: 'tablebox'}, h('table', null, h('tbody', null, ...[
-      ['Voix (Azure Speech, niveau gratuit)', '0 €'], ['Séquences (Pexels)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
+      ['Voix off (Kokoro, intégrée, sans compte)', '0 €'], ['Séquences (Pexels)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
     ].map(([a, b]) => h('tr', null, h('td', {text: a}), h('td', {class: 'num', text: b})))))));
 
   box.replaceChildren(h('div', {style: 'display:grid;gap:16px'}, prog, list, h('div', {class: 'grid2'}, extras, cost), flow));

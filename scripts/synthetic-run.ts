@@ -1,6 +1,7 @@
 /**
  * Offline end-to-end check of the edit → render → QC chain with SYNTHETIC media
- * (generated gradients instead of Pexels, a robotic flite voice instead of ElevenLabs).
+ * (generated gradients instead of Pexels). The voice is the real free local voice when it is
+ * installed (bash scripts/setup-voice.sh), otherwise a robotic flite stand-in.
  * It validates timing, layout, typography, audio mix and the QC tooling; it is never published.
  *
  *   npm run test:render -- [studio-nuit|clarte|editorial|energie]
@@ -19,6 +20,8 @@ import {buildTimeline, type PreparedClip} from '../src/edit/timeline.js';
 import {renderStep} from '../src/render/render.js';
 import {technicalQc} from '../src/qc/technical.js';
 import {displayWords} from '../src/voice/speech.js';
+import {localVoiceProblems} from '../src/voice/local.js';
+import {runVoice} from '../src/voice/voice-step.js';
 import type {Script} from '../src/schemas/script.js';
 import type {VoiceWord} from '../src/schemas/records.js';
 
@@ -47,7 +50,15 @@ const script: Script = {
   author: 'human',
 };
 
-async function voice(): Promise<{words: VoiceWord[]; total: number}> {
+async function voice(config: Awaited<ReturnType<typeof loadConfig>>): Promise<{words: VoiceWord[]; total: number}> {
+  const approved = config.voice.approvedVoices[0];
+  if (config.voice.provider === 'local' && approved && localVoiceProblems(config.voice.local).length === 0) {
+    await writeJson(p.plan, {runId, voiceId: approved.id});
+    const report = await runVoice(runId, config);
+    console.log(`voix locale : ${report.score}/15, ${report.wpm} mots/min, WER ${report.wer}, problèmes : ${report.problems.join(' ; ') || 'aucun'}`);
+    const words = JSON.parse(await fsp.readFile(p.voiceWords, 'utf8')) as VoiceWord[];
+    return {words, total: await durationSec(p.voiceWav)};
+  }
   const dir = path.join(p.voiceDir, 'words');
   await fsp.mkdir(dir, {recursive: true});
   const parts: string[] = [];
@@ -129,7 +140,7 @@ async function main(): Promise<void> {
   await saveState({runId, createdAt: new Date().toISOString(), seed: 4242, steps: {}});
   await writeJson(p.script, script);
   const t0 = Date.now();
-  const {words, total} = await voice();
+  const {words, total} = await voice(config);
   await writeJson(p.voiceWords, words);
   const clipsByScene = await footage();
   await writeJson(path.join(p.footageDir, 'clips.json'), clipsByScene);

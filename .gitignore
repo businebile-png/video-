@@ -7,3 +7,7 @@ media-staging/
 .env
 .env.*
 data/facts/snapshots/*.html
+.venv-voice/
+models/
+data/metrics.json
+data/panel/inbox.json

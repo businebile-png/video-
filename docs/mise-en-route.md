@@ -1,27 +1,29 @@
 # Mise en route
 
-Comptez une demi-heure. Chaque étape débloque une partie du studio ; le panneau indique en haut
-ce qui manque encore.
+Comptez un quart d'heure. Chaque étape débloque une partie du studio ; le panneau (onglet
+**Démarrage**) indique ce qui manque encore.
 
 ## 1. Rendre le code disponible aux productions automatiques
 
 Le studio est sur la branche `claude/serene-maxwell-pdm5wr` du dépôt `businebile-png/video-`.
-Les productions automatiques partent de la branche par défaut du dépôt : fusionnez cette branche
-(ou demandez à Claude d'ouvrir la demande de fusion).
+La production programmée récupère d'elle-même cette branche si la branche par défaut ne contient pas
+encore le studio : la fusion est facultative (elle évite seulement ce détour).
 
-## 2. Clé Azure Speech gratuite (voix off naturelle)
+## 2. Voix off : rien à faire
 
-1. Créez un compte Azure gratuit (https://azure.microsoft.com/fr-fr/free/). Microsoft demande une carte
-   pour vérifier votre identité ; le niveau **F0** utilisé ici est gratuit et ne facture rien.
-2. Dans le portail Azure : *Créer une ressource* → **Speech** (Services Speech) → région **France Central**,
-   niveau tarifaire **Free F0**.
-3. Dans la ressource : *Clés et point de terminaison* → copiez la **Clé 1**.
-4. Donnez-la à Claude par le formulaire sécurisé (jamais dans la conversation), pour les deux hôtes
-   `francecentral.tts.speech.microsoft.com` (voix) et `francecentral.api.cognitive.microsoft.com`
-   (vérification de prononciation), en-tête `Ocp-Apim-Subscription-Key`, sans préfixe.
+La voix française gratuite est intégrée au studio : Kokoro-82M (licence Apache-2.0), voix « Siwis »,
+et faster-whisper (licence MIT) pour caler les sous-titres et vérifier la prononciation. Elle tourne sur
+la machine de Claude : aucun compte, aucune clé, aucune limite. Chaque production l'installe si besoin
+(`bash scripts/setup-voice.sh`, environ 30 secondes ; les modèles sont vérifiés par empreinte SHA-256).
 
-Limites gratuites : 500 000 caractères de voix et 5 heures de transcription par mois, largement
-suffisant pour une vidéo par jour.
+Elle a été approuvée à l'écoute le 6 novembre 2026. Pour la réécouter ou l'écarter : panneau →
+**Réglages → Voix off**.
+
+> Option : Azure Speech (niveau gratuit F0, compte Microsoft avec carte pour vérifier l'identité) donne
+> d'autres voix. Il suffit alors de passer `voice.provider` et `voice.sttProvider` à `azure` dans
+> `config/studio.json` et d'enregistrer la clé par le formulaire sécurisé (hôtes
+> `francecentral.tts.speech.microsoft.com` et `francecentral.api.cognitive.microsoft.com`, en-tête
+> `Ocp-Apim-Subscription-Key`, sans préfixe).
 
 ## 3. Clé Pexels (séquences vidéo)
 
@@ -33,8 +35,8 @@ suffisant pour une vidéo par jour.
 ## 4. Accès réseau de l'environnement
 
 L'environnement « Studio vidéo businebile » autorise déjà : `api.pexels.com`, `videos.pexels.com`,
-`images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`
-(et les registres de paquets). Les hôtes Azure sont ajoutés automatiquement quand vous enregistrez la clé.
+`images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`,
+les hôtes de Hugging Face (téléchargement des modèles de voix) et les registres de paquets.
 
 ## 5. Lien affilié
 
@@ -45,11 +47,10 @@ Il doit être de la forme `https://systeme.io/?sa=sa…`, **sans « www »** (Sy
 
 > TikTok : le lien cliquable en bio demande un compte **Business** (ou 1 000 abonnés pour un compte personnel).
 
-## 6. Choisir la voix
+## 6. Voix approuvée
 
-1. Lancez une production depuis le panneau : sans voix approuvée, elle prépare des essais audio des
-   voix françaises les plus naturelles (Vivienne et Rémy « multilingues », Denise, Henri).
-2. Panneau → **Réglages → Voix off** : écoutez avec le son et approuvez celle qui vous plaît.
+Déjà fait : la voix « Siwis » est approuvée. Si vous l'écartez dans **Réglages → Voix off**, la
+production suivante s'arrête et dépose de nouveaux essais à écouter.
 
 ## 7. Instagram (facultatif)
 

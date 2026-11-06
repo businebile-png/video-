@@ -47,8 +47,16 @@
     "retentionDays": 14
   },
   "voice": {
-    "provider": "azure",
-    "sttProvider": "azure",
+    "provider": "local",
+    "sttProvider": "local",
+    "local": {
+      "python": ".venv-voice/bin/python",
+      "model": "models/kokoro/onnx/model.onnx",
+      "voices": "models/kokoro/voices.npz",
+      "whisperModel": "models/whisper/small",
+      "lang": "fr-fr",
+      "sceneBreakMs": 300
+    },
     "azure": {
       "region": "francecentral",
       "locale": "fr-FR",
@@ -60,7 +68,17 @@
     "sttModelId": "scribe_v1",
     "languageCode": "fr",
     "sceneBreakSec": 0,
-    "approvedVoices": [],
+    "approvedVoices": [
+      {
+        "id": "ff_siwis",
+        "name": "Siwis (voix gratuite)",
+        "approvedOn": "2026-11-06",
+        "approvedBy": "utilisateur (écoute dans la conversation)",
+        "modelId": "kokoro-82m",
+        "settings": {},
+        "notes": "Kokoro-82M, licence Apache-2.0, voix ff_siwis (corpus SIWIS, CC BY 4.0). Gratuite, sans compte, usage commercial autorisé."
+      }
+    ],
     "defaultSettings": {
       "stability": 0.45,
       "similarity_boost": 0.8,
@@ -71,7 +89,11 @@
     "pronunciations": {
       "Systeme.io": "Système I O",
       "CRM": "C R M",
-      "A/B": "A B"
+      "A/B": "A B",
+      "e-mail": "i-mèle",
+      "e-mails": "i-mèles",
+      "mail": "mèle",
+      "mails": "mèles"
     },
     "targets": {
       "wpmMin": 145,

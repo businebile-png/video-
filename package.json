@@ -12,7 +12,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "remotion:studio": "remotion studio remotion/index.ts",
-    "test:render": "tsx scripts/synthetic-run.ts"
+    "test:render": "tsx scripts/synthetic-run.ts",
+    "voice:setup": "bash scripts/setup-voice.sh"
   },
   "dependencies": {
     "@fontsource/fraunces": "5.3.0",

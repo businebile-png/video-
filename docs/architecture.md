@@ -33,7 +33,7 @@ flowchart TB
 | `src/editorial` | Rotation des 13 catégories, anti-répétition (accroches, angles, directions artistiques), brief |
 | `src/facts` | Copies datées des pages officielles, vérification mot pour mot des faits |
 | `src/script` | Contrôle du script : promesses, urgence, superlatifs, concurrents, faits, durée, répétitions |
-| `src/voice` | Azure Speech (gratuit) ou ElevenLabs, prononciation, mastering, minutage et contrôle par retranscription |
+| `src/voice`, `scripts/voice_local.py` | Voix locale gratuite (Kokoro) ou, en option, Azure Speech / ElevenLabs ; prononciation, mastering, minutage au mot et contrôle par retranscription (faster-whisper) |
 | `src/footage` | Recherche Pexels, notation des candidats, planches contact, téléchargement, licences |
 | `src/music`, `src/sfx` | Musique libre de droits avec preuve ; habillage sonore synthétisé (sans licence à gérer) |
 | `src/captures` | Captures réelles de Systeme.io et zones à mettre en valeur |
@@ -49,7 +49,7 @@ flowchart TB
 
 | Besoin | Choix | Pourquoi | Limites |
 |---|---|---|---|
-| Voix off | **Azure Speech, niveau gratuit F0** (ElevenLabs en option payante) | Voix neuronales françaises naturelles (Vivienne, Rémy…), usage commercial autorisé, 0 € ; la transcription Azure (5 h/mois gratuites) donne le minutage de chaque mot et vérifie la prononciation | 500 000 caractères/mois ; le naturel dépend de la voix choisie, d'où l'audition et votre approbation |
+| Voix off | **Kokoro-82M** (Apache-2.0), voix française « Siwis », sur la machine de Claude ; **faster-whisper** (MIT) pour le minutage et la vérification | 0 €, aucun compte ni clé, usage commercial autorisé ; chaque mot est retranscrit et comparé au script (chiffres, homophones et respellings tolérés) | Une seule voix française de qualité correcte (moins expressive qu'une voix commerciale) ; modèle en pleine précision car la version allégée renvoie parfois du silence ; Azure F0 ou ElevenLabs en option |
 | Séquences | **Pexels** | Vidéos réelles en haute définition, usage commercial autorisé, API gratuite | 200 requêtes/heure ; catalogue vertical plus réduit (paysage 4K recadré accepté) |
 | Montage | **Remotion** | Animation image par image en code : typographie, sous-titres au mot, transitions sur mesure | Gratuit pour un particulier ou une entreprise de 3 personnes maximum |
 | Encodage, mesures | **FFmpeg** | Standard ; mesures EBU R128, détection d'images noires ou figées | — |

@@ -25,7 +25,8 @@ dépôt neuf et la reconstruit à l'étape 1. Aucune poussée vers la branche pr
 
 ## 0. Démarrage
 
-1. `npm ci` si `node_modules` est absent.
+1. `npm ci` si `node_modules` est absent, puis `bash scripts/setup-voice.sh` (voix gratuite ; ne refait
+   que ce qui manque, environ 30 secondes la première fois).
 2. Charger l'outil `ArtifactData` (ToolSearch `select:ArtifactData`).
 3. Journal : `ArtifactData set` sur `runs/<AAAA-MM-JJ>-<heure>` avec
    `{runId, startedAt, status: "en_cours", steps: [], message: ""}` ; le mettre à jour à chaque grande étape
@@ -169,9 +170,9 @@ vérifié : pour chaque entrée `posts` de `runs/<runId>/publish/package.json`, 
 
 ## Audition des voix
 
-1. `npm run studio -- voice:list` (voix françaises disponibles ; Azure Speech par défaut).
-2. `npm run studio -- voice:audition` (Vivienne, Rémy, Denise, Henri par défaut ; `--voices a,b` pour en choisir d'autres).
-3. Téléverser chaque `runs/_audition/<voiceId>.mp3` dans le panneau (outil `Artifact`, `asset: true`), puis
+1. `npm run studio -- voice:list` (voix françaises disponibles ; voix locale gratuite par défaut).
+2. `npm run studio -- voice:audition` (toutes les voix françaises disponibles ; `--voices a,b` pour en choisir).
+3. Téléverser chaque `runs/_audition/<voiceId>.mp4` (audio seul) dans le panneau (outil `Artifact`, `asset: true`), puis
    `ArtifactData set` sur `voices/<voiceId>` : `{voiceId, name, description, model, sample: {assetId, url}, status: "candidate", createdAt}`.
 4. Journal : « Écoutez les voix dans Réglages → Voix off et approuvez la plus naturelle. »
 

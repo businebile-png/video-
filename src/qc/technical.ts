@@ -5,13 +5,12 @@ import {exists, readJson, readValidated, writeJson} from '../core/fsx.js';
 import {ffmpeg, ffprobe, parseRate, run} from '../core/exec.js';
 import {measureLoudness, silences} from '../core/audio.js';
 import {log} from '../core/log.js';
-import {wordErrorRate} from '../core/text.js';
 import {ScriptSchema} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
 import type {VoiceWord} from '../schemas/records.js';
 import {transcribeWords} from '../voice/voice-step.js';
-import {prepareSpeech} from '../voice/speech.js';
+import {prepareSpeech, pronunciationCheck} from '../voice/speech.js';
 
 export interface Check {
   id: string;
@@ -156,8 +155,8 @@ export async function technicalQc(runId: string, config: StudioConfig): Promise<
     await fsp.mkdir(p.qcDir, {recursive: true});
     await ffmpeg(['-i', p.final, '-vn', '-ac', '1', '-ar', '16000', audio]);
     const stt = await transcribeWords(audio, config);
-    const ref = prepareSpeech(script, config.voice.pronunciations, ' ').tokens.map((t) => t.spoken.join(' ')).join(' ');
-    finalWer = Math.round(wordErrorRate(ref, stt.text).wer * 1000) / 1000;
+    const tokens = prepareSpeech(script, config.voice.pronunciations, ' ').tokens;
+    finalWer = Math.round(pronunciationCheck(tokens, stt.text).wer * 1000) / 1000;
   } catch (err) {
     log.warn(`Transcription du mixage final impossible : ${(err as Error).message}`);
   }

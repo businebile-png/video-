@@ -80,10 +80,30 @@ export const StudioConfigSchema = z.object({
     retentionDays: z.number().int().min(3).max(120),
   }),
   voice: z.object({
-    /** azure = free F0 tier (default, commercial use allowed); elevenlabs = paid plans only. */
-    provider: z.enum(['azure', 'elevenlabs']),
-    /** Speech-to-text used to time captions and verify pronunciation. */
-    sttProvider: z.enum(['azure', 'elevenlabs']),
+    /**
+     * local = free voice on this machine, no account (default: Kokoro-82M, Apache-2.0);
+     * azure = free F0 tier (account required); elevenlabs = paid plans only.
+     */
+    provider: z.enum(['local', 'azure', 'elevenlabs']),
+    /** Speech-to-text used to time captions and verify pronunciation (local = faster-whisper). */
+    sttProvider: z.enum(['local', 'azure', 'elevenlabs']),
+    local: z
+      .object({
+        python: z.string().min(1),
+        model: z.string().min(1),
+        voices: z.string().min(1),
+        whisperModel: z.string().min(1),
+        lang: z.string().min(2),
+        sceneBreakMs: z.number().int().min(0).max(1500),
+      })
+      .default({
+        python: '.venv-voice/bin/python',
+        model: 'models/kokoro/onnx/model.onnx',
+        voices: 'models/kokoro/voices.npz',
+        whisperModel: 'models/whisper/small',
+        lang: 'fr-fr',
+        sceneBreakMs: 300,
+      }),
     azure: z.object({
       region: z.string().regex(/^[a-z0-9]+$/),
       locale: z.string().min(4),

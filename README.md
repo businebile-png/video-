@@ -13,7 +13,7 @@ professionnel, un contrôle qualité strict et **votre validation avant toute pu
 ```mermaid
 flowchart LR
   A[Idée et angle<br/>catégorie tournante] --> B[Script vérifié<br/>faits officiels]
-  B --> C[Voix off naturelle<br/>Azure Speech gratuit]
+  B --> C[Voix off française<br/>gratuite, intégrée]
   C --> D[Séquences réelles<br/>Pexels]
   D --> E[Montage<br/>Remotion]
   E --> F[Contrôle qualité<br/>note /100 + verrous]
@@ -30,9 +30,9 @@ flowchart LR
    contrôleur automatique : aucune promesse de revenus, aucune fausse urgence, aucun superlatif,
    et chaque prix, chiffre ou fonctionnalité doit être prouvé par un extrait de la page officielle
    de Systeme.io copiée le jour même.
-3. **Enregistre la voix off** avec une voix neuronale française (Azure Speech, niveau gratuit) que
-   **vous avez choisie à l'écoute**, puis la fait retranscrire pour détecter les mots mal prononcés.
-   Les sous-titres sont calés au mot près.
+3. **Enregistre la voix off** avec la voix française gratuite intégrée au studio (Kokoro, voix
+   « Siwis »), **approuvée par vous à l'écoute**, puis la fait retranscrire pour détecter chaque mot
+   mal prononcé. Les sous-titres sont calés au mot près.
 4. **Cherche les séquences** sur Pexels (vidéos réelles, licence commerciale), les présente sur des
    planches contact, choisit les plus justes et ne réutilise pas un plan avant 45 jours.
 5. **Monte la vidéo** : coupes sur le rythme de la voix, mouvements de caméra, étalonnage, grain,
@@ -68,15 +68,15 @@ problème bloquant relevé à la relecture.
 | Élément | Pourquoi | Coût |
 |---|---|---|
 | Lien affilié Systeme.io | Toutes les ventes passent par lui | 0 € |
-| Azure Speech, niveau gratuit F0 | Voix française naturelle (500 000 caractères/mois) et vérification de prononciation (5 h/mois) ; usage commercial autorisé | 0 € (Microsoft demande une carte à l'inscription pour vérifier l'identité ; le niveau F0 ne facture rien) |
+| Voix off intégrée (Kokoro-82M + faster-whisper) | Voix française et vérification de prononciation, calculées sur la machine de Claude ; usage commercial autorisé ; aucun compte, aucune clé, aucune limite | 0 € |
 | Clé Pexels | Séquences vidéo réelles | 0 € |
 | Metricool (déjà connecté) | Programmation TikTok / Instagram conforme | Votre plan gratuit actuel |
 | Claude (votre abonnement) | Écriture, relecture, orchestration | Déjà inclus |
 | Remotion, GitHub, polices, habillage sonore | Montage, hébergement des vidéos | 0 € |
 
-Une vidéo d'environ 45 secondes consomme environ 900 caractères de voix : une vidéo par jour reste
-très loin de la limite gratuite. ElevenLabs reste possible en option, mais son plan gratuit
-n'autorise pas l'usage commercial : il n'est donc pas utilisé par défaut.
+La voix s'installe toute seule (`bash scripts/setup-voice.sh`, environ 30 secondes, modèles vérifiés
+par empreinte). Azure Speech (niveau gratuit, compte Microsoft requis) et ElevenLabs (plans payants
+seulement pour un usage commercial) restent possibles en option dans `config/studio.json`.
 
 Pas à pas complet : **[docs/mise-en-route.md](docs/mise-en-route.md)**.
 

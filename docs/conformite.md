@@ -29,8 +29,12 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
   produit, de la montrer sous un jour dégradant, ou de revendre les vidéos telles quelles. Chaque séquence
   utilisée est enregistrée (auteur, page, date) et affichée dans le panneau.
 - **Musique** : uniquement une piste avec preuve de licence (bibliothèque), sinon pas de musique.
-- **Voix de synthèse** : Azure Speech (usage commercial autorisé par les conditions Microsoft ; voix déclarée
-  comme générée par IA sur TikTok et Instagram). Le plan gratuit d'ElevenLabs n'autorise pas l'usage commercial.
+- **Voix de synthèse** : Kokoro-82M (licence Apache-2.0, usage commercial autorisé), voix « ff_siwis »
+  entraînée sur la base SIWIS (CC BY 4.0, enregistrée par une comédienne professionnelle ; crédit :
+  « SIWIS French Speech Synthesis Database », Honnet et al., Idiap / Université de Genève / Université
+  d'Édimbourg). Voix déclarée comme générée par IA sur TikTok et Instagram. Aucune imitation de la voix
+  d'une personne réelle. En option : Azure Speech (usage commercial autorisé) ; le plan gratuit
+  d'ElevenLabs n'autorise pas l'usage commercial.
 - **Polices** : licence SIL Open Font (Inter, Inter Tight, Manrope, Fraunces, Instrument Serif, Space Grotesk).
 - **Habillage sonore** : synthétisé par le studio.
 - **Remotion** : licence gratuite pour un particulier ou une entreprise de 3 personnes au plus.

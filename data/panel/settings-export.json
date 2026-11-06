@@ -73,19 +73,24 @@
       "label": "Erreurs fréquentes des débutants"
     }
   ],
-  "approvedVoices": [],
+  "approvedVoices": [
+    {
+      "id": "ff_siwis",
+      "name": "Siwis (voix gratuite)"
+    }
+  ],
   "metricoolBrandId": "7791839",
   "timezone": "Europe/Paris",
   "triggerId": "trig_01UkKxyio3W9xS57ShSsGDaQ",
   "setup": {
-    "azure": "missing",
+    "azure": "ok",
     "pexels": "missing",
-    "checkedAt": "2026-11-06T07:52:00.505Z",
-    "voiceProvider": "azure",
+    "checkedAt": "2026-11-06T11:30:19.960Z",
+    "voiceProvider": "local",
     "factsVerified": 23,
     "pricesVerified": false,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T07:53:10.301Z",
+  "updatedAt": "2026-11-06T11:31:17.691Z",
   "updatedBy": "agent"
 }

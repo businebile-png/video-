@@ -185,3 +185,94 @@ export function mapToDisplay(tokens: Token[], spoken: TimedWord[]): VoiceWord[] 
 function round(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
+
+const NUMBER_WORDS: Record<string, string> = {
+  zero: '0', un: '1', une: '1', deux: '2', trois: '3', quatre: '4', cinq: '5', six: '6', sept: '7', huit: '8', neuf: '9',
+  dix: '10', onze: '11', douze: '12', treize: '13', quatorze: '14', quinze: '15', seize: '16', vingt: '20', trente: '30',
+  quarante: '40', cinquante: '50', soixante: '60', cent: '100', mille: '1000',
+};
+
+/**
+ * Comparable form of one word as heard: no accents, numbers as digits, and silent French endings
+ * dropped, so homophones the transcriber may pick ("réunis" / "réunies") are not counted as errors.
+ */
+export function heardForm(word: string): string {
+  let w = normalize(word).replace(/\s+/g, '');
+  if (NUMBER_WORDS[w]) return NUMBER_WORDS[w]!;
+  if (w.length > 3) w = w.replace(/[sx]$/, '');
+  if (w.length > 3) w = w.replace(/e$/, '');
+  return w;
+}
+
+export interface PronunciationCheck {
+  /** Errors per spoken caption word (0 = everything heard as written). */
+  wer: number;
+  substitutions: Array<[string, string]>;
+  deletions: string[];
+  insertions: string[];
+}
+
+/**
+ * Compare what the transcriber heard with the script, token by token. A caption word may be heard as
+ * up to three words and the reverse ("Systeme.io" → "système IO", "2 000" → "2000"), and either its
+ * written form or its spoken respelling ("e-mails" spoken "i-mèles") counts as correct.
+ */
+export function pronunciationCheck(tokens: Token[], heardText: string): PronunciationCheck {
+  const forms = (text: string) => normalize(text).split(' ').filter(Boolean).map(heardForm).join('');
+  const alts = tokens.map((t) => [...new Set([forms(t.display), forms(t.spoken.join(' '))].filter(Boolean))]);
+  const ref = tokens.map((t, i) => ({display: core(t.display).body, alts: alts[i]!})).filter((r) => r.alts.length > 0);
+  const hyp = normalize(heardText).split(' ').filter(Boolean);
+  const hypForms = hyp.map(heardForm);
+  const n = ref.length;
+  const m = hyp.length;
+  const INF = Number.POSITIVE_INFINITY;
+  const dp: number[][] = Array.from({length: n + 1}, () => new Array<number>(m + 1).fill(INF));
+  const back: Array<Array<[number, number] | null>> = Array.from({length: n + 1}, () => new Array<[number, number] | null>(m + 1).fill(null));
+  dp[0]![0] = 0;
+  const spanMatches = (i: number, a: number, j: number, b: number): boolean => {
+    const heard = hypForms.slice(j, j + b).join('');
+    let combos = [''];
+    for (let k = i; k < i + a; k++) combos = combos.flatMap((c) => ref[k]!.alts.map((x) => c + x));
+    return combos.includes(heard);
+  };
+  for (let i = 0; i <= n; i++) {
+    for (let j = 0; j <= m; j++) {
+      const cur = dp[i]![j]!;
+      if (cur === INF) continue;
+      const relax = (ni: number, nj: number, cost: number) => {
+        if (cur + cost < dp[ni]![nj]!) {
+          dp[ni]![nj] = cur + cost;
+          back[ni]![nj] = [i, j];
+        }
+      };
+      if (i < n) relax(i + 1, j, 1);
+      if (j < m) relax(i, j + 1, 1);
+      for (let a = 1; a <= 3 && i + a <= n; a++) {
+        for (let b = 1; b <= 3 && j + b <= m; b++) {
+          if (spanMatches(i, a, j, b)) relax(i + a, j + b, 0);
+          else if (a === 1 && b === 1) relax(i + 1, j + 1, 1);
+        }
+      }
+    }
+  }
+  const substitutions: Array<[string, string]> = [];
+  const deletions: string[] = [];
+  const insertions: string[] = [];
+  let i = n;
+  let j = m;
+  while (i > 0 || j > 0) {
+    const prev = back[i]![j];
+    if (!prev) break;
+    const [pi, pj] = prev;
+    const cost = dp[i]![j]! - dp[pi]![pj]!;
+    if (cost > 0) {
+      if (i - pi === 1 && j - pj === 1) substitutions.push([ref[pi]!.display, hyp[pj]!]);
+      else if (i - pi === 1) deletions.push(ref[pi]!.display);
+      else insertions.push(hyp[pj]!);
+    }
+    i = pi;
+    j = pj;
+  }
+  const wer = n === 0 ? (m === 0 ? 0 : 1) : dp[n]![m]! / n;
+  return {wer, substitutions: substitutions.reverse(), deletions: deletions.reverse(), insertions: insertions.reverse()};
+}

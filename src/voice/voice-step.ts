@@ -4,16 +4,18 @@ import {runPaths} from '../core/paths.js';
 import {readJson, readValidated, writeJson} from '../core/fsx.js';
 import {log} from '../core/log.js';
 import {durationSec, masterVoice, measureLoudness} from '../core/audio.js';
-import {wordErrorRate, wordCount} from '../core/text.js';
+import {wordCount} from '../core/text.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig, VoiceSettings} from '../schemas/config.js';
 import type {VoiceReport, VoiceWord} from '../schemas/records.js';
 import {speechToText, textToSpeechWithTimestamps} from './elevenlabs.js';
 import {azureSynthesize, azureTranscribe, buildSsml} from './azure.js';
-import {alignmentToWords, mapToDisplay, prepareSpeech, type TimedWord} from './speech.js';
+import {alignmentToWords, mapToDisplay, prepareSpeech, pronunciationCheck, type TimedWord} from './speech.js';
+import {localSynthesize, localTranscribe} from './local.js';
 
 /** Speech to text with word timings, through the configured (free by default) provider. */
 export async function transcribeWords(file: string, config: StudioConfig): Promise<{text: string; words: TimedWord[]}> {
+  if (config.voice.sttProvider === 'local') return localTranscribe(file, config.voice.local);
   if (config.voice.sttProvider === 'azure') return azureTranscribe(file, {region: config.voice.azure.region, locale: config.voice.azure.locale});
   const res = await speechToText(file, {modelId: config.voice.sttModelId, languageCode: config.voice.languageCode});
   return {text: res.text, words: res.words.map((w) => ({text: w.text, start: w.start, end: w.end}))};
@@ -112,8 +114,8 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
   const speech = prepareSpeech(script, config.voice.pronunciations, sceneBreak);
   await fsp.writeFile(path.join(p.voiceDir, 'tts-input.txt'), speech.text);
   const base: VoiceSettings = {...config.voice.defaultSettings, ...approved.settings};
-  const variants: VoiceSettings[] = config.voice.provider === 'azure'
-    ? [base, {...base, speed: Math.min(1.2, base.speed + 0.03)}, {...base, speed: Math.max(0.7, base.speed - 0.03)}]
+  const variants: VoiceSettings[] = config.voice.provider !== 'elevenlabs'
+    ? [base, {...base, speed: Math.min(1.2, base.speed + 0.04)}, {...base, speed: Math.max(0.7, base.speed - 0.04)}]
     : [
     base,
     {...base, stability: Math.min(1, base.stability + 0.1), style: Math.max(0, base.style - 0.05)},
@@ -123,13 +125,24 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
       ];
   let best: VoiceReport | null = null;
   let bestWords: VoiceWord[] = [];
-  const reference = speech.tokens.map((t) => t.spoken.join(' ')).join(' ');
   for (let attempt = 1; attempt <= config.voice.maxAttempts; attempt++) {
     const settings = variants[(attempt - 1) % variants.length]!;
     let rawFile: string;
     let rawWords: VoiceWord[];
     let sttText: string | null = null;
-    if (config.voice.provider === 'azure') {
+    if (config.voice.provider === 'local') {
+      // Free local voice: synthesis on this machine, then word timings from the transcription of that exact audio.
+      log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, voix locale gratuite, vitesse ${settings.speed.toFixed(2)})`);
+      const parts = script.scenes.map((sc) => speech.tokens.filter((t) => t.sceneId === sc.id).flatMap((t) => t.spoken).join(' '));
+      rawFile = path.join(p.voiceDir, `attempt-${attempt}.wav`);
+      const synth = await localSynthesize(parts, rawFile, {voice: voiceId, speed: settings.speed}, config.voice.local);
+      await writeJson(path.join(p.voiceDir, `phonemes-${attempt}.json`), synth);
+      if (synth.languageSwitches.length) log.info(`Mots anglais prononcés à l’anglaise : ${synth.languageSwitches.length} phrase(s)`);
+      const stt = await transcribeWords(rawFile, config);
+      if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
+      sttText = stt.text;
+      rawWords = mapToDisplay(speech.tokens, stt.words);
+    } else if (config.voice.provider === 'azure') {
       // Azure F0 (free): synthesis, then word timings from the transcription of that exact audio.
       const ratePercent = (settings.speed - 1) * 100;
       log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, Azure, débit ${ratePercent >= 0 ? '+' : ''}${Math.round(ratePercent)} %)`);
@@ -168,7 +181,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     let mismatches: string[] = [];
     try {
       if (sttText === null) sttText = (await transcribeWords(mastered, config)).text;
-      const res = wordErrorRate(reference, sttText);
+      const res = pronunciationCheck(speech.tokens, sttText);
       wer = Math.round(res.wer * 1000) / 1000;
       mismatches = [...res.substitutions.map(([a, b]) => `${a} → ${b}`), ...res.deletions.map((d) => `manquant : ${d}`)].slice(0, 20);
     } catch (err) {
@@ -179,7 +192,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     const report: VoiceReport = {
       voiceId,
       voiceName: approved.name,
-      modelId: config.voice.provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
+      modelId: config.voice.provider === 'local' ? `kokoro-82m:${voiceId}` : config.voice.provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
       attempt,
       ...metrics,
       wer,
