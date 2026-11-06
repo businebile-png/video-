@@ -317,10 +317,13 @@ function Price({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; fra
 export const GraphicView: React.FC<{item: GraphicItem; ad: ArtDirection}> = ({item, ad}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const enter = pop(frame, fps);
-  const exit = interpolate(frame, [item.duration - 7, item.duration], [1, 0], clamp);
   const g = item.graphic;
   const bare = g.type === 'stack-merge' || g.type === 'compare';
+  // A card never shows empty: it enters with its first content (its title, or the first reveal on the voice).
+  const titled = (g.type === 'checklist' || g.type === 'steps') && Boolean(g.title);
+  const enter = pop(frame, fps, bare || titled ? 0 : (item.revealAt[0] ?? 0));
+  const shown = bare ? 1 : Math.min(1, enter * 1.6);
+  const exit = interpolate(frame, [item.duration - 7, item.duration], [1, 0], clamp);
   const inner = (() => {
     switch (g.type) {
       case 'checklist':
@@ -345,7 +348,7 @@ export const GraphicView: React.FC<{item: GraphicItem; ad: ArtDirection}> = ({it
         width: WIDTH,
         top: 520,
         maxHeight: 660,
-        opacity: exit,
+        opacity: exit * shown,
         transform: `translateY(${(1 - enter) * 30}px)`,
         ...(bare ? {} : cardStyle(ad)),
       }}

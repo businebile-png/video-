@@ -6,18 +6,18 @@
       "category": "edit-court",
       "hookStyle": "curiosite",
       "hook": "Ta page ici, tes e-mails là, ta formation ailleurs ?",
-      "angle": "Une page ici, des e-mails là, une formation ailleurs : tout réunir, commencer gratuitement, passer à Startup quand l'activité grandit",
+      "angle": "Une page ici, des e-mails là, une formation ailleurs : tout réunir, commencer gratuitement, passer à Startup quand il faut plus de tunnels, de formations et de contacts",
       "workingTitle": "Tout dans un seul outil",
       "artDirection": "nuit-edit",
       "musicTrack": null,
       "voiceId": "ff_siwis",
       "durationSec": 18.73,
-      "score": 62,
+      "score": 69,
       "decision": "redo",
-      "status": "rendered",
-      "reason": "62/100 — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "status": "rejected",
+      "reason": "69/100 — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
-      "updatedAt": "2026-11-06T17:07:26.212Z"
+      "updatedAt": "2026-11-06T17:26:31.736Z"
     }
   ]
 }

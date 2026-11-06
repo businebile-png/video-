@@ -35,6 +35,10 @@ describe('horaires de publication', () => {
   });
   it('propose les prochains créneaux en respectant le délai minimum', async () => {
     const config = await loadConfig();
+    // Fixed schedule: the test must not depend on the hours chosen in the panel.
+    config.platforms.tiktok = {...config.platforms.tiktok, enabled: true, postTimes: ['19:07']};
+    config.platforms.instagram = {...config.platforms.instagram, enabled: false};
+    config.publish.leadTimeMinutes = 90;
     const slots = nextSlots(config, new Date('2026-11-06T17:00:00Z'));
     expect(slots[0]!.network).toBe('tiktok');
     expect(slots[0]!.iso).toBe('2026-11-07T19:07:00+01:00');

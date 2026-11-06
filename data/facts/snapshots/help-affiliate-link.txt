@@ -16,7 +16,8 @@ Migrating to systeme.io
 Model Context Protocol (MCP)
 Payments
 Sales funnels
-Categories · Affiliation
+Categories
+· Affiliation
 Affiliation
 Blog
 Booking calendar

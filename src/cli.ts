@@ -39,7 +39,7 @@ const HELP = `Studio pub Systeme.io — commandes (npm run studio -- <commande>)
 
 Préparation
   doctor [--online]            Vérifie que tout est prêt (--online : teste aussi la clé Pexels, et Azure s’il est choisi)
-  facts:refresh                Télécharge les pages officielles Systeme.io (copies datées)
+  facts:refresh [--only a,b]   Télécharge les pages officielles Systeme.io (copies datées)
   facts:verify                 Re-vérifie chaque fait contre ces copies
   voice:list                   Liste les voix françaises disponibles (voix locale gratuite, Azure ou ElevenLabs)
   voice:audition [--voices a,b] Génère un même extrait avec chaque voix (à écouter dans le panneau)
@@ -211,6 +211,7 @@ async function main(): Promise<void> {
       'trigger-id': {type: 'string'},
       online: {type: 'boolean'},
       force: {type: 'boolean'},
+      only: {type: 'string'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -229,7 +230,8 @@ async function main(): Promise<void> {
       return;
     }
     case 'facts:refresh': {
-      const metas = await refreshSnapshots();
+      const only = str('only')?.split(',').map((x) => x.trim()).filter(Boolean);
+      const metas = await refreshSnapshots(only?.length ? only : undefined);
       log.info(`${metas.length} page(s) officielle(s) enregistrée(s).`);
       return;
     }
