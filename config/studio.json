@@ -1,0 +1,108 @@
+{
+  "brand": {
+    "name": "Systeme.io",
+    "accountName": "z.zir"
+  },
+  "affiliate": {
+    "url": "",
+    "bioLinkCheckedOn": null,
+    "disclosureBadge": "Publicité",
+    "disclosureCaption": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission, sans surcoût pour toi."
+  },
+  "platforms": {
+    "tiktok": {
+      "enabled": true,
+      "postTimes": [
+        "19:07"
+      ],
+      "privacy": "PUBLIC_TO_EVERYONE",
+      "aiLabel": true,
+      "commercialContentThirdParty": true
+    },
+    "instagram": {
+      "enabled": false,
+      "postTimes": [
+        "12:23",
+        "18:41"
+      ],
+      "aiLabel": true,
+      "showReelOnFeed": true
+    }
+  },
+  "metricool": {
+    "brandId": "7791839",
+    "timezone": "Europe/Paris"
+  },
+  "publish": {
+    "approval": "panel",
+    "delivery": "auto",
+    "minScore": 90,
+    "improveFrom": 85,
+    "leadTimeMinutes": 90
+  },
+  "media": {
+    "repo": "businebile-png/video-",
+    "mode": "session-branch",
+    "branch": "media",
+    "retentionDays": 14
+  },
+  "voice": {
+    "provider": "elevenlabs",
+    "modelId": "eleven_multilingual_v2",
+    "outputFormat": "mp3_44100_128",
+    "sttModelId": "scribe_v1",
+    "languageCode": "fr",
+    "sceneBreakSec": 0,
+    "approvedVoices": [],
+    "defaultSettings": {
+      "stability": 0.45,
+      "similarity_boost": 0.8,
+      "style": 0.22,
+      "use_speaker_boost": true,
+      "speed": 1.04
+    },
+    "pronunciations": {
+      "Systeme.io": "Système I O",
+      "CRM": "C R M",
+      "A/B": "A B"
+    },
+    "targets": {
+      "wpmMin": 145,
+      "wpmMax": 195,
+      "maxInternalPauseSec": 0.75,
+      "maxLeadingSilenceSec": 0.25,
+      "maxWer": 0.08
+    },
+    "maxAttempts": 3
+  },
+  "footage": {
+    "provider": "pexels",
+    "reuseCooldownDays": 45,
+    "perQuery": 20,
+    "candidatesPerScene": 8,
+    "minShortSide": 1080,
+    "allowLandscapeCrop": true
+  },
+  "music": {
+    "mode": "library-then-generate",
+    "underVoiceDb": -21,
+    "openDb": -13,
+    "recentTrackCooldown": 5
+  },
+  "render": {
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "crf": 17,
+    "x264Preset": "medium",
+    "browserExecutable": null,
+    "concurrency": null
+  },
+  "qc": {
+    "loudnessTargetLufs": -14,
+    "loudnessTolerance": 1.5,
+    "truePeakMaxDb": -0.8,
+    "maxUpscale": 1.2,
+    "maxFinalWer": 0.12
+  }
+}

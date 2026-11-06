@@ -1,0 +1,444 @@
+{
+  "categories": [
+    {
+      "id": "pub-directe",
+      "label": "Publicité directe",
+      "description": "Présentation franche de Systeme.io autour d'un bénéfice concret, sans détour.",
+      "durationSec": [
+        20,
+        35
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "courses",
+        "email-marketing",
+        "free-plan",
+        "funnels",
+        "pricing"
+      ],
+      "angleSeeds": [
+        "Le coût caché de jongler entre plusieurs abonnements",
+        "Ce qu'un débutant peut mettre en ligne sans développeur",
+        "Tout ce qu'il faut pour vendre un premier produit, au même endroit",
+        "Ce que tu obtiens réellement avec une formule payante, chiffres officiels à l'appui"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "formules-payantes",
+      "label": "Ce que débloquent les formules payantes",
+      "description": "Quand et pourquoi passer à une formule payante de Systeme.io : ce qu'elle débloque concrètement, chiffres vérifiés sur la page tarifs officielle, sans dénigrer le plan gratuit.",
+      "durationSec": [
+        30,
+        55
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "pricing",
+        "free-plan",
+        "funnels",
+        "email-marketing",
+        "courses",
+        "automations"
+      ],
+      "angleSeeds": [
+        "Le moment où le plan gratuit devient trop juste pour ton activité",
+        "Ce qu'une formule payante change concrètement au quotidien (limites, domaine, automatisations)",
+        "Comparer le prix d'une formule à celui de plusieurs abonnements séparés",
+        "Choisir la bonne formule selon le stade de ton activité"
+      ],
+      "weight": 1.6,
+      "requiresFactTags": [
+        "pricing"
+      ]
+    },
+    {
+      "id": "tutoriel",
+      "label": "Tutoriel pratique",
+      "description": "Un pas-à-pas concret réalisé dans Systeme.io, montré à l'écran.",
+      "durationSec": [
+        55,
+        90
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "demo",
+        "demo",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": true,
+      "features": [
+        "funnels",
+        "landing-pages",
+        "email-marketing",
+        "automations",
+        "courses"
+      ],
+      "angleSeeds": [
+        "Créer une page de capture en quelques étapes",
+        "Envoyer un e-mail de bienvenue automatique aux nouveaux inscrits",
+        "Mettre en ligne le premier module d'une formation"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "demo-fonctionnalite",
+      "label": "Démonstration de fonctionnalité",
+      "description": "Une fonctionnalité précise montrée sur l'interface réelle, avec son intérêt concret.",
+      "durationSec": [
+        40,
+        60
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "demo",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": true,
+      "features": [
+        "funnels",
+        "automations",
+        "email-marketing",
+        "courses",
+        "community",
+        "contacts"
+      ],
+      "angleSeeds": [
+        "La règle d'automatisation qui évite de relancer chaque client à la main",
+        "Voir en un coup d'œil d'où viennent les inscrits",
+        "Un tunnel de vente vu de l'intérieur"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "probleme-entrepreneur",
+      "label": "Problème d'entrepreneur",
+      "description": "Une difficulté quotidienne vécue par les indépendants et la façon dont Systeme.io l'allège.",
+      "durationSec": [
+        30,
+        45
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "agitation",
+        "solution",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "funnels",
+        "email-marketing",
+        "automations",
+        "payments"
+      ],
+      "angleSeeds": [
+        "Les ventes qui se perdent entre deux outils",
+        "Le soir passé à copier des adresses e-mail d'un fichier à l'autre",
+        "Le client qui paie mais ne reçoit pas son accès"
+      ],
+      "weight": 1.2
+    },
+    {
+      "id": "comparaison-outils",
+      "label": "Outils séparés ou plateforme unique",
+      "description": "Comparaison factuelle entre empiler des outils séparés et centraliser, sans citer de marque concurrente.",
+      "durationSec": [
+        35,
+        55
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "courses",
+        "email-marketing",
+        "funnels",
+        "payments",
+        "pricing",
+        "website"
+      ],
+      "angleSeeds": [
+        "Une page ici, des e-mails là, les paiements ailleurs : ce que ça change de tout réunir",
+        "Ce qu'on vérifie avant de choisir un outil tout-en-un",
+        "Le nombre de connexions entre outils qui peuvent casser",
+        "Le coût d'une formule tout-en-un face à plusieurs abonnements séparés (prix vérifiés uniquement)"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "conseils-debutant",
+      "label": "Conseils pour débuter",
+      "description": "Un conseil actionnable pour lancer son activité en ligne, avec Systeme.io comme outil naturel.",
+      "durationSec": [
+        30,
+        50
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "free-plan",
+        "landing-pages",
+        "email-marketing",
+        "funnels"
+      ],
+      "angleSeeds": [
+        "Construire sa liste e-mail avant d'avoir un produit",
+        "Tester une idée avec une simple page avant de tout construire",
+        "Commencer sans budget logiciel"
+      ],
+      "weight": 1.1
+    },
+    {
+      "id": "tunnels-de-vente",
+      "label": "Les tunnels de vente",
+      "description": "Ce qu'est un tunnel de vente, à quoi il sert et comment Systeme.io permet d'en construire un.",
+      "durationSec": [
+        30,
+        60
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "funnels",
+        "landing-pages",
+        "payments",
+        "email-marketing"
+      ],
+      "angleSeeds": [
+        "Le parcours d'un visiteur, de la découverte au paiement",
+        "Pourquoi une seule page de vente ne suffit pas toujours",
+        "Les étapes d'un tunnel simple pour un produit numérique"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "automatisation",
+      "label": "Automatisation du marketing",
+      "description": "Les tâches répétitives qu'on peut confier à des automatisations dans Systeme.io.",
+      "durationSec": [
+        30,
+        60
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "automations",
+        "email-marketing",
+        "contacts"
+      ],
+      "angleSeeds": [
+        "Ce qui se passe automatiquement quand quelqu'un s'inscrit",
+        "Étiqueter ses contacts pour leur envoyer le bon message",
+        "La séquence de bienvenue qui travaille pendant que tu crées"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "formations-en-ligne",
+      "label": "Créer et vendre une formation",
+      "description": "Héberger, vendre et donner accès à une formation en ligne avec Systeme.io.",
+      "durationSec": [
+        30,
+        60
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "courses",
+        "payments",
+        "community",
+        "email-marketing"
+      ],
+      "angleSeeds": [
+        "Transformer un savoir-faire en modules",
+        "Donner l'accès automatiquement après le paiement",
+        "Où héberger ses vidéos de formation"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "produits-numeriques",
+      "label": "Vendre des produits numériques",
+      "description": "Vendre un guide, un modèle ou un fichier téléchargeable avec Systeme.io.",
+      "durationSec": [
+        30,
+        50
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "digital-products",
+        "payments",
+        "funnels",
+        "email-marketing"
+      ],
+      "angleSeeds": [
+        "Vendre un modèle ou un guide sans boutique compliquée",
+        "La page de paiement et la livraison automatique du fichier",
+        "Proposer un produit complémentaire au moment de l'achat"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "organisation",
+      "label": "Organiser son activité en ligne",
+      "description": "Mettre de l'ordre dans ses contacts, ses ventes et ses contenus en centralisant.",
+      "durationSec": [
+        30,
+        45
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "solution",
+        "benefits",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "contacts",
+        "email-marketing",
+        "funnels",
+        "website",
+        "blog"
+      ],
+      "angleSeeds": [
+        "Retrouver qui a acheté quoi sans fouiller trois outils",
+        "Un seul tableau de bord pour l'essentiel",
+        "Moins d'abonnements à suivre chaque mois"
+      ],
+      "weight": 0.9
+    },
+    {
+      "id": "erreurs-debutants",
+      "label": "Erreurs fréquentes des débutants",
+      "description": "Une erreur courante quand on lance une activité en ligne et comment l'éviter.",
+      "durationSec": [
+        30,
+        50
+      ],
+      "phases": [
+        "hook",
+        "problem",
+        "agitation",
+        "solution",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "email-marketing",
+        "landing-pages",
+        "funnels",
+        "free-plan"
+      ],
+      "angleSeeds": [
+        "Attendre d'avoir un site parfait pour commencer",
+        "Ne pas récupérer les e-mails de ses visiteurs",
+        "Payer cinq outils avant d'avoir le premier client"
+      ],
+      "weight": 1.1
+    }
+  ],
+  "hookStyles": [
+    {
+      "id": "question-directe",
+      "label": "Question directe",
+      "principle": "Une question que la cible se pose déjà, formulée avec ses mots."
+    },
+    {
+      "id": "constat-chiffre",
+      "label": "Constat concret",
+      "principle": "Un constat précis et vérifiable du quotidien (pas de statistique inventée)."
+    },
+    {
+      "id": "scenario",
+      "label": "Mise en situation",
+      "principle": "« Tu viens de… » : une scène que la cible reconnaît immédiatement."
+    },
+    {
+      "id": "erreur",
+      "label": "L'erreur à éviter",
+      "principle": "Nommer une erreur courante sans culpabiliser."
+    },
+    {
+      "id": "avant-apres",
+      "label": "Avant / après",
+      "principle": "Le contraste entre deux façons de faire, montré sans exagération."
+    },
+    {
+      "id": "idee-recue",
+      "label": "Idée reçue",
+      "principle": "Corriger une croyance fausse et fréquente, preuve à l'appui."
+    },
+    {
+      "id": "liste",
+      "label": "Liste courte",
+      "principle": "« 3 choses que… » quand le contenu est réellement une liste."
+    },
+    {
+      "id": "geste",
+      "label": "Démonstration immédiate",
+      "principle": "Montrer le résultat à l'écran dès la première seconde (exige une capture réelle)."
+    }
+  ],
+  "rules": {
+    "minDaysBetweenSameCategory": 3,
+    "hookSimilarityMax": 0.55,
+    "angleSimilarityMax": 0.6,
+    "recentWindow": 30
+  }
+}

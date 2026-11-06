@@ -1,0 +1,8 @@
+node_modules/
+runs/
+.cache/
+media-staging/
+*.log
+.DS_Store
+.env
+.env.*

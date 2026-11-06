@@ -1,0 +1,991 @@
+<title>Régie pub Systeme.io</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a broadcast "régie" — sticky slate header with tabs; each video is a sheet with the monitor (player) on the left and the decision desk on the right; one column on phones. */
+:root {
+  --bg: #F2F4F7; --surface: #FFFFFF; --surface-2: #ECEFF3; --ink: #12161B; --muted: #59636F; --line: #D7DDE4;
+  --accent: #2A4FD4; --accent-ink: #FFFFFF; --accent-soft: #E2E8FF;
+  --ok: #137A47; --ok-soft: #E0F2E8; --warn: #9C5B00; --warn-soft: #FBEED6; --bad: #B9322A; --bad-soft: #FBE4E1;
+  --shadow: 0 1px 2px rgba(18,22,27,.06), 0 8px 24px rgba(18,22,27,.06);
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0D1014; --surface: #151A20; --surface-2: #1C222A; --ink: #E6EAF0; --muted: #98A2AF; --line: #29303A;
+  --accent: #8FA5FF; --accent-ink: #0D1014; --accent-soft: #1E2641;
+  --ok: #4CC488; --ok-soft: #10261A; --warn: #E6A443; --warn-soft: #2A1F10; --bad: #F27A6B; --bad-soft: #2D1614;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0D1014; --surface: #151A20; --surface-2: #1C222A; --ink: #E6EAF0; --muted: #98A2AF; --line: #29303A;
+  --accent: #8FA5FF; --accent-ink: #0D1014; --accent-soft: #1E2641;
+  --ok: #4CC488; --ok-soft: #10261A; --warn: #E6A443; --warn-soft: #2A1F10; --bad: #F27A6B; --bad-soft: #2D1614;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3); color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: var(--accent); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 82%; letter-spacing: -0.01em; text-wrap: balance; margin: 0; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top .wrap { padding-block: 12px 0; display: grid; gap: 10px; }
+.brandrow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; justify-content: space-between; }
+.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.brand h1 { font-size: 22px; font-weight: 750; }
+.brand .acct { font-size: 13px; color: var(--muted); }
+.lights { display: flex; flex-wrap: wrap; gap: 8px; }
+.light { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); font-size: 12.5px; white-space: nowrap; }
+.light::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.light.ok::before { background: var(--ok); } .light.warn::before { background: var(--warn); } .light.bad::before { background: var(--bad); }
+nav.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-bottom: -1px; }
+nav.tabs::-webkit-scrollbar { display: none; }
+nav.tabs a { padding: 10px 12px 11px; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; white-space: nowrap; }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+nav.tabs .count { font-family: var(--font-mono); font-size: 11px; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 1px 6px; margin-left: 6px; }
+
+main { padding-block: 20px 60px; }
+.banner { border: 1px solid var(--line); background: var(--warn-soft); color: var(--ink); border-radius: var(--r); padding: 12px 14px; margin-bottom: 16px; }
+.banner.info { background: var(--accent-soft); }
+.view[hidden] { display: none !important; }
+.viewhead { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.viewhead h2 { font-size: 26px; }
+.viewhead p { margin: 4px 0 0; color: var(--muted); max-width: 70ch; }
+
+/* Sheets */
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 0; margin-bottom: 22px; overflow: hidden; }
+.monitor { background: #07090c; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.monitor video, .monitor img.poster { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; max-height: 72vh; object-fit: contain; background: #000; border-radius: 8px; display: block; margin: 0 auto; }
+.monitor .noprev { aspect-ratio: 9 / 16; max-height: 72vh; border-radius: 8px; border: 1px dashed #3a414c; display: grid; place-items: center; color: #9aa3ae; text-align: center; padding: 20px; font-size: 14px; }
+.monitor .meta { color: #c4cad2; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 6px 12px; }
+.monitor .meta a { color: #c7d2ff; }
+.desk { padding: 18px 20px 20px; display: grid; gap: 18px; min-width: 0; align-content: start; }
+.deskhead { display: grid; gap: 6px; }
+.deskhead .kicker { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 12.5px; color: var(--muted); }
+.deskhead h3 { font-size: 24px; font-weight: 720; line-height: 1.15; }
+.hook { margin: 0; color: var(--muted); font-style: italic; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 650; background: var(--surface-2); color: var(--ink); white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.bad { background: var(--bad-soft); color: var(--bad); } .pill.info { background: var(--accent-soft); color: var(--accent); }
+
+.scorebox { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px; background: var(--surface-2); border-radius: var(--r); }
+.dial { width: 92px; height: 92px; position: relative; }
+.dial svg { width: 92px; height: 92px; transform: rotate(-90deg); }
+.dial .num { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-family: var(--font-mono); font-weight: 600; font-size: 24px; line-height: 1; }
+.dial .num small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.crit { display: grid; gap: 6px; min-width: 0; }
+.crow { display: grid; grid-template-columns: minmax(0, 1fr) 90px 52px; gap: 8px; align-items: center; font-size: 13px; }
+.crow button { all: unset; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.crow button:focus-visible { outline: 2px solid var(--accent); }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.bar > i.low { background: var(--warn); }
+.crow .v { font-family: var(--font-mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.just { font-size: 13px; color: var(--muted); margin: -2px 0 4px; padding-left: 10px; border-left: 2px solid var(--line); }
+
+.gates { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: 13.5px; }
+.gates li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; }
+.gates .mark { font-weight: 700; } .gates .y { color: var(--ok); } .gates .n { color: var(--bad); }
+.gates .d { color: var(--muted); font-size: 12.5px; }
+
+details.block { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+details.block > summary { cursor: pointer; padding: 10px 14px; font-weight: 650; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+details.block > summary::-webkit-details-marker { display: none; }
+details.block > summary::after { content: "+"; font-family: var(--font-mono); color: var(--muted); }
+details.block[open] > summary::after { content: "–"; }
+details.block .in { padding: 0 14px 14px; display: grid; gap: 10px; min-width: 0; }
+.scene { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; font-size: 14px; }
+.scene .tc { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.scene .ph { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 700; }
+
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label, .lbl { font-weight: 650; font-size: 13.5px; }
+.hint { font-size: 12.5px; color: var(--muted); }
+textarea, input[type=text], input[type=url], input[type=number], input[type=date], input[type=datetime-local], select {
+  width: 100%; max-width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 9px 11px; }
+textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
+.netrow { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: var(--r); }
+.netrow .top2 { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.check { display: inline-flex; align-items: center; gap: 8px; font-weight: 650; }
+.problems { margin: 0; padding-left: 18px; color: var(--bad); font-size: 13px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 10px 16px; border-radius: 9px; font-weight: 650; cursor: pointer; }
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.05); }
+.btn.danger { color: var(--bad); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.confirm { border: 1px solid var(--accent); background: var(--accent-soft); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; }
+.result { font-size: 13.5px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); }
+.result.ok { background: var(--ok-soft); color: var(--ok); } .result.bad { background: var(--bad-soft); color: var(--bad); } .result.warn { background: var(--warn-soft); color: var(--warn); }
+
+.empty { border: 1px dashed var(--line); border-radius: 14px; padding: 28px 22px; text-align: center; color: var(--muted); display: grid; gap: 12px; justify-items: center; background: var(--surface); }
+.empty strong { color: var(--ink); font-size: 16px; }
+
+/* Lists & tables */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; cursor: pointer; font-size: 13px; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 650; background: var(--surface-2); }
+td.num, th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: 0; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 4px; }
+.tile .k { font-size: 12.5px; color: var(--muted); }
+.tile .v { font-family: var(--font-mono); font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tile .s { font-size: 12px; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font-family: var(--font-mono); font-size: 10px; }
+
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: end; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); padding: 6px 10px; cursor: pointer; font-size: 12.5px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.catlist { display: grid; gap: 8px; }
+.catrow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.catrow:last-child { border-bottom: 0; }
+.radio { display: grid; gap: 8px; }
+.radio label { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; font-weight: 500; }
+.idea { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.idea:last-child { border-bottom: 0; }
+audio { width: 100%; max-width: 100%; }
+
+@media (max-width: 860px) {
+  .sheet { grid-template-columns: minmax(0, 1fr); }
+  .monitor video, .monitor img.poster, .monitor .noprev { max-height: 64vh; }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .scorebox { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="brand"><h1>Régie pub Systeme.io</h1><span class="acct" id="acct">TikTok · Instagram</span></div>
+      <div class="lights" id="lights"><span class="light">Connexion aux données…</span></div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#a-valider" data-view="a-valider">À valider<span class="count" id="count-pending" hidden>0</span></a>
+      <a href="#videos" data-view="videos">Vidéos</a>
+      <a href="#statistiques" data-view="statistiques">Statistiques</a>
+      <a href="#idees" data-view="idees">Idées</a>
+      <a href="#reglages" data-view="reglages">Réglages</a>
+      <a href="#journal" data-view="journal">Journal</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="banner"></div>
+
+  <section class="view" id="view-a-valider">
+    <div class="viewhead">
+      <div><h2>À valider</h2><p>Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.</p></div>
+    </div>
+    <div id="pending"></div>
+  </section>
+
+  <section class="view" id="view-videos" hidden>
+    <div class="viewhead">
+      <div><h2>Toutes les vidéos</h2><p>Historique complet : produites, programmées, publiées (confirmées par la plateforme), refusées.</p></div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div id="videos-list"></div>
+  </section>
+
+  <section class="view" id="view-statistiques" hidden>
+    <div class="viewhead">
+      <div><h2>Statistiques</h2><p>L’objectif est l’abonnement payant. Les vues et l’engagement viennent de Metricool ; les clics, inscriptions et abonnements viennent de votre tableau de bord affilié Systeme.io (saisie ci-dessous).</p></div>
+    </div>
+    <div id="stats"></div>
+  </section>
+
+  <section class="view" id="view-idees" hidden>
+    <div class="viewhead">
+      <div><h2>Idées de vidéos</h2><p>Proposez un sujet, une accroche ou une consigne : la production quotidienne les lit avant d’écrire le script.</p></div>
+    </div>
+    <div class="card">
+      <div class="field"><label for="idea-text">Nouvelle idée</label><textarea id="idea-text" placeholder="Ex. : montrer comment un coach peut vendre ses séances avec une page de paiement"></textarea></div>
+      <div class="form-grid">
+        <div class="field"><label for="idea-cat">Catégorie (facultatif)</label><select id="idea-cat"><option value="">Au choix de la production</option></select></div>
+        <label class="check" for="idea-prio"><input type="checkbox" id="idea-prio"> Prioritaire</label>
+        <div><button class="btn primary" id="idea-add">Ajouter l’idée</button></div>
+      </div>
+      <div id="idea-msg"></div>
+    </div>
+    <div class="card" style="margin-top:16px"><div id="ideas"></div></div>
+  </section>
+
+  <section class="view" id="view-reglages" hidden>
+    <div class="viewhead">
+      <div><h2>Réglages</h2><p>Ces réglages sont repris par la production à chaque passage.</p></div>
+    </div>
+    <div id="settings"></div>
+  </section>
+
+  <section class="view" id="view-journal" hidden>
+    <div class="viewhead">
+      <div><h2>Journal de production</h2><p>Chaque passage de la production quotidienne, étape par étape.</p></div>
+    </div>
+    <div id="runs"></div>
+  </section>
+</main>
+
+<script>
+(() => {
+'use strict';
+const METRICOOL = 'Metricool Social Media Management';
+const CCR = 'Claude Code Remote';
+const VIEWS = ['a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
+const STATUS = {
+  a_valider: ['Prête à diffuser', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
+  correction: ['Correction demandée', 'info'], programmee: ['Programmée', 'info'], publiee: ['Publiée', 'ok'],
+  refusee: ['Refusée', ''], echec: ['Échec de production', 'bad'],
+};
+const PHASES = {hook: 'Accroche', problem: 'Problème', agitation: 'Enjeu', solution: 'Solution', demo: 'Démonstration', benefits: 'Bénéfices', proof: 'Preuve', objection: 'Objection', cta: 'Appel à l’action'};
+const NETS = {tiktok: 'TikTok', instagram: 'Instagram'};
+const S = {
+  db: null, mcp: null, user: null, canEdit: null, dbState: 'loading',
+  videos: [], settings: null, ideas: [], affiliate: [], runs: [], voices: [],
+  loaded: {}, ui: {view: 'a-valider', filter: 'tout', panel: {}, drafts: {}, busy: {}, msg: {}, open: {}, trigger: null, triggerMsg: null, sdraft: null, smsg: null},
+};
+let started = false;
+
+// ---------- helpers ----------
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, '');
+    else el.setAttribute(k, String(v));
+  }
+  for (const kid of kids.flat()) { if (kid === null || kid === undefined || kid === false) continue; el.append(kid instanceof Node ? kid : document.createTextNode(String(kid))); }
+  return el;
+}
+const esc = (x) => String(x).replace(/[&<>"']/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const fmtNum = (n) => (n === null || n === undefined || Number.isNaN(n) ? '–' : new Intl.NumberFormat('fr-FR', {maximumFractionDigits: 1}).format(n));
+const fmtDate = (iso, withTime) => { if (!iso) return '–'; const d = new Date(iso); if (Number.isNaN(d.getTime())) return iso; return new Intl.DateTimeFormat('fr-FR', withTime ? {timeZone: tz(), weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'} : {timeZone: tz(), day: 'numeric', month: 'short', year: 'numeric'}).format(d); };
+const tc = (s) => { if (s === null || s === undefined) return '--:--'; const m = Math.floor(s / 60); const r = Math.floor(s % 60); return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`; };
+const tz = () => (S.settings && S.settings.timezone) || 'Europe/Paris';
+const blobUrl = (ref) => (ref && ref.url) ? ref.url : (ref && ref.assetId ? '/_blob/' + ref.assetId : null);
+const today = () => new Intl.DateTimeFormat('en-CA', {timeZone: tz()}).format(new Date());
+function pill(status) { const [label, tone] = STATUS[status] || [status || 'inconnu', '']; return h('span', {class: 'pill ' + tone, text: label}); }
+function saveDraft(key, value) { S.ui.drafts[key] = value; try { sessionStorage.setItem('regie-drafts', JSON.stringify(S.ui.drafts)); } catch (e) {} }
+try { Object.assign(S.ui.drafts, JSON.parse(sessionStorage.getItem('regie-drafts') || '{}')); } catch (e) {}
+
+function zoneOffset(date, zone) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).formatToParts(date).map((x) => [x.type, x.value]));
+  const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+  return Math.round((asUtc - date.getTime()) / 60000);
+}
+/** "2026-11-06T19:30" read as wall-clock time in the studio's zone → {iso with offset, local}. */
+function localToSlot(value, zone) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(value || ''); if (!m) return null;
+  const guess = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]));
+  let off = zoneOffset(guess, zone); let inst = new Date(guess.getTime() - off * 60000);
+  const off2 = zoneOffset(inst, zone); if (off2 !== off) { off = off2; inst = new Date(guess.getTime() - off * 60000); }
+  const sign = off >= 0 ? '+' : '-'; const a = Math.abs(off);
+  return {iso: `${value}:00${sign}${String(Math.floor(a / 60)).padStart(2, '0')}:${String(a % 60).padStart(2, '0')}`, local: `${value}:00`, instant: inst};
+}
+
+// Same spirit as the studio's script checker: never let an edit introduce a forbidden claim.
+const FORBIDDEN = [
+  [/\b(gagne[rsz]?|generer|genere[rsz]?|encaisse[rsz]?|toucher)\b(\s+\S+){0,6}\s+\d[\d\s]*\s?(k\b|€|\$|euros?\b|dollars?\b)/, 'promesse de gains chiffrés'],
+  [/revenus?\s+(garantis?|passifs?|automatiques?)|argent\s+facile|devenir\s+riche|sans\s+effort|resultats?\s+garantis?/, 'promesse de revenus ou de résultat'],
+  [/derniere\s+chance|plus\s+que\s+\d+\s+(places?|jours?|heures?)|offre\s+limitee|expire\s+(ce\s+soir|bientot|demain)|depeche\s+toi/, 'fausse urgence'],
+  [/\b(le|la)\s+meilleure?\b|numero\s+(un|1)\b|le\s+moins\s+cher/, 'superlatif invérifiable'],
+];
+const norm = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, ' ').replace(/[^a-z0-9%€$]+/g, ' ');
+function captionProblems(text) {
+  const out = [];
+  if (!/^\s*publicit/i.test(text)) out.push('La légende doit commencer par la mention « Publicité » (obligation légale).');
+  if (!/\bbio\b|\blien\b/i.test(text)) out.push('Indiquez où trouver le lien (« lien en bio »).');
+  for (const [re, label] of FORBIDDEN) if (re.test(norm(text))) out.push('Formulation interdite : ' + label + '.');
+  if (text.length > 2150) out.push('Légende trop longue (2 150 caractères maximum).');
+  return out;
+}
+function linkProblems(url) {
+  const out = [];
+  if (!url || !url.trim()) return ['Lien affilié non renseigné : aucune vidéo ne peut être publiée sans lui.'];
+  let u; try { u = new URL(url.trim()); } catch (e) { return ['Ce n’est pas une adresse web valide.']; }
+  if (u.protocol !== 'https:') out.push('Le lien doit commencer par https://');
+  if (u.hostname === 'www.systeme.io') out.push('Retirez « www » : Systeme.io indique que « www » empêche le suivi de l’affiliation.');
+  else if (u.hostname !== 'systeme.io') out.push('Le lien doit pointer vers systeme.io (sans www).');
+  const sa = u.searchParams.get('sa');
+  if (!sa) out.push('Le paramètre « sa » manque : ce n’est pas votre lien affilié (copiez-le depuis votre tableau de bord affilié Systeme.io).');
+  return out;
+}
+
+function mcpMessage(err, server) {
+  const code = err && err.code;
+  const name = server === METRICOOL ? 'Metricool' : 'Claude Code';
+  switch (code) {
+    case 'needs_reauth': return `Reconnectez ${name} dans claude.ai → Réglages → Connecteurs, puis réessayez.`;
+    case 'server_not_connected': case 'server_not_found': return `Le connecteur ${name} n’est pas ajouté à votre compte claude.ai (Réglages → Connecteurs).`;
+    case 'selection_required': return `Plusieurs connecteurs ${name} existent : choisissez-en un quand claude.ai le demande.`;
+    case 'approval_required': return `Cette action demande votre autorisation : cliquez à nouveau et acceptez l’accès à ${name}.`;
+    case 'not_in_manifest': return `L’accès à ${name} a été refusé pour ce panneau. Réautorisez-le dans le menu Autorisations de la page.`;
+    case 'blocked_by_policy': return `Votre organisation bloque cette action ${name}.`;
+    case 'tool_error': return `${name} a refusé la demande : ${err.message || 'erreur sans détail'}`;
+    case 'server_unavailable': case 'upstream_error': return `Résultat incertain (${name} n’a pas répondu clairement). Vérifiez dans ${name} avant de réessayer, pour éviter un doublon.`;
+    case 'not_granted': case 'capability_disabled': case 'capability_removed': return `Les connecteurs ne sont pas disponibles dans cette vue : ouvrez le panneau sur claude.ai.`;
+    default: return `${name} : ${err && err.message ? err.message : 'erreur inconnue'}`;
+  }
+}
+function deepFind(obj, key) {
+  if (!obj || typeof obj !== 'object') return null;
+  if (Object.prototype.hasOwnProperty.call(obj, key) && (typeof obj[key] === 'string' || typeof obj[key] === 'number')) return String(obj[key]);
+  for (const v of Object.values(obj)) { const r = deepFind(v, key); if (r) return r; }
+  return null;
+}
+function readMetricool(payload) {
+  if (typeof payload === 'string') {
+    const pick = (re) => { const m = payload.match(re); return m ? m[1] : null; };
+    return {plannerUrl: pick(/(https:\/\/app\.metricool\.com\/[^\s"']+)/), postId: pick(/"id"\s*:\s*"?(\d+)/), uuid: pick(/"uuid"\s*:\s*"([^"]+)"/)};
+  }
+  return {plannerUrl: deepFind(payload, 'plannerUrl'), postId: deepFind(payload, 'id'), uuid: deepFind(payload, 'uuid')};
+}
+
+// ---------- routing ----------
+function route() {
+  const v = (location.hash || '').replace('#', '');
+  S.ui.view = VIEWS.includes(v) ? v : 'a-valider';
+  for (const id of VIEWS) document.getElementById('view-' + id).hidden = id !== S.ui.view;
+  document.querySelectorAll('nav.tabs a').forEach((a) => a.setAttribute('aria-current', a.dataset.view === S.ui.view ? 'page' : 'false'));
+  render();
+  if (S.ui.view === 'reglages') loadTrigger(false);
+}
+window.addEventListener('hashchange', route);
+
+// ---------- header ----------
+function renderLights() {
+  const box = document.getElementById('lights'); box.replaceChildren();
+  if (S.dbState === 'absent') { box.append(h('span', {class: 'light bad', text: 'Données indisponibles'})); return; }
+  if (S.dbState === 'loading' && !S.loaded.videos) { box.append(h('span', {class: 'light', text: 'Connexion aux données…'})); return; }
+  const st = S.settings || {};
+  const lp = linkProblems(st.affiliateUrl || '');
+  box.append(h('span', {class: 'light ' + (lp.length ? 'bad' : 'ok'), text: lp.length ? 'Lien affilié à renseigner' : 'Lien affilié configuré'}));
+  box.append(h('span', {class: 'light ' + (st.approval === 'auto' ? 'warn' : 'ok'), text: st.approval === 'auto' ? 'Publication automatique' : 'Validation par vous'}));
+  const now = Date.now();
+  const next = S.videos.flatMap((v) => Object.entries(v.publications || {}).map(([n, p]) => ({n, t: Date.parse(p.scheduledFor), s: p.status}))).filter((x) => x.t > now && x.s !== 'cancelled').sort((a, b) => a.t - b.t)[0];
+  box.append(h('span', {class: 'light ' + (next ? 'ok' : ''), text: next ? `Prochaine publication : ${NETS[next.n] || next.n}, ${fmtDate(new Date(next.t).toISOString(), true)}` : 'Aucune publication programmée'}));
+  const pending = S.videos.filter((v) => v.status === 'a_valider' || v.status === 'a_ameliorer').length;
+  const c = document.getElementById('count-pending'); c.hidden = pending === 0; c.textContent = String(pending);
+}
+
+function renderBanner() {
+  const b = document.getElementById('banner'); b.replaceChildren();
+  if (S.dbState === 'absent') b.append(h('div', {class: 'banner', text: 'Les données de la régie ne sont pas accessibles depuis cette vue. Ouvrez le panneau depuis claude.ai avec le compte propriétaire.'}));
+  else if (S.dbState === 'slow') b.append(h('div', {class: 'banner', text: 'Les données mettent du temps à arriver. Elles s’afficheront dès que la connexion répond.'}));
+  else if (S.dbState === 'error') b.append(h('div', {class: 'banner', text: 'La connexion aux données a été interrompue. Rechargez la page.'}));
+  if (S.canEdit === false) b.append(h('div', {class: 'banner info', text: 'Lecture seule : seules les personnes autorisées à modifier ce panneau peuvent valider ou changer les réglages.'}));
+}
+
+// ---------- pending view ----------
+function scoreDial(total) {
+  const r = 40, c = 2 * Math.PI * r, val = Math.max(0, Math.min(100, total || 0));
+  const color = val >= 90 ? 'var(--ok)' : val >= 85 ? 'var(--warn)' : 'var(--bad)';
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 92 92');
+  svg.innerHTML = `<circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--line)" stroke-width="8"></circle><circle cx="46" cy="46" r="${r}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${(c * val / 100).toFixed(1)} ${c.toFixed(1)}"></circle>`;
+  return h('div', {class: 'dial', role: 'img', 'aria-label': `Note ${fmtNum(total)} sur 100`}, svg, h('div', {class: 'num'}, h('div', null, fmtNum(total), h('small', {text: '/ 100'}))));
+}
+
+function criteriaBlock(v) {
+  const box = h('div', {class: 'crit'});
+  const crit = (v.score && v.score.criteria) || [];
+  const reviewMap = {visual: 'visual', editing: 'editing', script: 'script', explanation: 'explanation', conversion: 'conversion'};
+  for (const c of crit) {
+    const key = `crit-${v.runId}-${c.id}`;
+    const pct = c.max ? (c.score / c.max) * 100 : 0;
+    const open = !!S.ui.open[key];
+    box.append(h('div', {class: 'crow'},
+      h('button', {type: 'button', 'aria-expanded': open ? 'true' : 'false', onclick: () => { S.ui.open[key] = !open; renderPending(); }, text: c.label}),
+      h('div', {class: 'bar'}, h('i', {class: pct < 80 ? 'low' : '', style: `width:${pct.toFixed(0)}%`})),
+      h('div', {class: 'v', text: `${fmtNum(c.score)}/${c.max}`})));
+    if (open) {
+      const rv = v.review && v.review.criteria && reviewMap[c.id] ? v.review.criteria[reviewMap[c.id]] : null;
+      box.append(h('div', {class: 'just', text: rv ? rv.justification : c.basis}));
+    }
+  }
+  return box;
+}
+
+function gatesBlock(v) {
+  const gates = (v.score && v.score.gates) || [];
+  const list = h('ul', {class: 'gates'});
+  for (const g of gates) list.append(h('li', null, h('span', {class: 'mark ' + (g.ok ? 'y' : 'n'), text: g.ok ? '✓' : '✕'}), h('span', null, g.label, !g.ok && g.detail ? h('div', {class: 'd', text: g.detail}) : null)));
+  if (v.linkCheck) list.append(h('li', null, h('span', {class: 'mark ' + (v.linkCheck.ok ? 'y' : 'n'), text: v.linkCheck.ok ? '✓' : '✕'}), h('span', null, 'Lien affilié vérifié en ligne', !v.linkCheck.ok ? h('div', {class: 'd', text: (v.linkCheck.problems || []).join(' ; ')}) : h('div', {class: 'd', text: 'contrôlé le ' + fmtDate(v.linkCheck.checkedAt, true)}))));
+  if (v.media) list.append(h('li', null, h('span', {class: 'mark ' + (v.media.verified ? 'y' : 'n'), text: v.media.verified ? '✓' : '!'}), h('span', null, 'Fichier vidéo en ligne pour Metricool', h('div', {class: 'd', text: v.media.verified ? 'adresse publique vérifiée' : 'non vérifié depuis la production : contrôlez le lien « MP4 » avant de valider'}))));
+  return list;
+}
+
+function scriptBlock(v) {
+  const d = h('details', {class: 'block'}, h('summary', null, 'Script et voix off', h('span', {class: 'muted small', text: v.voice ? `${v.voice.name} · ${fmtNum(v.voice.wpm)} mots/min` : ''})));
+  const inner = h('div', {class: 'in'});
+  for (const s of v.script || []) inner.append(h('div', {class: 'scene'}, h('div', {class: 'tc', text: `${tc(s.fromSec)}–${tc(s.toSec)}`}), h('div', null, h('span', {class: 'ph', text: PHASES[s.phase] || s.phase}), s.voiceover, s.headline ? h('div', {class: 'muted small', text: 'À l’écran : ' + s.headline}) : null)));
+  if (v.voice && v.voice.problems && v.voice.problems.length) inner.append(h('div', {class: 'result warn', text: 'Voix : ' + v.voice.problems.join(' ; ')}));
+  d.append(inner); return d;
+}
+
+function sourcesBlock(v) {
+  const d = h('details', {class: 'block'}, h('summary', null, 'Sources, droits et crédits'));
+  const inner = h('div', {class: 'in small'});
+  if ((v.facts || []).length) inner.append(h('div', null, h('div', {class: 'lbl', text: 'Faits cités (vérifiés sur systeme.io)'}), h('ul', null, ...(v.facts || []).map((f) => h('li', null, f.statement, h('span', {class: 'muted', text: ' — vérifié le ' + fmtDate(f.verifiedAt)}))))));
+  else inner.append(h('div', {class: 'muted', text: 'Aucun chiffre ni tarif cité dans cette vidéo.'}));
+  const fo = (v.credits && v.credits.footage) || [];
+  inner.append(h('div', null, h('div', {class: 'lbl', text: `Séquences Pexels (${fo.length})`}), h('div', null, ...fo.map((c, i) => h('span', null, i ? ' · ' : '', h('a', {href: c.pageUrl, target: '_blank', rel: 'noopener', text: c.author}))))));
+  const mu = v.credits && v.credits.music;
+  inner.append(h('div', null, h('div', {class: 'lbl', text: 'Musique'}), mu ? `${mu.title} — ${mu.source} (${mu.license})` : 'Aucune musique'));
+  d.append(inner); return d;
+}
+
+function networkEditor(v, post) {
+  const net = post.network;
+  const capKey = `cap-${v.runId}-${net}`, slotKey = `slot-${v.runId}-${net}`, useKey = `use-${v.runId}-${net}`, customKey = `custom-${v.runId}-${net}`;
+  const enabled = S.ui.drafts[useKey] !== undefined ? S.ui.drafts[useKey] : true;
+  const text = S.ui.drafts[capKey] !== undefined ? S.ui.drafts[capKey] : post.text;
+  const already = v.publications && v.publications[net];
+  const box = h('div', {class: 'netrow'});
+  const cb = h('input', {type: 'checkbox', id: useKey, checked: enabled && !already, disabled: !!already, onchange: (e) => { saveDraft(useKey, e.target.checked); renderPending(); }});
+  box.append(h('div', {class: 'top2'}, h('label', {class: 'check', for: useKey}, cb, 'Publier sur ' + (NETS[net] || net)), already ? h('span', {class: 'pill info', text: `${already.status === 'draft' ? 'Brouillon créé' : 'Programmée'} · ${fmtDate(already.scheduledFor, true)}`}) : null));
+  if (already) { if (already.plannerUrl) box.append(h('a', {href: already.plannerUrl, target: '_blank', rel: 'noopener', text: 'Ouvrir dans Metricool'})); return box; }
+  const slots = futureSlots(v, net);
+  const sel = h('select', {id: slotKey, onchange: (e) => { saveDraft(slotKey, e.target.value); renderPending(); }});
+  const current = S.ui.drafts[slotKey] && (S.ui.drafts[slotKey] === 'custom' || slots.some((x) => x.iso === S.ui.drafts[slotKey])) ? S.ui.drafts[slotKey] : (slots[0] ? slots[0].iso : 'custom');
+  for (const x of slots) sel.append(h('option', {value: x.iso, selected: current === x.iso, text: x.label}));
+  sel.append(h('option', {value: 'custom', selected: current === 'custom', text: 'Autre date et heure…'}));
+  box.append(h('div', {class: 'field'}, h('label', {for: slotKey, text: 'Créneau'}), sel));
+  if (current === 'custom') box.append(h('div', {class: 'field'}, h('label', {for: customKey, text: `Date et heure (${tz()})`}), h('input', {type: 'datetime-local', id: customKey, value: S.ui.drafts[customKey] || '', oninput: (e) => saveDraft(customKey, e.target.value)})));
+  const ta = h('textarea', {id: capKey, oninput: (e) => { saveDraft(capKey, e.target.value); const p = captionProblems(e.target.value); probs.replaceChildren(...p.map((x) => h('li', {text: x}))); count.textContent = e.target.value.length + ' caractères'; }});
+  ta.value = text;
+  const probs = h('ul', {class: 'problems'}, ...captionProblems(text).map((x) => h('li', {text: x})));
+  const count = h('span', {class: 'hint mono', text: text.length + ' caractères'});
+  box.append(h('div', {class: 'field'}, h('label', {for: capKey, text: 'Légende'}), ta, h('div', {style: 'display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap'}, h('span', {class: 'hint', text: 'La mention « Publicité » doit rester en tête.'}), count), probs));
+  return box;
+}
+
+function futureSlots(v, net) {
+  return (v.slots || []).filter((x) => x.network === net && Date.parse(x.iso) > Date.now() + 15 * 60000);
+}
+function chosenPosts(v) {
+  const out = [];
+  for (const post of v.posts || []) {
+    const net = post.network;
+    if (v.publications && v.publications[net]) continue;
+    const useKey = `use-${v.runId}-${net}`;
+    if (S.ui.drafts[useKey] === false) continue;
+    const slotVal = S.ui.drafts[`slot-${v.runId}-${net}`] || (futureSlots(v, net)[0] || {iso: 'custom'}).iso;
+    let slot = futureSlots(v, net).find((x) => x.iso === slotVal) || null;
+    if (!slot) slot = localToSlot(S.ui.drafts[`custom-${v.runId}-${net}`], tz());
+    const text = S.ui.drafts[`cap-${v.runId}-${net}`] !== undefined ? S.ui.drafts[`cap-${v.runId}-${net}`] : post.text;
+    out.push({post, net, slot, text});
+  }
+  return out;
+}
+
+function actionsBlock(v) {
+  const box = h('div', {style: 'display:grid;gap:12px'});
+  const mode = S.ui.panel[v.runId];
+  const busy = !!S.ui.busy[v.runId];
+  const msg = S.ui.msg[v.runId];
+  const canValidate = v.publishable || (v.status === 'a_ameliorer' && v.overrideAllowed);
+  const editable = S.canEdit !== false && S.db;
+  if (msg) box.append(h('div', {class: 'result ' + (msg.tone || ''), text: msg.text}));
+  if (!mode) {
+    const row = h('div', {class: 'actions'});
+    row.append(h('button', {class: 'btn primary', disabled: !canValidate || !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'validate'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Valider et programmer'}));
+    row.append(h('button', {class: 'btn', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'correct'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Demander une correction'}));
+    row.append(h('button', {class: 'btn danger', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'refuse'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Refuser'}));
+    box.append(row);
+    if (!canValidate) box.append(h('div', {class: 'hint', text: v.status === 'bloquee' ? 'Validation impossible : un contrôle obligatoire a échoué (voir la liste). Demandez une correction.' : 'Note sous 90/100 : demandez une correction, ou validez en connaissance de cause si la note est entre 85 et 89.'}));
+    return box;
+  }
+  if (mode === 'validate') {
+    const chosen = chosenPosts(v);
+    const issues = [];
+    if (!chosen.length) issues.push('Choisissez au moins un réseau.');
+    for (const c of chosen) {
+      if (!c.slot) issues.push(`${NETS[c.net]} : choisissez une date et une heure valides.`);
+      else if ((c.slot.instant ? c.slot.instant.getTime() : Date.parse(c.slot.iso)) < Date.now() + 15 * 60000) issues.push(`${NETS[c.net]} : la date doit être au moins 15 minutes dans le futur.`);
+      for (const p of captionProblems(c.text)) issues.push(`${NETS[c.net]} : ${p}`);
+    }
+    const lp = linkProblems((S.settings || {}).affiliateUrl || '');
+    for (const p of lp) issues.push(p);
+    const needOverride = !v.publishable;
+    const delivery = (S.settings && S.settings.delivery) || 'auto';
+    const conf = h('div', {class: 'confirm'});
+    conf.append(h('strong', {text: 'Confirmer la programmation'}));
+    for (const c of chosen) conf.append(h('div', null, `${NETS[c.net]} — ${c.slot ? fmtDate(c.slot.iso, true) : 'créneau à choisir'}`));
+    conf.append(h('div', {class: 'hint', text: delivery === 'auto' ? 'Metricool publiera automatiquement à l’heure choisie.' : delivery === 'notification' ? 'Metricool vous enverra une notification sur votre téléphone pour finaliser la publication.' : 'Metricool gardera la publication en brouillon : vous la programmerez vous-même.'}));
+    if (needOverride) {
+      const ov = h('textarea', {id: `override-${v.runId}`, placeholder: 'Pourquoi publier malgré une note entre 85 et 89 ?', oninput: (e) => saveDraft(`override-${v.runId}`, e.target.value)});
+      ov.value = S.ui.drafts[`override-${v.runId}`] || '';
+      conf.append(h('div', {class: 'field'}, h('label', {for: `override-${v.runId}`, text: 'Validation malgré la note (motif obligatoire)'}), ov));
+    }
+    if (issues.length) conf.append(h('ul', {class: 'problems'}, ...issues.map((x) => h('li', {text: x}))));
+    conf.append(h('div', {class: 'actions'},
+      h('button', {class: 'btn primary', disabled: busy || issues.length > 0, onclick: () => schedule(v), text: busy ? 'Programmation…' : 'Programmer dans Metricool'}),
+      h('button', {class: 'btn', disabled: busy, onclick: () => { S.ui.panel[v.runId] = null; renderPending(); }, text: 'Annuler'})));
+    box.append(conf);
+  }
+  if (mode === 'correct' || mode === 'refuse') {
+    const key = `${mode}-${v.runId}`;
+    const ta = h('textarea', {id: key, placeholder: mode === 'correct' ? 'Ex. : la voix va trop vite au début, montre davantage la page de paiement, accroche plus directe…' : 'Ex. : sujet déjà traité, ton trop agressif…', oninput: (e) => saveDraft(key, e.target.value)});
+    ta.value = S.ui.drafts[key] || '';
+    const conf = h('div', {class: 'confirm'});
+    conf.append(h('div', {class: 'field'}, h('label', {for: key, text: mode === 'correct' ? 'Ce qu’il faut corriger' : 'Motif du refus'}), ta));
+    conf.append(h('div', {class: 'hint', text: mode === 'correct' ? 'La production reprend la vidéo avec vos consignes au prochain passage, ou tout de suite si vous lancez la correction maintenant.' : 'La vidéo ne sera pas publiée. Le motif sert à ne pas reproduire l’erreur.'}));
+    conf.append(h('div', {class: 'actions'},
+      h('button', {class: 'btn primary', disabled: busy, onclick: () => decide(v, mode, (S.ui.drafts[key] || '').trim(), false), text: mode === 'correct' ? 'Envoyer la demande' : 'Refuser la vidéo'}),
+      mode === 'correct' && S.settings && S.settings.triggerId ? h('button', {class: 'btn', disabled: busy, onclick: () => decide(v, mode, (S.ui.drafts[key] || '').trim(), true), text: 'Envoyer et corriger maintenant'}) : null,
+      h('button', {class: 'btn', disabled: busy, onclick: () => { S.ui.panel[v.runId] = null; renderPending(); }, text: 'Annuler'})));
+    box.append(conf);
+  }
+  return box;
+}
+
+const monitors = new Map();
+function monitorFor(v) {
+  const src = blobUrl(v.preview);
+  const poster = blobUrl(v.cover);
+  const key = v.runId + '|' + (src || '') + '|' + (poster || '');
+  const cached = monitors.get(v.runId);
+  if (cached && cached.key === key) return cached.el;
+  const el = h('div', {class: 'monitor'});
+  if (src) el.append(h('video', {src, poster: poster || null, controls: true, playsinline: true, preload: 'metadata', 'aria-label': 'Aperçu de la vidéo ' + (v.title || v.runId)}));
+  else if (poster) el.append(h('img', {class: 'poster', src: poster, alt: 'Couverture de la vidéo ' + (v.title || v.runId)}));
+  else el.append(h('div', {class: 'noprev', text: 'Aperçu en cours d’envoi par la production.'}));
+  const meta = h('div', {class: 'meta'});
+  meta.append(h('span', {class: 'mono', text: tc(v.durationSec)}), h('span', {text: v.artDirection ? v.artDirection.label : ''}));
+  if (v.media && v.media.publicUrl) meta.append(h('a', {href: v.media.publicUrl, target: '_blank', rel: 'noopener', text: 'MP4 haute qualité'}));
+  el.append(meta);
+  monitors.set(v.runId, {key, el});
+  return el;
+}
+
+function deskContent(v) {
+  const out = [];
+  out.push(h('div', {class: 'deskhead'},
+    h('div', {class: 'kicker'}, pill(v.status), h('span', {text: v.category ? v.category.label : ''}), h('span', {class: 'mono', text: v.runId})),
+    h('h3', {text: v.title || v.runId}),
+    v.hook ? h('p', {class: 'hook', text: '« ' + v.hook + ' »'}) : null));
+  if (v.score) out.push(h('div', {class: 'scorebox'}, scoreDial(v.score.total), h('div', {style: 'display:grid;gap:8px;min-width:0'}, h('div', {class: 'small', text: v.score.summary}), criteriaBlock(v))));
+  out.push(h('div', null, h('div', {class: 'lbl', style: 'margin-bottom:6px', text: 'Contrôles obligatoires'}), gatesBlock(v)));
+  const nets = h('div', {style: 'display:grid;gap:10px'});
+  for (const post of v.posts || []) nets.append(networkEditor(v, post));
+  if (!(v.posts || []).length) nets.append(h('div', {class: 'hint', text: 'Aucun réseau activé pour cette vidéo (Réglages).'}));
+  out.push(nets, scriptBlock(v), sourcesBlock(v));
+  if (v.review && v.review.improvements && v.review.improvements.length) out.push(h('div', {class: 'result', text: 'Pistes d’amélioration du relecteur : ' + v.review.improvements.join(' ; ')}));
+  out.push(actionsBlock(v));
+  return out;
+}
+
+const sheets = new Map();
+function renderPending() {
+  const box = document.getElementById('pending');
+  const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
+  const selStart = keepFocus && document.activeElement.selectionStart;
+  const list = S.videos.filter((v) => ['a_valider', 'a_ameliorer', 'bloquee'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
+  const flash = document.getElementById('flash') || h('div', {id: 'flash'});
+  flash.replaceChildren(...(S.ui.flash ? [h('div', {class: 'result ' + S.ui.flash.tone, style: 'margin-bottom:16px', text: S.ui.flash.text})] : []));
+  if (box.firstChild !== flash) box.prepend(flash);
+  for (const [id, sh] of sheets) if (!list.some((v) => v.runId === id)) { sh.el.remove(); sheets.delete(id); }
+  for (const child of [...box.children]) if (child !== flash && !child.classList.contains('sheet')) child.remove();
+  if (!list.length) {
+    const st = S.settings || {};
+    if (!S.loaded.videos && S.dbState !== 'absent') box.append(h('div', {class: 'empty'}, h('strong', {text: 'Chargement des vidéos…'})));
+    else box.append(h('div', {class: 'empty'},
+      h('strong', {text: 'Aucune vidéo en attente de validation'}),
+      h('div', {text: 'La production quotidienne dépose ici chaque nouvelle vidéo avec son aperçu, sa note et ses légendes.'}),
+      st.triggerId ? h('button', {class: 'btn primary', onclick: () => fireTrigger('Production demandée depuis le panneau (aucune vidéo en attente).'), text: 'Lancer une production maintenant'}) : h('div', {class: 'hint', text: 'La production quotidienne n’est pas encore branchée (voir Réglages).'}),
+      S.ui.triggerMsg ? h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}) : null));
+  }
+  list.forEach((v, idx) => {
+    let sh = sheets.get(v.runId);
+    const mon = monitorFor(v);
+    if (!sh) {
+      const desk = h('div', {class: 'desk'});
+      sh = {el: h('article', {class: 'sheet', id: 'sheet-' + v.runId}, mon, desk), desk};
+      sheets.set(v.runId, sh);
+    } else if (sh.el.firstChild !== mon) sh.el.replaceChild(mon, sh.el.firstChild);
+    sh.desk.replaceChildren(...deskContent(v));
+    const at = box.children[idx + 1] || null;
+    if (at !== sh.el) box.insertBefore(sh.el, at);
+  });
+  if (keepFocus) { const el = document.getElementById(keepFocus); if (el && el !== document.activeElement) { el.focus(); try { if (selStart !== null && el.setSelectionRange) el.setSelectionRange(selStart, selStart); } catch (e) {} } }
+}
+
+async function schedule(v) {
+  if (!S.mcp) { S.ui.msg[v.runId] = {tone: 'bad', text: 'Les connecteurs ne sont pas disponibles dans cette vue : ouvrez le panneau sur claude.ai.'}; renderPending(); return; }
+  S.ui.busy[v.runId] = true; renderPending();
+  const delivery = (S.settings && S.settings.delivery) || 'auto';
+  const pubs = Object.assign({}, v.publications || {});
+  const lines = []; let anyOk = false; let anyFail = false;
+  for (const c of chosenPosts(v)) {
+    const info = Object.assign({}, c.post.info, {text: c.text, publicationDate: {dateTime: c.slot.local, timezone: tz()}, autoPublish: delivery === 'auto', draft: delivery === 'draft'});
+    try {
+      const res = await S.mcp.callTool(METRICOOL, 'createScheduledPost', {blogId: String(c.post.blogId), date: c.slot.iso, info: JSON.stringify(info)});
+      const r = readMetricool(res && res.payload !== undefined ? res.payload : res);
+      pubs[c.net] = {status: delivery === 'draft' ? 'draft' : 'scheduled', scheduledFor: c.slot.iso, delivery, plannerUrl: r.plannerUrl, postId: r.postId, uuid: r.uuid, text: c.text, contentSha256: v.media ? v.media.sha256 : null, at: new Date().toISOString(), permalink: null, confirmedAt: null};
+      lines.push(`${NETS[c.net]} : programmée pour ${fmtDate(c.slot.iso, true)}.`); anyOk = true;
+    } catch (err) {
+      lines.push(`${NETS[c.net]} : ${mcpMessage(err, METRICOOL)}`); anyFail = true;
+    }
+  }
+  try {
+    if (anyOk) {
+      const override = !v.publishable ? (S.ui.drafts[`override-${v.runId}`] || '').trim() : null;
+      await S.db.doc('videos/' + v.runId).update({status: 'programmee', publications: pubs, decision: {action: 'valider', notes: '', overrideReason: override, at: new Date().toISOString()}, updatedAt: new Date().toISOString()});
+      S.ui.panel[v.runId] = null;
+    }
+  } catch (err) { lines.push('Programmation faite dans Metricool, mais l’enregistrement dans la régie a échoué : ' + (err.message || err.code)); anyFail = true; }
+  S.ui.busy[v.runId] = false;
+  const result = {tone: anyFail ? (anyOk ? 'warn' : 'bad') : 'ok', text: `${v.title || v.runId} — ` + lines.join(' ') + (anyOk ? ' La publication sera confirmée dans l’onglet Vidéos quand la plateforme l’aura réellement mise en ligne.' : '')};
+  S.ui.msg[v.runId] = result; if (anyOk) S.ui.flash = result;
+  renderPending(); renderLights();
+}
+
+async function decide(v, mode, notes, runNow) {
+  if (!notes) { S.ui.msg[v.runId] = {tone: 'warn', text: mode === 'correct' ? 'Décrivez ce qu’il faut corriger.' : 'Indiquez le motif du refus.'}; renderPending(); return; }
+  S.ui.busy[v.runId] = true; renderPending();
+  try {
+    await S.db.doc('videos/' + v.runId).update({status: mode === 'correct' ? 'correction' : 'refusee', decision: {action: mode === 'correct' ? 'corriger' : 'refuser', notes, overrideReason: null, at: new Date().toISOString()}, updatedAt: new Date().toISOString()});
+    S.ui.msg[v.runId] = {tone: 'ok', text: mode === 'correct' ? 'Demande de correction enregistrée.' : 'Vidéo refusée.'};
+    S.ui.flash = {tone: 'ok', text: `${v.title || v.runId} — ` + (mode === 'correct' ? 'demande de correction enregistrée : la production reprendra la vidéo avec vos consignes.' : 'vidéo refusée, elle ne sera pas publiée.')};
+    S.ui.panel[v.runId] = null;
+    if (runNow) await fireTrigger(`Correction demandée pour la vidéo ${v.runId} : ${notes}`);
+  } catch (err) { S.ui.msg[v.runId] = {tone: 'bad', text: 'Enregistrement impossible : ' + (err.message || err.code)}; }
+  S.ui.busy[v.runId] = false; renderPending();
+}
+
+async function fireTrigger(text) {
+  const id = S.settings && S.settings.triggerId;
+  if (!id) return;
+  if (!S.mcp) { S.ui.triggerMsg = {tone: 'bad', text: 'Les connecteurs ne sont pas disponibles dans cette vue.'}; render(); return; }
+  try {
+    await S.mcp.callTool(CCR, 'fire_trigger', {trigger_id: id, text});
+    S.ui.triggerMsg = {tone: 'ok', text: 'Production lancée. Elle prend en général 20 à 40 minutes ; la vidéo apparaîtra ici.'};
+  } catch (err) { S.ui.triggerMsg = {tone: 'bad', text: mcpMessage(err, CCR)}; }
+  render();
+}
+
+// ---------- videos view ----------
+const FILTERS = [['tout', 'Toutes'], ['attente', 'En attente'], ['programmee', 'Programmées'], ['publiee', 'Publiées'], ['refusee', 'Refusées'], ['correction', 'En correction']];
+function renderVideos() {
+  const f = document.getElementById('filters'); f.replaceChildren(...FILTERS.map(([k, label]) => h('button', {type: 'button', 'aria-pressed': S.ui.filter === k ? 'true' : 'false', onclick: () => { S.ui.filter = k; renderVideos(); }, text: label})));
+  const box = document.getElementById('videos-list');
+  const match = (v) => S.ui.filter === 'tout' || (S.ui.filter === 'attente' ? ['a_valider', 'a_ameliorer', 'bloquee'].includes(v.status) : v.status === S.ui.filter);
+  const list = S.videos.filter(match).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
+  if (!list.length) { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: S.loaded.videos ? 'Aucune vidéo pour ce filtre' : 'Chargement…'}), h('div', {text: 'Les vidéos produites apparaissent ici avec leur statut et leurs statistiques.'}))); return; }
+  const table = h('table', null, h('thead', null, h('tr', null, h('th', {text: 'Date'}), h('th', {text: 'Vidéo'}), h('th', {text: 'Statut'}), h('th', {class: 'num', text: 'Note'}), h('th', {text: 'Publication'}), h('th', {class: 'num', text: 'Vues'}), h('th', {class: 'num', text: 'Visionnage moy.'}))));
+  const tb = h('tbody');
+  for (const v of list) {
+    const pubs = Object.entries(v.publications || {});
+    const m = v.metrics || {};
+    const views = ['tiktok', 'instagram'].reduce((n, k) => n + ((m[k] && m[k].views) || 0), 0);
+    const watch = ['tiktok', 'instagram'].map((k) => m[k] && m[k].avgWatchTimeSec).filter((x) => typeof x === 'number');
+    tb.append(h('tr', null,
+      h('td', {class: 'mono', text: v.date || v.runId.slice(0, 10)}),
+      h('td', null, h('div', {text: v.title || v.runId}), h('div', {class: 'muted small', text: v.category ? v.category.label : ''}), v.decision && v.decision.notes ? h('div', {class: 'muted small', text: 'Note : ' + v.decision.notes}) : null),
+      h('td', null, pill(v.status)),
+      h('td', {class: 'num', text: v.score ? fmtNum(v.score.total) : '–'}),
+      h('td', null, pubs.length ? pubs.map(([n, p]) => h('div', {class: 'small'}, `${NETS[n] || n} · ${p.status === 'published' ? 'publiée' : p.status === 'draft' ? 'brouillon' : 'programmée'} · ${fmtDate(p.scheduledFor, true)} `, p.permalink ? h('a', {href: p.permalink, target: '_blank', rel: 'noopener', text: 'voir'}) : p.plannerUrl ? h('a', {href: p.plannerUrl, target: '_blank', rel: 'noopener', text: 'Metricool'}) : null)) : h('span', {class: 'muted', text: '–'})),
+      h('td', {class: 'num', text: views ? fmtNum(views) : '–'}),
+      h('td', {class: 'num', text: watch.length ? fmtNum(watch.reduce((a, b) => a + b, 0) / watch.length) + ' s' : '–'})));
+  }
+  table.append(tb);
+  box.replaceChildren(h('div', {class: 'tablebox'}, table));
+}
+
+// ---------- stats view ----------
+function barChart(items, unit) {
+  const W = 640, H = 220, pad = {l: 44, r: 10, t: 12, b: 34};
+  const max = Math.max(1, ...items.map((i) => i.value));
+  const step = niceStep(max);
+  const top = Math.ceil(max / step) * step;
+  const bw = (W - pad.l - pad.r) / Math.max(1, items.length);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Graphique ${esc(unit)}">`;
+  for (let v = 0; v <= top; v += step) { const y = pad.t + (H - pad.t - pad.b) * (1 - v / top); s += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"></line><text x="${pad.l - 6}" y="${y + 3}" text-anchor="end">${fmtNum(v)}</text>`; }
+  items.forEach((it, i) => {
+    const bh = (H - pad.t - pad.b) * (it.value / top); const x = pad.l + i * bw + bw * 0.18; const w = bw * 0.64; const y = H - pad.b - bh;
+    s += `<rect x="${x}" y="${y}" width="${w}" height="${Math.max(0, bh)}" rx="3" fill="${i === items.length - 1 ? 'var(--accent)' : 'var(--muted)'}" opacity="${i === items.length - 1 ? 1 : 0.55}"><title>${esc(it.label)} : ${fmtNum(it.value)} ${esc(unit)}</title></rect>`;
+    if (items.length <= 16) s += `<text x="${x + w / 2}" y="${H - pad.b + 14}" text-anchor="middle">${esc(it.short)}</text>`;
+  });
+  return s + '</svg>';
+}
+function niceStep(max) { const raw = max / 4; const p = Math.pow(10, Math.floor(Math.log10(raw))); const n = raw / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p; }
+
+function renderStats() {
+  const box = document.getElementById('stats');
+  const vids = S.videos;
+  const published = vids.filter((v) => v.status === 'publiee' || Object.values(v.publications || {}).some((p) => p.status === 'published'));
+  const scored = vids.filter((v) => v.score && typeof v.score.total === 'number');
+  const views = (v) => ['tiktok', 'instagram'].reduce((n, k) => n + (((v.metrics || {})[k] || {}).views || 0), 0);
+  const totalViews = vids.reduce((n, v) => n + views(v), 0);
+  const watches = vids.flatMap((v) => ['tiktok', 'instagram'].map((k) => ((v.metrics || {})[k] || {}).avgWatchTimeSec)).filter((x) => typeof x === 'number');
+  const aff = S.affiliate;
+  const since = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  const last30 = aff.filter((d) => d.date >= since);
+  const sum = (arr, k) => arr.reduce((n, d) => n + (Number(d[k]) || 0), 0);
+  const tile = (k, v, s) => h('div', {class: 'tile'}, h('div', {class: 'k', text: k}), h('div', {class: 'v', text: v}), s ? h('div', {class: 's', text: s}) : null);
+  const tiles = h('div', {class: 'tiles'},
+    tile('Abonnements payants (30 j)', fmtNum(sum(last30, 'paidSubscriptions')), 'tableau de bord affilié'),
+    tile('Inscriptions (30 j)', fmtNum(sum(last30, 'signups')), 'via votre lien'),
+    tile('Clics sur le lien (30 j)', fmtNum(sum(last30, 'clicks')), 'lien en bio'),
+    tile('Commissions (30 j)', fmtNum(sum(last30, 'commission')) + ' €', 'montant saisi'),
+    tile('Vues cumulées', fmtNum(totalViews), 'TikTok + Instagram'),
+    tile('Visionnage moyen', watches.length ? fmtNum(watches.reduce((a, b) => a + b, 0) / watches.length) + ' s' : '–', 'par vidéo'),
+    tile('Vidéos publiées', fmtNum(published.length), `${fmtNum(vids.length)} produites`),
+    tile('Note moyenne', scored.length ? fmtNum(scored.reduce((n, v) => n + v.score.total, 0) / scored.length) : '–', 'sur 100'));
+  const chartViews = published.slice().sort((a, b) => String(a.runId).localeCompare(String(b.runId))).slice(-14).map((v) => ({label: v.title || v.runId, short: (v.date || '').slice(5), value: views(v)}));
+  const weeks = {};
+  for (const d of aff) { const dt = new Date(d.date + 'T12:00:00Z'); const monday = new Date(dt.getTime() - ((dt.getUTCDay() + 6) % 7) * 86400000).toISOString().slice(0, 10); weeks[monday] = (weeks[monday] || 0) + (Number(d.paidSubscriptions) || 0); }
+  const chartPaid = Object.entries(weeks).sort().slice(-12).map(([w, n]) => ({label: 'semaine du ' + w, short: w.slice(5), value: n}));
+  const c1 = h('div', {class: 'card chart'}, h('div', {class: 'lbl', text: 'Vues des dernières vidéos publiées'}));
+  if (chartViews.length) c1.insertAdjacentHTML('beforeend', barChart(chartViews, 'vues')); else c1.append(h('div', {class: 'hint', text: 'Les vues apparaîtront après les premières publications (importées depuis Metricool chaque jour).'}));
+  const c2 = h('div', {class: 'card chart'}, h('div', {class: 'lbl', text: 'Abonnements payants par semaine'}));
+  if (chartPaid.length) c2.insertAdjacentHTML('beforeend', barChart(chartPaid, 'abonnements')); else c2.append(h('div', {class: 'hint', text: 'Saisissez vos chiffres d’affiliation ci-dessous pour suivre les abonnements.'}));
+
+  // By category
+  const cats = {};
+  for (const v of published) { const k = v.category ? v.category.label : '–'; cats[k] = cats[k] || {n: 0, views: 0}; cats[k].n++; cats[k].views += views(v); }
+  const catTable = h('table', null, h('thead', null, h('tr', null, h('th', {text: 'Catégorie'}), h('th', {class: 'num', text: 'Vidéos'}), h('th', {class: 'num', text: 'Vues moy.'}))), h('tbody', null, ...Object.entries(cats).map(([k, c]) => h('tr', null, h('td', {text: k}), h('td', {class: 'num', text: fmtNum(c.n)}), h('td', {class: 'num', text: fmtNum(c.views / c.n)})))));
+
+  // Affiliate entry form
+  const f = h('div', {class: 'card'});
+  f.append(h('div', {class: 'lbl', text: 'Saisir les chiffres du tableau de bord affilié Systeme.io'}), h('div', {class: 'hint', text: 'Le lien étant dans la bio, aucune plateforme ne dit quelle vidéo a apporté quel abonnement : la régie estime la répartition au prorata des vues sur 72 heures.'}));
+  const fields = [['aff-date', 'Jour', 'date', today()], ['aff-clicks', 'Clics', 'number', ''], ['aff-signups', 'Inscriptions', 'number', ''], ['aff-paid', 'Abonnements payants', 'number', ''], ['aff-commission', 'Commissions (€)', 'number', '']];
+  const grid = h('div', {class: 'form-grid'});
+  for (const [id, label, type, def] of fields) { const inp = h('input', {type, id, min: type === 'number' ? '0' : null, step: id === 'aff-commission' ? '0.01' : null, value: S.ui.drafts[id] !== undefined ? S.ui.drafts[id] : def, oninput: (e) => saveDraft(id, e.target.value)}); grid.append(h('div', {class: 'field'}, h('label', {for: id, text: label}), inp)); }
+  grid.append(h('div', null, h('button', {class: 'btn primary', disabled: S.canEdit === false || !S.db, onclick: saveAffiliate, text: 'Enregistrer'})));
+  f.append(grid);
+  if (S.ui.affMsg) f.append(h('div', {class: 'result ' + S.ui.affMsg.tone, text: S.ui.affMsg.text}));
+  const recent = aff.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10);
+  if (recent.length) f.append(h('div', {class: 'tablebox'}, h('table', null, h('thead', null, h('tr', null, h('th', {text: 'Jour'}), h('th', {class: 'num', text: 'Clics'}), h('th', {class: 'num', text: 'Inscriptions'}), h('th', {class: 'num', text: 'Abonnements'}), h('th', {class: 'num', text: 'Commissions'}))), h('tbody', null, ...recent.map((d) => h('tr', null, h('td', {class: 'mono', text: d.date}), h('td', {class: 'num', text: fmtNum(d.clicks)}), h('td', {class: 'num', text: fmtNum(d.signups)}), h('td', {class: 'num', text: fmtNum(d.paidSubscriptions)}), h('td', {class: 'num', text: d.commission === null || d.commission === undefined ? '–' : fmtNum(d.commission) + ' €'})))))));
+  box.replaceChildren(tiles, h('div', {class: 'grid2'}, c1, c2), h('div', {class: 'grid2', style: 'margin-top:16px'}, h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Par catégorie (vidéos publiées)'}), Object.keys(cats).length ? h('div', {class: 'tablebox'}, catTable) : h('div', {class: 'hint', text: 'Disponible après les premières publications.'})), f));
+}
+
+async function saveAffiliate() {
+  const g = (id) => S.ui.drafts[id] !== undefined ? S.ui.drafts[id] : (document.getElementById(id) || {}).value;
+  const date = g('aff-date') || today();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) { S.ui.affMsg = {tone: 'bad', text: 'Date invalide.'}; renderStats(); return; }
+  const num = (id) => { const v = g(id); return v === '' || v === undefined || v === null ? null : Number(v); };
+  try {
+    await S.db.doc('affiliate/' + date).set({date, clicks: num('aff-clicks'), signups: num('aff-signups'), paidSubscriptions: num('aff-paid'), commission: num('aff-commission'), currency: 'EUR', recordedAt: new Date().toISOString()});
+    S.ui.affMsg = {tone: 'ok', text: 'Chiffres du ' + date + ' enregistrés.'};
+  } catch (err) { S.ui.affMsg = {tone: 'bad', text: 'Enregistrement impossible : ' + (err.message || err.code)}; }
+  renderStats();
+}
+
+// ---------- ideas ----------
+function renderIdeas() {
+  const sel = document.getElementById('idea-cat');
+  const cats = (S.settings && S.settings.categories) || [];
+  if (sel.options.length !== cats.length + 1) { sel.replaceChildren(h('option', {value: '', text: 'Au choix de la production'}), ...cats.map((c) => h('option', {value: c.id, text: c.label}))); }
+  document.getElementById('idea-add').disabled = S.canEdit === false || !S.db;
+  const box = document.getElementById('ideas');
+  const list = S.ideas.slice().sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+  if (!list.length) { box.replaceChildren(h('div', {class: 'hint', text: S.loaded.ideas ? 'Aucune idée pour l’instant. Les idées ajoutées ici sont lues à chaque production.' : 'Chargement…'})); return; }
+  const label = {new: ['En attente', 'info'], planned: ['Prévue', 'info'], used: ['Utilisée', 'ok'], dismissed: ['Écartée', '']};
+  box.replaceChildren(...list.map((i) => h('div', {class: 'idea'},
+    h('div', null, h('div', {text: i.text}), h('div', {class: 'muted small'}, (label[i.status] || [i.status])[0], i.priority ? ' · prioritaire' : '', i.category ? ' · ' + (cats.find((c) => c.id === i.category) || {label: i.category}).label : '', i.usedBy ? ' · vidéo ' + i.usedBy : '')),
+    h('div', {class: 'actions'}, i.status === 'new' ? h('button', {class: 'btn', onclick: () => S.db.doc('ideas/' + i.id).update({status: 'dismissed'}).catch(() => {}), text: 'Écarter'}) : null, h('button', {class: 'btn danger', onclick: () => S.db.doc('ideas/' + i.id).delete().catch(() => {}), text: 'Supprimer'})))));
+}
+document.getElementById('idea-add').addEventListener('click', async () => {
+  const text = document.getElementById('idea-text').value.trim();
+  const msg = document.getElementById('idea-msg');
+  if (!text) { msg.replaceChildren(h('div', {class: 'result warn', text: 'Écrivez l’idée avant de l’ajouter.'})); return; }
+  try {
+    await S.db.collection('ideas').add({text, category: document.getElementById('idea-cat').value || null, priority: document.getElementById('idea-prio').checked, status: 'new', createdAt: new Date().toISOString(), usedBy: null});
+    document.getElementById('idea-text').value = ''; document.getElementById('idea-prio').checked = false;
+    msg.replaceChildren(h('div', {class: 'result ok', text: 'Idée ajoutée : elle sera lue à la prochaine production.'}));
+  } catch (err) { msg.replaceChildren(h('div', {class: 'result bad', text: 'Ajout impossible : ' + (err.message || err.code)})); }
+});
+
+// ---------- settings ----------
+function sdraft() {
+  if (!S.ui.sdraft) {
+    const st = S.settings || {};
+    S.ui.sdraft = JSON.parse(JSON.stringify({
+      affiliateUrl: st.affiliateUrl || '', bioLinkCheckedOn: st.bioLinkCheckedOn || null, approval: st.approval || 'panel', delivery: st.delivery || 'auto',
+      platforms: st.platforms || {tiktok: {enabled: true, postTimes: ['19:07']}, instagram: {enabled: false, postTimes: ['12:23']}},
+      categoryPrefs: st.categoryPrefs || {},
+    }));
+  }
+  return S.ui.sdraft;
+}
+async function loadTrigger(force) {
+  const id = S.settings && S.settings.triggerId;
+  if (!id || !S.mcp || (S.ui.trigger && !force)) return;
+  try { const r = await S.mcp.callTool(CCR, 'get_trigger', {trigger_id: id}); const p = r.payload !== undefined ? r.payload : r; S.ui.trigger = {enabled: deepFind(p, 'enabled'), next: deepFind(p, 'next_run_at'), cron: deepFind(p, 'cron_expression')}; }
+  catch (err) { S.ui.trigger = {error: mcpMessage(err, CCR)}; }
+  if (S.ui.view === 'reglages') renderSettings();
+}
+async function setTrigger(enabled) {
+  try { await S.mcp.callTool(CCR, 'update_trigger', {trigger_id: S.settings.triggerId, enabled}); S.ui.trigger = null; S.ui.triggerMsg = {tone: 'ok', text: enabled ? 'Production quotidienne activée.' : 'Production quotidienne en pause.'}; await loadTrigger(true); }
+  catch (err) { S.ui.triggerMsg = {tone: 'bad', text: mcpMessage(err, CCR)}; }
+  renderSettings();
+}
+function renderSettings() {
+  const box = document.getElementById('settings');
+  if (!S.loaded.settings && S.dbState !== 'absent') { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: 'Chargement des réglages…'}))); return; }
+  const d = sdraft();
+  const ro = S.canEdit === false || !S.db;
+  const lp = linkProblems(d.affiliateUrl);
+  const link = h('div', {class: 'card'},
+    h('div', {class: 'lbl', text: 'Lien affilié Systeme.io'}),
+    h('div', {class: 'field'}, h('label', {for: 'set-link', text: 'Votre lien (tableau de bord affilié Systeme.io → lien de parrainage)'}), h('input', {type: 'url', id: 'set-link', value: d.affiliateUrl, placeholder: 'https://systeme.io/?sa=sa0…', disabled: ro, oninput: (e) => { d.affiliateUrl = e.target.value.trim(); const p = linkProblems(d.affiliateUrl); lpBox.replaceChildren(...(p.length ? [h('ul', {class: 'problems'}, ...p.map((x) => h('li', {text: x})))] : [h('div', {class: 'result ok', text: 'Format correct. La production vérifiera aussi le lien en ligne avant chaque publication.'})])); }})),
+    null);
+  const lpBox = h('div', null, ...(lp.length ? [h('ul', {class: 'problems'}, ...lp.map((x) => h('li', {text: x})))] : [h('div', {class: 'result ok', text: 'Format correct. La production vérifiera aussi le lien en ligne avant chaque publication.'})]));
+  link.append(lpBox, h('div', {class: 'actions'}, h('button', {class: 'btn', disabled: ro, onclick: () => { d.bioLinkCheckedOn = today(); renderSettings(); }, text: 'Le lien de ma bio TikTok/Instagram est bien celui-ci'}), h('span', {class: 'hint', style: 'align-self:center', text: d.bioLinkCheckedOn ? 'Confirmé le ' + d.bioLinkCheckedOn : 'Jamais confirmé'})));
+
+  const radio = (name, value, label, hint) => h('label', {for: `${name}-${value}`}, h('input', {type: 'radio', name, id: `${name}-${value}`, value, checked: d[name] === value, disabled: ro, onchange: () => { d[name] = value; }}), h('span', null, label, hint ? h('div', {class: 'hint', text: hint}) : null));
+  const flow = h('div', {class: 'card'},
+    h('div', {class: 'lbl', text: 'Validation'}),
+    h('div', {class: 'radio'}, radio('approval', 'panel', 'Je valide chaque vidéo dans ce panneau', 'Recommandé : rien n’est publié sans votre accord.'), radio('approval', 'auto', 'Publication automatique si tout est conforme', 'Seulement les vidéos à 90/100 ou plus, tous contrôles obligatoires validés.')),
+    h('div', {class: 'lbl', text: 'Mode de publication dans Metricool'}),
+    h('div', {class: 'radio'}, radio('delivery', 'auto', 'Publication automatique à l’heure choisie'), radio('delivery', 'notification', 'Notification sur mon téléphone pour publier moi-même', 'Utile si votre compte TikTok ne permet pas la publication automatique via Metricool.'), radio('delivery', 'draft', 'Brouillon dans Metricool')));
+
+  const nets = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Réseaux et horaires'}));
+  for (const n of ['tiktok', 'instagram']) {
+    const p = d.platforms[n] || {enabled: false, postTimes: []};
+    nets.append(h('div', {class: 'netrow'},
+      h('label', {class: 'check', for: `set-${n}`}, h('input', {type: 'checkbox', id: `set-${n}`, checked: !!p.enabled, disabled: ro, onchange: (e) => { p.enabled = e.target.checked; d.platforms[n] = p; }}), NETS[n]),
+      h('div', {class: 'field'}, h('label', {for: `set-${n}-times`, text: 'Heures de publication (HH:MM, séparées par des virgules)'}), h('input', {type: 'text', id: `set-${n}-times`, value: (p.postTimes || []).join(', '), disabled: ro, oninput: (e) => { p.postTimes = e.target.value.split(',').map((t) => t.trim()).filter(Boolean); d.platforms[n] = p; }})),
+      n === 'instagram' ? h('div', {class: 'hint', text: 'Instagram doit d’abord être connecté dans Metricool (compte professionnel ou créateur).'}) : null));
+  }
+
+  const cats = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Thèmes à privilégier'}), h('div', {class: 'hint', text: 'La production alterne les thèmes ; vous pouvez en pousser ou en écarter certains.'}));
+  const list = h('div', {class: 'catlist'});
+  for (const c of (S.settings && S.settings.categories) || []) {
+    const cur = d.categoryPrefs[c.id] || 'normal';
+    list.append(h('div', {class: 'catrow'}, h('span', {text: c.label}), h('div', {class: 'seg', role: 'group', 'aria-label': c.label}, ...[['boost', 'Privilégier'], ['normal', 'Normal'], ['avoid', 'Éviter']].map(([k, l]) => h('button', {type: 'button', 'aria-pressed': cur === k ? 'true' : 'false', disabled: ro, onclick: () => { d.categoryPrefs[c.id] = k; renderSettings(); }, text: l})))));
+  }
+  cats.append(list);
+
+  const voices = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Voix off'}), h('div', {class: 'hint', text: 'Écoutez les essais avec le son. Une vidéo n’est produite qu’avec une voix que vous avez approuvée.'}));
+  if (!S.voices.length) voices.append(h('div', {class: 'hint', text: 'Aucun essai de voix pour l’instant : la production en dépose ici dès que la clé ElevenLabs est configurée.'}));
+  for (const v of S.voices) {
+    const url = blobUrl(v.sample);
+    voices.append(h('div', {class: 'netrow'},
+      h('div', {class: 'top2'}, h('strong', {text: v.name || v.voiceId}), h('span', {class: 'pill ' + (v.status === 'approved' ? 'ok' : v.status === 'rejected' ? '' : 'info'), text: v.status === 'approved' ? 'Approuvée' : v.status === 'rejected' ? 'Écartée' : 'À écouter'})),
+      v.description ? h('div', {class: 'hint', text: v.description}) : null,
+      url ? h('audio', {controls: true, preload: 'none', src: url}) : h('div', {class: 'hint', text: 'Essai audio en cours d’envoi.'}),
+      h('div', {class: 'actions'}, h('button', {class: 'btn primary', disabled: ro || v.status === 'approved', onclick: () => S.db.doc('voices/' + v.id).update({status: 'approved', decidedAt: new Date().toISOString()}).catch(() => {}), text: 'Approuver cette voix'}), h('button', {class: 'btn', disabled: ro || v.status === 'rejected', onclick: () => S.db.doc('voices/' + v.id).update({status: 'rejected', decidedAt: new Date().toISOString()}).catch(() => {}), text: 'Écarter'}))));
+  }
+
+  const prod = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Production quotidienne'}));
+  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois les clés (Pexels, ElevenLabs) et le lien affilié en place.'}));
+  else {
+    const t = S.ui.trigger;
+    prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${t.next ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
+    prod.append(h('div', {class: 'actions'},
+      h('button', {class: 'btn', disabled: ro || !t || t.error, onclick: () => setTrigger(!(t && t.enabled === 'true')), text: t && t.enabled === 'true' ? 'Mettre en pause' : 'Activer'}),
+      h('button', {class: 'btn primary', disabled: ro, onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: 'Lancer une production maintenant'})));
+  }
+  if (S.ui.triggerMsg) prod.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
+
+  const save = h('div', {class: 'actions', style: 'margin-top:4px'}, h('button', {class: 'btn primary', disabled: ro, onclick: saveSettings, text: 'Enregistrer les réglages'}), h('button', {class: 'btn', disabled: ro, onclick: () => { S.ui.sdraft = null; S.ui.smsg = null; renderSettings(); }, text: 'Annuler les modifications'}));
+  const nodes = [link, h('div', {class: 'grid2'}, flow, nets), cats, voices, prod, save];
+  if (S.ui.smsg) nodes.push(h('div', {class: 'result ' + S.ui.smsg.tone, text: S.ui.smsg.text}));
+  box.replaceChildren(h('div', {style: 'display:grid;gap:16px'}, ...nodes));
+}
+async function saveSettings() {
+  const d = sdraft();
+  const problems = [];
+  if (d.affiliateUrl && linkProblems(d.affiliateUrl).length) problems.push('Lien affilié : ' + linkProblems(d.affiliateUrl)[0]);
+  for (const n of ['tiktok', 'instagram']) for (const t of (d.platforms[n] || {}).postTimes || []) if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) problems.push(`${NETS[n]} : heure « ${t} » invalide (format HH:MM).`);
+  if (problems.length) { S.ui.smsg = {tone: 'bad', text: problems.join(' ')}; renderSettings(); return; }
+  try {
+    const base = S.settings ? JSON.parse(JSON.stringify(S.settings)) : {};
+    await S.db.doc('settings/studio').set(Object.assign(base, d, {updatedAt: new Date().toISOString(), updatedBy: 'panel'}));
+    S.ui.smsg = {tone: 'ok', text: 'Réglages enregistrés : ils seront appliqués au prochain passage de la production.'}; S.ui.sdraft = null;
+  } catch (err) { S.ui.smsg = {tone: 'bad', text: 'Enregistrement impossible : ' + (err.message || err.code)}; }
+  renderSettings(); renderLights();
+}
+
+// ---------- journal ----------
+function renderRuns() {
+  const box = document.getElementById('runs');
+  if (!S.runs.length) { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: S.loaded.runs ? 'Aucun passage enregistré' : 'Chargement…'}), h('div', {text: 'Chaque production quotidienne y laisse son déroulé : étapes, durée, erreurs éventuelles.'}))); return; }
+  const tone = (s) => (s === 'terminee' ? 'ok' : s === 'echec' ? 'bad' : 'info');
+  const lab = (s) => (s === 'terminee' ? 'Terminée' : s === 'echec' ? 'Échec' : 'En cours');
+  box.replaceChildren(...S.runs.slice().sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt))).map((r) => h('details', {class: 'block', style: 'margin-bottom:10px'},
+    h('summary', null, h('span', null, h('span', {class: 'mono', text: r.runId || r.id}), ' · ', fmtDate(r.startedAt, true)), h('span', {class: 'pill ' + tone(r.status), text: lab(r.status)})),
+    h('div', {class: 'in small'}, r.message ? h('div', {text: r.message}) : null, ...(r.steps || []).map((s) => h('div', null, h('span', {class: 'mono', text: (s.status === 'done' ? '✓ ' : s.status === 'failed' ? '✕ ' : '· ') + s.name}), s.note ? h('span', {class: 'muted', text: ' — ' + s.note}) : null))))));
+}
+
+// ---------- render & data ----------
+function render() {
+  renderBanner(); renderLights();
+  if (S.ui.view === 'a-valider') renderPending();
+  if (S.ui.view === 'videos') renderVideos();
+  if (S.ui.view === 'statistiques') renderStats();
+  if (S.ui.view === 'idees') renderIdeas();
+  if (S.ui.view === 'reglages') renderSettings();
+  if (S.ui.view === 'journal') renderRuns();
+}
+
+function watchCollection(key, ref) {
+  const timer = setTimeout(() => { if (!S.loaded[key] && S.dbState === 'loading') { S.dbState = 'slow'; render(); } }, 10000);
+  ref.onSnapshot((snap) => {
+    clearTimeout(timer);
+    S[key] = snap.docs.map((d) => Object.assign({id: d.id}, d.data()));
+    if (!snap.metadata.fromCache) { S.loaded[key] = true; if (S.dbState !== 'ready') S.dbState = 'ready'; }
+    if (key === 'videos') for (const id of [...monitors.keys()]) if (!S.videos.some((v) => v.runId === id)) monitors.delete(id);
+    render();
+  }, (err) => { clearTimeout(timer); S.dbState = 'error'; S.loaded[key] = true; console.warn(key, err); render(); });
+}
+
+async function start() {
+  if (started) return; started = true;
+  route();
+  const claude = window.claude;
+  if (!claude || typeof claude.use !== 'function') { S.dbState = 'absent'; render(); return; }
+  const db = await claude.use('db');
+  if (!db) { S.dbState = 'absent'; render(); return; }
+  S.db = db;
+  watchCollection('videos', db.collection('videos').orderBy('date', 'desc').limit(120));
+  watchCollection('ideas', db.collection('ideas').limit(300));
+  watchCollection('affiliate', db.collection('affiliate').limit(500));
+  watchCollection('runs', db.collection('runs').limit(40));
+  watchCollection('voices', db.collection('voices').limit(40));
+  const st = setTimeout(() => { if (!S.loaded.settings) { S.loaded.settings = true; render(); } }, 10000);
+  db.doc('settings/studio').onSnapshot((snap) => {
+    clearTimeout(st);
+    S.settings = snap.exists ? snap.data() : null; S.loaded.settings = !snap.metadata.fromCache || S.loaded.settings;
+    const acct = document.getElementById('acct'); acct.textContent = (S.settings && S.settings.timezone ? 'Fuseau ' + S.settings.timezone : 'TikTok · Instagram');
+    if (S.ui.view === 'reglages' && !S.ui.sdraft) renderSettings();
+    renderLights(); if (S.ui.view === 'a-valider') renderPending();
+    loadTrigger(false);
+  }, () => { clearTimeout(st); S.loaded.settings = true; render(); });
+  claude.use('user').then(async (u) => { S.user = u; if (u) { try { S.canEdit = await u.canEdit(); } catch (e) { S.canEdit = null; } } render(); });
+  claude.use('mcp').then((m) => { S.mcp = m; if (S.ui.view === 'reglages') loadTrigger(false); });
+}
+
+route();
+start();
+})();
+</script>

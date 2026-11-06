@@ -1,0 +1,352 @@
+{
+  "updatedAt": null,
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente.",
+      "tags": [
+        "feature:funnels"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.landing-pages",
+      "statement": "Systeme.io permet de créer des pages de capture et des pages de vente.",
+      "tags": [
+        "feature:landing-pages"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des campagnes et des newsletters par e-mail.",
+      "tags": [
+        "feature:email-marketing"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.automations",
+      "statement": "Systeme.io propose des automatisations (règles et workflows).",
+      "tags": [
+        "feature:automations"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.courses",
+      "statement": "Systeme.io permet de créer, héberger et vendre des formations en ligne.",
+      "tags": [
+        "feature:courses"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.community",
+      "statement": "Systeme.io permet de créer une communauté en ligne pour ses membres.",
+      "tags": [
+        "feature:community"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.digital-products",
+      "statement": "Systeme.io permet de vendre des produits numériques.",
+      "tags": [
+        "feature:digital-products"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.payments",
+      "statement": "Systeme.io permet d'encaisser des paiements en ligne.",
+      "tags": [
+        "feature:payments"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.website",
+      "statement": "Systeme.io permet de créer un site web.",
+      "tags": [
+        "feature:website"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.blog",
+      "statement": "Systeme.io permet de créer un blog.",
+      "tags": [
+        "feature:blog"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.webinars",
+      "statement": "Systeme.io permet d'organiser des webinaires automatisés.",
+      "tags": [
+        "feature:webinars"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.affiliate-program",
+      "statement": "Systeme.io permet de gérer son propre programme d'affiliation.",
+      "tags": [
+        "feature:affiliate-program"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.contacts",
+      "statement": "Systeme.io inclut la gestion des contacts.",
+      "tags": [
+        "feature:contacts"
+      ],
+      "sourceId": "home",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.coupons",
+      "statement": "Systeme.io permet de créer des coupons de réduction.",
+      "tags": [
+        "feature:coupons"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "feature.ab-testing",
+      "statement": "Systeme.io permet de faire des tests A/B.",
+      "tags": [
+        "feature:ab-testing"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit.",
+      "tags": [
+        "pricing",
+        "free-plan",
+        "plan:free"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.free.contacts",
+      "statement": "Le plan gratuit de Systeme.io inclut jusqu'à 2 000 contacts.",
+      "tags": [
+        "pricing",
+        "plan:free"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L'inscription au plan gratuit ne demande pas de carte bancaire.",
+      "tags": [
+        "pricing",
+        "free-plan"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "Le plan Startup de Systeme.io coûte 17 $ par mois.",
+      "tags": [
+        "pricing",
+        "plan:startup"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.transaction-fees",
+      "statement": "Systeme.io ne prélève pas de frais de transaction sur les ventes.",
+      "tags": [
+        "pricing"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "affiliate.link-format",
+      "statement": "Un lien affilié Systeme.io doit être utilisé sans « www » pour que le suivi fonctionne.",
+      "tags": [
+        "affiliate"
+      ],
+      "sourceId": "help-affiliate-link",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 30,
+      "notes": "À vérifier : copier un extrait exact de la page officielle dans « evidence », puis facts:verify."
+    },
+    {
+      "id": "plan.startup.contacts",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 5 000 contacts.",
+      "tags": [
+        "pricing",
+        "plan:startup"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "Candidat issu de sources secondaires : à confirmer (ou corriger) d'après la page tarifs officielle avant tout usage."
+    },
+    {
+      "id": "plan.startup.custom-domain",
+      "statement": "Le plan Startup de Systeme.io permet de connecter son propre nom de domaine.",
+      "tags": [
+        "pricing",
+        "plan:startup"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "Candidat issu de sources secondaires : à confirmer (ou corriger) d'après la page tarifs officielle avant tout usage."
+    },
+    {
+      "id": "plan.webinar.price",
+      "statement": "Le plan Webinar de Systeme.io coûte 47 $ par mois.",
+      "tags": [
+        "pricing",
+        "plan:webinar"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "Candidat issu de sources secondaires : à confirmer (ou corriger) d'après la page tarifs officielle avant tout usage."
+    },
+    {
+      "id": "plan.unlimited.price",
+      "statement": "Le plan Unlimited de Systeme.io coûte 97 $ par mois.",
+      "tags": [
+        "pricing",
+        "plan:unlimited"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "Candidat issu de sources secondaires : à confirmer (ou corriger) d'après la page tarifs officielle avant tout usage."
+    },
+    {
+      "id": "plan.annual-discount",
+      "statement": "Systeme.io propose une réduction en cas de paiement annuel.",
+      "tags": [
+        "pricing"
+      ],
+      "sourceId": "pricing",
+      "evidence": null,
+      "status": "unverified",
+      "verifiedAt": null,
+      "ttlDays": 7,
+      "notes": "Candidat issu de sources secondaires : à confirmer (ou corriger) d'après la page tarifs officielle avant tout usage."
+    }
+  ]
+}

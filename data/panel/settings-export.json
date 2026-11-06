@@ -1,0 +1,82 @@
+{
+  "affiliateUrl": "",
+  "bioLinkCheckedOn": null,
+  "approval": "panel",
+  "delivery": "auto",
+  "platforms": {
+    "tiktok": {
+      "enabled": true,
+      "postTimes": [
+        "19:07"
+      ]
+    },
+    "instagram": {
+      "enabled": false,
+      "postTimes": [
+        "12:23",
+        "18:41"
+      ]
+    }
+  },
+  "categoryPrefs": {},
+  "categories": [
+    {
+      "id": "pub-directe",
+      "label": "Publicité directe"
+    },
+    {
+      "id": "formules-payantes",
+      "label": "Ce que débloquent les formules payantes"
+    },
+    {
+      "id": "tutoriel",
+      "label": "Tutoriel pratique"
+    },
+    {
+      "id": "demo-fonctionnalite",
+      "label": "Démonstration de fonctionnalité"
+    },
+    {
+      "id": "probleme-entrepreneur",
+      "label": "Problème d'entrepreneur"
+    },
+    {
+      "id": "comparaison-outils",
+      "label": "Outils séparés ou plateforme unique"
+    },
+    {
+      "id": "conseils-debutant",
+      "label": "Conseils pour débuter"
+    },
+    {
+      "id": "tunnels-de-vente",
+      "label": "Les tunnels de vente"
+    },
+    {
+      "id": "automatisation",
+      "label": "Automatisation du marketing"
+    },
+    {
+      "id": "formations-en-ligne",
+      "label": "Créer et vendre une formation"
+    },
+    {
+      "id": "produits-numeriques",
+      "label": "Vendre des produits numériques"
+    },
+    {
+      "id": "organisation",
+      "label": "Organiser son activité en ligne"
+    },
+    {
+      "id": "erreurs-debutants",
+      "label": "Erreurs fréquentes des débutants"
+    }
+  ],
+  "approvedVoices": [],
+  "metricoolBrandId": "7791839",
+  "timezone": "Europe/Paris",
+  "triggerId": null,
+  "updatedAt": "2026-11-06T07:26:04.969Z",
+  "updatedBy": "agent"
+}
