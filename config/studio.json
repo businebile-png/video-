@@ -129,12 +129,12 @@
       "python": ".venv-chatterbox/bin/python",
       "modelDir": "models/chatterbox",
       "reference": "models/voice-refs/claire.wav",
-      "exaggeration": 0.5,
-      "cfgWeight": 0.5,
+      "exaggeration": 0.55,
+      "cfgWeight": 0.4,
       "temperature": 0.7,
       "maxTakes": 4,
-      "sentenceBreakMs": 160,
-      "sceneBreakMs": 300,
+      "sentenceBreakMs": 120,
+      "sceneBreakMs": 240,
       "pronunciations": {
         "Systeme.io": "Système, I-O",
         "e-mail": "e-mail",
@@ -152,7 +152,9 @@
         "order": "order",
         "bump": "bump",
         "bumps": "bumps"
-      }
+      },
+      "targetWpm": 160,
+      "maxSpeedup": 1.25
     }
   },
   "footage": {

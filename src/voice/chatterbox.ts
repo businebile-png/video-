@@ -39,6 +39,8 @@ export interface ChatterboxSentence {
 
 export interface ChatterboxSynthesis {
   seconds: number;
+  paceBefore: number;
+  speedup: number;
   elapsedSec: number;
   worstError: number;
   sentences: ChatterboxSentence[];
@@ -69,6 +71,8 @@ export async function chatterboxSynthesize(
         maxTakes: cfg.maxTakes,
         sentenceBreakMs: cfg.sentenceBreakMs,
         sceneBreakMs: cfg.sceneBreakMs,
+        targetWpm: cfg.targetWpm,
+        maxSpeedup: cfg.maxSpeedup,
         seed: opts.seed,
         parts,
         out: path.resolve(out),

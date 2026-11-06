@@ -69,3 +69,9 @@ describe('numbers and homophones', () => {
     ]);
   });
 });
+
+describe('homophones courts', () => {
+  it('treats « ta » and « t’as » as the same sound', () => {
+    expect(soundKey(['ta'])).toBe(soundKey(['t', 'as']));
+  });
+});

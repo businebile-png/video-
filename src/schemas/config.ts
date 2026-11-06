@@ -118,6 +118,9 @@ export const StudioConfigSchema = z.object({
         maxTakes: z.number().int().min(1).max(8),
         sentenceBreakMs: z.number().int().min(0).max(1000),
         sceneBreakMs: z.number().int().min(0).max(1500),
+        /** This voice speaks slowly: the result is stretched (pitch kept) towards this pace, up to maxSpeedup. */
+        targetWpm: z.number().min(100).max(220).default(160),
+        maxSpeedup: z.number().min(1).max(1.5).default(1.25),
         /** Spellings for this engine, on top of voice.pronunciations (it reads text, not phonemes). */
         pronunciations: z.record(z.string(), z.string()).default({}),
       })
@@ -131,6 +134,8 @@ export const StudioConfigSchema = z.object({
         maxTakes: 4,
         sentenceBreakMs: 160,
         sceneBreakMs: 300,
+        targetWpm: 160,
+        maxSpeedup: 1.25,
         pronunciations: {},
       }),
     azure: z.object({

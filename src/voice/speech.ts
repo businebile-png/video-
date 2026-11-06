@@ -264,7 +264,8 @@ export function soundKey(words: string[]): string {
     .replace(/ai|ei/g, 'e')
     .replace(/h/g, '')
     .replace(/y/g, 'i')
-    .replace(/([a-z])\1+/g, '$1');
+    .replace(/([a-z])\1+/g, '$1')
+    .replace(/(?<=.)[sxtdzp]+$/, ''); // silent ending of the whole span: « ta » / « t'as »
 }
 
 export interface PronunciationCheck {

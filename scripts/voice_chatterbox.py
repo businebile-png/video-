@@ -13,7 +13,8 @@ import sys
 import time
 import unicodedata
 
-SENTENCE_END = re.compile(r"(?<=[.?!…:])\s+")
+SENTENCE_END = re.compile(r"(?<=[.?!…])\s+")
+MIN_WORDS = 5  # the model garbles very short sentences: they are merged with the next one
 # Ways the transcriber writes the brand: never counted as errors here (the full check runs afterwards).
 BRAND_WORDS = {"systeme", "system", "systemio", "systemi", "systemie", "systamio", "io", "i", "o", "ou", "au", "iot", "aie", "neo"}
 
@@ -43,6 +44,20 @@ def take_error(sentence, heard):
     return error
 
 
+def split_sentences(part):
+    """Sentences of a scene, short ones merged with their neighbour (never split on « : »)."""
+    out = []
+    for sentence in [s.strip() for s in SENTENCE_END.split(part.strip()) if s.strip()]:
+        if out and len(out[-1].split()) < MIN_WORDS:
+            out[-1] = f"{out[-1]} {sentence}"
+        else:
+            out.append(sentence)
+    if len(out) > 1 and len(out[-1].split()) < MIN_WORDS:
+        last = out.pop()
+        out[-1] = f"{out[-1]} {last}"
+    return out
+
+
 def tts(job):
     import numpy as np
     import torch
@@ -64,7 +79,7 @@ def tts(job):
     chunks, report = [], []
     t0 = time.time()
     for p, part in enumerate(job["parts"]):
-        sentences = [s for s in SENTENCE_END.split(part.strip()) if s.strip()]
+        sentences = split_sentences(part)
         for s, sentence in enumerate(sentences):
             best = None
             for attempt in range(max_takes):
@@ -82,8 +97,15 @@ def tts(job):
                     continue
                 audio, _ = librosa.effects.trim(audio, top_db=38)
                 a16 = torchaudio.functional.resample(torch.from_numpy(audio).unsqueeze(0), sr, 16000)[0].numpy()
-                segments, _ = asr.transcribe(a16, language="fr", beam_size=5, condition_on_previous_text=False)
+                segments = list(asr.transcribe(a16, language="fr", beam_size=5, condition_on_previous_text=False, word_timestamps=True)[0])
                 heard = " ".join(seg.text.strip() for seg in segments)
+                spoken = [w for seg in segments for w in (seg.words or [])]
+                if spoken:
+                    # Keep only the speech: the model leaves breaths and noise around a sentence.
+                    start = max(0, int((spoken[0].start - 0.06) * sr))
+                    end = min(len(audio), int((spoken[-1].end + 0.14) * sr))
+                    if end - start > sr * 0.3:
+                        audio = audio[start:end]
                 error = take_error(sentence, heard)
                 if best is None or error < best[0]:
                     best = (error, audio, heard, attempt + 1)
@@ -99,12 +121,27 @@ def tts(job):
     audio = np.concatenate([c for c in chunks if len(c)]) if chunks else np.zeros(1, dtype=np.float32)
     peak = float(np.max(np.abs(audio))) or 1.0
     sf.write(job["out"], (audio / peak * 0.89).astype(np.float32), sr, subtype="PCM_16")
+    # This voice speaks slowly for an ad: bring it to the target pace with a pitch-preserving stretch.
+    n_words = sum(len(words(p)) + p.lower().count("systeme") for p in job["parts"])
+    pace = n_words / max(1e-3, len(audio) / sr) * 60
+    factor = min(float(job.get("maxSpeedup", 1.25)), max(1.0, float(job.get("targetWpm", 160)) / max(1.0, pace)))
+    if factor > 1.01:
+        import subprocess
+
+        tmp = job["out"] + ".tmp.wav"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", job["out"], "-af", f"atempo={factor:.3f}", tmp], check=True)
+        import os
+
+        os.replace(tmp, job["out"])
+        audio = audio[: int(len(audio) / factor)]
     return {
         "out": job["out"],
         "sampleRate": sr,
         "seconds": round(len(audio) / sr, 3),
         "elapsedSec": round(time.time() - t0, 1),
         "worstError": max((r["error"] for r in report), default=0),
+        "paceBefore": round(pace),
+        "speedup": round(factor, 3),
         "sentences": report,
     }
 
