@@ -1,1 +1,23 @@
-{"records": []}
+{
+  "records": [
+    {
+      "runId": "2026-11-06-b",
+      "date": "2026-11-06",
+      "category": "inconnue",
+      "hookStyle": "curiosite",
+      "hook": "Tes pages, tes e-mails et tes formations, dans un seul outil ?",
+      "angle": "Ton business en ligne dans un seul outil",
+      "workingTitle": "Tout dans un seul outil",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": null,
+      "durationSec": 16.63,
+      "score": null,
+      "decision": null,
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-06T13:32:18.407Z"
+    }
+  ]
+}

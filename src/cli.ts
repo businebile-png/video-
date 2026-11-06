@@ -2,6 +2,7 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import {parseArgs} from 'node:util';
 import {PATHS, runPaths} from './core/paths.js';
+import {loadDotEnv} from './core/env.js';
 import {exists, readJson, readValidated, writeJson} from './core/fsx.js';
 import {http} from './core/http.js';
 import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from './core/config.js';
@@ -157,6 +158,7 @@ async function doctor(online = false): Promise<boolean> {
 }
 
 async function main(): Promise<void> {
+  loadDotEnv();
   const [command, ...rest] = process.argv.slice(2);
   const {values, positionals} = parseArgs({
     args: rest,

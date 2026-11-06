@@ -45,3 +45,13 @@ describe('Pixabay', () => {
     expect(redactUrl('https://pixabay.com/api/videos/?key=12345-abcdef&q=laptop')).toBe('https://pixabay.com/api/videos/?key=***&q=laptop');
   });
 });
+
+describe('pertinence des séquences', () => {
+  it('rejects clips whose tags share no word with the search', async () => {
+    const {keywordOverlap, queryTerms} = await import('../src/footage/footage-step.js');
+    expect(queryTerms('hands typing laptops')).toEqual(['hand', 'typing', 'laptop']);
+    expect(keywordOverlap(['bacon', 'meat', 'food'], 'creator working desk lamp night')).toBe(0);
+    expect(keywordOverlap(['woman', 'laptop', 'work'], 'woman laptop night')).toBe(2);
+    expect(keywordOverlap(undefined, 'anything')).toBeNull();
+  });
+});

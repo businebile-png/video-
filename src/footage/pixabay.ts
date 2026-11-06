@@ -60,6 +60,10 @@ export function pixabayToVideo(hit: PixabayHit): PexelsVideo | null {
     user: {id: hit.user_id, name: hit.user, url: `https://pixabay.com/users/${encodeURIComponent(hit.user)}-${hit.user_id}/`},
     video_files: files.map(([quality, r], i) => ({id: i, quality, file_type: 'video/mp4', width: r.width, height: r.height, fps: null, link: r.url})),
     video_pictures: thumbnail ? [{id: 0, picture: thumbnail, nr: 0}] : [],
+    keywords: (hit.tags ?? '')
+      .split(',')
+      .map((t) => t.trim().toLowerCase())
+      .filter(Boolean),
   };
 }
 

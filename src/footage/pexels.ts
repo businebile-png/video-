@@ -22,6 +22,8 @@ export interface PexelsVideo {
   user: {id: number; name: string; url: string};
   video_files: PexelsVideoFile[];
   video_pictures: Array<{id: number; picture: string; nr: number}>;
+  /** Library keywords for the clip, when the library provides them (Pixabay tags). */
+  keywords?: string[];
 }
 
 export interface PexelsSearch {

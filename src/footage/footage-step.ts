@@ -76,18 +76,43 @@ export function pickFile(v: PexelsVideo, cfg: StudioConfig['footage']): PexelsVi
   return null;
 }
 
+const STOP = new Set(['a', 'an', 'the', 'of', 'in', 'on', 'at', 'with', 'and', 'or', 'to', 'for', 'close', 'up', 'shot', 'view', 'video', 'footage', 'stock', 'clip']);
+
+/** Query words a library tag list must share, singular-ised ("laptops" → "laptop"). */
+export function queryTerms(query: string): string[] {
+  return query
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length > 1 && !STOP.has(w))
+    .map((w) => (w.length > 3 ? w.replace(/(ies)$/, 'y').replace(/(?<!s)s$/, '') : w));
+}
+
+/** How many query words appear in the clip's keywords (null when the library gives none). */
+export function keywordOverlap(keywords: string[] | undefined, query: string): number | null {
+  if (!keywords || keywords.length === 0) return null;
+  const words = new Set(keywords.flatMap((k) => queryTerms(k)));
+  return queryTerms(query).filter((t) => words.has(t)).length;
+}
+
 export function scoreCandidate(
   v: PexelsVideo,
   file: PexelsVideoFile,
   rank: number,
   perQuery: number,
-  ctx: {usage: Record<string, string>; today: string; cooldownDays: number; neededSec: number},
+  ctx: {usage: Record<string, string>; today: string; cooldownDays: number; neededSec: number; query?: string},
 ): {score: number; reasons: string[]} | null {
   const reasons: string[] = [];
   const lastUse = ctx.usage[String(v.id)];
   if (lastUse && daysBetween(lastUse, ctx.today) < ctx.cooldownDays) return null;
   if (v.duration < ctx.neededSec) return null;
   let score = 0;
+  // Libraries with loose search (Pixabay) return unrelated popular clips: a clip must share a query word with its tags.
+  const overlap = ctx.query ? keywordOverlap(v.keywords, ctx.query) : null;
+  if (overlap === 0) return null;
+  if (overlap) {
+    score += Math.min(24, overlap * 8);
+    reasons.push(`mots-clés : ${overlap}`);
+  }
   const portrait = file.height! > file.width!;
   if (portrait) {
     score += 30;
@@ -160,7 +185,7 @@ export async function searchFootage(runId: string, config: StudioConfig): Promis
           if (seen.has(v.id) && !pool.has(v.id)) return;
           const file = pickFile(v, config.footage);
           if (!file) return;
-          const scored = scoreCandidate(v, file, rank, config.footage.perQuery, {usage, today: plan.date, cooldownDays: config.footage.reuseCooldownDays, neededSec});
+          const scored = scoreCandidate(v, file, rank, config.footage.perQuery, {usage, today: plan.date, cooldownDays: config.footage.reuseCooldownDays, neededSec, query});
           if (!scored) return;
           const existing = pool.get(v.id);
           if (existing && existing.score >= scored.score) return;
