@@ -30,9 +30,10 @@ flowchart LR
    contrôleur automatique : aucune promesse de revenus, aucune fausse urgence, aucun superlatif,
    et chaque prix, chiffre ou fonctionnalité doit être prouvé par un extrait de la page officielle
    de Systeme.io copiée le jour même.
-3. **Enregistre la voix off** avec la voix française gratuite intégrée au studio (Kokoro, voix
-   « Siwis »), **approuvée par vous à l'écoute**, puis la fait retranscrire pour détecter chaque mot
-   mal prononcé. Les sous-titres sont calés au mot près.
+3. **Enregistre la voix off** avec « Claire », la voix française gratuite intégrée au studio
+   (Chatterbox), **choisie par vous à l'écoute** parmi six voix. Chaque phrase est réécoutée et refaite
+   si un mot manque, puis la voix complète est retranscrite pour détecter chaque mot mal prononcé.
+   Les sous-titres sont calés au mot près.
 4. **Cherche les séquences** sur Pixabay (vidéos réelles, licence commerciale), les présente sur des
    planches contact, choisit les plus justes et ne réutilise pas un plan avant 45 jours.
 5. **Monte la vidéo** : coupes sur le rythme de la voix, mouvements de caméra, étalonnage, grain,
@@ -69,14 +70,14 @@ problème bloquant relevé à la relecture.
 | Élément | Pourquoi | Coût |
 |---|---|---|
 | Lien affilié Systeme.io | Toutes les ventes passent par lui | 0 € |
-| Voix off intégrée (Kokoro-82M + faster-whisper) | Voix française et vérification de prononciation, calculées sur la machine de Claude ; usage commercial autorisé ; aucun compte, aucune clé, aucune limite | 0 € |
+| Voix off intégrée « Claire » (Chatterbox Multilingual + faster-whisper) | Voix française naturelle et vérification de prononciation, calculées sur la machine de Claude ; usage commercial autorisé ; aucun compte, aucune clé, aucune limite | 0 € |
 | Clé Pixabay | Séquences vidéo réelles (Pexels ne délivre plus de nouvelles clés ; une clé Pexels existante reste utilisable) | 0 € |
 | Metricool (déjà connecté) | Programmation TikTok / Instagram conforme | Votre plan gratuit actuel |
 | Claude (votre abonnement) | Écriture, relecture, orchestration | Déjà inclus |
 | Remotion, GitHub, polices, habillage sonore | Montage, hébergement des vidéos | 0 € |
 
-La voix s'installe toute seule (`bash scripts/setup-voice.sh`, environ 30 secondes, modèles vérifiés
-par empreinte). Azure Speech (niveau gratuit, compte Microsoft requis) et ElevenLabs (plans payants
+La voix s'installe toute seule (`bash scripts/setup-voice.sh`, quelques minutes la première fois, modèles
+vérifiés par empreinte) ; la voix « Siwis » (Kokoro-82M) reste installée en secours. Azure Speech (niveau gratuit, compte Microsoft requis) et ElevenLabs (plans payants
 seulement pour un usage commercial) restent possibles en option dans `config/studio.json`.
 
 Pas à pas complet : **[docs/mise-en-route.md](docs/mise-en-route.md)**.

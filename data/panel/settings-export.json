@@ -7,11 +7,11 @@
     "tiktok": {
       "enabled": true,
       "postTimes": [
-        "19:07"
+        "18:20"
       ]
     },
     "instagram": {
-      "enabled": false,
+      "enabled": true,
       "postTimes": [
         "12:23",
         "18:41"
@@ -79,6 +79,10 @@
   ],
   "approvedVoices": [
     {
+      "id": "claire",
+      "name": "Claire (voix naturelle)"
+    },
+    {
       "id": "ff_siwis",
       "name": "Siwis (voix gratuite)"
     }
@@ -89,14 +93,14 @@
   "setup": {
     "azure": "ok",
     "pexels": "missing",
-    "footage": "missing",
+    "footage": "ok",
     "footageProvider": "pixabay",
-    "checkedAt": "2026-11-06T13:16:19.293Z",
-    "voiceProvider": "local",
+    "checkedAt": "2026-11-06T13:27:46.696Z",
+    "voiceProvider": "chatterbox",
     "factsVerified": 48,
     "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T13:18:36.922Z",
+  "updatedAt": "2026-11-06T17:18:06.770Z",
   "updatedBy": "agent"
 }

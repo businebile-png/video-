@@ -11,13 +11,15 @@ encore le studio : la fusion est facultative (elle évite seulement ce détour).
 
 ## 2. Voix off : rien à faire
 
-La voix française gratuite est intégrée au studio : Kokoro-82M (licence Apache-2.0), voix « Siwis »,
-et faster-whisper (licence MIT) pour caler les sous-titres et vérifier la prononciation. Elle tourne sur
-la machine de Claude : aucun compte, aucune clé, aucune limite. Chaque production l'installe si besoin
-(`bash scripts/setup-voice.sh`, environ 30 secondes ; les modèles sont vérifiés par empreinte SHA-256).
+La voix du studio est « Claire » : Chatterbox Multilingual (Resemble AI, licence MIT), avec un timbre
+tiré de trois phrases de la base SIWIS (CC BY 4.0), et faster-whisper (licence MIT) pour réécouter
+chaque phrase, caler les sous-titres et vérifier la prononciation. Elle tourne sur la machine de Claude :
+aucun compte, aucune clé, aucune limite. Chaque production l'installe si besoin
+(`bash scripts/setup-voice.sh`, quelques minutes la première fois ; les modèles sont vérifiés par
+empreinte SHA-256). La voix « Siwis » (Kokoro-82M, Apache-2.0) reste installée en secours.
 
-Elle a été approuvée à l'écoute le 6 novembre 2026. Pour la réécouter ou l'écarter : panneau →
-**Réglages → Voix off**.
+Claire a été choisie à l'écoute le 6 novembre 2026, parmi six voix. Pour la réécouter ou l'écarter :
+panneau → **Réglages → Voix off**.
 
 > Option : Azure Speech (niveau gratuit F0, compte Microsoft avec carte pour vérifier l'identité) donne
 > d'autres voix. Il suffit alors de passer `voice.provider` et `voice.sttProvider` à `azure` dans
@@ -43,7 +45,8 @@ dans « Network secrets » (hôte `api.pexels.com`, en-tête `Authorization`, sa
 
 L'environnement « Studio vidéo businebile » autorise déjà : `pixabay.com`, `cdn.pixabay.com`, `api.pexels.com`,
 `videos.pexels.com`, `images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`,
-les hôtes de Hugging Face (téléchargement des modèles de voix) et les registres de paquets.
+les hôtes de Hugging Face (téléchargement des modèles de voix), `download.pytorch.org` et
+`download-r2.pytorch.org` (moteur de la voix Claire) et les registres de paquets.
 
 ## 5. Lien affilié
 
@@ -56,8 +59,9 @@ Il doit être de la forme `https://systeme.io/?sa=sa…`, **sans « www »** (Sy
 
 ## 6. Voix approuvée
 
-Déjà fait : la voix « Siwis » est approuvée. Si vous l'écartez dans **Réglages → Voix off**, la
-production suivante s'arrête et dépose de nouveaux essais à écouter.
+Déjà fait : la voix « Claire » est approuvée (et « Siwis » en secours). Si vous l'écartez dans
+**Réglages → Voix off**, la production suivante passe à la voix de secours approuvée, ou s'arrête et
+dépose de nouveaux essais à écouter s'il n'en reste aucune.
 
 ## 7. Instagram (facultatif)
 

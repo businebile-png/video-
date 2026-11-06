@@ -33,7 +33,7 @@ flowchart TB
 | `src/editorial` | Rotation des 14 catégories, anti-répétition (accroches, angles, directions artistiques), brief |
 | `src/facts` | Copies datées des pages officielles, vérification mot pour mot des faits |
 | `src/script` | Contrôle du script : promesses, urgence, superlatifs, concurrents, faits, durée, répétitions |
-| `src/voice`, `scripts/voice_local.py` | Voix locale gratuite (Kokoro) ou, en option, Azure Speech / ElevenLabs ; prononciation, mastering, minutage au mot et contrôle par retranscription (faster-whisper) |
+| `src/voice`, `scripts/voice_chatterbox.py`, `scripts/voice_local.py` | Voix « Claire » (Chatterbox, phrase par phrase avec réécoute et reprises), voix de secours Siwis (Kokoro) ou, en option, Azure Speech / ElevenLabs ; prononciation, mastering, minutage au mot et contrôle par retranscription (faster-whisper) |
 | `src/footage` | Recherche Pixabay (ou Pexels), notation des candidats, planches contact, téléchargement, licences |
 | `src/music`, `src/sfx` | Musique libre de droits avec preuve ; habillage sonore synthétisé (sans licence à gérer) |
 | `src/captures` | Captures réelles de Systeme.io et zones à mettre en valeur |
@@ -49,7 +49,7 @@ flowchart TB
 
 | Besoin | Choix | Pourquoi | Limites |
 |---|---|---|---|
-| Voix off | **Kokoro-82M** (Apache-2.0), voix française « Siwis », sur la machine de Claude ; **faster-whisper** (MIT) pour le minutage et la vérification | 0 €, aucun compte ni clé, usage commercial autorisé ; chaque mot est retranscrit et comparé au script (chiffres, homophones et respellings tolérés) | Une seule voix française de qualité correcte (moins expressive qu'une voix commerciale) ; modèle en pleine précision car la version allégée renvoie parfois du silence ; Azure F0 ou ElevenLabs en option |
+| Voix off | **Chatterbox Multilingual** (MIT), voix « Claire » (timbre : base SIWIS, CC BY 4.0), sur le processeur de la machine de Claude ; **faster-whisper** (MIT) pour réécouter chaque phrase, le minutage et la vérification ; **Kokoro-82M** (Apache-2.0), voix « Siwis », en secours | 0 €, aucun compte ni clé, usage commercial autorisé ; voix choisie à l'écoute par l'utilisateur ; une phrase qui s'écarte du texte est refaite (jusqu'à 4 prises) ; chaque mot est retranscrit et comparé au script (chiffres, homophones et respellings tolérés) | Génération lente sur processeur (quelques minutes par vidéo) ; débit naturel un peu lent, ramené vers 160 mots/min par un étirement qui garde la hauteur de la voix ; Azure F0 ou ElevenLabs en option |
 | Séquences | **Pixabay** (Pexels en option) | Vidéos réelles, usage commercial autorisé sans attribution, clé gratuite affichée immédiatement ; recherches mises en cache 24 h comme Pixabay le demande | Clé dans l’adresse de la requête : variable d’environnement `PIXABAY_API_KEY` ; moins de vertical natif (paysage 4K recadré accepté) ; Pexels a suspendu la création de clés |
 | Montage | **Remotion** | Animation image par image en code : typographie, sous-titres au mot, transitions sur mesure | Gratuit pour un particulier ou une entreprise de 3 personnes maximum |
 | Encodage, mesures | **FFmpeg** | Standard ; mesures EBU R128, détection d'images noires ou figées | — |

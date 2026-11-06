@@ -157,7 +157,10 @@ npm run studio -- media:push <runId>
 ## 9. Programmation automatique (seulement si l'utilisateur l'a choisie)
 
 Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » et le lien affilié
-vérifié : pour chaque entrée `posts` de `runs/<runId>/publish/package.json`, Metricool `createScheduledPost`
+vérifié. D'abord Metricool `getBrandSettings` (marque `7791839`) : un réseau activé dans le panneau mais non
+connecté à Metricool (pas de compte dans la réponse) est sauté et signalé dans le journal (« Instagram activé
+mais non connecté à Metricool »), jamais programmé à l'aveugle.
+Pour chaque autre entrée `posts` de `runs/<runId>/publish/package.json`, Metricool `createScheduledPost`
 (`blogId`, `date`, `info` = chaîne JSON). Enregistrer chaque réponse avec
 `npm run studio -- publish:record <runId> --network <réseau> --response <fichier.json>` et mettre à jour la fiche
 (`status: "programmee"`, `publications`). Sinon l'utilisateur programme d'un clic depuis le panneau.

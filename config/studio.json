@@ -13,14 +13,14 @@
     "tiktok": {
       "enabled": true,
       "postTimes": [
-        "19:07"
+        "18:20"
       ],
       "privacy": "PUBLIC_TO_EVERYONE",
       "aiLabel": true,
       "commercialContentThirdParty": true
     },
     "instagram": {
-      "enabled": false,
+      "enabled": true,
       "postTimes": [
         "12:23",
         "18:41"

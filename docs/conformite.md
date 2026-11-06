@@ -36,11 +36,14 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
 - **Pexels** (si une clé existe) : mêmes règles. Chaque séquence utilisée est enregistrée (source, auteur,
   page, date) et affichée dans le panneau.
 - **Musique** : uniquement une piste avec preuve de licence (bibliothèque), sinon pas de musique.
-- **Voix de synthèse** : Kokoro-82M (licence Apache-2.0, usage commercial autorisé), voix « ff_siwis »
-  entraînée sur la base SIWIS (CC BY 4.0, enregistrée par une comédienne professionnelle ; crédit :
-  « SIWIS French Speech Synthesis Database », Honnet et al., Idiap / Université de Genève / Université
-  d'Édimbourg). Voix déclarée comme générée par IA sur TikTok et Instagram. Aucune imitation de la voix
-  d'une personne réelle. En option : Azure Speech (usage commercial autorisé) ; le plan gratuit
+- **Voix de synthèse** : « Claire », produite par Chatterbox Multilingual (Resemble AI, licence MIT, usage
+  commercial autorisé). Son timbre vient de trois phrases de la base SIWIS (CC BY 4.0 : usage commercial et
+  adaptation autorisés avec crédit ; enregistrée pour la synthèse vocale par une comédienne professionnelle
+  anonyme ; crédit : « SIWIS French Speech Synthesis Database », Honnet et al., Idiap / Université de Genève
+  / Université d'Édimbourg). L'audio porte le tatouage inaudible Perth de Resemble AI, qui le signale comme
+  généré par IA. Voix de secours : Kokoro-82M (Apache-2.0), voix « ff_siwis » entraînée sur la même base.
+  Voix déclarée comme générée par IA sur TikTok et Instagram. Aucune imitation d'une personnalité ni d'une
+  personne identifiable. En option : Azure Speech (usage commercial autorisé) ; le plan gratuit
   d'ElevenLabs n'autorise pas l'usage commercial.
 - **Polices** : licence SIL Open Font (Inter, Inter Tight, Manrope, Fraunces, Instrument Serif, Space Grotesk).
 - **Habillage sonore** : synthétisé par le studio.
