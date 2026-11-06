@@ -5,6 +5,7 @@ import {exists, readJson, readValidated, writeJson} from '../core/fsx.js';
 import {ffmpeg, ffprobe, parseRate, run} from '../core/exec.js';
 import {measureLoudness, silences} from '../core/audio.js';
 import {log} from '../core/log.js';
+import {MIN_FINAL_KBPS} from './limits.js';
 import {ScriptSchema} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
@@ -102,7 +103,7 @@ export async function technicalQc(runId: string, config: StudioConfig): Promise<
   add({id: 'codec', label: 'Codec vidéo H.264 / yuv420p', ok: v?.codec_name === 'h264' && v?.pix_fmt === 'yuv420p', value: `${v?.codec_name}/${v?.pix_fmt}`, expected: 'h264/yuv420p', impact: 'gate'});
   add({id: 'audio-codec', label: 'Audio AAC 48 kHz', ok: a?.codec_name === 'aac' && a?.sample_rate === '48000', value: `${a?.codec_name}/${a?.sample_rate}`, expected: 'aac/48000', impact: 'gate'});
   const bitrate = Number(probe.format.bit_rate ?? 0) / 1000;
-  add({id: 'bitrate', label: 'Débit vidéo suffisant', ok: bitrate >= 4500, value: `${Math.round(bitrate)} kb/s`, expected: '≥ 4 500 kb/s', impact: 'visual'});
+  add({id: 'bitrate', label: 'Débit vidéo suffisant', ok: bitrate >= MIN_FINAL_KBPS, value: `${Math.round(bitrate)} kb/s`, expected: `≥ ${MIN_FINAL_KBPS.toLocaleString('fr-FR')} kb/s`, impact: 'visual'});
 
   const loud = await measureLoudness(p.final);
   const lufsOk = loud.integratedLufs !== null && Math.abs(loud.integratedLufs - config.qc.loudnessTargetLufs) <= config.qc.loudnessTolerance;

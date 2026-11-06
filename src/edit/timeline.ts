@@ -499,15 +499,20 @@ export function buildTimeline(input: BuildInput): Timeline {
       }
     }
 
-    if (scene.headline && scene.visual.kind !== 'graphic' && scene.phase !== 'cta') {
-      headlines.push({
-        id: `headline-${scene.id}`,
-        sceneId: scene.id,
-        from: sceneFrom + 4,
-        duration: Math.max(24, sceneTo - sceneFrom - 6),
-        text: scene.headline,
-        emphasis: scene.emphasis,
-      });
+    if (scene.headline && scene.phase !== 'cta') {
+      // Over a graphic scene the headline only fills the wait before the card, which then answers it.
+      const card = scene.visual.kind === 'graphic' ? graphics.find((g) => g.sceneId === scene.id) : undefined;
+      const untilCard = card ? card.from + (card.revealAt[0] ?? 0) + 6 - (sceneFrom + 4) : 0;
+      if (scene.visual.kind !== 'graphic' || untilCard >= 24) {
+        headlines.push({
+          id: `headline-${scene.id}`,
+          sceneId: scene.id,
+          from: sceneFrom + 4,
+          duration: card ? untilCard : Math.max(24, sceneTo - sceneFrom - 6),
+          text: scene.headline,
+          emphasis: scene.emphasis,
+        });
+      }
     }
   }
 

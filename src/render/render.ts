@@ -6,7 +6,8 @@ import {bundle} from '@remotion/bundler';
 import {renderMedia, selectComposition} from '@remotion/renderer';
 import {PATHS, runPaths} from '../core/paths.js';
 import {readJson} from '../core/fsx.js';
-import {ffmpeg} from '../core/exec.js';
+import {ffmpeg, ffprobe} from '../core/exec.js';
+import {MIN_FINAL_KBPS} from '../qc/limits.js';
 import {loudnormArgs} from '../core/audio.js';
 import {log} from '../core/log.js';
 import type {StudioConfig} from '../schemas/config.js';
@@ -34,13 +35,18 @@ export interface RenderOutputs {
   renderSeconds: number;
 }
 
-export async function renderStep(runId: string, config: StudioConfig): Promise<RenderOutputs> {
+export async function renderStep(runId: string, config: StudioConfig, opts: {encodeOnly?: boolean} = {}): Promise<RenderOutputs> {
   const p = runPaths(runId);
   const timeline = await readJson<Timeline>(p.timeline);
   if (timeline.shots.some((s) => s.kind === 'footage' && !s.src)) throw new Error('Montage non conformé : lancer l’étape « conform » avant le rendu.');
   await fsp.mkdir(p.renderDir, {recursive: true});
   const started = Date.now();
   const bundleDir = path.join(p.renderDir, 'bundle');
+  if (opts.encodeOnly) {
+    // Re-encode the delivered files from the existing intermediate render (no new frames).
+    if (!fs.existsSync(p.rawRender)) throw new Error('Rendu intermédiaire absent : lancer « render » sans --encode-only.');
+    return finishRender(p, config, timeline, started);
+  }
   await fsp.rm(bundleDir, {recursive: true, force: true});
   log.info('Préparation du moteur de rendu…');
   const serveUrl = await bundle({entryPoint: PATHS.remotionEntry, publicDir: p.publicDir, outDir: bundleDir});
@@ -72,44 +78,59 @@ export async function renderStep(runId: string, config: StudioConfig): Promise<R
       }
     },
   });
+  await fsp.rm(bundleDir, {recursive: true, force: true});
+  return finishRender(p, config, timeline, started);
+}
+
+/** Delivered files from the intermediate render: final MP4 (loudness, colour, bitrate floor), cover, light preview. */
+async function finishRender(p: ReturnType<typeof runPaths>, config: StudioConfig, timeline: Timeline, started: number): Promise<RenderOutputs> {
   // Final loudness pass: −14 LUFS integrated, −1 dBTP (social platforms' reference level).
   const norm = await loudnormArgs(p.rawRender, config.qc.loudnessTargetLufs, -1.2);
   // Final encode: limited-range BT.709 yuv420p (what TikTok/Instagram expect), H.264 High.
-  await ffmpeg([
-    '-i',
-    p.rawRender,
-    '-vf',
-    'scale=in_range=full:out_range=tv:flags=lanczos+accurate_rnd+full_chroma_int,format=yuv420p',
-    '-c:v',
-    'libx264',
-    '-preset',
-    config.render.x264Preset,
-    '-crf',
-    String(config.render.crf),
-    '-profile:v',
-    'high',
-    '-level:v',
-    '4.2',
-    '-colorspace',
-    'bt709',
-    '-color_primaries',
-    'bt709',
-    '-color_trc',
-    'bt709',
-    '-color_range',
-    'tv',
-    '-af',
-    norm,
-    '-ar',
-    '48000',
-    '-c:a',
-    'aac',
-    '-b:a',
-    '256k',
-    '-movflags',
-    '+faststart',
-    p.final,
-  ]);
+  // Dark or soft footage compresses so well that the CRF alone can land under the bitrate floor
+  // the platforms' own re-encode needs: encode finer until it is met.
+  let crf = config.render.crf;
+  for (;;) {
+    await ffmpeg([
+      '-i',
+      p.rawRender,
+      '-vf',
+      'scale=in_range=full:out_range=tv:flags=lanczos+accurate_rnd+full_chroma_int,format=yuv420p',
+      '-c:v',
+      'libx264',
+      '-preset',
+      config.render.x264Preset,
+      '-crf',
+      String(crf),
+      '-profile:v',
+      'high',
+      '-level:v',
+      '4.2',
+      '-colorspace',
+      'bt709',
+      '-color_primaries',
+      'bt709',
+      '-color_trc',
+      'bt709',
+      '-color_range',
+      'tv',
+      '-af',
+      norm,
+      '-ar',
+      '48000',
+      '-c:a',
+      'aac',
+      '-b:a',
+      '256k',
+      '-movflags',
+      '+faststart',
+      p.final,
+    ]);
+    const kbps = Number((await ffprobe(p.final)).format.bit_rate ?? 0) / 1000;
+    if (kbps >= MIN_FINAL_KBPS || crf <= 11) break;
+    crf -= 2;
+    log.info(`Débit ${Math.round(kbps)} kb/s sous ${MIN_FINAL_KBPS} kb/s (images sombres ou douces) : nouvel encodage plus fin (CRF ${crf}).`);
+  }
   const coverAt = Math.min(1.2, timeline.durationInFrames / timeline.fps / 3);
   await ffmpeg(['-ss', coverAt.toFixed(2), '-i', p.final, '-frames:v', '1', '-q:v', '2', p.cover]);
   const preview = path.join(p.renderDir, 'preview.mp4');
@@ -142,6 +163,5 @@ export async function renderStep(runId: string, config: StudioConfig): Promise<R
   const previewBytes = (await fsp.stat(preview)).size;
   const renderSeconds = Math.round((Date.now() - started) / 1000);
   log.ok(`Vidéo rendue en ${renderSeconds} s → ${path.relative(PATHS.root, p.final)} (aperçu ${(previewBytes / 1e6).toFixed(1)} Mo)`);
-  await fsp.rm(bundleDir, {recursive: true, force: true});
   return {final: p.final, cover: p.cover, preview, previewBytes, renderSeconds};
 }

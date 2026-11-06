@@ -58,7 +58,7 @@ Production (dans l'ordre)
   footage:fetch <runId>        Téléchargement des séquences choisies + licences
   music <runId>                Musique sous licence (ou générée, ou aucune)
   edit <runId>                 Construit le montage et prépare les plans
-  render <runId>               Rendu final 1080×1920 + aperçu + vignette
+  render <runId> [--encode-only]  Rendu final 1080×1920 + aperçu + vignette (--encode-only : réencode depuis le rendu intermédiaire)
   qc <runId>                   Contrôle technique + images pour la relecture
   score <runId>                Note /100 (après qc/review.json écrit par le relecteur indépendant)
   produce <runId> [--force]    Enchaîne voice → footage (auto) → music → edit → render → qc (reprend où il s’était arrêté)
@@ -212,6 +212,7 @@ async function main(): Promise<void> {
       online: {type: 'boolean'},
       force: {type: 'boolean'},
       only: {type: 'string'},
+      'encode-only': {type: 'boolean'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -474,7 +475,7 @@ async function main(): Promise<void> {
     case 'render': {
       const id = runId();
       const config = await loadConfig();
-      const out = await step(id, 'render', () => renderStep(id, config), (r) => `${r.renderSeconds} s`);
+      const out = await step(id, 'render', () => renderStep(id, config, {encodeOnly: values['encode-only'] === true}), (r) => `${r.renderSeconds} s`);
       const timeline = await readJson<{metrics: {durationSec: number}; artDirection: {id: string}}>(runPaths(id).timeline);
       await upsertHistory({runId: id, status: 'rendered', durationSec: timeline.metrics.durationSec, artDirection: timeline.artDirection.id});
       console.log(`Vidéo : ${path.relative(PATHS.root, out.final)}\nAperçu : ${path.relative(PATHS.root, out.preview)}`);
