@@ -87,10 +87,10 @@
     "pexels": "missing",
     "checkedAt": "2026-11-06T11:30:19.960Z",
     "voiceProvider": "local",
-    "factsVerified": 23,
-    "pricesVerified": false,
+    "factsVerified": 48,
+    "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T11:31:17.691Z",
+  "updatedAt": "2026-11-06T11:42:04.178Z",
   "updatedBy": "agent"
 }

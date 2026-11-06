@@ -1,4 +1,5 @@
 import fsp from 'node:fs/promises';
+import {createRequire} from 'node:module';
 import path from 'node:path';
 import {PATHS} from '../core/paths.js';
 import {exists, readValidated, sha256, writeJson, writeText} from '../core/fsx.js';
@@ -81,7 +82,78 @@ export function snapshotFiles(sourceId: string) {
     text: path.join(PATHS.factsSnapshots, `${sourceId}.txt`),
     html: path.join(PATHS.factsSnapshots, `${sourceId}.html`),
     meta: path.join(PATHS.factsSnapshots, `${sourceId}.meta.json`),
+    screenshot: path.join(PATHS.factsSnapshots, `${sourceId}.png`),
   };
+}
+
+interface Rendered {
+  html: string;
+  text: string;
+  finalUrl: string;
+  status: number;
+}
+
+/** Minimal surface of Playwright used here (it is preinstalled in the cloud image, not a project dependency). */
+interface PwPage {
+  goto(url: string, o: object): Promise<{status(): number} | null>;
+  waitForTimeout(ms: number): Promise<void>;
+  locator(sel: string): {nth(i: number): {boundingBox(): Promise<{x: number; y: number; width: number; height: number} | null>}; count(): Promise<number>};
+  mouse: {click(x: number, y: number): Promise<void>};
+  evaluate<T>(fn: () => T): Promise<T>;
+  content(): Promise<string>;
+  url(): string;
+  screenshot(o: object): Promise<unknown>;
+}
+
+/** Load a page in headless Chromium (through the session proxy) and read what a visitor sees. */
+async function renderPage(src: Source): Promise<Rendered> {
+  const render = src.render!;
+  const require = createRequire(import.meta.url);
+  let chromium: {launch(o: object): Promise<{newPage(o: object): Promise<PwPage>; close(): Promise<void>}>};
+  try {
+    chromium = (require('playwright') as {chromium: typeof chromium}).chromium;
+  } catch {
+    throw new Error('navigateur Playwright introuvable : page dessinée en JavaScript non lisible ici');
+  }
+  const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+  const browser = await chromium.launch(proxy ? {proxy: {server: proxy}} : {});
+  try {
+    const page = await browser.newPage({locale: 'fr-FR', viewport: {width: 1280, height: 1000}});
+    const res = await page.goto(src.url, {waitUntil: 'networkidle', timeout: 90_000}).catch(() => null);
+    await page.waitForTimeout(render.waitMs);
+    if (render.clickBetween) {
+      const els = page.locator(`${render.clickBetween} >> visible=true`);
+      if ((await els.count()) < 2) throw new Error(`élément « ${render.clickBetween} » introuvable`);
+      const a = await els.nth(0).boundingBox();
+      const b = await els.nth(1).boundingBox();
+      if (!a || !b) throw new Error(`élément « ${render.clickBetween} » non affiché`);
+      await page.mouse.click((a.x + a.width + b.x) / 2, a.y + a.height / 2);
+      await page.waitForTimeout(2500);
+    }
+    const text = (await page.evaluate(() => document.body.innerText))
+      .replace(/[ \t\u00a0\u202f]+/g, ' ')
+      .replace(/\s*\n\s*/g, '\n')
+      .trim();
+    if (render.expectText && !evidenceForm(text).includes(evidenceForm(render.expectText))) {
+      throw new Error(`la page n'affiche pas « ${render.expectText} » : état inattendu, copie non enregistrée`);
+    }
+    await page.screenshot({path: snapshotFiles(src.id).screenshot, fullPage: true});
+    return {html: await page.content(), text, finalUrl: page.url(), status: res?.status() ?? 0};
+  } finally {
+    await browser.close();
+  }
+}
+
+async function fetchPage(src: Source): Promise<Rendered> {
+  const res = await http(src.url, {
+    headers: {'user-agent': 'Mozilla/5.0 (compatible; studio-pub-verification/1.0)', 'accept-language': 'fr-FR,fr;q=0.9'},
+    redirect: 'follow',
+    timeoutMs: 45_000,
+    retries: 2,
+  });
+  const html = await res.text();
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return {html, text: htmlToText(html), finalUrl: res.url || src.url, status: res.status};
 }
 
 /** Download the official pages and store dated text snapshots (the only accepted evidence). */
@@ -90,30 +162,23 @@ export async function refreshSnapshots(onlyIds?: string[]): Promise<SnapshotMeta
   const metas: SnapshotMeta[] = [];
   for (const src of sources) {
     try {
-      const res = await http(src.url, {
-        headers: {'user-agent': 'Mozilla/5.0 (compatible; studio-pub-verification/1.0)', 'accept-language': 'fr-FR,fr;q=0.9'},
-        redirect: 'follow',
-        timeoutMs: 45_000,
-        retries: 2,
-      });
-      const html = await res.text();
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = htmlToText(html);
+      const {html, text, finalUrl, status} = src.render ? await renderPage(src) : await fetchPage(src);
       const files = snapshotFiles(src.id);
       await writeText(files.html, html);
       await writeText(files.text, text);
       const meta: SnapshotMeta = {
         sourceId: src.id,
         url: src.url,
-        finalUrl: res.url || src.url,
+        finalUrl,
         fetchedAt: new Date().toISOString(),
-        status: res.status,
+        status,
         sha256: sha256(html),
         chars: text.length,
+        method: src.render ? 'browser' : 'http',
       };
       await writeJson(files.meta, meta);
       metas.push(meta);
-      log.ok(`Page officielle enregistrée : ${src.url} (${text.length} caractères)`);
+      log.ok(`Page officielle enregistrée : ${src.url}${src.render ? ' (lue dans un navigateur)' : ''} (${text.length} caractères)`);
     } catch (err) {
       log.warn(`Impossible de récupérer ${src.url} : ${(err as Error).message}`);
     }

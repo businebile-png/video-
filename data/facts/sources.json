@@ -1,6 +1,7 @@
 {
   "sources": [
-    {"id": "pricing", "url": "https://systeme.io/fr/pricing", "kind": "pricing", "note": "Grille tarifaire officielle (plans, limites, prix)."},
+    {"id": "pricing", "url": "https://systeme.io/fr/pricing", "kind": "pricing", "note": "Grille tarifaire officielle, facturation mensuelle (affichage par défaut) : plans, limites, prix. Prix dessinés en JavaScript : page lue dans un navigateur.", "render": {"waitMs": 3000, "expectText": "Choisissez votre plan"}},
+    {"id": "pricing-annual", "url": "https://systeme.io/fr/pricing", "kind": "pricing", "note": "Même page, interrupteur basculé sur « Facturation annuelle » (prix par an).", "render": {"waitMs": 3000, "clickBetween": ".price-period-switcher-label", "expectText": "2 mois gratuits"}},
     {"id": "home", "url": "https://systeme.io/fr", "kind": "features", "note": "Page d'accueil : liste des fonctionnalités."},
     {"id": "tutorial", "url": "https://systeme.io/fr/tutorial", "kind": "features", "note": "Formation officielle « Maîtriser systeme.io » : aperçu des fonctionnalités."},
     {"id": "help-affiliate-link", "url": "https://help.systeme.io/article/162", "kind": "affiliate", "note": "Aide officielle : fonctionnement du programme d'affiliation et format du lien."}

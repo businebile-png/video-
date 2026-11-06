@@ -2,8 +2,9 @@
   "sourceId": "help-affiliate-link",
   "url": "https://help.systeme.io/article/162",
   "finalUrl": "https://help.systeme.io/article/162",
-  "fetchedAt": "2026-11-06T07:39:30.335Z",
+  "fetchedAt": "2026-11-06T11:40:46.253Z",
   "status": 200,
-  "sha256": "f4c6113c1f661175f68cc24bc85c73da417a344829424d700edcb44d6db9185b",
-  "chars": 10355
+  "sha256": "5cf339792c0a48ab4774664b7c5e61cd4817b7717479d1b6af4bc37ef9a9c3c2",
+  "chars": 10355,
+  "method": "http"
 }

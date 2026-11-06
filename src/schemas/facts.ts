@@ -31,6 +31,16 @@ export const SourceSchema = z.object({
   url: z.string().url(),
   kind: z.enum(['pricing', 'features', 'help', 'legal', 'affiliate']),
   note: z.string().optional(),
+  /** Pages whose content is drawn by JavaScript (prices) are read in a real browser. */
+  render: z
+    .object({
+      waitMs: z.number().int().min(0).max(20000).default(3000),
+      /** Click halfway between the first two visible matches (a switch drawn between its two labels). */
+      clickBetween: z.string().optional(),
+      /** Text that must be on the page once loaded (and clicked): proves the page is in the expected state. */
+      expectText: z.string().optional(),
+    })
+    .optional(),
 });
 
 export const SourcesSchema = z.object({sources: z.array(SourceSchema).min(1)});
@@ -44,5 +54,6 @@ export const SnapshotMetaSchema = z.object({
   status: z.number(),
   sha256: z.string(),
   chars: z.number(),
+  method: z.enum(['http', 'browser']).default('http'),
 });
 export type SnapshotMeta = z.infer<typeof SnapshotMetaSchema>;

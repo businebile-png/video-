@@ -11,3 +11,4 @@ data/facts/snapshots/*.html
 models/
 data/metrics.json
 data/panel/inbox.json
+data/facts/snapshots/*.png
