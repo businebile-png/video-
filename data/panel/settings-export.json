@@ -1,5 +1,5 @@
 {
-  "affiliateUrl": "",
+  "affiliateUrl": "https://systeme.io/fr?sa=sa0284377331559446b0fd317c047c9b41281fb597",
   "bioLinkCheckedOn": null,
   "approval": "panel",
   "delivery": "auto",
@@ -89,12 +89,14 @@
   "setup": {
     "azure": "ok",
     "pexels": "missing",
-    "checkedAt": "2026-11-06T11:30:19.960Z",
+    "footage": "missing",
+    "footageProvider": "pixabay",
+    "checkedAt": "2026-11-06T13:16:19.293Z",
     "voiceProvider": "local",
     "factsVerified": 48,
     "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T12:48:41.739Z",
+  "updatedAt": "2026-11-06T13:18:36.922Z",
   "updatedBy": "agent"
 }

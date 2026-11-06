@@ -76,7 +76,9 @@ describe('montage', () => {
 
 describe('note sur 100', () => {
   it('ne publie jamais si un verrou échoue, quelle que soit la note', async () => {
-    const config = await loadConfig();
+    // Independent of the real settings: start from a studio without affiliate link.
+    const real = await loadConfig();
+    const config = {...real, affiliate: {...real.affiliate, url: ''}};
     const words = fakeWords();
     const timeline = buildTimeline({runId: 'r', script: sampleScript(), words, voiceDurationSec: 25, voiceSrc: 'voice.wav', clipsByScene: clips(), captures: [], music: null, ad: ART_DIRECTIONS[0]!, config, facts: [], seed: 1});
     const review = {

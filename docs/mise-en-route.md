@@ -25,17 +25,24 @@ Elle a été approuvée à l'écoute le 6 novembre 2026. Pour la réécouter ou 
 > `francecentral.tts.speech.microsoft.com` et `francecentral.api.cognitive.microsoft.com`, en-tête
 > `Ocp-Apim-Subscription-Key`, sans préfixe).
 
-## 3. Clé Pexels (séquences vidéo)
+## 3. Clé Pixabay (séquences vidéo)
 
-1. Créez un compte sur pexels.com puis une clé sur https://www.pexels.com/api/ (gratuit).
-2. Enregistrez-la pour l'hôte `api.pexels.com`, en-tête `Authorization`, **sans préfixe** (Pexels
-   refuse « Bearer »). Si le formulaire impose un préfixe, ajoutez plutôt une variable
-   d'environnement `PEXELS_API_KEY`.
+Pexels a suspendu la création de nouvelles clés : le studio utilise Pixabay (vraies vidéos, usage commercial
+autorisé sans citer l'auteur, gratuit).
+
+1. Créez un compte sur pixabay.com (connexion Google possible).
+2. Ouvrez https://pixabay.com/api/docs/ : votre clé s'affiche dans la section « Parameters », ligne `key`.
+3. Environnement « Studio vidéo businebile » → Modifier → **Environment variables** → ajoutez
+   `PIXABAY_API_KEY=` suivi de la clé, puis enregistrez. Pixabay ne lit la clé que dans l'adresse de la
+   requête : elle ne peut pas passer par « Network secrets ». La variable est lue au démarrage de chaque session.
+
+Une clé Pexels déjà obtenue reste utilisable : `footage.provider` à `pexels` dans `config/studio.json`, clé
+dans « Network secrets » (hôte `api.pexels.com`, en-tête `Authorization`, sans préfixe).
 
 ## 4. Accès réseau de l'environnement
 
-L'environnement « Studio vidéo businebile » autorise déjà : `api.pexels.com`, `videos.pexels.com`,
-`images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`,
+L'environnement « Studio vidéo businebile » autorise déjà : `pixabay.com`, `cdn.pixabay.com`, `api.pexels.com`,
+`videos.pexels.com`, `images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`,
 les hôtes de Hugging Face (téléchargement des modèles de voix) et les registres de paquets.
 
 ## 5. Lien affilié

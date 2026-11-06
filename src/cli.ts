@@ -51,7 +51,7 @@ Production (dans l'ordre)
   new [--date AAAA-MM-JJ] [--category <id>] [--correction-of <runId> --notes <texte>]
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
-  footage:search <runId>       Recherche Pexels + planches contact par scène
+  footage:search <runId>       Recherche de séquences (Pixabay ou Pexels) + planches contact par scène
   footage:auto <runId>         Sélection automatique (sinon écrire footage/selection.json)
   footage:fetch <runId>        Téléchargement des séquences choisies + licences
   music <runId>                Musique sous licence (ou générée, ou aucune)
@@ -85,8 +85,10 @@ function need<T>(v: T | undefined, msg: string): T {
 
 type KeyState = 'ok' | 'missing' | 'error';
 
-/** Online check of the free API keys (Azure Speech, Pexels): what the panel's "Démarrage" tab shows. */
-async function probeKeys(config: Awaited<ReturnType<typeof loadConfig>>): Promise<{azure: KeyState; pexels: KeyState; checkedAt: string}> {
+/** Online check of the free API keys (footage library, Azure if chosen): what the panel's "Démarrage" tab shows. */
+async function probeKeys(
+  config: Awaited<ReturnType<typeof loadConfig>>,
+): Promise<{azure: KeyState; pexels: KeyState; footage: KeyState; footageProvider: string; checkedAt: string}> {
   const probe = async (url: string, headers: Record<string, string> = {}): Promise<KeyState> => {
     try {
       const res = await http(url, {headers, timeoutMs: 20_000, retries: 0});
@@ -99,9 +101,15 @@ async function probeKeys(config: Awaited<ReturnType<typeof loadConfig>>): Promis
   };
   const azureHeaders: Record<string, string> = process.env.AZURE_SPEECH_KEY ? {'ocp-apim-subscription-key': process.env.AZURE_SPEECH_KEY} : {};
   const pexelsHeaders: Record<string, string> = process.env.PEXELS_API_KEY ? {authorization: process.env.PEXELS_API_KEY} : {};
+  const pexels = config.footage.provider === 'pexels' ? await probe('https://api.pexels.com/videos/search?query=office&per_page=1', pexelsHeaders) : ('missing' as KeyState);
+  const pixabayKey = process.env.PIXABAY_API_KEY?.trim();
+  const pixabay: KeyState =
+    config.footage.provider !== 'pixabay' ? 'missing' : pixabayKey ? await probe(`https://pixabay.com/api/videos/?${new URLSearchParams({key: pixabayKey, q: 'office', per_page: '3'})}`) : 'missing';
   const result = {
     azure: config.voice.provider === 'azure' ? await probe(`https://${config.voice.azure.region}.tts.speech.microsoft.com/cognitiveservices/voices/list`, azureHeaders) : ('ok' as KeyState),
-    pexels: await probe('https://api.pexels.com/videos/search?query=office&per_page=1', pexelsHeaders),
+    pexels,
+    footage: config.footage.provider === 'pixabay' ? pixabay : pexels,
+    footageProvider: config.footage.provider,
     checkedAt: new Date().toISOString(),
   };
   await writeJson(path.join(PATHS.panelInbox, 'setup.json'), result);
@@ -113,7 +121,8 @@ async function doctor(online = false): Promise<boolean> {
   if (online) {
     const keys = await probeKeys(config);
     if (config.voice.provider === 'azure') (keys.azure === 'ok' ? log.ok : log.error)(`clé de voix Azure Speech : ${keys.azure === 'ok' ? 'valide' : keys.azure === 'missing' ? 'absente ou refusée' : 'erreur du service'}`);
-    (keys.pexels === 'ok' ? log.ok : log.error)(`clé Pexels : ${keys.pexels === 'ok' ? 'valide' : keys.pexels === 'missing' ? 'absente ou refusée' : 'erreur du service'}`);
+    const lib = config.footage.provider === 'pixabay' ? 'Pixabay' : 'Pexels';
+    (keys.footage === 'ok' ? log.ok : log.error)(`clé ${lib} : ${keys.footage === 'ok' ? 'valide' : keys.footage === 'missing' ? 'absente ou refusée' : 'erreur du service'}`);
   }
   let ok = true;
   const line = (good: boolean, label: string, hint?: string, blocking = true) => {
@@ -134,7 +143,9 @@ async function doctor(online = false): Promise<boolean> {
   line(captures.length > 0, `captures réelles de Systeme.io : ${captures.length}`, 'sans captures, pas de démonstration à l’écran (voir assets/systeme/LISEZMOI.md)', false);
   const tracks = await loadTracks();
   line(tracks.length > 0 || config.music.mode !== 'library', `musiques sous licence : ${tracks.length}`, 'ajouter des pistes avec preuve de licence (music:add) ou activer la génération', false);
-  line(true, `clé Pexels : ${process.env.PEXELS_API_KEY ? 'variable PEXELS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
+  if (config.footage.provider === 'pixabay') {
+    line(Boolean(process.env.PIXABAY_API_KEY?.trim()), 'clé Pixabay (variable PIXABAY_API_KEY)', 'créer la clé gratuite sur https://pixabay.com/api/docs/ puis l’ajouter aux variables de l’environnement (onglet Démarrage du panneau)');
+  } else line(true, `clé Pexels : ${process.env.PEXELS_API_KEY ? 'variable PEXELS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
   if (config.voice.provider === 'local') {
     const missing = localVoiceProblems(config.voice.local);
     line(missing.length === 0, 'voix locale gratuite installée (Kokoro + transcription)', `manque : ${missing.join(', ')} — lancer « bash scripts/setup-voice.sh »`);

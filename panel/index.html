@@ -482,7 +482,7 @@ function sourcesBlock(v) {
   if ((v.facts || []).length) inner.append(h('div', null, h('div', {class: 'lbl', text: 'Faits cités (vérifiés sur systeme.io)'}), h('ul', null, ...(v.facts || []).map((f) => h('li', null, f.statement, h('span', {class: 'muted', text: ' — vérifié le ' + fmtDate(f.verifiedAt)}))))));
   else inner.append(h('div', {class: 'muted', text: 'Aucun chiffre ni tarif cité dans cette vidéo.'}));
   const fo = (v.credits && v.credits.footage) || [];
-  inner.append(h('div', null, h('div', {class: 'lbl', text: `Séquences Pexels (${fo.length})`}), h('div', null, ...fo.map((c, i) => h('span', null, i ? ' · ' : '', h('a', {href: c.pageUrl, target: '_blank', rel: 'noopener', text: c.author}))))));
+  inner.append(h('div', null, h('div', {class: 'lbl', text: `Séquences vidéo (${fo.length})`}), h('div', null, ...fo.map((c, i) => h('span', null, i ? ' · ' : '', h('a', {href: c.pageUrl, target: '_blank', rel: 'noopener', text: c.source ? `${c.author} (${c.source})` : c.author}))))));
   const mu = v.credits && v.credits.music;
   inner.append(h('div', null, h('div', {class: 'lbl', text: 'Musique'}), mu ? `${mu.title} — ${mu.source} (${mu.license})` : 'Aucune musique'));
   d.append(inner); return d;
@@ -924,7 +924,7 @@ function renderSettings() {
   }
 
   const prod = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Production quotidienne'}));
-  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois la clé Pexels et le lien affilié en place.'}));
+  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois la clé de séquences vidéo (Pixabay) et le lien affilié en place.'}));
   else {
     const t = S.ui.trigger;
     prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${t.next ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
@@ -961,16 +961,23 @@ function setupSteps() {
   const linkOk = linkProblems(st.affiliateUrl || '').length === 0;
   const t = S.ui.trigger;
   const azureNeeded = setup.voiceProvider === 'azure';
-  const keysOk = setup.pexels === 'ok' && (!azureNeeded || setup.azure === 'ok');
+  const pexelsMode = setup.footageProvider === 'pexels';
+  const footageOk = (setup.footage || (pexelsMode ? setup.pexels : null)) === 'ok';
+  const keysOk = footageOk && (!azureNeeded || setup.azure === 'ok');
   return [
     ...(azureNeeded ? [{key: 'azure', state: setup.azure === 'ok' ? 'done' : 'todo', title: 'Clé de voix Azure Speech (option choisie)',
       why: 'Vous avez choisi la voix Azure à la place de la voix gratuite intégrée : elle demande une clé.',
       how: ['Portail Azure : Créer une ressource → « Speech » → région France Central → niveau « Free F0 ».', 'Dans la ressource : « Clés et point de terminaison » → copiez la Clé 1.', 'Dites « c’est fait » à Claude dans la session : il ouvre un formulaire sécurisé pour la clé. Ne la collez jamais dans une conversation.'],
       links: [['Ouvrir le portail Azure', 'https://portal.azure.com/']]}] : []),
-    {key: 'pexels', state: setup.pexels === 'ok' ? 'done' : 'todo', title: 'Clé Pexels gratuite (séquences vidéo réelles)',
-      why: 'Les plans filmés de vos vidéos viennent de Pexels : vidéos réelles, usage commercial autorisé, gratuit.',
-      how: ['Créez un compte sur pexels.com, puis demandez une clé API (instantané).', 'Dans Claude Code : environnement « Studio vidéo businebile » → Modifier → Network secrets → ajoutez l’hôte api.pexels.com, en-tête Authorization, la clé sans préfixe (Pexels refuse « Bearer »).'],
-      links: [['Obtenir une clé Pexels', 'https://www.pexels.com/api/']]},
+    pexelsMode
+      ? {key: 'footage', state: footageOk ? 'done' : 'todo', title: 'Clé Pexels (séquences vidéo réelles)',
+          why: 'Les plans filmés de vos vidéos viennent de Pexels : vidéos réelles, usage commercial autorisé, gratuit.',
+          how: ['Pexels ne délivre plus de nouvelles clés : seule une clé existante fonctionne.', 'Dans Claude Code : environnement « Studio vidéo businebile » → Modifier → Network secrets → hôte api.pexels.com, en-tête Authorization, la clé sans préfixe.'],
+          links: [['Pexels API', 'https://www.pexels.com/api/']]}
+      : {key: 'footage', state: footageOk ? 'done' : 'todo', title: 'Clé Pixabay gratuite (séquences vidéo réelles)',
+          why: 'Les plans filmés de vos vidéos viennent de Pixabay : vraies vidéos, usage commercial autorisé sans citer l’auteur, gratuit. (Pexels ne délivre plus de nouvelles clés.)',
+          how: ['Créez un compte gratuit sur pixabay.com (connexion avec Google possible).', 'Ouvrez la page de l’API Pixabay : votre clé s’affiche dans la section « Parameters », à la ligne « key ».', 'Dans Claude Code : environnement « Studio vidéo businebile » → Modifier → Environment variables → ajoutez la ligne PIXABAY_API_KEY=votre_clé → Enregistrer. Pas dans « Network secrets » : Pixabay ne lit la clé que dans l’adresse. Ne la collez jamais dans une conversation.'],
+          links: [['Ouvrir la page de l’API Pixabay', 'https://pixabay.com/api/docs/']]},
     {key: 'link', state: linkOk ? 'done' : 'todo', title: 'Votre lien affilié Systeme.io',
       why: 'Toutes les inscriptions et tous les abonnements passent par lui : sans lien, rien n’est publié.',
       how: ['Copiez votre lien depuis le tableau de bord affilié de Systeme.io (forme https://systeme.io/?sa=…, sans « www »).', 'Collez-le dans Réglages, puis enregistrez.'], goto: ['reglages', 'Ouvrir les réglages']},
@@ -1035,7 +1042,7 @@ function renderSetup() {
     h('ul', {style: 'margin:0;padding-left:18px;display:grid;gap:4px'},
       h('li', {text: `${setup.factsVerified ?? '–'} faits vérifiés mot pour mot sur systeme.io (fonctionnalités, plan gratuit, frais, lien affilié).` + (setup.pricesVerified ? '' : ' Les prix des formules restent à confirmer : aucune vidéo ne les citera d’ici là.')}),
       h('li', {text: 'Voix off française gratuite installée automatiquement, prononciation vérifiée par transcription à chaque vidéo.'}),
-      h('li', {text: 'Environnement « Studio vidéo businebile » : accès à Pexels, systeme.io et GitHub déjà ouvert.'}),
+      h('li', {text: 'Environnement « Studio vidéo businebile » : accès à Pixabay, systeme.io et GitHub déjà ouvert.'}),
       h('li', {text: 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool d’un clic : prêts.'}),
       h('li', {text: setup.capturesCount ? `${setup.capturesCount} capture(s) réelle(s) de Systeme.io disponibles pour les démonstrations.` : 'Facultatif : enregistrez quelques captures d’écran vidéo de votre compte Systeme.io pour des démonstrations à l’écran.'})));
 
@@ -1044,7 +1051,7 @@ function renderSetup() {
       ['1. Sujet', 'Une catégorie différente, jamais une accroche déjà utilisée.'],
       ['2. Script', 'Vérifié : aucune promesse de revenus, chiffres prouvés.'],
       ['3. Voix', 'La voix que vous avez approuvée, prononciation contrôlée.'],
-      ['4. Images', 'Vraies séquences Pexels choisies plan par plan.'],
+      ['4. Images', 'Vraies séquences vidéo (Pixabay) choisies plan par plan.'],
       ['5. Montage', 'Sous-titres au mot, mention « Publicité », carte finale.'],
       ['6. Note /100', 'Relecture indépendante ; sous 90, la vidéo est refaite.'],
       ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
@@ -1053,7 +1060,7 @@ function renderSetup() {
 
   const cost = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Coût : 0 €'}),
     h('div', {class: 'tablebox'}, h('table', null, h('tbody', null, ...[
-      ['Voix off (Kokoro, intégrée, sans compte)', '0 €'], ['Séquences (Pexels)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
+      ['Voix off (Kokoro, intégrée, sans compte)', '0 €'], ['Séquences vidéo (Pixabay)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
     ].map(([a, b]) => h('tr', null, h('td', {text: a}), h('td', {class: 'num', text: b})))))));
 
   box.replaceChildren(h('div', {style: 'display:grid;gap:16px'}, prog, list, h('div', {class: 'grid2'}, extras, cost), flow));

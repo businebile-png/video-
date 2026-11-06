@@ -30,9 +30,11 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
 
 ## Droits
 
-- **Pexels** : usage commercial autorisé ; interdit de laisser croire qu'une personne filmée recommande le
-  produit, de la montrer sous un jour dégradant, ou de revendre les vidéos telles quelles. Chaque séquence
-  utilisée est enregistrée (auteur, page, date) et affichée dans le panneau.
+- **Pixabay** (par défaut) : licence de contenu Pixabay, usage commercial autorisé sans attribution ; interdit de
+  revendre ou redistribuer les vidéos telles quelles, de laisser croire qu'une personne filmée recommande le
+  produit ou de la montrer sous un jour dégradant. Recherches mises en cache 24 h, pas de téléchargement de masse.
+- **Pexels** (si une clé existe) : mêmes règles. Chaque séquence utilisée est enregistrée (source, auteur,
+  page, date) et affichée dans le panneau.
 - **Musique** : uniquement une piste avec preuve de licence (bibliothèque), sinon pas de musique.
 - **Voix de synthèse** : Kokoro-82M (licence Apache-2.0, usage commercial autorisé), voix « ff_siwis »
   entraînée sur la base SIWIS (CC BY 4.0, enregistrée par une comédienne professionnelle ; crédit :

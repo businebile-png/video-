@@ -98,7 +98,7 @@ export async function exportVideoDoc(
     }),
     facts: facts.filter((f) => usedFactIds.has(f.id)).map((f) => ({id: f.id, statement: f.statement, verifiedAt: f.verifiedAt})),
     credits: {
-      footage: licenses.map((l) => ({pexelsId: l.pexelsId, author: l.author, pageUrl: l.pageUrl})),
+      footage: licenses.map((l) => ({pexelsId: l.pexelsId, author: l.author, pageUrl: l.pageUrl, source: l.source ?? 'Pexels'})),
       music: music?.trackId ? {title: music.title, source: music.source, license: music.license} : null,
     },
     posts: pkg?.posts ?? [],
@@ -151,7 +151,8 @@ export async function exportSettingsDoc(config: StudioConfig, extra: {triggerId?
     timezone: config.metricool.timezone,
     triggerId: extra.triggerId ?? null,
     setup: {
-      ...(setup ?? {azure: 'missing', pexels: 'missing', checkedAt: null}),
+      ...(setup ?? {azure: 'missing', pexels: 'missing', footage: 'missing', checkedAt: null}),
+      footageProvider: config.footage.provider,
       voiceProvider: config.voice.provider,
       factsVerified: facts.filter((f) => f.status === 'verified').length,
       pricesVerified: facts.some((f) => f.tags.includes('plan-price') && f.status === 'verified'),
@@ -354,10 +355,17 @@ export async function importPanelDump(file: string): Promise<ImportSummary> {
   const factsDoc = stateDocs.find((d) => d.id === 'facts')?.data;
   if (factsDoc && typeof factsDoc.content === 'object' && factsDoc.content) {
     const parsed = FactsDbSchema.safeParse(factsDoc.content);
-    if (parsed.success) {
-      await writeJson(PATHS.factsDb, parsed.data);
-      summary.settingsApplied.push('faits vérifiés (base du panneau)');
-    } else log.warn('Faits du panneau illisibles : la copie du dépôt est conservée.');
+    if (!parsed.success) log.warn('Faits du panneau illisibles : la copie du dépôt est conservée.');
+    else {
+      // Only a newer verification replaces the repository's facts (an old panel copy must never undo a recent check).
+      const local = exists(PATHS.factsDb) ? await loadFacts() : null;
+      const panelAt = Date.parse(parsed.data.updatedAt ?? '') || 0;
+      const localAt = Date.parse(local?.updatedAt ?? '') || 0;
+      if (!local || panelAt > localAt) {
+        await writeJson(PATHS.factsDb, parsed.data);
+        summary.settingsApplied.push('faits vérifiés (base du panneau, plus récents)');
+      } else log.info('Faits du dépôt plus récents que ceux du panneau : conservés.');
+    }
   }
 
   await saveConfig(config);

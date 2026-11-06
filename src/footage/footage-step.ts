@@ -13,7 +13,8 @@ import type {VoiceWord} from '../schemas/records.js';
 import {artDirection} from '../edit/art-directions.js';
 import {sceneSpans, targetShotSec, type PreparedClip} from '../edit/timeline.js';
 import type {Plan} from '../editorial/plan.js';
-import {searchVideos, type PexelsVideo, type PexelsVideoFile} from './pexels.js';
+import type {PexelsSearch, PexelsVideo, PexelsVideoFile} from './pexels.js';
+import {searchStock, STOCK_LICENSES, type StockProvider} from './stock.js';
 
 export interface Candidate {
   pexelsId: number;
@@ -35,6 +36,8 @@ export interface Candidate {
 export interface CandidatesFile {
   runId: string;
   createdAt: string;
+  /** Library the candidates come from (absent in files written before Pixabay support: Pexels). */
+  provider?: StockProvider;
   needs: Record<string, number>;
   scenes: Record<string, Candidate[]>;
 }
@@ -46,7 +49,9 @@ export interface SelectionFile {
 }
 
 export interface LicenseRecord {
+  /** Clip id in its library (the field name predates Pixabay support). */
   pexelsId: number;
+  source?: string;
   pageUrl: string;
   author: string;
   authorUrl: string;
@@ -142,12 +147,14 @@ export async function searchFootage(runId: string, config: StudioConfig): Promis
     const neededSec = 2.5;
     const pool = new Map<number, Candidate>();
     for (const query of queries) {
-      for (const orientation of ['portrait', 'landscape'] as const) {
+      // Pixabay has no orientation filter: one search returns both kinds of clips.
+      const orientations = config.footage.provider === 'pixabay' ? (['portrait'] as const) : (['portrait', 'landscape'] as const);
+      for (const orientation of orientations) {
         if (orientation === 'landscape' && !config.footage.allowLandscapeCrop) continue;
-        const cacheFile = path.join(cacheDir, `${encodeURIComponent(query)}-${orientation}.json`);
+        const cacheFile = path.join(cacheDir, `${config.footage.provider}-${encodeURIComponent(query)}-${orientation}.json`);
         const res = exists(cacheFile)
-          ? await readJson<Awaited<ReturnType<typeof searchVideos>>>(cacheFile)
-          : await searchVideos(query, {orientation, perPage: config.footage.perQuery});
+          ? await readJson<PexelsSearch>(cacheFile)
+          : await searchStock(query, {orientation, perPage: config.footage.perQuery}, config);
         if (!exists(cacheFile)) await writeJson(cacheFile, res);
         res.videos.forEach((v, rank) => {
           if (seen.has(v.id) && !pool.has(v.id)) return;
@@ -185,7 +192,7 @@ export async function searchFootage(runId: string, config: StudioConfig): Promis
     if (ranked.length === 0) log.warn(`Scène ${scene.id} : aucune séquence exploitable pour ${queries.join(' | ')}`);
     else log.info(`Scène ${scene.id} : ${ranked.length} séquences candidates`);
   }
-  const out: CandidatesFile = {runId, createdAt: new Date().toISOString(), needs, scenes};
+  const out: CandidatesFile = {runId, createdAt: new Date().toISOString(), provider: config.footage.provider, needs, scenes};
   await writeJson(p.footageCandidates, out);
   await buildContactSheets(runId, out);
   return out;
@@ -260,6 +267,8 @@ export function autoSelection(file: CandidatesFile): SelectionFile {
 export async function fetchFootage(runId: string): Promise<Record<string, PreparedClip[]>> {
   const p = runPaths(runId);
   const cands = await readJson<CandidatesFile>(p.footageCandidates);
+  const provider: StockProvider = cands.provider ?? 'pexels';
+  const lib = STOCK_LICENSES[provider];
   if (!exists(p.footageSelection)) throw new Error('Aucune sélection de séquences : lancer footage:auto ou écrire footage/selection.json.');
   const selection = await readJson<SelectionFile>(p.footageSelection);
   const plan = await readJson<Plan>(p.plan);
@@ -276,7 +285,7 @@ export async function fetchFootage(runId: string): Promise<Record<string, Prepar
       if (!c) throw new Error(`Séquence ${id} absente des candidats de la scène ${sceneId}.`);
       const dest = path.join(srcDir, `${id}.mp4`);
       if (!exists(dest)) {
-        log.info(`Téléchargement Pexels #${id} (${c.file.width}×${c.file.height}) — ${c.author}`);
+        log.info(`Téléchargement ${lib.name} #${id} (${c.file.width}×${c.file.height}) — ${c.author}`);
         await downloadTo(c.file.link, dest, {timeoutMs: 600_000, retries: 2});
       }
       const probe = await ffprobe(dest);
@@ -284,7 +293,7 @@ export async function fetchFootage(runId: string): Promise<Record<string, Prepar
       if (!v) throw new Error(`Fichier vidéo illisible : ${dest}`);
       const dims = displayDims(v);
       clips[sceneId]!.push({
-        clipId: `pexels-${id}`,
+        clipId: `${provider}-${id}`,
         pexelsId: id,
         file: path.relative(p.dir, dest),
         durationSec: Number(probe.format.duration ?? c.durationSec),
@@ -296,12 +305,13 @@ export async function fetchFootage(runId: string): Promise<Record<string, Prepar
       if (!licenses.some((l) => l.pexelsId === id)) {
         licenses.push({
           pexelsId: id,
+          source: lib.name,
           pageUrl: c.pageUrl,
           author: c.author,
           authorUrl: c.authorUrl,
           fileUrl: c.file.link,
-          license: 'Licence Pexels (usage commercial autorisé, attribution non obligatoire)',
-          licenseUrl: 'https://www.pexels.com/fr-fr/license/',
+          license: lib.license,
+          licenseUrl: lib.licenseUrl,
           downloadedAt: new Date().toISOString(),
         });
       }

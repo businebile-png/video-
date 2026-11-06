@@ -94,7 +94,7 @@ Lire `runs/<runId>/plan.md` en entier.
   formules, voir ce qui est inclus). Jamais « indispensable pour réussir », jamais de revenus promis, jamais d'urgence inventée.
 - **Accroche** : l'idée tombe dans les 3 premières secondes, style différent des jours précédents.
 - **Écrire pour l'oreille** : français parlé, tutoiement, phrases de 8 à 16 mots, ponctuation aux respirations.
-- **Visuels** : 2 à 4 recherches Pexels en anglais par scène, concrètes et filmables. Scène `demo` seulement avec une
+- **Visuels** : 2 à 4 recherches de séquences en anglais par scène, concrètes et filmables. Scène `demo` seulement avec une
   capture réelle listée dans le plan. Graphiques pour expliquer ; `stat` et `price` exigent un fait vérifié.
 - Tout chiffre, prix, formule, « gratuit », « illimité » ou fonctionnalité → son identifiant dans `claimFactIds`.
 
@@ -114,7 +114,7 @@ npm run studio -- footage:search <runId>
 Ouvrir chaque planche `runs/<runId>/footage/sheets/<scène>.jpg` et choisir les séquences les plus justes :
 en rapport direct avec la phrase dite, nettes, naturelles, personnes crédibles, sans texte incrusté ni logo,
 rien qui laisse croire qu'une personne filmée recommande Systeme.io. Écrire
-`runs/<runId>/footage/selection.json` : `{"by": "agent", "notes": "…", "scenes": {"s1": [idPexels, …]}}`
+`runs/<runId>/footage/selection.json` : `{"by": "agent", "notes": "…", "scenes": {"s1": [idSéquence, …]}}`
 (nombre par scène : champ `needs` de `footage/candidates.json`). Puis :
 
 ```bash
@@ -182,4 +182,4 @@ vérifié : pour chaque entrée `posts` de `runs/<runId>/publish/package.json`, 
   mention « Publicité » ou avec un lien affilié non vérifié.
 - Inventer un fait, un prix, un témoignage, une statistique, une interface de Systeme.io ou un résultat.
 - Annoncer « publiée » sans confirmation de la plateforme.
-- Contourner une limite de TikTok, d'Instagram, de Metricool ou de Pexels.
+- Contourner une limite de TikTok, d'Instagram, de Metricool, de Pixabay ou de Pexels (recherches mises en cache, pas de téléchargement de masse).

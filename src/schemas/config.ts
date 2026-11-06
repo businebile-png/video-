@@ -128,7 +128,8 @@ export const StudioConfigSchema = z.object({
     maxAttempts: z.number().int().min(1).max(6),
   }),
   footage: z.object({
-    provider: z.literal('pexels'),
+    /** pixabay (default: free key, shown instantly) or pexels (new keys paused since autumn 2026). */
+    provider: z.enum(['pixabay', 'pexels']),
     reuseCooldownDays: z.number().int().min(0),
     perQuery: z.number().int().min(5).max(80),
     candidatesPerScene: z.number().int().min(3).max(12),

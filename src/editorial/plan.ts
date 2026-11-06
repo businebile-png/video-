@@ -223,7 +223,7 @@ export function renderBrief(plan: Plan, editorial: Editorial): string {
   lines.push('- Pas de nom de concurrent. Pas de faux témoignage. Tutoiement constant.');
   lines.push('- Images : jamais de signes de richesse (voitures de luxe, billets, montres, jets, villas) ni de « secret de ma réussite » : ce serait une promesse de revenus implicite. Montrer le travail, la création, l’outil.');
   lines.push('- Accroche : l’idée doit tomber dans les 3 premières secondes. Dernière scène : appel à l’action vers le lien en bio, avec une vraie raison de cliquer.');
-  lines.push('- Recherches Pexels en anglais, concrètes et filmables (personnes réelles, gestes, lieux), 2 à 4 par scène.');
+  lines.push('- Recherches de séquences en anglais, concrètes et filmables (personnes réelles, gestes, lieux), 2 à 4 par scène.');
   lines.push('- Format attendu : `script.json` conforme à `src/schemas/script.ts`, puis `npm run studio -- script:check ' + plan.runId + '`.');
   return lines.join('\n') + '\n';
 }

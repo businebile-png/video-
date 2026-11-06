@@ -4,7 +4,7 @@
     "accountName": "z.zir"
   },
   "affiliate": {
-    "url": "",
+    "url": "https://systeme.io/fr?sa=sa0284377331559446b0fd317c047c9b41281fb597",
     "bioLinkCheckedOn": null,
     "disclosureBadge": "Publicité",
     "disclosureCaption": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission, sans surcoût pour toi."
@@ -116,7 +116,7 @@
     "maxAttempts": 3
   },
   "footage": {
-    "provider": "pexels",
+    "provider": "pixabay",
     "reuseCooldownDays": 45,
     "perQuery": 20,
     "candidatesPerScene": 8,

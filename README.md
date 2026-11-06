@@ -14,7 +14,7 @@ professionnel, un contrôle qualité strict et **votre validation avant toute pu
 flowchart LR
   A[Idée et angle<br/>catégorie tournante] --> B[Script vérifié<br/>faits officiels]
   B --> C[Voix off française<br/>gratuite, intégrée]
-  C --> D[Séquences réelles<br/>Pexels]
+  C --> D[Séquences réelles<br/>Pixabay]
   D --> E[Montage<br/>Remotion]
   E --> F[Contrôle qualité<br/>note /100 + verrous]
   F --> G[Panneau<br/>vous validez]
@@ -33,7 +33,7 @@ flowchart LR
 3. **Enregistre la voix off** avec la voix française gratuite intégrée au studio (Kokoro, voix
    « Siwis »), **approuvée par vous à l'écoute**, puis la fait retranscrire pour détecter chaque mot
    mal prononcé. Les sous-titres sont calés au mot près.
-4. **Cherche les séquences** sur Pexels (vidéos réelles, licence commerciale), les présente sur des
+4. **Cherche les séquences** sur Pixabay (vidéos réelles, licence commerciale), les présente sur des
    planches contact, choisit les plus justes et ne réutilise pas un plan avant 45 jours.
 5. **Monte la vidéo** : coupes sur le rythme de la voix, mouvements de caméra, étalonnage, grain,
    sous-titres animés, cartes explicatives, captures réelles de Systeme.io si vous en fournissez,
@@ -70,7 +70,7 @@ problème bloquant relevé à la relecture.
 |---|---|---|
 | Lien affilié Systeme.io | Toutes les ventes passent par lui | 0 € |
 | Voix off intégrée (Kokoro-82M + faster-whisper) | Voix française et vérification de prononciation, calculées sur la machine de Claude ; usage commercial autorisé ; aucun compte, aucune clé, aucune limite | 0 € |
-| Clé Pexels | Séquences vidéo réelles | 0 € |
+| Clé Pixabay | Séquences vidéo réelles (Pexels ne délivre plus de nouvelles clés ; une clé Pexels existante reste utilisable) | 0 € |
 | Metricool (déjà connecté) | Programmation TikTok / Instagram conforme | Votre plan gratuit actuel |
 | Claude (votre abonnement) | Écriture, relecture, orchestration | Déjà inclus |
 | Remotion, GitHub, polices, habillage sonore | Montage, hébergement des vidéos | 0 € |
