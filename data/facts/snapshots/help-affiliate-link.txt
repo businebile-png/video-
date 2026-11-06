@@ -1,0 +1,138 @@
+Loading
+© 2026 systeme.io Help Center · help.systeme.io
+How the systeme.io affiliate program works | systeme.io Help Center
+Categories
+Affiliation ›
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+Categories · Affiliation
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+Affiliation
+English
+العربية
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Français
+हिन्दी
+Magyar
+Bahasa Indonesia
+Italiano
+日本語
+Nederlands
+Norsk
+Polski
+Português
+Română
+Русский
+Slovenčina
+Slovenščina
+Shqip
+Српски
+Svenska
+ไทย
+Türkçe
+Українська
+中文
+How the systeme.io affiliate program works
+In this article, you'll learn how systeme.io 's affiliate program works and how you can earn 60% lifetime commissions by promoting systeme.io .
+Before you start:
+Register for systeme.io 's affiliate program ( sign up for free to the affiliate program to receive your affiliate link and access to the affiliate dashboard )
+1. How does it work?
+Once you sign up for systeme.io, you automatically join our affiliate program and are given a unique affiliate ID:
+(Your affiliate ID will be displayed in the affiliate dashboard: https://systeme.io/dashboard/affiliate-dashboard )
+All you have to do is send visitors to our site, and we’ll work on converting them into customers
+You earn 60% of the amount of all sales of systeme.io and our courses
+This is a lifetime commission program: The contacts you refer to us are tagged with your affiliate ID in the database. Even if they don't buy anything until 6 months or a year later, you'll still earn commissions on their purchases
+Important:
+Promoting systeme.io : Always use the link without "www" (e.g., https://systeme.io?sa= ...). Adding "www" to a systeme.io affiliate link will prevent the tracking from working correctly.
+Promoting your own custom domain : Always include the "www" in the link (e.g., https://www.yourdomain.com?sa= ...). This ensures that tracking parameters are not lost during page redirection.
+2. How does our lifetime affiliation work?
+Our affiliate program primarily operates on the last cookie principle. However, it’s important to note that our tracking method is more robust than just using cookies.
+Unlike cookies, which can be deleted or may not be present if someone uses another device to sign up on systeme.io (such as a mobile phone, tablet, or another computer), our affiliate tracking system is designed to ensure that your affiliate link remains attached to your referral. This means that even if a person initially signs up with your affiliate link on one device and then receives an email from us on another device, your affiliation will remain intact and will never be lost. Indeed, we lock in the initial referral that led the referral to sign up for a free plan, which means that only the initial affiliate will be credited with the commission.
+Once you have referred someone and they have signed up using your affiliate link to create a free account on systeme.io, you will remain their referrer for life. The affiliate link is permanently tied to the referral's email address. With every email we send to your referral, your affiliate ID is automatically integrated by systeme.io. Thus, even if the referral visits other pages through different affiliate links and cookies from those affiliates are installed on their browser, it will have no impact on your commission. The referral is locked to you when they first sign up. However, if they later use another affiliate's link specifically for one of our payment pages to complete their purchase, the commission will go to that affiliate.
+Example:
+If you recommended a person who signed up via their personal computer and a year later, this person receives an email on their phone during their vacation, clicks on the link, and purchases an offer using a different email address from the one they signed up with on our email list, you will still be credited for the sale as an affiliate. Indeed, when the person clicks on the link, your affiliate ID is associated with it, allowing us to know that it was you who directed them to us.
+Can a contact’s referrer be changed?
+A contact can only change their affiliate referrer by using an affiliate link from one of our payment pages belonging to another affiliate when finalizing their purchase. This specifically applies to affiliate links leading to systeme.io’s payment pages. Thus, an affiliate who has a client ready to subscribe to a paid plan can still earn affiliate commissions on that sale.
+In other words, if you share your affiliate link to one of our payment pages with a user who already has a free account and that user uses your link to purchase, you will receive the affiliate commission on the sale, even if that person originally signed up with another affiliate.
+Example:
+A contact first signs up for a free plan via the affiliate link of affiliate A. Later, affiliate B sends its affiliate link to promote one of our payment pages to that contact. If the contact clicks on the affiliate B link and makes a purchase, it is affiliate B who will receive the commission from the sale, even though the contact initially used another affiliate's link to sign up for the free plan.
+Why do we lock in the referral when a contact opens a free account?
+We lock in the referral when a contact creates a free account to prevent affiliates from claiming the affiliate commissions of other affiliates by referring already referred contacts. In other words, this prevents affiliates from "stealing" customers who have already been introduced to the platform by someone else.
+To protect the integrity of our affiliate program and ensure that commissions go back to the original affiliate, we lock in the referrer as soon as a user signs up for a free plan. Thus, the initial affiliate remains the same and cannot be changed by subsequent actions of other affiliates.
+3. How to promote systeme.io?
+To promote the systeme.io affiliate program, simply add ?sa=YOURAFFILIATEID at the end of the URL anytime you mention any systeme.io page (for example, the home page, a page from our blog, or any of our landing pages, sales pages, or payment pages - any page that's part of systeme.io )
+Example: The affiliate link to promote the systeme.io homepage
+URL to promote: https://systeme.io/
+Let's imagine that your affiliate ID is sa00041537157dbe466c95a6395de4e031d503bea587
+In this case, your affiliate link to promote this page would be https://systeme.io/?sa=sa00041537157dbe366c95a6395de4e031d503bea587
+To find your affiliate ID and your various affiliation links, go to Dashboard , then Affiliate Dashboard (1)
+Your affiliate ID can be found on the right side of the page (2).
+Important: The Affiliate dashboard is only available to users who are registered as affiliates. Student (course) accounts do not have access to the Affiliate Dashboard.
+4. Payment of affiliate commissions:
+To do this, please access the Settings section from your profile picture, then select Affiliate Commissions Payouts (3). Then, to receive your commissions, please choose a commission payment method, either via PayPal or by bank transfer to your account (4).
+You can click here for more details on how to set up a method for receiving commissions.
+Commissions are paid on the 10th of each month under the following conditions:
+You must complete your profile information so that systeme.io can generate the correct invoices
+The total amount of your commissions must exceed $30
+There is a minimum 30-day holding period before commissions are paid out.
+Example: If the contact you referred via your affiliate link purchases on February 13, 2021 , systeme.io will generate the invoice, and you will be paid on April 10, 2021.
+NOTES:
+The payment of commissions always occurs within 30 to 60 days, provided all the conditions are met
+The links to share a sales funnel are also affiliate links ( Click here to see how to share a sales funnel )
+5. How affiliate commissions are calculated (tax-inclusive pricing)
+Our pricing plans are tax-inclusive, meaning the displayed price may include VAT depending on the buyer’s situation.
+Affiliate commissions are calculated as follows:
+VAT is first deducted from the total price (if applicable)
+Then, 60% commission is calculated on the remaining amount
+Because of this, the commission amount can vary from one sale to another.
+Example:
+Personal purchase with VAT
+17$ − 2.95$ (VAT) = 14.05$
+14.05$ × 60% = 8.43$ commission
+Business purchase with 0% VAT
+17$ − 0$ (VAT) = 17$
+17$ × 60% = 10.20$ commission
+This explains why some contacts may generate a different commission amount, even if the plan price is the same. VAT depends on the buyer’s country and whether the purchase is made as a private individual or a company.
+FAQ:
+Question: Do I need a subscription to systeme.io to promote the affiliate program?
+Answer: No, you don't. Simply sign up for free to the affiliate program to receive your affiliate link and access to the affiliate dashboard .
+Question: If I'm a systeme.io customer and receive affiliate commissions, will I continue to receive them if I cancel my subscription?
+Answer: Yes, participation in the systeme.io affiliate program is completely independent of whether you are a systeme.io customer or not
+Question: Do we have access to the contact details of the contacts we have referred through our affiliate link?
+Answer: Yes, it's possible: the email addresses of the contacts you send with your affiliate links are available in your affiliate dashboard.
+Question: Do we have access to the contact details of the customers who have purchased through our affiliate link?
+Answer: Yes, it's possible: the email addresses of the customers will appear as part of the sale details in the affiliate dashboard.
+Question: Can I use my own affiliate link to purchase subscriptions/courses?
+Answer: No, it's forbidden for you to be your own affiliate.
+Question: What is the systeme.io affiliate program's cookie duration?
+Answer: The cookie expires after 1 year; however, we include your affiliate ID each time we send a new email to your referral.
+Did this answer your question?
+Last updated on August 5, 2026

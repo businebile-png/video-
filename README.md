@@ -13,7 +13,7 @@ professionnel, un contrôle qualité strict et **votre validation avant toute pu
 ```mermaid
 flowchart LR
   A[Idée et angle<br/>catégorie tournante] --> B[Script vérifié<br/>faits officiels]
-  B --> C[Voix off naturelle<br/>ElevenLabs]
+  B --> C[Voix off naturelle<br/>Azure Speech gratuit]
   C --> D[Séquences réelles<br/>Pexels]
   D --> E[Montage<br/>Remotion]
   E --> F[Contrôle qualité<br/>note /100 + verrous]
@@ -30,14 +30,15 @@ flowchart LR
    contrôleur automatique : aucune promesse de revenus, aucune fausse urgence, aucun superlatif,
    et chaque prix, chiffre ou fonctionnalité doit être prouvé par un extrait de la page officielle
    de Systeme.io copiée le jour même.
-3. **Enregistre la voix off** avec une voix ElevenLabs que **vous avez choisie à l'écoute**, puis
-   la fait retranscrire pour détecter les mots mal prononcés. Les sous-titres sont calés au mot près.
+3. **Enregistre la voix off** avec une voix neuronale française (Azure Speech, niveau gratuit) que
+   **vous avez choisie à l'écoute**, puis la fait retranscrire pour détecter les mots mal prononcés.
+   Les sous-titres sont calés au mot près.
 4. **Cherche les séquences** sur Pexels (vidéos réelles, licence commerciale), les présente sur des
    planches contact, choisit les plus justes et ne réutilise pas un plan avant 45 jours.
 5. **Monte la vidéo** : coupes sur le rythme de la voix, mouvements de caméra, étalonnage, grain,
    sous-titres animés, cartes explicatives, captures réelles de Systeme.io si vous en fournissez,
-   carte d'appel à l'action, mention « Publicité » visible du début à la fin, musique sous licence
-   et habillage sonore. Quatre directions artistiques tournent pour éviter l'effet « modèle ».
+   carte d'appel à l'action, mention « Publicité » visible du début à la fin, musique libre de droits
+   (si vous en fournissez) et habillage sonore. Quatre directions artistiques tournent pour éviter l'effet « modèle ».
 6. **Note la vidéo sur 100** (grille ci-dessous) avec un relecteur indépendant et des mesures
    techniques. Moins de 85 : refaite. 85 à 89 : améliorée. 90 et plus : proposée.
 7. **La dépose dans le panneau** : vous la regardez avec le son, ajustez la légende ou l'heure,
@@ -62,15 +63,20 @@ vérifié, lien affilié absent ou incorrect, mention « Publicité » absente, 
 (séquences, musique, captures), voix non approuvée, vidéo sans voix audible, format non conforme,
 problème bloquant relevé à la relecture.
 
-## Ce qu'il vous faut
+## Ce qu'il vous faut — sans rien payer
 
-| Élément | Pourquoi | Coût indicatif |
+| Élément | Pourquoi | Coût |
 |---|---|---|
-| Lien affilié Systeme.io | Toutes les ventes passent par lui | — |
-| Compte ElevenLabs payant | Voix naturelle, vérification de prononciation, musique générée | Creator ≈ 22 $/mois conseillé (Starter ≈ 6 $/mois trop juste) |
-| Clé Pexels | Séquences vidéo réelles | Gratuit |
-| Metricool (déjà connecté) | Programmation TikTok / Instagram conforme | Votre plan actuel ; Instagram à connecter |
-| Claude (votre abonnement) | Écriture, relecture, orchestration | Inclus dans votre plan |
+| Lien affilié Systeme.io | Toutes les ventes passent par lui | 0 € |
+| Azure Speech, niveau gratuit F0 | Voix française naturelle (500 000 caractères/mois) et vérification de prononciation (5 h/mois) ; usage commercial autorisé | 0 € (Microsoft demande une carte à l'inscription pour vérifier l'identité ; le niveau F0 ne facture rien) |
+| Clé Pexels | Séquences vidéo réelles | 0 € |
+| Metricool (déjà connecté) | Programmation TikTok / Instagram conforme | Votre plan gratuit actuel |
+| Claude (votre abonnement) | Écriture, relecture, orchestration | Déjà inclus |
+| Remotion, GitHub, polices, habillage sonore | Montage, hébergement des vidéos | 0 € |
+
+Une vidéo d'environ 45 secondes consomme environ 900 caractères de voix : une vidéo par jour reste
+très loin de la limite gratuite. ElevenLabs reste possible en option, mais son plan gratuit
+n'autorise pas l'usage commercial : il n'est donc pas utilisé par défaut.
 
 Pas à pas complet : **[docs/mise-en-route.md](docs/mise-en-route.md)**.
 

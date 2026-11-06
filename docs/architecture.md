@@ -33,9 +33,9 @@ flowchart TB
 | `src/editorial` | Rotation des 13 catégories, anti-répétition (accroches, angles, directions artistiques), brief |
 | `src/facts` | Copies datées des pages officielles, vérification mot pour mot des faits |
 | `src/script` | Contrôle du script : promesses, urgence, superlatifs, concurrents, faits, durée, répétitions |
-| `src/voice` | ElevenLabs avec minutage par caractère, prononciation, mastering, retranscription de contrôle |
+| `src/voice` | Azure Speech (gratuit) ou ElevenLabs, prononciation, mastering, minutage et contrôle par retranscription |
 | `src/footage` | Recherche Pexels, notation des candidats, planches contact, téléchargement, licences |
-| `src/music`, `src/sfx` | Musique sous licence ou générée ; habillage sonore synthétisé (sans licence à gérer) |
+| `src/music`, `src/sfx` | Musique libre de droits avec preuve ; habillage sonore synthétisé (sans licence à gérer) |
 | `src/captures` | Captures réelles de Systeme.io et zones à mettre en valeur |
 | `src/edit` | Montage : coupes sur la voix, mouvements de caméra, transitions, sous-titres, cartes, mixage |
 | `remotion/` | Rendu image par image (React) : plans, étalonnage, grain, titres, sous-titres, carte de fin |
@@ -49,13 +49,13 @@ flowchart TB
 
 | Besoin | Choix | Pourquoi | Limites |
 |---|---|---|---|
-| Voix off | **ElevenLabs** (multilingual v2 par défaut, v3 testable) | Voix françaises parmi les plus naturelles, minutage par caractère pour des sous-titres exacts, retranscription (Scribe) pour vérifier la prononciation | Payant ; le naturel dépend surtout de la voix choisie, d'où l'audition et votre approbation |
+| Voix off | **Azure Speech, niveau gratuit F0** (ElevenLabs en option payante) | Voix neuronales françaises naturelles (Vivienne, Rémy…), usage commercial autorisé, 0 € ; la transcription Azure (5 h/mois gratuites) donne le minutage de chaque mot et vérifie la prononciation | 500 000 caractères/mois ; le naturel dépend de la voix choisie, d'où l'audition et votre approbation |
 | Séquences | **Pexels** | Vidéos réelles en haute définition, usage commercial autorisé, API gratuite | 200 requêtes/heure ; catalogue vertical plus réduit (paysage 4K recadré accepté) |
 | Montage | **Remotion** | Animation image par image en code : typographie, sous-titres au mot, transitions sur mesure | Gratuit pour un particulier ou une entreprise de 3 personnes maximum |
 | Encodage, mesures | **FFmpeg** | Standard ; mesures EBU R128, détection d'images noires ou figées | — |
 | Publication | **Metricool** (connecteur) | Partenaire agréé TikTok et Meta ; TikTok interdit les outils maison de publication sur son propre compte | Publication TikTok automatique selon le type de compte (sinon notification) |
 | Validation | **Panneau claude.ai** | Accessible partout, base de données partagée avec Claude, programmation Metricool d'un clic | Ouvert avec votre compte claude.ai |
-| Musique | **Eleven Music** ou pistes sous licence | Pas de musique sans preuve de licence | Conditions musique du plan ElevenLabs à respecter |
+| Musique | Pistes libres de droits fournies par vous (ex. Pixabay Music) | Pas de musique sans preuve de licence ; sinon voix + habillage sonore | Ajout manuel des pistes |
 
 ## Ce qui n'est pas automatisable (et pourquoi)
 

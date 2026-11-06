@@ -9,7 +9,15 @@ import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig, VoiceSettings} from '../schemas/config.js';
 import type {VoiceReport, VoiceWord} from '../schemas/records.js';
 import {speechToText, textToSpeechWithTimestamps} from './elevenlabs.js';
-import {alignmentToWords, mapToDisplay, prepareSpeech} from './speech.js';
+import {azureSynthesize, azureTranscribe, buildSsml} from './azure.js';
+import {alignmentToWords, mapToDisplay, prepareSpeech, type TimedWord} from './speech.js';
+
+/** Speech to text with word timings, through the configured (free by default) provider. */
+export async function transcribeWords(file: string, config: StudioConfig): Promise<{text: string; words: TimedWord[]}> {
+  if (config.voice.sttProvider === 'azure') return azureTranscribe(file, {region: config.voice.azure.region, locale: config.voice.azure.locale});
+  const res = await speechToText(file, {modelId: config.voice.sttModelId, languageCode: config.voice.languageCode});
+  return {text: res.text, words: res.words.map((w) => ({text: w.text, start: w.start, end: w.end}))};
+}
 import type {Plan} from '../editorial/plan.js';
 
 export interface VoiceMetrics {
@@ -96,7 +104,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
   const voiceId = plan.voiceId ?? config.voice.approvedVoices[0]?.id;
   const approved = config.voice.approvedVoices.find((v) => v.id === voiceId);
   if (!voiceId || !approved) {
-    throw new Error('Aucune voix approuvée. Lancez « npm run studio -- voice:audition », écoutez les essais dans le panneau, puis validez une voix.');
+    throw new Error('Aucune voix approuvée. Lancez « npm run studio -- voice:audition », écoutez les essais dans le panneau (Réglages → Voix off), puis approuvez une voix.');
   }
   await fsp.mkdir(p.voiceDir, {recursive: true});
   const modelId = approved.modelId ?? config.voice.modelId;
@@ -104,32 +112,52 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
   const speech = prepareSpeech(script, config.voice.pronunciations, sceneBreak);
   await fsp.writeFile(path.join(p.voiceDir, 'tts-input.txt'), speech.text);
   const base: VoiceSettings = {...config.voice.defaultSettings, ...approved.settings};
-  const variants: VoiceSettings[] = [
+  const variants: VoiceSettings[] = config.voice.provider === 'azure'
+    ? [base, {...base, speed: Math.min(1.2, base.speed + 0.03)}, {...base, speed: Math.max(0.7, base.speed - 0.03)}]
+    : [
     base,
     {...base, stability: Math.min(1, base.stability + 0.1), style: Math.max(0, base.style - 0.05)},
     {...base, stability: Math.max(0, base.stability - 0.08), style: Math.min(1, base.style + 0.08)},
     {...base, speed: Math.min(1.2, base.speed + 0.05)},
     {...base, speed: Math.max(0.7, base.speed - 0.05)},
-  ];
+      ];
   let best: VoiceReport | null = null;
   let bestWords: VoiceWord[] = [];
+  const reference = speech.tokens.map((t) => t.spoken.join(' ')).join(' ');
   for (let attempt = 1; attempt <= config.voice.maxAttempts; attempt++) {
     const settings = variants[(attempt - 1) % variants.length]!;
-    log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, ${modelId}, stabilité ${settings.stability}, vitesse ${settings.speed})`);
-    const tts = await textToSpeechWithTimestamps(voiceId, speech.text, {
-      modelId,
-      outputFormat: config.voice.outputFormat,
-      settings,
-      languageCode: config.voice.languageCode,
-      seed: 1000 + attempt,
-    });
-    const rawFile = path.join(p.voiceDir, `attempt-${attempt}.mp3`);
-    await fsp.writeFile(rawFile, tts.audio);
-    const alignment = tts.alignment ?? tts.normalizedAlignment;
-    if (!alignment) throw new Error('ElevenLabs n’a pas renvoyé de minutage : impossible de synchroniser les sous-titres.');
-    await writeJson(path.join(p.voiceDir, `alignment-${attempt}.json`), alignment);
-    const spokenWords = alignmentToWords(alignment);
-    const rawWords = mapToDisplay(speech.tokens, spokenWords);
+    let rawFile: string;
+    let rawWords: VoiceWord[];
+    let sttText: string | null = null;
+    if (config.voice.provider === 'azure') {
+      // Azure F0 (free): synthesis, then word timings from the transcription of that exact audio.
+      const ratePercent = (settings.speed - 1) * 100;
+      log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, Azure, débit ${ratePercent >= 0 ? '+' : ''}${Math.round(ratePercent)} %)`);
+      const parts = script.scenes.map((sc) => speech.tokens.filter((t) => t.sceneId === sc.id).flatMap((t) => t.spoken).join(' '));
+      const ssml = buildSsml(parts, voiceId, {ratePercent, sceneBreakMs: config.voice.azure.sceneBreakMs, locale: config.voice.azure.locale});
+      await fsp.writeFile(path.join(p.voiceDir, `ssml-${attempt}.xml`), ssml);
+      rawFile = path.join(p.voiceDir, `attempt-${attempt}.wav`);
+      await fsp.writeFile(rawFile, await azureSynthesize(ssml, {region: config.voice.azure.region, outputFormat: config.voice.azure.outputFormat}));
+      const stt = await transcribeWords(rawFile, config);
+      if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
+      sttText = stt.text;
+      rawWords = mapToDisplay(speech.tokens, stt.words);
+    } else {
+      log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, ${modelId}, stabilité ${settings.stability}, vitesse ${settings.speed})`);
+      const tts = await textToSpeechWithTimestamps(voiceId, speech.text, {
+        modelId,
+        outputFormat: config.voice.outputFormat,
+        settings,
+        languageCode: config.voice.languageCode,
+        seed: 1000 + attempt,
+      });
+      rawFile = path.join(p.voiceDir, `attempt-${attempt}.mp3`);
+      await fsp.writeFile(rawFile, tts.audio);
+      const alignment = tts.alignment ?? tts.normalizedAlignment;
+      if (!alignment) throw new Error('ElevenLabs n’a pas renvoyé de minutage : impossible de synchroniser les sous-titres.');
+      await writeJson(path.join(p.voiceDir, `alignment-${attempt}.json`), alignment);
+      rawWords = mapToDisplay(speech.tokens, alignmentToWords(alignment));
+    }
     const trim = Math.max(0, (rawWords[0]?.start ?? 0) - 0.06);
     const mastered = path.join(p.voiceDir, `voice-${attempt}.wav`);
     await masterVoice(rawFile, mastered, trim, -16);
@@ -137,13 +165,10 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     const total = await durationSec(mastered);
     const metrics = voiceMetrics(words, total, config.voice.targets.maxInternalPauseSec);
     let wer: number | null = null;
-    let sttText: string | null = null;
     let mismatches: string[] = [];
     try {
-      const stt = await speechToText(mastered, {modelId: config.voice.sttModelId, languageCode: config.voice.languageCode});
-      sttText = stt.text;
-      const reference = speech.tokens.map((t) => t.spoken.join(' ')).join(' ');
-      const res = wordErrorRate(reference, stt.text);
+      if (sttText === null) sttText = (await transcribeWords(mastered, config)).text;
+      const res = wordErrorRate(reference, sttText);
       wer = Math.round(res.wer * 1000) / 1000;
       mismatches = [...res.substitutions.map(([a, b]) => `${a} → ${b}`), ...res.deletions.map((d) => `manquant : ${d}`)].slice(0, 20);
     } catch (err) {
@@ -154,7 +179,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     const report: VoiceReport = {
       voiceId,
       voiceName: approved.name,
-      modelId,
+      modelId: config.voice.provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
       attempt,
       ...metrics,
       wer,

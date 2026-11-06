@@ -169,10 +169,8 @@ vérifié : pour chaque entrée `posts` de `runs/<runId>/publish/package.json`, 
 
 ## Audition des voix
 
-1. `npm run studio -- voice:list`. Sans voix française native, écrire dans le journal : « Ajoutez 2 ou 3 voix
-   françaises natives depuis la Voice Library d'ElevenLabs (langue : français, usage : réseaux sociaux ou
-   conversation) dans My Voices, puis relancez une production. »
-2. Sinon `npm run studio -- voice:audition --voices <id1>,<id2>,<id3>`.
+1. `npm run studio -- voice:list` (voix françaises disponibles ; Azure Speech par défaut).
+2. `npm run studio -- voice:audition` (Vivienne, Rémy, Denise, Henri par défaut ; `--voices a,b` pour en choisir d'autres).
 3. Téléverser chaque `runs/_audition/<voiceId>.mp3` dans le panneau (outil `Artifact`, `asset: true`), puis
    `ArtifactData set` sur `voices/<voiceId>` : `{voiceId, name, description, model, sample: {assetId, url}, status: "candidate", createdAt}`.
 4. Journal : « Écoutez les voix dans Réglages → Voix off et approuvez la plus naturelle. »

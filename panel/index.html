@@ -886,7 +886,7 @@ function renderSettings() {
   cats.append(list);
 
   const voices = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Voix off'}), h('div', {class: 'hint', text: 'Écoutez les essais avec le son. Une vidéo n’est produite qu’avec une voix que vous avez approuvée.'}));
-  if (!S.voices.length) voices.append(h('div', {class: 'hint', text: 'Aucun essai de voix pour l’instant : la production en dépose ici dès que la clé ElevenLabs est configurée.'}));
+  if (!S.voices.length) voices.append(h('div', {class: 'hint', text: 'Aucun essai de voix pour l’instant : la production en dépose ici dès que la clé de voix gratuite (Azure Speech) est configurée.'}));
   for (const v of S.voices) {
     const url = blobUrl(v.sample);
     voices.append(h('div', {class: 'netrow'},
@@ -897,7 +897,7 @@ function renderSettings() {
   }
 
   const prod = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Production quotidienne'}));
-  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois les clés (Pexels, ElevenLabs) et le lien affilié en place.'}));
+  if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois les clés gratuites (Pexels, Azure Speech) et le lien affilié en place.'}));
   else {
     const t = S.ui.trigger;
     prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${t.next ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));

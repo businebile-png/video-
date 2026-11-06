@@ -28,8 +28,9 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
 - **Pexels** : usage commercial autorisé ; interdit de laisser croire qu'une personne filmée recommande le
   produit, de la montrer sous un jour dégradant, ou de revendre les vidéos telles quelles. Chaque séquence
   utilisée est enregistrée (auteur, page, date) et affichée dans le panneau.
-- **Musique** : uniquement une piste avec preuve de licence (bibliothèque) ou générée par Eleven Music avec
-  un abonnement payant ; sinon pas de musique.
+- **Musique** : uniquement une piste avec preuve de licence (bibliothèque), sinon pas de musique.
+- **Voix de synthèse** : Azure Speech (usage commercial autorisé par les conditions Microsoft ; voix déclarée
+  comme générée par IA sur TikTok et Instagram). Le plan gratuit d'ElevenLabs n'autorise pas l'usage commercial.
 - **Polices** : licence SIL Open Font (Inter, Inter Tight, Manrope, Fraunces, Instrument Serif, Space Grotesk).
 - **Habillage sonore** : synthétisé par le studio.
 - **Remotion** : licence gratuite pour un particulier ou une entreprise de 3 personnes au plus.

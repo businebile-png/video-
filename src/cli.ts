@@ -16,6 +16,7 @@ import {lintScript} from './script/lint.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
 import {runVoice} from './voice/voice-step.js';
 import {listMyVoices, textToSpeechWithTimestamps} from './voice/elevenlabs.js';
+import {azureListVoices, azureSynthesize, buildSsml} from './voice/azure.js';
 import {autoSelection, fetchFootage, searchFootage} from './footage/footage-step.js';
 import {chooseMusic} from './music/music-step.js';
 import {buildSfx} from './sfx/synth.js';
@@ -35,7 +36,7 @@ Préparation
   doctor                       Vérifie que tout est prêt (clés, voix, lien affilié, faits, captures…)
   facts:refresh                Télécharge les pages officielles Systeme.io (copies datées)
   facts:verify                 Re-vérifie chaque fait contre ces copies
-  voice:list                   Liste les voix de votre compte ElevenLabs
+  voice:list                   Liste les voix françaises disponibles (Azure, ou votre compte ElevenLabs)
   voice:audition [--voices a,b] Génère un même extrait avec chaque voix (à écouter dans le panneau)
   voice:approve <voiceId> --name <nom> [--model <id>]
   captures:add <fichier> --id <id> --feature <fonction> --title <titre> --desc <description> [--public-url <url>] --checked
@@ -100,8 +101,9 @@ async function doctor(): Promise<boolean> {
   line(captures.length > 0, `captures réelles de Systeme.io : ${captures.length}`, 'sans captures, pas de démonstration à l’écran (voir assets/systeme/LISEZMOI.md)', false);
   const tracks = await loadTracks();
   line(tracks.length > 0 || config.music.mode !== 'library', `musiques sous licence : ${tracks.length}`, 'ajouter des pistes avec preuve de licence (music:add) ou activer la génération', false);
-  line(Boolean(process.env.PEXELS_API_KEY) || true, `clé Pexels : ${process.env.PEXELS_API_KEY ? 'variable PEXELS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
-  line(true, `clé ElevenLabs : ${process.env.ELEVENLABS_API_KEY ? 'variable ELEVENLABS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
+  line(true, `clé Pexels : ${process.env.PEXELS_API_KEY ? 'variable PEXELS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
+  if (config.voice.provider === 'azure') line(true, `voix : Azure Speech gratuit (région ${config.voice.azure.region}) — clé ${process.env.AZURE_SPEECH_KEY ? 'AZURE_SPEECH_KEY' : 'attendue via le proxy de l’environnement'}`);
+  else line(true, `voix : ElevenLabs — clé ${process.env.ELEVENLABS_API_KEY ? 'ELEVENLABS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
   line(config.platforms.tiktok.enabled || config.platforms.instagram.enabled, 'au moins un réseau activé');
   log.info(`Validation : ${config.publish.approval === 'panel' ? 'par vous dans le panneau' : 'automatique si tout est conforme'} · Metricool : ${config.publish.delivery}`);
   return ok;
@@ -181,24 +183,43 @@ async function main(): Promise<void> {
       return;
     }
     case 'voice:list': {
-      for (const v of await listMyVoices()) console.log(`${v.voice_id}  ${v.name}  ${JSON.stringify(v.labels ?? {})}`);
+      const config = await loadConfig();
+      if (config.voice.provider === 'azure') {
+        const voices = (await azureListVoices(config.voice.azure.region)).filter(
+          (v) => v.VoiceType === 'Neural' && (v.Locale === config.voice.azure.locale || (v.SecondaryLocaleList ?? []).includes(config.voice.azure.locale)),
+        );
+        for (const v of voices) console.log(`${v.ShortName}  ${v.LocalName ?? v.DisplayName}  ${v.Gender}${v.StyleList?.length ? `  styles : ${v.StyleList.join(', ')}` : ''}`);
+        log.info(`${voices.length} voix neuronales en ${config.voice.azure.locale} (Azure, région ${config.voice.azure.region})`);
+      } else {
+        for (const v of await listMyVoices()) console.log(`${v.voice_id}  ${v.name}  ${JSON.stringify(v.labels ?? {})}`);
+      }
       return;
     }
     case 'voice:audition': {
       const config = await loadConfig();
-      const ids = str('voices')?.split(',').map((s) => s.trim()).filter(Boolean) ?? (await listMyVoices()).map((v) => v.voice_id);
       const sample =
         str('text') ??
-        'Tu utilises cinq outils différents pour vendre en ligne ? Avec Systeme.io, tes pages, tes e-mails et tes formations sont réunis au même endroit. Le lien est dans ma bio.';
+        'Tu utilises cinq outils différents pour vendre en ligne ? Avec Systeme.io, tes pages, tes e-mails et tes formations sont réunis au même endroit. Regarde ce que débloquent les formules : le lien est dans ma bio.';
+      const spoken = sample.replace(/Systeme\.io/g, config.voice.pronunciations['Systeme.io'] ?? 'Systeme.io');
       const dir = path.join(PATHS.runs, '_audition');
       await fsp.mkdir(dir, {recursive: true});
-      const spoken = sample.replace(/Systeme\.io/g, config.voice.pronunciations['Systeme.io'] ?? 'Systeme.io');
+      const azure = config.voice.provider === 'azure';
+      const ids =
+        str('voices')?.split(',').map((x) => x.trim()).filter(Boolean) ??
+        (azure ? ['fr-FR-VivienneMultilingualNeural', 'fr-FR-RemyMultilingualNeural', 'fr-FR-DeniseNeural', 'fr-FR-HenriNeural'] : (await listMyVoices()).map((v) => v.voice_id));
       for (const id of ids) {
         try {
-          const res = await textToSpeechWithTimestamps(id, spoken, {modelId: str('model') ?? config.voice.modelId, outputFormat: config.voice.outputFormat, settings: config.voice.defaultSettings, languageCode: config.voice.languageCode});
-          const file = path.join(dir, `${id}.mp3`);
-          await fsp.writeFile(file, res.audio);
-          log.ok(`Essai enregistré : ${path.relative(PATHS.root, file)}`);
+          const out = path.join(dir, `${id}.mp3`);
+          if (azure) {
+            const wav = path.join(dir, `${id}.wav`);
+            const ssml = buildSsml([spoken], id, {ratePercent: (config.voice.defaultSettings.speed - 1) * 100, sceneBreakMs: 0, locale: config.voice.azure.locale});
+            await fsp.writeFile(wav, await azureSynthesize(ssml, {region: config.voice.azure.region, outputFormat: config.voice.azure.outputFormat}));
+            await run('ffmpeg', ['-hide_banner', '-y', '-i', wav, '-af', 'loudnorm=I=-16:TP=-1.5', '-b:a', '160k', out]);
+          } else {
+            const res = await textToSpeechWithTimestamps(id, spoken, {modelId: str('model') ?? config.voice.modelId, outputFormat: config.voice.outputFormat, settings: config.voice.defaultSettings, languageCode: config.voice.languageCode});
+            await fsp.writeFile(out, res.audio);
+          }
+          log.ok(`Essai enregistré : ${path.relative(PATHS.root, out)}`);
         } catch (err) {
           log.warn(`Voix ${id} : ${(err as Error).message}`);
         }

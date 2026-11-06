@@ -80,7 +80,16 @@ export const StudioConfigSchema = z.object({
     retentionDays: z.number().int().min(3).max(120),
   }),
   voice: z.object({
-    provider: z.literal('elevenlabs'),
+    /** azure = free F0 tier (default, commercial use allowed); elevenlabs = paid plans only. */
+    provider: z.enum(['azure', 'elevenlabs']),
+    /** Speech-to-text used to time captions and verify pronunciation. */
+    sttProvider: z.enum(['azure', 'elevenlabs']),
+    azure: z.object({
+      region: z.string().regex(/^[a-z0-9]+$/),
+      locale: z.string().min(4),
+      outputFormat: z.string(),
+      sceneBreakMs: z.number().int().min(0).max(1500),
+    }),
     modelId: z.string(),
     outputFormat: z.string(),
     sttModelId: z.string(),

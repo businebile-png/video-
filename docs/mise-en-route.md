@@ -9,14 +9,19 @@ Le studio est sur la branche `claude/serene-maxwell-pdm5wr` du dépôt `businebi
 Les productions automatiques partent de la branche par défaut du dépôt : fusionnez cette branche
 (ou demandez à Claude d'ouvrir la demande de fusion).
 
-## 2. Clé ElevenLabs (voix off naturelle)
+## 2. Clé Azure Speech gratuite (voix off naturelle)
 
-1. Prenez un abonnement payant ElevenLabs (licence commerciale incluse ; **Creator** conseillé pour
-   une vidéo par jour avec essais et musique générée).
-2. Dans *Developers → API Keys*, créez une clé.
-3. Enregistrez-la dans l'environnement cloud de Claude Code (menu de l'environnement → Modifier →
-   *Network secrets*) pour l'hôte `api.elevenlabs.io`, en-tête `xi-api-key`, sans préfixe.
-   Claude peut aussi vous ouvrir le formulaire sécurisé : ne collez jamais une clé dans la conversation.
+1. Créez un compte Azure gratuit (https://azure.microsoft.com/fr-fr/free/). Microsoft demande une carte
+   pour vérifier votre identité ; le niveau **F0** utilisé ici est gratuit et ne facture rien.
+2. Dans le portail Azure : *Créer une ressource* → **Speech** (Services Speech) → région **France Central**,
+   niveau tarifaire **Free F0**.
+3. Dans la ressource : *Clés et point de terminaison* → copiez la **Clé 1**.
+4. Donnez-la à Claude par le formulaire sécurisé (jamais dans la conversation), pour les deux hôtes
+   `francecentral.tts.speech.microsoft.com` (voix) et `francecentral.api.cognitive.microsoft.com`
+   (vérification de prononciation), en-tête `Ocp-Apim-Subscription-Key`, sans préfixe.
+
+Limites gratuites : 500 000 caractères de voix et 5 heures de transcription par mois, largement
+suffisant pour une vidéo par jour.
 
 ## 3. Clé Pexels (séquences vidéo)
 
@@ -27,9 +32,9 @@ Les productions automatiques partent de la branche par défaut du dépôt : fusi
 
 ## 4. Accès réseau de l'environnement
 
-L'environnement des productions doit autoriser : `api.pexels.com`, `videos.pexels.com`,
-`images.pexels.com`, `player.vimeo.com`, `api.elevenlabs.io`, `systeme.io`, `help.systeme.io`,
-`raw.githubusercontent.com` (et les registres de paquets, autorisés par défaut).
+L'environnement « Studio vidéo businebile » autorise déjà : `api.pexels.com`, `videos.pexels.com`,
+`images.pexels.com`, `player.vimeo.com`, `systeme.io`, `help.systeme.io`, `raw.githubusercontent.com`
+(et les registres de paquets). Les hôtes Azure sont ajoutés automatiquement quand vous enregistrez la clé.
 
 ## 5. Lien affilié
 
@@ -42,10 +47,9 @@ Il doit être de la forme `https://systeme.io/?sa=sa…`, **sans « www »** (Sy
 
 ## 6. Choisir la voix
 
-1. Dans ElevenLabs → *Voice Library*, filtrez sur le français et ajoutez 2 ou 3 voix **françaises
-   natives** à « My Voices » (usage réseaux sociaux ou conversation : elles sonnent moins « lu »).
-2. Lancez une production depuis le panneau : sans voix approuvée, elle prépare des essais audio.
-3. Panneau → **Réglages → Voix off** : écoutez avec le son et approuvez la plus naturelle.
+1. Lancez une production depuis le panneau : sans voix approuvée, elle prépare des essais audio des
+   voix françaises les plus naturelles (Vivienne et Rémy « multilingues », Denise, Henri).
+2. Panneau → **Réglages → Voix off** : écoutez avec le son et approuvez celle qui vous plaît.
 
 ## 7. Instagram (facultatif)
 
@@ -60,8 +64,9 @@ avec des séquences et des cartes, mais ne montrent pas l'interface.
 
 ## 9. Musique
 
-Par défaut, une musique instrumentale est générée par ElevenLabs (licence de votre abonnement payant).
-Vous pouvez aussi fournir vos propres pistes sous licence : [assets/music/LISEZMOI.md](../assets/music/LISEZMOI.md).
+Par défaut, pas de musique (voix et habillage sonore). Pour en ajouter gratuitement, téléchargez des
+pistes libres de droits (par exemple sur Pixabay Music, licence utilisable commercialement) et
+enregistrez-les : [assets/music/LISEZMOI.md](../assets/music/LISEZMOI.md).
 
 ## 10. Activer la production quotidienne
 

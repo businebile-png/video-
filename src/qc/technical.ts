@@ -10,7 +10,7 @@ import {ScriptSchema} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
 import type {VoiceWord} from '../schemas/records.js';
-import {speechToText} from '../voice/elevenlabs.js';
+import {transcribeWords} from '../voice/voice-step.js';
 import {prepareSpeech} from '../voice/speech.js';
 
 export interface Check {
@@ -155,7 +155,7 @@ export async function technicalQc(runId: string, config: StudioConfig): Promise<
     const audio = path.join(p.qcDir, 'final-audio.wav');
     await fsp.mkdir(p.qcDir, {recursive: true});
     await ffmpeg(['-i', p.final, '-vn', '-ac', '1', '-ar', '16000', audio]);
-    const stt = await speechToText(audio, {modelId: config.voice.sttModelId, languageCode: config.voice.languageCode});
+    const stt = await transcribeWords(audio, config);
     const ref = prepareSpeech(script, config.voice.pronunciations, ' ').tokens.map((t) => t.spoken.join(' ')).join(' ');
     finalWer = Math.round(wordErrorRate(ref, stt.text).wer * 1000) / 1000;
   } catch (err) {

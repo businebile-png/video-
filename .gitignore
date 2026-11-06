@@ -6,3 +6,4 @@ media-staging/
 .DS_Store
 .env
 .env.*
+data/facts/snapshots/*.html
