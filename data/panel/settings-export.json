@@ -71,6 +71,10 @@
     {
       "id": "erreurs-debutants",
       "label": "Erreurs fréquentes des débutants"
+    },
+    {
+      "id": "edit-court",
+      "label": "Edit court « lien en bio »"
     }
   ],
   "approvedVoices": [
@@ -91,6 +95,6 @@
     "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T11:42:04.178Z",
+  "updatedAt": "2026-11-06T12:48:41.739Z",
   "updatedBy": "agent"
 }
