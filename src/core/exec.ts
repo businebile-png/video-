@@ -21,7 +21,7 @@ export function run(cmd: string, args: string[], opts: {cwd?: string; input?: st
   });
 }
 
-export async function runOrThrow(cmd: string, args: string[], opts: {cwd?: string; input?: string} = {}): Promise<ExecResult> {
+export async function runOrThrow(cmd: string, args: string[], opts: {cwd?: string; input?: string; env?: NodeJS.ProcessEnv} = {}): Promise<ExecResult> {
   const res = await run(cmd, args, opts);
   if (res.code !== 0) {
     const tail = (res.stderr || res.stdout).split('\n').slice(-12).join('\n');

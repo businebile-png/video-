@@ -11,7 +11,28 @@ import type {VoiceReport, VoiceWord} from '../schemas/records.js';
 import {speechToText, textToSpeechWithTimestamps} from './elevenlabs.js';
 import {azureSynthesize, azureTranscribe, buildSsml} from './azure.js';
 import {alignmentToWords, mapToDisplay, prepareSpeech, pronunciationCheck, type TimedWord} from './speech.js';
-import {localSynthesize, localTranscribe} from './local.js';
+import {localSynthesize, localTranscribe, localVoiceProblems} from './local.js';
+import {chatterboxProblems, chatterboxSynthesize} from './chatterbox.js';
+import type {ApprovedVoice} from '../schemas/config.js';
+
+type Provider = StudioConfig['voice']['provider'];
+
+/** Engine of an approved voice, and whether it can run on this machine right now. */
+export function voiceEngine(v: ApprovedVoice, config: StudioConfig): {provider: Provider; ready: boolean; missing: string[]} {
+  const provider = v.provider ?? config.voice.provider;
+  const missing =
+    provider === 'chatterbox'
+      ? chatterboxProblems(config.voice.chatterbox, config.voice.local.whisperModel)
+      : provider === 'local'
+        ? localVoiceProblems(config.voice.local)
+        : [];
+  return {provider, ready: missing.length === 0, missing};
+}
+
+/** Pronunciation table for an engine: Chatterbox reads plain text, so it gets its own spellings. */
+export function pronunciationsFor(provider: Provider, config: StudioConfig): Record<string, string> {
+  return provider === 'chatterbox' ? {...config.voice.pronunciations, ...config.voice.chatterbox.pronunciations} : config.voice.pronunciations;
+}
 
 /** Speech to text with word timings, through the configured (free by default) provider. */
 export async function transcribeWords(file: string, config: StudioConfig): Promise<{text: string; words: TimedWord[]}> {
@@ -103,18 +124,29 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
   const p = runPaths(runId);
   const script: Script = await readValidated(p.script, ScriptSchema);
   const plan = await readJson<Plan>(p.plan);
-  const voiceId = plan.voiceId ?? config.voice.approvedVoices[0]?.id;
-  const approved = config.voice.approvedVoices.find((v) => v.id === voiceId);
-  if (!voiceId || !approved) {
+  const wantedId = plan.voiceId ?? config.voice.approvedVoices[0]?.id;
+  let approved = config.voice.approvedVoices.find((v) => v.id === wantedId);
+  if (!wantedId || !approved) {
     throw new Error('Aucune voix approuvée. Lancez « npm run studio -- voice:audition », écoutez les essais dans le panneau (Réglages → Voix off), puis approuvez une voix.');
   }
+  // The chosen voice cannot run here (not installed): use the next approved voice rather than produce nothing.
+  let engine = voiceEngine(approved, config);
+  if (!engine.ready) {
+    const backup = config.voice.approvedVoices.find((v) => v.id !== approved!.id && voiceEngine(v, config).ready);
+    if (!backup) throw new Error(`Voix ${approved.name} indisponible (${engine.missing.join(', ')}) : lancez « bash scripts/setup-voice.sh ».`);
+    log.warn(`Voix ${approved.name} indisponible (${engine.missing.join(', ')}) : voix de secours ${backup.name}.`);
+    approved = backup;
+    engine = voiceEngine(backup, config);
+  }
+  const voiceId = approved.id;
+  const provider = engine.provider;
   await fsp.mkdir(p.voiceDir, {recursive: true});
   const modelId = approved.modelId ?? config.voice.modelId;
   const sceneBreak = config.voice.sceneBreakSec > 0 && !/v3/.test(modelId) ? ` <break time="${config.voice.sceneBreakSec.toFixed(2)}s" /> ` : '\n\n';
-  const speech = prepareSpeech(script, config.voice.pronunciations, sceneBreak);
+  const speech = prepareSpeech(script, pronunciationsFor(provider, config), sceneBreak);
   await fsp.writeFile(path.join(p.voiceDir, 'tts-input.txt'), speech.text);
   const base: VoiceSettings = {...config.voice.defaultSettings, ...approved.settings};
-  const variants: VoiceSettings[] = config.voice.provider !== 'elevenlabs'
+  const variants: VoiceSettings[] = provider !== 'elevenlabs'
     ? [base, {...base, speed: Math.min(1.2, base.speed + 0.04)}, {...base, speed: Math.max(0.7, base.speed - 0.04)}]
     : [
     base,
@@ -130,7 +162,19 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     let rawFile: string;
     let rawWords: VoiceWord[];
     let sttText: string | null = null;
-    if (config.voice.provider === 'local') {
+    if (provider === 'chatterbox') {
+      // Voice « Claire »: each sentence generated, re-heard and retaken if it drifts from the text.
+      log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, phrase par phrase avec contrôle)`);
+      const parts = script.scenes.map((sc) => speech.tokens.filter((t) => t.sceneId === sc.id).flatMap((t) => t.spoken).join(' '));
+      rawFile = path.join(p.voiceDir, `attempt-${attempt}.wav`);
+      const synth = await chatterboxSynthesize(parts, rawFile, {seed: attempt}, config.voice.chatterbox, config.voice.local.whisperModel);
+      await writeJson(path.join(p.voiceDir, `takes-${attempt}.json`), synth);
+      log.info(`Prises : ${synth.sentences.reduce((n, x) => n + x.takes, 0)} pour ${synth.sentences.length} phrases (${synth.elapsedSec} s)`);
+      const stt = await localTranscribe(rawFile, config.voice.local);
+      if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
+      sttText = stt.text;
+      rawWords = mapToDisplay(speech.tokens, stt.words);
+    } else if (provider === 'local') {
       // Free local voice: synthesis on this machine, then word timings from the transcription of that exact audio.
       log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, voix locale gratuite, vitesse ${settings.speed.toFixed(2)})`);
       const parts = script.scenes.map((sc) => speech.tokens.filter((t) => t.sceneId === sc.id).flatMap((t) => t.spoken).join(' '));
@@ -142,7 +186,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
       if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
       sttText = stt.text;
       rawWords = mapToDisplay(speech.tokens, stt.words);
-    } else if (config.voice.provider === 'azure') {
+    } else if (provider === 'azure') {
       // Azure F0 (free): synthesis, then word timings from the transcription of that exact audio.
       const ratePercent = (settings.speed - 1) * 100;
       log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, Azure, débit ${ratePercent >= 0 ? '+' : ''}${Math.round(ratePercent)} %)`);
@@ -192,7 +236,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     const report: VoiceReport = {
       voiceId,
       voiceName: approved.name,
-      modelId: config.voice.provider === 'local' ? `kokoro-82m:${voiceId}` : config.voice.provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
+      modelId: provider === 'chatterbox' ? `chatterbox-multilingual:${voiceId}` : provider === 'local' ? `kokoro-82m:${voiceId}` : provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
       attempt,
       ...metrics,
       wer,

@@ -92,7 +92,9 @@ export function computeScore(input: {
 
   const linkProblems = affiliateLinkProblems(config.affiliate.url);
   const footageShots = timeline.shots.filter((s) => s.kind === 'footage');
-  const unlicensed = footageShots.filter((s) => s.kind === 'footage' && !input.licenses.some((l) => `pexels-${l.pexelsId}` === s.source.clipId));
+  // Clip ids are "<library>-<id>" (pexels-123, pixabay-456): a licence covers the shot when both match.
+  const licensedIds = new Set(input.licenses.map((l) => `${(l.source ?? 'Pexels').toLowerCase()}-${l.pexelsId}`));
+  const unlicensed = footageShots.filter((s) => s.kind === 'footage' && !licensedIds.has(s.source.clipId));
   const musicOk = !timeline.audio.music || Boolean(input.music?.license && input.music?.proof);
   const gates: Gate[] = [
     {id: 'lint', label: 'Script conforme (aucune promesse, urgence ou affirmation non sourcée)', ok: lint.errors.length === 0, detail: lint.errors.map((e) => `${e.where} : ${e.message}`).join(' ; ') || 'ok'},

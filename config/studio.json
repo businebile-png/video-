@@ -47,7 +47,7 @@
     "retentionDays": 14
   },
   "voice": {
-    "provider": "local",
+    "provider": "chatterbox",
     "sttProvider": "local",
     "local": {
       "python": ".venv-voice/bin/python",
@@ -70,13 +70,24 @@
     "sceneBreakSec": 0,
     "approvedVoices": [
       {
+        "id": "claire",
+        "name": "Claire (voix naturelle)",
+        "approvedOn": "2026-11-06",
+        "approvedBy": "utilisateur (choisie à l’écoute parmi six voix)",
+        "modelId": "chatterbox-multilingual",
+        "provider": "chatterbox",
+        "settings": {},
+        "notes": "Chatterbox Multilingual (Resemble AI, licence MIT) ; timbre d’après la base SIWIS (CC BY 4.0, comédienne professionnelle enregistrée pour la synthèse vocale). Gratuite, usage commercial autorisé, tatouage audio inaudible « contenu IA »."
+      },
+      {
         "id": "ff_siwis",
         "name": "Siwis (voix gratuite)",
         "approvedOn": "2026-11-06",
         "approvedBy": "utilisateur (écoute dans la conversation)",
         "modelId": "kokoro-82m",
         "settings": {},
-        "notes": "Kokoro-82M, licence Apache-2.0, voix ff_siwis (corpus SIWIS, CC BY 4.0). Gratuite, sans compte, usage commercial autorisé."
+        "notes": "Kokoro-82M, licence Apache-2.0, voix ff_siwis (corpus SIWIS, CC BY 4.0). Gratuite, sans compte, usage commercial autorisé.",
+        "provider": "local"
       }
     ],
     "defaultSettings": {
@@ -113,7 +124,36 @@
       "maxLeadingSilenceSec": 0.25,
       "maxWer": 0.08
     },
-    "maxAttempts": 3
+    "maxAttempts": 3,
+    "chatterbox": {
+      "python": ".venv-chatterbox/bin/python",
+      "modelDir": "models/chatterbox",
+      "reference": "models/voice-refs/claire.wav",
+      "exaggeration": 0.5,
+      "cfgWeight": 0.5,
+      "temperature": 0.7,
+      "maxTakes": 4,
+      "sentenceBreakMs": 160,
+      "sceneBreakMs": 300,
+      "pronunciations": {
+        "Systeme.io": "Système, I-O",
+        "e-mail": "e-mail",
+        "e-mails": "e-mails",
+        "mail": "mail",
+        "mails": "mails",
+        "webinaire": "webinaire",
+        "webinaires": "webinaires",
+        "Startup": "Startup",
+        "startups": "startups",
+        "newsletter": "newsletter",
+        "newsletters": "newsletters",
+        "upsell": "upsell",
+        "upsells": "upsells",
+        "order": "order",
+        "bump": "bump",
+        "bumps": "bumps"
+      }
+    }
   },
   "footage": {
     "provider": "pixabay",

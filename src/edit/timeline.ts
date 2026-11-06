@@ -256,6 +256,17 @@ function isEmphasis(word: string, emphasis: string[]): boolean {
   return emphasis.some((phrase) => normalize(phrase).split(' ').some((t) => t.length >= 3 && (t === wn || (t.length >= 5 && wn.startsWith(t.slice(0, 5))))));
 }
 
+/** Words that lean on the next one: a caption group never ends with them. */
+const LEANING_WORDS = new Set([
+  'le', 'la', 'les', 'l', 'un', 'une', 'des', 'du', 'de', 'd', 'au', 'aux', 'a', 'à', 'en', 'et', 'ou', 'dans', 'sur', 'pour', 'par',
+  'avec', 'sans', 'ton', 'ta', 'tes', 'mon', 'ma', 'mes', 'son', 'sa', 'ses', 'ce', 'cet', 'cette', 'ces', 'qui', 'que', 'qu', 'tu', 'je',
+  'on', 'il', 'elle', 'ne', 'se', 'te', 'me', 'plus', 'très', 'si', 'quand', 'leur', 'leurs', 'notre', 'votre', 'nos', 'vos',
+]);
+
+function bare(word: string): string {
+  return word.toLowerCase().replace(/[’']$/u, '').replace(/^[«(\s\u202f]+|[»)\s\u202f?!:;,.…]+$/gu, '');
+}
+
 export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom: number): CaptionGroup[] {
   const groups: CaptionGroup[] = [];
   for (const span of spans) {
@@ -274,7 +285,22 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
     span.words.forEach((w, i) => {
       const prev = span.words[i - 1];
       const chars = current.reduce((n, c) => n + c.text.length + 1, 0) + w.text.length;
-      if (current.length > 0 && (current.length >= ad.caption.maxWords || chars > ad.caption.maxChars || (prev && w.start - prev.end > 0.35))) flush();
+      const pause = Boolean(prev && w.start - prev.end > 0.35);
+      if (current.length > 0 && (current.length >= ad.caption.maxWords || chars > ad.caption.maxChars || pause)) {
+        if (pause) flush();
+        else {
+          // Carry trailing articles/prepositions over to the next group, where their noun is; a group made only
+          // of such words grows by one word instead of being shown alone ("dans un" + "seul").
+          let keep = current.length;
+          while (keep > 0 && LEANING_WORDS.has(bare(current[keep - 1]!.text))) keep--;
+          if (keep > 0) {
+            const carried = current.slice(keep);
+            current = current.slice(0, keep);
+            flush();
+            current.push(...carried);
+          }
+        }
+      }
       current.push(w);
       if (endsSentence(w.text)) flush();
     });

@@ -11,7 +11,7 @@ export interface Token {
   index: number;
 }
 
-const TRAILING = /^[?!:;»%…,.)]+$/;
+const TRAILING = /^[?!:;»%…,.)€$]+$/;
 const LEADING = /^[«(]+$/;
 
 /** Split a French voice-over into display words, gluing "?", "!", "»"… to their word. */

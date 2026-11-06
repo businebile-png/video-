@@ -18,6 +18,8 @@ export const ApprovedVoiceSchema = z.object({
   approvedOn: isoDate,
   approvedBy: z.string().default('utilisateur'),
   modelId: z.string().optional(),
+  /** Engine that speaks this voice (defaults to voice.provider). */
+  provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs']).optional(),
   settings: VoiceSettingsSchema.partial().default({}),
   notes: z.string().optional(),
 });
@@ -84,7 +86,7 @@ export const StudioConfigSchema = z.object({
      * local = free voice on this machine, no account (default: Kokoro-82M, Apache-2.0);
      * azure = free F0 tier (account required); elevenlabs = paid plans only.
      */
-    provider: z.enum(['local', 'azure', 'elevenlabs']),
+    provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs']),
     /** Speech-to-text used to time captions and verify pronunciation (local = faster-whisper). */
     sttProvider: z.enum(['local', 'azure', 'elevenlabs']),
     local: z
@@ -103,6 +105,33 @@ export const StudioConfigSchema = z.object({
         whisperModel: 'models/whisper/small',
         lang: 'fr-fr',
         sceneBreakMs: 300,
+      }),
+    /** Voice « Claire »: Chatterbox Multilingual (MIT) with a SIWIS reference recording (CC BY 4.0). */
+    chatterbox: z
+      .object({
+        python: z.string().min(1),
+        modelDir: z.string().min(1),
+        reference: z.string().min(1),
+        exaggeration: z.number().min(0).max(2),
+        cfgWeight: z.number().min(0).max(1),
+        temperature: z.number().min(0.1).max(1.5),
+        maxTakes: z.number().int().min(1).max(8),
+        sentenceBreakMs: z.number().int().min(0).max(1000),
+        sceneBreakMs: z.number().int().min(0).max(1500),
+        /** Spellings for this engine, on top of voice.pronunciations (it reads text, not phonemes). */
+        pronunciations: z.record(z.string(), z.string()).default({}),
+      })
+      .default({
+        python: '.venv-chatterbox/bin/python',
+        modelDir: 'models/chatterbox',
+        reference: 'models/voice-refs/claire.wav',
+        exaggeration: 0.5,
+        cfgWeight: 0.5,
+        temperature: 0.7,
+        maxTakes: 4,
+        sentenceBreakMs: 160,
+        sceneBreakMs: 300,
+        pronunciations: {},
       }),
     azure: z.object({
       region: z.string().regex(/^[a-z0-9]+$/),

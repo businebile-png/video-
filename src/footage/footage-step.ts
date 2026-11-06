@@ -150,7 +150,8 @@ export function clipsNeeded(script: Script, words: VoiceWord[], plan: Plan): Rec
     const kind = span.scene.visual.kind;
     if (kind === 'demo') out[span.scene.id] = 1;
     else if (kind === 'graphic' || span.scene.phase === 'cta') out[span.scene.id] = Math.min(2, Math.max(1, Math.ceil(dur / (t * 1.6))));
-    else out[span.scene.id] = Math.min(3, Math.max(1, Math.round(dur / t)));
+    // As many clips as the edit will make cuts (planCuts), so no clip has to be shown twice.
+    else out[span.scene.id] = Math.min(5, Math.max(1, Math.ceil(dur / t - 0.4)));
   }
   return out;
 }

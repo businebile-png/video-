@@ -20,6 +20,7 @@ import {runVoice} from './voice/voice-step.js';
 import {listMyVoices, textToSpeechWithTimestamps} from './voice/elevenlabs.js';
 import {azureListVoices, azureSynthesize, buildSsml} from './voice/azure.js';
 import {localListVoices, localSynthesize, localVoiceProblems} from './voice/local.js';
+import {chatterboxProblems, chatterboxSynthesize} from './voice/chatterbox.js';
 import {spokenForm} from './voice/speech.js';
 import {autoSelection, fetchFootage, searchFootage} from './footage/footage-step.js';
 import {chooseMusic} from './music/music-step.js';
@@ -147,7 +148,12 @@ async function doctor(online = false): Promise<boolean> {
   if (config.footage.provider === 'pixabay') {
     line(Boolean(process.env.PIXABAY_API_KEY?.trim()), 'clé Pixabay (variable PIXABAY_API_KEY)', 'créer la clé gratuite sur https://pixabay.com/api/docs/ puis l’ajouter aux variables de l’environnement (onglet Démarrage du panneau)');
   } else line(true, `clé Pexels : ${process.env.PEXELS_API_KEY ? 'variable PEXELS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
-  if (config.voice.provider === 'local') {
+  if (config.voice.provider === 'chatterbox') {
+    const missing = chatterboxProblems(config.voice.chatterbox, config.voice.local.whisperModel);
+    line(missing.length === 0, 'voix Claire installée (Chatterbox + transcription)', `manque : ${missing.join(', ')} — lancer « bash scripts/setup-voice.sh »`);
+    const backup = localVoiceProblems(config.voice.local);
+    line(backup.length === 0, 'voix de secours Siwis installée', `manque : ${backup.join(', ')}`, false);
+  } else if (config.voice.provider === 'local') {
     const missing = localVoiceProblems(config.voice.local);
     line(missing.length === 0, 'voix locale gratuite installée (Kokoro + transcription)', `manque : ${missing.join(', ')} — lancer « bash scripts/setup-voice.sh »`);
   } else if (config.voice.provider === 'azure') line(true, `voix : Azure Speech gratuit (région ${config.voice.azure.region}) — clé ${process.env.AZURE_SPEECH_KEY ? 'AZURE_SPEECH_KEY' : 'attendue via le proxy de l’environnement'}`);
@@ -263,9 +269,12 @@ async function main(): Promise<void> {
       await fsp.mkdir(dir, {recursive: true});
       const azure = config.voice.provider === 'azure';
       const local = config.voice.provider === 'local';
+      const chatterbox = config.voice.provider === 'chatterbox';
       const ids =
         str('voices')?.split(',').map((x) => x.trim()).filter(Boolean) ??
-        (local
+        (chatterbox
+          ? ['claire']
+          : local
           ? (await localListVoices(config.voice.local)).filter((x) => x.startsWith('f'))
           : azure
             ? ['fr-FR-VivienneMultilingualNeural', 'fr-FR-RemyMultilingualNeural', 'fr-FR-DeniseNeural', 'fr-FR-HenriNeural']
@@ -274,7 +283,15 @@ async function main(): Promise<void> {
         try {
           // Audio-only MP4 (AAC): the panel's file store accepts mp4/webm, not mp3.
           const out = path.join(dir, `${id}.mp4`);
-          if (local) {
+          if (chatterbox) {
+            const wav = path.join(dir, `${id}.wav`);
+            const cbSpoken = sample
+              .split(/\s+/)
+              .map((w) => spokenForm(w, {...config.voice.pronunciations, ...config.voice.chatterbox.pronunciations}).join(' '))
+              .join(' ');
+            await chatterboxSynthesize([cbSpoken], wav, {seed: 1}, config.voice.chatterbox, config.voice.local.whisperModel);
+            await run('ffmpeg', ['-hide_banner', '-y', '-i', wav, '-af', 'highpass=f=70,loudnorm=I=-16:TP=-1.5', '-ar', '44100', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
+          } else if (local) {
             const wav = path.join(dir, `${id}.wav`);
             const sentences = spoken.split(/(?<=[?.!])\s+/).filter(Boolean);
             await localSynthesize(sentences, wav, {voice: id, speed: config.voice.defaultSettings.speed}, config.voice.local);

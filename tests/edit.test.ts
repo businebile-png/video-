@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildTimeline, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
+import {buildCaptions, buildTimeline, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
 import {ART_DIRECTIONS} from '../src/edit/art-directions.js';
 import {Rng} from '../src/core/rng.js';
 import {loadConfig} from '../src/core/config.js';
@@ -66,6 +66,17 @@ describe('montage', () => {
     }
   });
 
+  it('ne termine jamais un sous-titre sur un article ou une préposition', () => {
+    const script = sampleScript();
+    script.scenes[0] = {...script.scenes[0]!, voiceover: 'Tes pages et tes e-mails dans un seul outil ?'};
+    const words: VoiceWord[] = displayWords(script.scenes[0]!.voiceover).map((w, i) => ({text: w, start: 0.1 + i * 0.3, end: 0.1 + i * 0.3 + 0.25, sceneId: 's1', index: i}));
+    const spans = sceneSpans({...script, scenes: [script.scenes[0]!]}, words, 3.5);
+    const ad = ART_DIRECTIONS.find((a) => a.id === 'nuit-edit')!;
+    const groups = buildCaptions(spans, ad, 10_000).map((g) => g.words.map((w) => w.text).join(' '));
+    for (const g of groups) expect(g).not.toMatch(/\b(dans|un|et|tes)$/);
+    expect(groups).not.toContain('et');
+  });
+
   it('mesure l’agrandissement nécessaire', () => {
     const move = makeMove('push-in', 2, 1, 0);
     expect(upscaleOf({width: 3840, height: 2160}, move)).toBeLessThan(1);
@@ -110,6 +121,12 @@ describe('note sur 100', () => {
       .flat()
       .map((c) => ({pexelsId: c.pexelsId, pageUrl: '', author: c.author, authorUrl: '', fileUrl: '', license: 'Pexels', licenseUrl: '', downloadedAt: ''}));
     const ok = computeScore({...base, config: {...config, affiliate: {...config.affiliate, url: 'https://systeme.io/?sa=sa0012345678'}}, licenses});
+    // Pixabay clips (clip ids "pixabay-…") are covered by Pixabay licences, not Pexels ones.
+    const pixTimeline = {...timeline, shots: timeline.shots.map((s) => (s.kind === 'footage' ? {...s, source: {...s.source, clipId: s.source.clipId.replace('pexels-', 'pixabay-')}} : s))};
+    const pixOk = computeScore({...base, timeline: pixTimeline, config: {...config, affiliate: {...config.affiliate, url: 'https://systeme.io/?sa=sa0012345678'}}, licenses: licenses.map((l) => ({...l, source: 'Pixabay'}))});
+    expect(pixOk.gates.find((g) => g.id === 'rights')!.ok).toBe(true);
+    const pixMissing = computeScore({...base, timeline: pixTimeline, licenses});
+    expect(pixMissing.gates.find((g) => g.id === 'rights')!.ok).toBe(false);
     expect(ok.gates.every((g) => g.ok)).toBe(true);
     expect(ok.decision).toBe('publishable');
     // A silent video is blocked whatever the review says.

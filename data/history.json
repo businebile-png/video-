@@ -3,21 +3,21 @@
     {
       "runId": "2026-11-06-b",
       "date": "2026-11-06",
-      "category": "inconnue",
+      "category": "edit-court",
       "hookStyle": "curiosite",
       "hook": "Tes pages, tes e-mails et tes formations, dans un seul outil ?",
       "angle": "Ton business en ligne dans un seul outil",
       "workingTitle": "Tout dans un seul outil",
       "artDirection": "nuit-edit",
       "musicTrack": null,
-      "voiceId": null,
+      "voiceId": "ff_siwis",
       "durationSec": 16.63,
-      "score": null,
-      "decision": null,
-      "status": "rendered",
-      "reason": null,
+      "score": 62,
+      "decision": "redo",
+      "status": "rejected",
+      "reason": "62/100 — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
-      "updatedAt": "2026-11-06T13:32:18.407Z"
+      "updatedAt": "2026-11-06T13:46:21.728Z"
     }
   ]
 }

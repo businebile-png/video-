@@ -16,3 +16,4 @@ data/affiliate.json
 data/insights.json
 data/stats/
 __pycache__/
+.venv-*/
