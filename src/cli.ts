@@ -3,6 +3,7 @@ import path from 'node:path';
 import {parseArgs} from 'node:util';
 import {PATHS, runPaths} from './core/paths.js';
 import {exists, readJson, readValidated, writeJson} from './core/fsx.js';
+import {http} from './core/http.js';
 import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from './core/config.js';
 import {log} from './core/log.js';
 import {run} from './core/exec.js';
@@ -33,7 +34,7 @@ import type {ScoreReport} from './qc/score.js';
 const HELP = `Studio pub Systeme.io — commandes (npm run studio -- <commande>)
 
 Préparation
-  doctor                       Vérifie que tout est prêt (clés, voix, lien affilié, faits, captures…)
+  doctor [--online]            Vérifie que tout est prêt (--online : teste aussi les clés Azure et Pexels)
   facts:refresh                Télécharge les pages officielles Systeme.io (copies datées)
   facts:verify                 Re-vérifie chaque fait contre ces copies
   voice:list                   Liste les voix françaises disponibles (Azure, ou votre compte ElevenLabs)
@@ -80,8 +81,38 @@ function need<T>(v: T | undefined, msg: string): T {
   return v;
 }
 
-async function doctor(): Promise<boolean> {
+type KeyState = 'ok' | 'missing' | 'error';
+
+/** Online check of the free API keys (Azure Speech, Pexels): what the panel's "Démarrage" tab shows. */
+async function probeKeys(config: Awaited<ReturnType<typeof loadConfig>>): Promise<{azure: KeyState; pexels: KeyState; checkedAt: string}> {
+  const probe = async (url: string, headers: Record<string, string> = {}): Promise<KeyState> => {
+    try {
+      const res = await http(url, {headers, timeoutMs: 20_000, retries: 0});
+      await res.body?.cancel();
+      if (res.ok) return 'ok';
+      return res.status === 401 || res.status === 403 ? 'missing' : 'error';
+    } catch {
+      return 'missing';
+    }
+  };
+  const azureHeaders: Record<string, string> = process.env.AZURE_SPEECH_KEY ? {'ocp-apim-subscription-key': process.env.AZURE_SPEECH_KEY} : {};
+  const pexelsHeaders: Record<string, string> = process.env.PEXELS_API_KEY ? {authorization: process.env.PEXELS_API_KEY} : {};
+  const result = {
+    azure: config.voice.provider === 'azure' ? await probe(`https://${config.voice.azure.region}.tts.speech.microsoft.com/cognitiveservices/voices/list`, azureHeaders) : ('ok' as KeyState),
+    pexels: await probe('https://api.pexels.com/videos/search?query=office&per_page=1', pexelsHeaders),
+    checkedAt: new Date().toISOString(),
+  };
+  await writeJson(path.join(PATHS.panelInbox, 'setup.json'), result);
+  return result;
+}
+
+async function doctor(online = false): Promise<boolean> {
   const config = await loadConfig();
+  if (online) {
+    const keys = await probeKeys(config);
+    (keys.azure === 'ok' ? log.ok : log.error)(`clé de voix Azure Speech : ${keys.azure === 'ok' ? 'valide' : keys.azure === 'missing' ? 'absente ou refusée' : 'erreur du service'}`);
+    (keys.pexels === 'ok' ? log.ok : log.error)(`clé Pexels : ${keys.pexels === 'ok' ? 'valide' : keys.pexels === 'missing' ? 'absente ou refusée' : 'erreur du service'}`);
+  }
   let ok = true;
   const line = (good: boolean, label: string, hint?: string, blocking = true) => {
     if (!good && blocking) ok = false;
@@ -154,6 +185,7 @@ async function main(): Promise<void> {
       commission: {type: 'string'},
       'skip-link-check': {type: 'boolean'},
       'trigger-id': {type: 'string'},
+      online: {type: 'boolean'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -167,7 +199,7 @@ async function main(): Promise<void> {
       console.log(HELP);
       return;
     case 'doctor': {
-      const ok = await doctor();
+      const ok = await doctor(values.online === true);
       process.exitCode = ok ? 0 : 1;
       return;
     }

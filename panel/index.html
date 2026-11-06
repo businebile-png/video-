@@ -167,6 +167,25 @@ tr:last-child td { border-bottom: 0; }
 .idea:last-child { border-bottom: 0; }
 audio { width: 100%; max-width: 100%; }
 
+/* Setup checklist */
+.progress { display: grid; gap: 8px; }
+.progress .track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.progress .track > i { display: block; height: 100%; background: var(--ok); }
+.steps { display: grid; gap: 12px; counter-reset: step; }
+.step { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.step .n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; background: var(--surface-2); color: var(--muted); }
+.step.done .n { background: var(--ok-soft); color: var(--ok); }
+.step.todo .n { background: var(--accent-soft); color: var(--accent); }
+.step h3 { font-size: 18px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.step p { margin: 4px 0 0; color: var(--muted); max-width: 72ch; }
+.step ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; max-width: 72ch; }
+.step code { font-family: var(--font-mono); font-size: 12.5px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+.step .actions { margin-top: 10px; }
+.flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.flow div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-size: 13.5px; }
+.flow b { display: block; font-family: var(--font-display); font-stretch: 82%; font-size: 16px; margin-bottom: 2px; }
+a.btn { text-decoration: none; display: inline-block; }
+
 @media (max-width: 860px) {
   .sheet { grid-template-columns: minmax(0, 1fr); }
   .monitor video, .monitor img.poster, .monitor .noprev { max-height: 64vh; }
@@ -183,6 +202,7 @@ audio { width: 100%; max-width: 100%; }
       <div class="lights" id="lights"><span class="light">Connexion aux données…</span></div>
     </div>
     <nav class="tabs" aria-label="Sections">
+      <a href="#demarrage" data-view="demarrage">Démarrage<span class="count" id="count-setup" hidden>0</span></a>
       <a href="#a-valider" data-view="a-valider">À valider<span class="count" id="count-pending" hidden>0</span></a>
       <a href="#videos" data-view="videos">Vidéos</a>
       <a href="#statistiques" data-view="statistiques">Statistiques</a>
@@ -196,7 +216,14 @@ audio { width: 100%; max-width: 100%; }
 <main class="wrap">
   <div id="banner"></div>
 
-  <section class="view" id="view-a-valider">
+  <section class="view" id="view-demarrage" hidden>
+    <div class="viewhead">
+      <div><h2>Démarrage</h2><p>Votre studio est prêt. Voici ce qu’il reste à faire pour que la première vraie vidéo arrive : tout est gratuit.</p></div>
+    </div>
+    <div id="setup"></div>
+  </section>
+
+  <section class="view" id="view-a-valider" hidden>
     <div class="viewhead">
       <div><h2>À valider</h2><p>Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.</p></div>
     </div>
@@ -254,7 +281,7 @@ audio { width: 100%; max-width: 100%; }
 'use strict';
 const METRICOOL = 'Metricool Social Media Management';
 const CCR = 'Claude Code Remote';
-const VIEWS = ['a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
+const VIEWS = ['demarrage', 'a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
 const STATUS = {
   a_valider: ['Prête à diffuser', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
   correction: ['Correction demandée', 'info'], programmee: ['Programmée', 'info'], publiee: ['Publiée', 'ok'],
@@ -371,11 +398,11 @@ function readMetricool(payload) {
 // ---------- routing ----------
 function route() {
   const v = (location.hash || '').replace('#', '');
-  S.ui.view = VIEWS.includes(v) ? v : 'a-valider';
+  S.ui.view = VIEWS.includes(v) ? v : (setupSteps().filter((x) => x.state !== 'done').length ? 'demarrage' : 'a-valider');
   for (const id of VIEWS) document.getElementById('view-' + id).hidden = id !== S.ui.view;
   document.querySelectorAll('nav.tabs a').forEach((a) => a.setAttribute('aria-current', a.dataset.view === S.ui.view ? 'page' : 'false'));
   render();
-  if (S.ui.view === 'reglages') loadTrigger(false);
+  if (S.ui.view === 'reglages' || S.ui.view === 'demarrage') loadTrigger(false);
 }
 window.addEventListener('hashchange', route);
 
@@ -926,6 +953,110 @@ async function saveSettings() {
   renderSettings(); renderLights();
 }
 
+// ---------- setup ----------
+function setupSteps() {
+  const st = S.settings || {};
+  const setup = st.setup || {};
+  const approved = (st.approvedVoices || []).length > 0 || S.voices.some((v) => v.status === 'approved');
+  const linkOk = linkProblems(st.affiliateUrl || '').length === 0;
+  const t = S.ui.trigger;
+  const keysOk = setup.azure === 'ok' && setup.pexels === 'ok';
+  return [
+    {key: 'azure', state: setup.azure === 'ok' ? 'done' : 'todo', title: 'Clé de voix gratuite (Azure Speech)',
+      why: 'Donne une voix française naturelle à vos vidéos, sans payer : 500 000 caractères par mois gratuits, usage commercial autorisé.',
+      how: ['Créez un compte Azure gratuit (Microsoft demande une carte pour vérifier votre identité ; le niveau gratuit ne facture rien).', 'Dans le portail Azure : Créer une ressource → « Speech » → région France Central → niveau « Free F0 ».', 'Dans la ressource : « Clés et point de terminaison » → copiez la Clé 1.', 'Dites « c’est fait » à Claude dans la session : il ouvre un formulaire sécurisé pour la clé. Ne la collez jamais dans une conversation.'],
+      links: [['Créer un compte Azure gratuit', 'https://azure.microsoft.com/fr-fr/free/'], ['Ouvrir le portail Azure', 'https://portal.azure.com/']]},
+    {key: 'pexels', state: setup.pexels === 'ok' ? 'done' : 'todo', title: 'Clé Pexels gratuite (séquences vidéo réelles)',
+      why: 'Les plans filmés de vos vidéos viennent de Pexels : vidéos réelles, usage commercial autorisé, gratuit.',
+      how: ['Créez un compte sur pexels.com, puis demandez une clé API (instantané).', 'Dans Claude Code : environnement « Studio vidéo businebile » → Modifier → Network secrets → ajoutez l’hôte api.pexels.com, en-tête Authorization, la clé sans préfixe (Pexels refuse « Bearer »).'],
+      links: [['Obtenir une clé Pexels', 'https://www.pexels.com/api/']]},
+    {key: 'link', state: linkOk ? 'done' : 'todo', title: 'Votre lien affilié Systeme.io',
+      why: 'Toutes les inscriptions et tous les abonnements passent par lui : sans lien, rien n’est publié.',
+      how: ['Copiez votre lien depuis le tableau de bord affilié de Systeme.io (forme https://systeme.io/?sa=…, sans « www »).', 'Collez-le dans Réglages, puis enregistrez.'], goto: ['reglages', 'Ouvrir les réglages']},
+    {key: 'bio', state: st.bioLinkCheckedOn ? 'done' : 'todo', title: 'Le même lien dans votre bio TikTok (et Instagram)',
+      why: 'Les vidéos disent « lien en bio » : c’est là que les spectateurs cliquent.',
+      how: ['Sur TikTok, le lien cliquable en bio demande un compte Business (gratuit) ou 1 000 abonnés.', 'Une fois fait, cliquez dans Réglages sur « Le lien de ma bio TikTok/Instagram est bien celui-ci ».'], goto: ['reglages', 'Ouvrir les réglages']},
+    {key: 'voice', state: approved ? 'done' : S.voices.length ? 'todo' : 'wait', title: 'Choisir la voix à l’oreille',
+      why: 'Aucune vidéo ne sort avec une voix que vous n’avez pas approuvée.',
+      how: S.voices.length ? ['Des essais vous attendent : écoutez-les avec le son dans Réglages → Voix off, puis approuvez celle qui sonne le plus naturel.'] : ['Les essais (Vivienne, Rémy, Denise, Henri…) arrivent dès que la clé Azure est en place et qu’une production est lancée.'],
+      goto: S.voices.length ? ['reglages', 'Écouter les voix'] : null},
+    {key: 'daily', state: t && t.enabled === 'true' ? 'done' : 'todo', title: 'Activer la production quotidienne',
+      why: 'Chaque matin vers 7 h 45, la vidéo du jour arrive dans « À valider » ; vous la programmez d’un clic.',
+      how: [keysOk && linkOk ? 'Tout est prêt : activez-la ci-dessous, ou lancez une première production tout de suite.' : 'À activer une fois les étapes précédentes faites (sinon elle s’arrêterait faute de clés).'],
+      daily: true},
+  ];
+}
+
+function renderSetupCount() {
+  const left = setupSteps().filter((x) => x.state !== 'done').length;
+  const c = document.getElementById('count-setup');
+  c.hidden = left === 0; c.textContent = String(left);
+}
+
+function renderSetup() {
+  const box = document.getElementById('setup');
+  if (!S.loaded.settings && S.dbState !== 'absent') { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: 'Chargement…'}))); return; }
+  const steps = setupSteps();
+  const done = steps.filter((x) => x.state === 'done').length;
+  const st = S.settings || {};
+  const setup = st.setup || {};
+  const prog = h('div', {class: 'card progress'},
+    h('div', {class: 'lbl', text: `${done} étape${done > 1 ? 's' : ''} sur ${steps.length} faite${done > 1 ? 's' : ''}`}),
+    h('div', {class: 'track'}, h('i', {style: `width:${Math.round((done / steps.length) * 100)}%`})),
+    h('div', {class: 'hint', text: setup.checkedAt ? 'Clés vérifiées en ligne le ' + fmtDate(setup.checkedAt, true) + '.' : 'Les clés sont vérifiées à chaque passage de la production.'}));
+  const list = h('div', {class: 'steps'});
+  steps.forEach((x, i) => {
+    const label = x.state === 'done' ? ['Fait', 'ok'] : x.state === 'wait' ? ['En attente', ''] : ['À faire', 'info'];
+    const card = h('div', {class: 'step ' + (x.state === 'done' ? 'done' : 'todo')},
+      h('div', {class: 'n', text: x.state === 'done' ? '✓' : String(i + 1)}),
+      h('div', {style: 'min-width:0'},
+        h('h3', null, x.title, h('span', {class: 'pill ' + label[1], text: label[0]})),
+        h('p', {text: x.why}),
+        x.state !== 'done' ? h('ol', null, ...x.how.map((t) => h('li', {text: t}))) : null));
+    const acts = h('div', {class: 'actions'});
+    if (x.state !== 'done') for (const [label2, href] of x.links || []) acts.append(h('a', {class: 'btn', href, target: '_blank', rel: 'noopener', text: label2}));
+    if (x.state !== 'done' && x.goto) acts.append(h('a', {class: 'btn', href: '#' + x.goto[0], text: x.goto[1]}));
+    if (x.daily) {
+      const t = S.ui.trigger;
+      if (st.triggerId && S.mcp && t && !t.error) {
+        acts.append(h('button', {class: 'btn' + (t.enabled === 'true' ? '' : ' primary'), disabled: S.canEdit === false, onclick: () => setTrigger(!(t.enabled === 'true')), text: t.enabled === 'true' ? 'Mettre en pause' : 'Activer la production quotidienne'}));
+        acts.append(h('button', {class: 'btn', disabled: S.canEdit === false, onclick: () => fireTrigger('Production demandée depuis le panneau (Démarrage).'), text: 'Lancer une production maintenant'}));
+      } else if (t && t.error) acts.append(h('div', {class: 'result warn', text: t.error}));
+      else acts.append(h('div', {class: 'hint', text: st.triggerId ? 'Lecture de l’état de la tâche…' : 'Tâche programmée non trouvée.'}));
+      if (S.ui.triggerMsg) acts.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
+    }
+    if (acts.childNodes.length) card.lastChild.append(acts);
+    list.append(card);
+  });
+
+  const extras = h('div', {class: 'card'},
+    h('div', {class: 'lbl', text: 'Déjà en place'}),
+    h('ul', {style: 'margin:0;padding-left:18px;display:grid;gap:4px'},
+      h('li', {text: `${setup.factsVerified ?? '–'} faits vérifiés mot pour mot sur systeme.io (fonctionnalités, plan gratuit, frais, lien affilié).` + (setup.pricesVerified ? '' : ' Les prix des formules restent à confirmer : aucune vidéo ne les citera d’ici là.')}),
+      h('li', {text: 'Environnement « Studio vidéo businebile » : accès à Pexels, systeme.io et GitHub déjà ouvert.'}),
+      h('li', {text: 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool d’un clic : prêts.'}),
+      h('li', {text: setup.capturesCount ? `${setup.capturesCount} capture(s) réelle(s) de Systeme.io disponibles pour les démonstrations.` : 'Facultatif : enregistrez quelques captures d’écran vidéo de votre compte Systeme.io pour des démonstrations à l’écran.'})));
+
+  const flow = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Ce qui se passe chaque jour'}),
+    h('div', {class: 'flow'}, ...[
+      ['1. Sujet', 'Une catégorie différente, jamais une accroche déjà utilisée.'],
+      ['2. Script', 'Vérifié : aucune promesse de revenus, chiffres prouvés.'],
+      ['3. Voix', 'La voix que vous avez approuvée, prononciation contrôlée.'],
+      ['4. Images', 'Vraies séquences Pexels choisies plan par plan.'],
+      ['5. Montage', 'Sous-titres au mot, mention « Publicité », carte finale.'],
+      ['6. Note /100', 'Relecture indépendante ; sous 90, la vidéo est refaite.'],
+      ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
+      ['8. Résultats', 'Vues, clics, abonnements payants suivis dans Statistiques.'],
+    ].map(([b, t]) => h('div', null, h('b', {text: b}), t))));
+
+  const cost = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Coût : 0 €'}),
+    h('div', {class: 'tablebox'}, h('table', null, h('tbody', null, ...[
+      ['Voix (Azure Speech, niveau gratuit)', '0 €'], ['Séquences (Pexels)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
+    ].map(([a, b]) => h('tr', null, h('td', {text: a}), h('td', {class: 'num', text: b})))))));
+
+  box.replaceChildren(h('div', {style: 'display:grid;gap:16px'}, prog, list, h('div', {class: 'grid2'}, extras, cost), flow));
+}
+
 // ---------- journal ----------
 function renderRuns() {
   const box = document.getElementById('runs');
@@ -939,7 +1070,8 @@ function renderRuns() {
 
 // ---------- render & data ----------
 function render() {
-  renderBanner(); renderLights();
+  renderBanner(); renderLights(); renderSetupCount();
+  if (S.ui.view === 'demarrage') renderSetup();
   if (S.ui.view === 'a-valider') renderPending();
   if (S.ui.view === 'videos') renderVideos();
   if (S.ui.view === 'statistiques') renderStats();
@@ -977,7 +1109,9 @@ async function start() {
     clearTimeout(st);
     S.settings = snap.exists ? snap.data() : null; S.loaded.settings = !snap.metadata.fromCache || S.loaded.settings;
     const acct = document.getElementById('acct'); acct.textContent = (S.settings && S.settings.timezone ? 'Fuseau ' + S.settings.timezone : 'TikTok · Instagram');
+    if (!location.hash) route();
     if (S.ui.view === 'reglages' && !S.ui.sdraft) renderSettings();
+    if (S.ui.view === 'demarrage') renderSetup();
     renderLights(); if (S.ui.view === 'a-valider') renderPending();
     loadTrigger(false);
   }, () => { clearTimeout(st); S.loaded.settings = true; render(); });

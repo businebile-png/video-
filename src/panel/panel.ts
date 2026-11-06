@@ -4,7 +4,7 @@ import {PATHS, runPaths} from '../core/paths.js';
 import {exists, readJson, readJsonIfExists, readValidated, writeJson} from '../core/fsx.js';
 import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from '../core/config.js';
 import {log} from '../core/log.js';
-import {loadHistory, upsertAffiliate, upsertHistory, upsertPublication} from '../core/stores.js';
+import {loadCaptures, loadHistory, upsertAffiliate, upsertHistory, upsertPublication} from '../core/stores.js';
 import {ScriptSchema} from '../schemas/script.js';
 import {ReviewSchema, type HistoryRecord, type VoiceReport, type VoiceWord} from '../schemas/records.js';
 import {FactsDbSchema} from '../schemas/facts.js';
@@ -133,6 +133,8 @@ export async function exportVideoDoc(
 export async function exportSettingsDoc(config: StudioConfig, extra: {triggerId?: string | null} = {}): Promise<Record<string, unknown>> {
   const editorial = await loadEditorial();
   const inbox = await readJsonIfExists<{categoryPrefs?: Record<string, string>}>(path.join(PATHS.panelInbox, 'inbox.json'), {});
+  const setup = await readJsonIfExists<Record<string, unknown> | null>(path.join(PATHS.panelInbox, 'setup.json'), null);
+  const facts = (await loadFacts()).facts;
   const doc = {
     affiliateUrl: config.affiliate.url,
     bioLinkCheckedOn: config.affiliate.bioLinkCheckedOn,
@@ -148,6 +150,13 @@ export async function exportSettingsDoc(config: StudioConfig, extra: {triggerId?
     metricoolBrandId: config.metricool.brandId,
     timezone: config.metricool.timezone,
     triggerId: extra.triggerId ?? null,
+    setup: {
+      ...(setup ?? {azure: 'missing', pexels: 'missing', checkedAt: null}),
+      voiceProvider: config.voice.provider,
+      factsVerified: facts.filter((f) => f.status === 'verified').length,
+      pricesVerified: facts.some((f) => f.tags.includes('plan-price') && f.status === 'verified'),
+      capturesCount: (await loadCaptures()).length,
+    },
     updatedAt: new Date().toISOString(),
     updatedBy: 'agent',
   };

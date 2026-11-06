@@ -77,6 +77,15 @@
   "metricoolBrandId": "7791839",
   "timezone": "Europe/Paris",
   "triggerId": "trig_01UkKxyio3W9xS57ShSsGDaQ",
-  "updatedAt": "2026-11-06T07:49:17.520Z",
+  "setup": {
+    "azure": "missing",
+    "pexels": "missing",
+    "checkedAt": "2026-11-06T07:52:00.505Z",
+    "voiceProvider": "azure",
+    "factsVerified": 23,
+    "pricesVerified": false,
+    "capturesCount": 0
+  },
+  "updatedAt": "2026-11-06T07:53:10.301Z",
   "updatedBy": "agent"
 }
