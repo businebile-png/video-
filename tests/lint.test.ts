@@ -83,4 +83,19 @@ describe('contrôle du script', () => {
     const s = withScene(4, 'Merci d’avoir regardé jusqu’au bout.');
     expect(rules(lintScript(s, await ctx()))).toContain('cta');
   });
+
+  it('vérifie aussi les chiffres écrits en lettres', async () => {
+    const limits = fact('plan.startup.limits', 'Le plan Startup inclut jusqu’à 10 tunnels de vente et 5 000 contacts.', ['pricing', 'plan:startup', 'feature:funnels']);
+    const c = await ctx({facts: [limits]});
+    expect(rules(lintScript(withScene(3, 'Avec Startup, tu passes à dix tunnels de vente et cinq mille contacts.', ['plan.startup.limits']), c))).not.toContain('chiffre-non-source');
+    expect(rules(lintScript(withScene(3, 'Avec Startup, tu passes à quinze tunnels de vente et cinq mille contacts.', ['plan.startup.limits']), c))).toContain('chiffre-non-source');
+    expect(rules(lintScript(withScene(2, 'Avec cet outil, tu peux gagner trois mille euros par mois.'), await ctx()))).toContain('promesse-de-revenus');
+  });
+
+  it('refuse la réussite affichée et les images de richesse', async () => {
+    expect(rules(lintScript(withScene(4, 'Le secret de ma réussite est dans ma bio.'), await ctx()))).toContain('promesse-de-revenus');
+    const s = sampleScript();
+    s.scenes[0] = {...s.scenes[0]!, visual: {...s.scenes[0]!.visual, queries: ['lamborghini night city', 'luxury car interior']}};
+    expect(rules(lintScript(s, await ctx()))).toContain('imagerie-richesse');
+  });
 });

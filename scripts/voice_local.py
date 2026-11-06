@@ -17,10 +17,17 @@ import sys
 LANG_FLAG = re.compile(r"\([a-z]{2,3}(?:-[a-z0-9]+)?\)")
 # The model swallows a word-final "gn" ("en ligne" heard as "en lit"): release it with a light schwa.
 FINAL_GN = re.compile(r"ɲ(?=$|[\s,.;:!?…»\"')])")
+# The brand, spoken fast, melts into "iro": lengthen the two letters ("Système I… O…"), heard right at every speed.
+BRAND = re.compile(r"(sist[ˈˌ]?ɛm)\s+[ˈˌ]?i\s+[ˈˌ]?o(?=$|[\s,.;:!?…»\"')])")
+
+
+# Phrases Whisper is known to invent over silence or music in French: never part of a script
+# (scripts use « tu »), so they are dropped instead of counting as pronunciation errors.
+HALLUCINATION = re.compile(r"sous-titr|amara\.org|merci d'avoir regard|abonnez-vous|n'oubliez pas de vous abonner", re.I)
 
 
 def fix_phonemes(phonemes):
-    return FINAL_GN.sub("ɲə", LANG_FLAG.sub("", phonemes))
+    return BRAND.sub(r"\1 ˈiː ˈoː", FINAL_GN.sub("ɲə", LANG_FLAG.sub("", phonemes)))
 
 
 def tts(job):
@@ -84,9 +91,12 @@ def stt(job):
         beam_size=5,
         condition_on_previous_text=False,
         vad_filter=False,
+        hallucination_silence_threshold=1.5,
     )
     words, texts = [], []
     for seg in segments:
+        if HALLUCINATION.search(seg.text):
+            continue
         texts.append(seg.text.strip())
         for w in seg.words or []:
             words.append({"text": w.word.strip(), "start": round(float(w.start), 3), "end": round(float(w.end), 3)})

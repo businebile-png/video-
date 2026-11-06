@@ -7,7 +7,7 @@ import {http} from './core/http.js';
 import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from './core/config.js';
 import {log} from './core/log.js';
 import {run} from './core/exec.js';
-import {step} from './core/run.js';
+import {loadState, step, type StepName} from './core/run.js';
 import {loadCaptures, loadHistory, loadTracks, upsertAffiliate, upsertHistory, upsertPublication} from './core/stores.js';
 import {ScriptSchema} from './schemas/script.js';
 import {FEATURES, type Feature} from './schemas/config.js';
@@ -59,7 +59,7 @@ Production (dans l'ordre)
   render <runId>               Rendu final 1080×1920 + aperçu + vignette
   qc <runId>                   Contrôle technique + images pour la relecture
   score <runId>                Note /100 (après qc/review.json écrit par le relecteur indépendant)
-  produce <runId>              Enchaîne voice → footage (auto) → music → edit → render → qc
+  produce <runId> [--force]    Enchaîne voice → footage (auto) → music → edit → render → qc (reprend où il s’était arrêté)
 
 Publication et panneau
   link:check                   Vérifie le lien affilié en ligne (redirections, paramètre sa)
@@ -191,6 +191,7 @@ async function main(): Promise<void> {
       'skip-link-check': {type: 'boolean'},
       'trigger-id': {type: 'string'},
       online: {type: 'boolean'},
+      force: {type: 'boolean'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -469,13 +470,27 @@ async function main(): Promise<void> {
       const config = await loadConfig();
       const p = runPaths(id);
       if (!exists(p.lint) || !(await readJson<{ok: boolean}>(p.lint)).ok) throw new Error('Le script doit d’abord passer script:check.');
-      const voice = await step(id, 'voice', () => runVoice(id, config), (r) => `${r.score}/15`);
+      // Resume: a step already done for this version of the script (and of everything before it) is kept.
+      const state = await loadState(id);
+      const scriptTime = (await fsp.stat(p.script)).mtimeMs;
+      let dirty = values.force === true;
+      const keep = async (name: StepName, output: string): Promise<boolean> => {
+        const ok = !dirty && state.steps[name]?.status === 'done' && exists(output) && (await fsp.stat(output)).mtimeMs >= scriptTime;
+        if (ok) log.info(`${name} : déjà fait pour ce script, conservé (--force pour tout refaire).`);
+        else dirty = true;
+        return ok;
+      };
+      const voice = (await keep('voice', p.voiceReport))
+        ? await readJson<{pass: boolean; problems: string[]}>(p.voiceReport)
+        : await step(id, 'voice', () => runVoice(id, config), (r) => `${r.score}/15`);
       if (!voice.pass) throw new Error(`Voix insuffisante : ${voice.problems.join(' ; ')}`);
-      await step(id, 'footage-search', () => searchFootage(id, config));
+      if (!(await keep('footage-search', p.footageCandidates))) await step(id, 'footage-search', () => searchFootage(id, config));
       if (!exists(p.footageSelection)) await writeJson(p.footageSelection, autoSelection(await readJson(p.footageCandidates)));
-      await step(id, 'footage-fetch', () => fetchFootage(id));
-      const choice = await step(id, 'music', () => chooseMusic(id, config));
-      await upsertHistory({runId: id, musicTrack: choice.trackId});
+      if (!(await keep('footage-fetch', p.footageLicenses))) await step(id, 'footage-fetch', () => fetchFootage(id));
+      if (!(await keep('music', p.musicChoice))) {
+        const choice = await step(id, 'music', () => chooseMusic(id, config));
+        await upsertHistory({runId: id, musicTrack: choice.trackId});
+      }
       await step(id, 'timeline', async () => {
         await buildTimelineStep(id, config);
         return conformStep(id);

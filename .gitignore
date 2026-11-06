@@ -12,3 +12,7 @@ models/
 data/metrics.json
 data/panel/inbox.json
 data/facts/snapshots/*.png
+data/affiliate.json
+data/insights.json
+data/stats/
+__pycache__/

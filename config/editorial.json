@@ -391,6 +391,38 @@
         "Payer cinq outils avant d'avoir le premier client"
       ],
       "weight": 1.1
+    },
+    {
+      "id": "edit-court",
+      "label": "Edit court « lien en bio »",
+      "description": "Format court et rythmé façon « edit » TikTok : une accroche de curiosité, deux ou trois phrases fortes sur ce que Systeme.io réunit, puis le lien en bio. Images sobres et cinématographiques (travail, création, ville la nuit) ; jamais de signes de richesse (voitures de luxe, billets, montres) ni de « secret de ma réussite », qui vaudraient promesse de revenus.",
+      "durationSec": [
+        15,
+        24
+      ],
+      "phases": [
+        "hook",
+        "solution",
+        "cta"
+      ],
+      "requiresDemo": false,
+      "features": [
+        "funnels",
+        "email-marketing",
+        "courses",
+        "free-plan"
+      ],
+      "angleSeeds": [
+        "L'outil tout-en-un derrière un business en ligne : pages, e-mails, formations",
+        "Ton business en ligne dans un seul onglet",
+        "Commencer gratuitement, passer à une formule payante quand ton activité grandit",
+        "Ce que tu n'as plus besoin d'assembler toi-même"
+      ],
+      "weight": 1.2,
+      "requiresFactTags": [],
+      "artDirections": [
+        "nuit-edit"
+      ]
     }
   ],
   "hookStyles": [
@@ -433,6 +465,11 @@
       "id": "geste",
       "label": "Démonstration immédiate",
       "principle": "Montrer le résultat à l'écran dès la première seconde (exige une capture réelle)."
+    },
+    {
+      "id": "curiosite",
+      "label": "Curiosité",
+      "principle": "Une phrase courte qui donne envie de voir la suite, sans promesse, sans mystère trompeur ni « secret »."
     }
   ],
   "rules": {

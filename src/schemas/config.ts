@@ -201,6 +201,8 @@ export const CategorySchema = z.object({
   weight: z.number().min(0).default(1),
   /** Fresh verified facts carrying these tags must exist, or the category is skipped (e.g. prices). */
   requiresFactTags: z.array(z.string()).default([]),
+  /** Art directions suited to this format (any when absent). */
+  artDirections: z.array(z.string()).optional(),
 });
 export type Category = z.infer<typeof CategorySchema>;
 

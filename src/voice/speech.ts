@@ -192,6 +192,44 @@ const NUMBER_WORDS: Record<string, string> = {
   quarante: '40', cinquante: '50', soixante: '60', cent: '100', mille: '1000',
 };
 
+const NUMBER_VALUES: Record<string, number> = {
+  zero: 0, un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5, six: 6, sept: 7, huit: 8, neuf: 9, dix: 10, onze: 11,
+  douze: 12, treize: 13, quatorze: 14, quinze: 15, seize: 16, vingt: 20, vingts: 20, trente: 30, quarante: 40,
+  cinquante: 50, soixante: 60,
+};
+
+/** Value of a number written in French words ("deux mille" → 2000, "cent soixante dix" → 170), else null. */
+export function frenchNumber(words: string[]): number | null {
+  if (words.length === 0) return null;
+  let total = 0;
+  let current = 0;
+  let seen = false;
+  for (const w of words) {
+    if (w === 'et' && seen) continue;
+    if ((w === 'vingt' || w === 'vingts') && current % 100 === 4) {
+      current += 76; // quatre-vingt(s) = 80
+    } else if (w in NUMBER_VALUES) current += NUMBER_VALUES[w]!;
+    else if (w === 'cent' || w === 'cents') current = (current || 1) * 100;
+    else if (w === 'mille') {
+      total += (current || 1) * 1000;
+      current = 0;
+    } else if (w === 'million' || w === 'millions') {
+      total += (current || 1) * 1_000_000;
+      current = 0;
+    } else return null;
+    seen = true;
+  }
+  return total + current;
+}
+
+/** A spoken amount as digits, from digits ("2 000", "2000") or French words; null when it is not a number. */
+export function numericValue(words: string[]): string | null {
+  if (words.length === 0) return null;
+  if (words.every((w) => /^\d+$/.test(w))) return String(Number(words.join('')));
+  const n = frenchNumber(words);
+  return n === null ? null : String(n);
+}
+
 /**
  * Comparable form of one word as heard: no accents, numbers as digits, and silent French endings
  * dropped, so homophones the transcriber may pick ("réunis" / "réunies") are not counted as errors.
@@ -204,6 +242,31 @@ export function heardForm(word: string): string {
   return w;
 }
 
+/**
+ * Rough French sound of a few words, for homophones across word boundaries that a transcriber
+ * may write differently: "c'est vite" / "s'évite", "dix tunnels" / "dit tunnel".
+ */
+export function soundKey(words: string[]): string {
+  const parts = words.map((raw) => {
+    let w = normalize(raw).replace(/\s+/g, '');
+    if (w.length > 2) w = w.replace(/(?<=.)[sxtdzp]+$/, ''); // silent final consonants: « dix », « dit », « est »
+    if (w.length > 3) w = w.replace(/e$/, '');
+    return w;
+  });
+  return parts
+    .join('')
+    .replace(/eau|au/g, 'o')
+    .replace(/ph/g, 'f')
+    .replace(/qu/g, 'k')
+    .replace(/c(?=[eiy])/g, 's')
+    .replace(/c/g, 'k')
+    .replace(/g(?=[eiy])/g, 'j')
+    .replace(/ai|ei/g, 'e')
+    .replace(/h/g, '')
+    .replace(/y/g, 'i')
+    .replace(/([a-z])\1+/g, '$1');
+}
+
 export interface PronunciationCheck {
   /** Errors per spoken caption word (0 = everything heard as written). */
   wer: number;
@@ -214,14 +277,21 @@ export interface PronunciationCheck {
 
 /**
  * Compare what the transcriber heard with the script, token by token. A caption word may be heard as
- * up to three words and the reverse ("Systeme.io" → "système IO", "2 000" → "2000"), and either its
- * written form or its spoken respelling ("e-mails" spoken "i-mèles") counts as correct.
+ * up to three words and the reverse ("Systeme.io" → "système IO", "2 000" → "2000"), either its
+ * written form or its spoken respelling ("e-mails" spoken "i-mèles") counts as correct, and amounts
+ * or homophones written differently ("deux mille" / "2000", "dix" / "dit") are not errors.
  */
 export function pronunciationCheck(tokens: Token[], heardText: string): PronunciationCheck {
-  const forms = (text: string) => normalize(text).split(' ').filter(Boolean).map(heardForm).join('');
-  const alts = tokens.map((t) => [...new Set([forms(t.display), forms(t.spoken.join(' '))].filter(Boolean))]);
-  const ref = tokens.map((t, i) => ({display: core(t.display).body, alts: alts[i]!})).filter((r) => r.alts.length > 0);
-  const hyp = normalize(heardText).split(' ').filter(Boolean);
+  const words = (text: string) => normalize(text).split(' ').filter(Boolean);
+  const forms = (text: string) => words(text).map(heardForm).join('');
+  const ref = tokens
+    .map((t) => {
+      const variants = [words(t.display), words(t.spoken.join(' '))].filter((v) => v.length > 0);
+      const unique = [...new Map(variants.map((v) => [v.join(' '), v])).values()];
+      return {display: core(t.display).body, alts: [...new Set([forms(t.display), forms(t.spoken.join(' '))].filter(Boolean))], variants: unique};
+    })
+    .filter((r) => r.alts.length > 0);
+  const hyp = words(heardText);
   const hypForms = hyp.map(heardForm);
   const n = ref.length;
   const m = hyp.length;
@@ -229,11 +299,20 @@ export function pronunciationCheck(tokens: Token[], heardText: string): Pronunci
   const dp: number[][] = Array.from({length: n + 1}, () => new Array<number>(m + 1).fill(INF));
   const back: Array<Array<[number, number] | null>> = Array.from({length: n + 1}, () => new Array<[number, number] | null>(m + 1).fill(null));
   dp[0]![0] = 0;
+  const hypSound = new Map<string, string>();
   const spanMatches = (i: number, a: number, j: number, b: number): boolean => {
     const heard = hypForms.slice(j, j + b).join('');
     let combos = [''];
     for (let k = i; k < i + a; k++) combos = combos.flatMap((c) => ref[k]!.alts.map((x) => c + x));
-    return combos.includes(heard);
+    if (combos.includes(heard)) return true;
+    const heardWords = hyp.slice(j, j + b);
+    const key = `${j}:${b}`;
+    if (!hypSound.has(key)) hypSound.set(key, soundKey(heardWords));
+    const heardSound = hypSound.get(key)!;
+    const heardNumber = numericValue(heardWords);
+    let wordCombos: string[][] = [[]];
+    for (let k = i; k < i + a; k++) wordCombos = wordCombos.flatMap((c) => ref[k]!.variants.map((v) => [...c, ...v]));
+    return wordCombos.some((c) => soundKey(c) === heardSound || (heardNumber !== null && numericValue(c) === heardNumber));
   };
   for (let i = 0; i <= n; i++) {
     for (let j = 0; j <= m; j++) {

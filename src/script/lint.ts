@@ -4,6 +4,7 @@ import type {Fact} from '../schemas/facts.js';
 import type {Capture} from '../schemas/assets.js';
 import {extractNumbers, normalize, similarity, wordCount} from '../core/text.js';
 import {isFresh} from '../facts/facts.js';
+import {frenchNumber} from '../voice/speech.js';
 
 export interface LintIssue {
   rule: string;
@@ -32,8 +33,11 @@ export interface LintContext {
   now?: Date;
 }
 
-/** French speaking rate of a lively but clear ad voice-over (words per second). */
-export const WORDS_PER_SECOND = 2.65;
+/**
+ * Speaking rate of the approved voice-over (words per second, pauses inside sentences included).
+ * Measured on the free local voice at speed 1.05: about 190 words a minute.
+ */
+export const WORDS_PER_SECOND = 3.1;
 
 type Pattern = {re: RegExp; rule: string; message: string};
 
@@ -46,7 +50,8 @@ const FORBIDDEN: Pattern[] = [
   },
   {re: /\brevenus?\s+(garantis?|assures?|passifs?|automatiques?)\b/, rule: 'promesse-de-revenus', message: 'revenus garantis/passifs/automatiques : promesse interdite'},
   {re: /\bargent\s+(facile|rapide)\b|\ben\s+dormant\b|pendant\s+que\s+tu\s+dors/, rule: 'promesse-de-revenus', message: 'promesse d’argent facile interdite'},
-  {re: /\b(devenir\s+riche|t\s+enrichir|enrichis\s+toi|liberte\s+financiere|millionnaire|six\s+chiffres|5\s+chiffres|7\s+chiffres)\b/, rule: 'promesse-de-revenus', message: 'promesse d’enrichissement interdite'},
+  {re: /\b(devenir\s+riche|t\s+enrichir|enrichis\s+toi|liberte\s+financiere|millionnaire|(5|6|7|cinq|six|sept)\s+chiffres)\b/, rule: 'promesse-de-revenus', message: 'promesse d’enrichissement interdite'},
+  {re: /\b(secret|cle|clef)s?\s+de\s+(ma|ta|sa|leur|notre|votre)\s+(reussite|richesse|fortune)\b|\bvivre\s+de\s+(ton|mon|son)\s+business\b|\bstyle\s+de\s+vie\s+de\s+reve\b/, rule: 'promesse-de-revenus', message: 'réussite ou train de vie mis en avant : promesse de revenus implicite interdite'},
   {re: /\b(quitter|lacher|remplacer)\s+(ton|ta|votre)\s+(job|travail|salaire|boulot|cdi)\b/, rule: 'promesse-de-revenus', message: 'promesse implicite de revenus (quitter son travail) interdite'},
   {re: /\bsans\s+(aucun\s+)?effort\b|\bresultats?\s+garantis?\b|\bsucces\s+garanti\b/, rule: 'promesse-de-resultat', message: 'résultat garanti / sans effort : promesse interdite'},
   {re: /\bderniere\s+chance\b|\bplus\s+que\s+\d+\s+(places?|jours?|heures?|minutes?)\b|\boffre\s+(limitee|exclusive|qui\s+expire)\b/, rule: 'fausse-urgence', message: 'fausse urgence interdite'},
@@ -55,6 +60,13 @@ const FORBIDDEN: Pattern[] = [
   {re: /\b(le|la)\s+meilleure?\b|\bnumero\s+(un|1)\b|\bn\s*1\b|\ble\s+moins\s+cher\b|\bincomparable\b|\bimbattable\b/, rule: 'superlatif', message: 'superlatif non prouvable (« le meilleur », « n°1 »…) interdit'},
   {re: /\bj\s+ai\s+(gagne|genere|vendu|encaisse|fait)\s+\d|\bmes\s+(clients|eleves|abonnes)\s+ont\s+(gagne|genere|fait)\b/, rule: 'faux-temoignage', message: 'résultat personnel / témoignage non vérifiable interdit'},
 ];
+
+/**
+ * Signs of wealth next to a product (supercars, cash, watches, jets…) tell the viewer it will make them
+ * rich: an implicit income promise, banned by French law on influencers and by TikTok's ad rules.
+ */
+const WEALTH_IMAGERY =
+  /\b(lamborghini|ferrari|porsche|bugatti|mclaren|bentley|rolls\s?royce|maserati|supercars?|sports?\s+cars?|luxury|luxe|rolex|cash|money|banknotes?|dollars?|euros?|private\s+jet|jet\s+prive|yacht|mansion|villa|champagne|gold\s+bars?|lingots?|rich|wealth|wealthy|millionaire)\b/;
 
 const COMPETITORS = [
   'clickfunnels',
@@ -115,6 +127,41 @@ export const FEATURE_PATTERNS: Array<{feature: string; re: RegExp}> = [
   {feature: 'coupons', re: /\bcoupons?\b|\bcodes?\s+promo\b/},
   {feature: 'ab-testing', re: /\btests?\s+a\s?b\b|\bab\s+test/},
 ];
+
+const NUMBER_TOKENS = new Set([
+  'zero', 'un', 'une', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze',
+  'quinze', 'seize', 'vingt', 'vingts', 'trente', 'quarante', 'cinquante', 'soixante', 'cent', 'cents', 'mille', 'million', 'millions',
+]);
+
+/**
+ * "cinq mille contacts" → "5000 contacts": amounts said in words are checked exactly like digits.
+ * A lone "un"/"une" stays an article, and "pour cent" stays a percentage.
+ */
+export function wordsToDigits(normalizedText: string): string {
+  const toks = normalizedText.split(' ');
+  const out: string[] = [];
+  let i = 0;
+  while (i < toks.length) {
+    const t = toks[i]!;
+    if (!NUMBER_TOKENS.has(t) || ((t === 'cent' || t === 'cents') && toks[i - 1] === 'pour')) {
+      out.push(t);
+      i++;
+      continue;
+    }
+    const group: string[] = [];
+    let j = i;
+    while (j < toks.length && (NUMBER_TOKENS.has(toks[j]!) || (toks[j] === 'et' && group.length > 0 && NUMBER_TOKENS.has(toks[j + 1] ?? '')))) {
+      if ((toks[j] === 'cent' || toks[j] === 'cents') && toks[j - 1] === 'pour') break;
+      group.push(toks[j]!);
+      j++;
+    }
+    const lone = group.length === 1 && (group[0] === 'un' || group[0] === 'une');
+    const n = lone ? null : frenchNumber(group);
+    out.push(...(n === null ? group : [String(n)]));
+    i = j;
+  }
+  return out.join(' ');
+}
 
 /** Numbers attached to a price, percentage or quota ("17 $", "2 000 contacts"), in digit-only form. */
 export function claimNumbers(normalizedText: string): string[] {
@@ -196,7 +243,7 @@ export function lintScript(script: Script, ctx: LintContext): LintResult {
   let vous = 0;
   for (const scene of script.scenes) {
     const raw = sceneText(scene);
-    const text = normalize(raw);
+    const text = wordsToDigits(normalize(raw));
     tu += (text.match(/\b(tu|ton|ta|tes|toi|t)\b/g) ?? []).length;
     vous += (text.match(/\b(vous|votre|vos)\b/g) ?? []).length;
 
@@ -229,6 +276,10 @@ export function lintScript(script: Script, ctx: LintContext): LintResult {
         err('fonctionnalite-non-verifiee', scene.id, `fonctionnalité « ${fp.feature} » citée sans fait vérifié dans la base`);
       }
     }
+
+    const visualText = normalize([...scene.visual.queries, ...scene.visual.shotIdeas, scene.visual.mood ?? ''].join(' '));
+    const wealth = visualText.match(WEALTH_IMAGERY);
+    if (wealth) err('imagerie-richesse', scene.id, `image de richesse (« ${wealth[0]} ») : promesse de revenus implicite interdite, montrer le travail et l’outil plutôt que l’argent`);
 
     const g = scene.visual.graphic;
     if (scene.visual.kind === 'broll' && scene.phase !== 'cta' && scene.visual.queries.length < 2) err('visuel', scene.id, 'au moins 2 recherches de séquences sont nécessaires');
@@ -271,7 +322,7 @@ export function lintScript(script: Script, ctx: LintContext): LintResult {
     warn('conversion-abonnement', 'script', 'aucune mention des formules / abonnements payants : l’objectif est l’abonnement, pas seulement l’inscription gratuite');
   }
 
-  const captionText = normalize(`${script.captions.tiktok} ${script.captions.instagram}`);
+  const captionText = wordsToDigits(normalize(`${script.captions.tiktok} ${script.captions.instagram}`));
   for (const p of FORBIDDEN) if (p.re.test(captionText)) err(p.rule, 'légendes', p.message);
   for (const p of CLAIM_PATTERNS) {
     if (p.re.test(captionText) && used.size === 0) err(`affirmation-${p.rule}`, 'légendes', `${p.message} (légende)`);

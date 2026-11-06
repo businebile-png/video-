@@ -83,14 +83,16 @@ export function chooseCategory(
   return rng.weighted(eligible, (s) => s.weight).c;
 }
 
-export function chooseArtDirection(history: HistoryRecord[], rng: Rng): string {
+export function chooseArtDirection(history: HistoryRecord[], rng: Rng, allowed?: string[]): string {
   const recent = history
     .filter((h) => h.artDirection)
     .sort((a, b) => b.runId.localeCompare(a.runId))
     .slice(0, 2)
     .map((h) => h.artDirection);
-  const options = ART_DIRECTIONS.filter((a) => !recent.includes(a.id));
-  return rng.pick(options.length ? options : ART_DIRECTIONS).id;
+  const pool = allowed?.length ? ART_DIRECTIONS.filter((a) => allowed.includes(a.id)) : ART_DIRECTIONS;
+  const base = pool.length ? pool : ART_DIRECTIONS;
+  const options = base.filter((a) => !recent.includes(a.id));
+  return rng.pick(options.length ? options : base).id;
 }
 
 export async function nextRunId(date: string): Promise<string> {
@@ -126,7 +128,7 @@ export async function createPlan(config: StudioConfig, editorial: Editorial, opt
     date,
     seed,
     category,
-    artDirection: chooseArtDirection(history, rng),
+    artDirection: chooseArtDirection(history, rng, category.artDirections),
     voiceId: voice?.id ?? null,
     voiceName: voice?.name ?? null,
     durationTargetSec: category.durationSec,
@@ -212,13 +214,14 @@ export function renderBrief(plan: Plan, editorial: Editorial): string {
   lines.push('## Écrire pour l’oreille (voix naturelle)');
   lines.push('- Français parlé, tutoiement, phrases courtes (8 à 16 mots), une idée par phrase.');
   lines.push('- Rythme de conversation : virgules et points là où un humain respire ; pas de parenthèses, pas d’abréviations, pas de listes à rallonge.');
-  lines.push('- Chiffres écrits comme ils se disent (« dix-sept dollars par mois » peut être écrit « 17 $ par mois », la prononciation est gérée) ; éviter les sigles.');
+  lines.push('- Chiffres écrits comme ils se disent (« dix-sept euros par mois » peut s’écrire « 17 € par mois », la prononciation est gérée) ; éviter les sigles.');
   lines.push('- Pas de formules publicitaires creuses (« révolutionnaire », « incroyable ») : un ton d’ami qui s’y connaît.');
   lines.push('');
   lines.push('## Règles non négociables');
   lines.push('- Aucune promesse de revenus, de résultat ou de facilité ; aucune fausse urgence ; pas de « le meilleur ».');
   lines.push('- Chaque prix, chiffre, formule, « gratuit », « illimité » ou fonctionnalité cité s’appuie sur un fait vérifié listé ci-dessus (champ `claimFactIds`).');
   lines.push('- Pas de nom de concurrent. Pas de faux témoignage. Tutoiement constant.');
+  lines.push('- Images : jamais de signes de richesse (voitures de luxe, billets, montres, jets, villas) ni de « secret de ma réussite » : ce serait une promesse de revenus implicite. Montrer le travail, la création, l’outil.');
   lines.push('- Accroche : l’idée doit tomber dans les 3 premières secondes. Dernière scène : appel à l’action vers le lien en bio, avec une vraie raison de cliquer.');
   lines.push('- Recherches Pexels en anglais, concrètes et filmables (personnes réelles, gestes, lieux), 2 à 4 par scène.');
   lines.push('- Format attendu : `script.json` conforme à `src/schemas/script.ts`, puis `npm run studio -- script:check ' + plan.runId + '`.');

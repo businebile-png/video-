@@ -29,6 +29,8 @@ répondre, commenter et écrire les messages de commit en français.
 - Les verrous de publication (`src/qc/score.ts`) et le contrôleur de script (`src/script/lint.ts`) protègent
   l'utilisateur légalement : ne pas les assouplir sans demande explicite.
 - La mention « Publicité » reste visible toute la vidéo et en tête de légende (loi n° 2023-451).
+- Jamais d'images de richesse (voitures de luxe, argent, montres, jets) ni de « secret de ma réussite » :
+  promesse de revenus implicite. Le format « edit » s'inspire du montage, pas de ce contenu.
 - Aucun texte à l'écran hors de la zone sûre (`SAFE_AREA` dans `src/schemas/timeline.ts`).
 - Pas de nouvelle source de média sans licence commerciale vérifiée et traçable.
 - Tester : `npm test` (logique) et `npm run test:render -- <direction>` (rendu complet avec médias de

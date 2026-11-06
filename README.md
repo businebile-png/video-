@@ -23,7 +23,7 @@ flowchart LR
   I --> A
 ```
 
-1. **Choisit un sujet** parmi 13 catégories (publicité directe, formules payantes, tutoriels,
+1. **Choisit un sujet** parmi 14 catégories (publicité directe, formules payantes, edit court « lien en bio », tutoriels,
    tunnels de vente, automatisations, formations, erreurs de débutants…) sans jamais répéter
    une accroche ou un angle récent, en tenant compte de vos idées et de ce qui convertit le mieux.
 2. **Écrit le script** pour l'oreille, orienté abonnement payant, et le fait passer par un
@@ -38,7 +38,8 @@ flowchart LR
 5. **Monte la vidéo** : coupes sur le rythme de la voix, mouvements de caméra, étalonnage, grain,
    sous-titres animés, cartes explicatives, captures réelles de Systeme.io si vous en fournissez,
    carte d'appel à l'action, mention « Publicité » visible du début à la fin, musique libre de droits
-   (si vous en fournissez) et habillage sonore. Quatre directions artistiques tournent pour éviter l'effet « modèle ».
+   (si vous en fournissez) et habillage sonore. Cinq directions artistiques tournent pour éviter l'effet « modèle »,
+   dont « Edit nuit » (noir cinéma, gros texte central, coupes rapides) pour le format court.
 6. **Note la vidéo sur 100** (grille ci-dessous) avec un relecteur indépendant et des mesures
    techniques. Moins de 85 : refaite. 85 à 89 : améliorée. 90 et plus : proposée.
 7. **La dépose dans le panneau** : vous la regardez avec le son, ajustez la légende ou l'heure,

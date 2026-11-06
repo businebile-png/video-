@@ -1,4 +1,4 @@
-import {httpJson} from '../core/http.js';
+import {HttpError, httpJson} from '../core/http.js';
 
 const API = 'https://api.pexels.com';
 
@@ -42,12 +42,28 @@ function headers(): Record<string, string> {
   return h;
 }
 
+/** Turn a refused key into an instruction the user can act on. */
+async function call<T>(url: string): Promise<T> {
+  try {
+    return await httpJson<T>(url, {headers: headers(), timeoutMs: 30_000});
+  } catch (err) {
+    if (err instanceof HttpError && (err.status === 401 || err.status === 403)) {
+      throw new Error(
+        'Clé Pexels absente ou refusée : créez une clé gratuite sur https://www.pexels.com/api/ puis ajoutez-la à l’environnement ' +
+          '(Network secrets : hôte api.pexels.com, en-tête Authorization, la clé seule sans « Bearer ») — voir l’onglet Démarrage du panneau.',
+      );
+    }
+    if (err instanceof HttpError && err.status === 429) throw new Error('Quota Pexels atteint (200 requêtes par heure) : réessayez dans une heure.');
+    throw err;
+  }
+}
+
 export async function searchVideos(query: string, opts: {orientation?: 'portrait' | 'landscape'; perPage?: number; page?: number} = {}): Promise<PexelsSearch> {
   const params = new URLSearchParams({query, per_page: String(opts.perPage ?? 20), page: String(opts.page ?? 1), size: 'medium'});
   if (opts.orientation) params.set('orientation', opts.orientation);
-  return httpJson<PexelsSearch>(`${API}/videos/search?${params.toString()}`, {headers: headers(), timeoutMs: 30_000});
+  return call<PexelsSearch>(`${API}/videos/search?${params.toString()}`);
 }
 
 export async function getVideo(id: number): Promise<PexelsVideo> {
-  return httpJson<PexelsVideo>(`${API}/videos/videos/${id}`, {headers: headers(), timeoutMs: 30_000});
+  return call<PexelsVideo>(`${API}/videos/videos/${id}`);
 }

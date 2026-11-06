@@ -140,6 +140,44 @@ export const ART_DIRECTIONS: ArtDirection[] = [
   },
 ];
 
+/**
+ * « Edit nuit » — inspired by short TikTok "edits" (e.g. @keo2edit): dark cinematic grade, big centred
+ * words lit one by one, fast whips. Only the editing grammar is borrowed: never wealth imagery.
+ */
+ART_DIRECTIONS.push({
+  id: 'nuit-edit',
+  label: 'Edit nuit — noir cinéma, gros texte central, coupes rapides',
+  palette: {
+    accent: '#FF2D55',
+    accentInk: '#FFFFFF',
+    ink: '#FFFFFF',
+    muted: 'rgba(255,255,255,0.7)',
+    panel: 'rgba(8,10,14,0.74)',
+    panelBorder: 'rgba(255,255,255,0.12)',
+    panelInk: '#FFFFFF',
+    tint: '#04161F',
+    shade: 'rgba(0,0,0,0.6)',
+  },
+  fonts: {
+    display: {family: 'Inter Tight', weight: 800},
+    text: {family: 'Inter Tight', weight: 600},
+    accent: {family: 'Instrument Serif', weight: 400, style: 'italic'},
+    caption: {family: 'Inter Tight', weight: 800},
+  },
+  caption: {style: 'karaoke-fill', size: 84, uppercase: true, maxWords: 2, maxChars: 16, strokePx: 0},
+  headline: {size: 66, uppercase: true, letterSpacing: 1, style: 'label'},
+  grade: {contrast: 1.16, saturate: 0.74, brightness: 0.92, tintOpacity: 0.24, vignette: 0.62, grain: 0.05},
+  motion: {
+    pacing: 'punchy',
+    signature: 'whip-up',
+    moves: ['push-in', 'hold', 'pull-out', 'drift-up', 'push-in'],
+    handheld: 1,
+    riserBeforeCta: true,
+  },
+  card: {radius: 14, style: 'glass'},
+  musicMoods: ['dark', 'cinematic', 'bass', 'electronic'],
+});
+
 export function artDirection(id: string): ArtDirection {
   const ad = ART_DIRECTIONS.find((a) => a.id === id);
   if (!ad) throw new Error(`Direction artistique inconnue : ${id} (disponibles : ${ART_DIRECTIONS.map((a) => a.id).join(', ')})`);

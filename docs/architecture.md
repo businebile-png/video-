@@ -30,7 +30,7 @@ flowchart TB
 
 | Dossier | Rôle |
 |---|---|
-| `src/editorial` | Rotation des 13 catégories, anti-répétition (accroches, angles, directions artistiques), brief |
+| `src/editorial` | Rotation des 14 catégories, anti-répétition (accroches, angles, directions artistiques), brief |
 | `src/facts` | Copies datées des pages officielles, vérification mot pour mot des faits |
 | `src/script` | Contrôle du script : promesses, urgence, superlatifs, concurrents, faits, durée, répétitions |
 | `src/voice`, `scripts/voice_local.py` | Voix locale gratuite (Kokoro) ou, en option, Azure Speech / ElevenLabs ; prononciation, mastering, minutage au mot et contrôle par retranscription (faster-whisper) |

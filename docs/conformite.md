@@ -12,6 +12,11 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
 - **Pratiques commerciales trompeuses** : pas de promesse de gains, pas de résultat garanti, pas d'urgence
   inventée, pas de superlatif invérifiable, pas de faux témoignage, pas de prix ou de condition cachés.
   → Contrôleur automatique du script et des légendes (`src/script/lint.ts`), modifiable seulement par le code.
+  Les chiffres dits en lettres (« cinq mille contacts ») sont vérifiés comme les chiffres écrits.
+- **Promesse de revenus implicite** : le format « voiture de luxe + secret de ma réussite en bio » (courant
+  sur TikTok) suggère que le produit enrichit. Le contrôleur refuse les recherches d'images de richesse
+  (voitures de luxe, argent, montres, jets, villas…) et les formules du type « le secret de ma réussite ».
+  Le format court « edit » est repris pour son rythme et son montage seulement.
 - **Tarifs** : affichés seulement s'ils sont prouvés par la page officielle copiée dans les 7 jours, avec la
   date de vérification à l'écran.
 

@@ -27,7 +27,8 @@ export const Grade: React.FC<{ad: ArtDirection}> = ({ad}) => {
       <AbsoluteFill
         style={{
           background:
-            'linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.24) 17%, rgba(0,0,0,0.08) 27%, rgba(0,0,0,0) 36%, rgba(0,0,0,0) 54%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.56) 100%)',
+            // Eased ramps (no sudden change of slope): a linear start reads as a visible line on flat, bright footage.
+            'linear-gradient(180deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.36) 9%, rgba(0,0,0,0.22) 17%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.03) 31%, rgba(0,0,0,0) 36%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.03) 55%, rgba(0,0,0,0.1) 62%, rgba(0,0,0,0.22) 70%, rgba(0,0,0,0.38) 80%, rgba(0,0,0,0.5) 90%, rgba(0,0,0,0.56) 100%)',
         }}
       />
       <Grain amount={grade.grain} />

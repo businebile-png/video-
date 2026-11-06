@@ -93,7 +93,18 @@
       "e-mail": "i-mèle",
       "e-mails": "i-mèles",
       "mail": "mèle",
-      "mails": "mèles"
+      "mails": "mèles",
+      "webinaire": "ouébinaire",
+      "webinaires": "ouébinaires",
+      "Startup": "Starteupe",
+      "startups": "starteupes",
+      "upsell": "eupsèle",
+      "upsells": "eupsèles",
+      "order": "ordeur",
+      "bump": "beumpe",
+      "bumps": "beumpes",
+      "newsletter": "niouzlèteur",
+      "newsletters": "niouzlèteurs"
     },
     "targets": {
       "wpmMin": 145,
