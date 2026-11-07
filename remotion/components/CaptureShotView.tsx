@@ -58,7 +58,10 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const aspect = shot.height / shot.width;
-  const contentH = Math.min(CARD_MAX_H - BAR_H, CARD_W * aspect);
+  // Under a headline (up to two lines from y = 318) the window starts lower and is a little shorter.
+  const top = shot.belowHeadline ? 500 : CARD_TOP;
+  const maxH = shot.belowHeadline ? 700 : CARD_MAX_H;
+  const contentH = Math.min(maxH - BAR_H, CARD_W * aspect);
   const contentW = contentH / aspect;
   const cardW = Math.min(CARD_W, contentW);
   const cardH = contentH + BAR_H;
@@ -100,7 +103,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
           />
           <AbsoluteFill
             style={{
-              background: `radial-gradient(42% 26% at ${(CENTER_X / 1080) * 100}% ${((CARD_TOP + cardH / 2) / 1920) * 100}%, ${ad.palette.accent}2e 0%, transparent 100%)`,
+              background: `radial-gradient(42% 26% at ${(CENTER_X / 1080) * 100}% ${((top + cardH / 2) / 1920) * 100}%, ${ad.palette.accent}2e 0%, transparent 100%)`,
               opacity: 0.75 + 0.25 * Math.sin(frame / 45),
             }}
           />
@@ -110,7 +113,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
         style={{
           position: 'absolute',
           left,
-          top: CARD_TOP,
+          top,
           width: cardW,
           height: cardH,
           borderRadius: Math.min(28, ad.card.radius + 6),
@@ -174,7 +177,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
               left: CENTER_X - 430,
               width: 860,
               // Above the window: the captions live below it.
-              top: CARD_TOP - 92,
+              top: top - 92,
               display: 'flex',
               justifyContent: 'center',
               opacity: appear * fade,

@@ -581,6 +581,7 @@ export function buildTimeline(input: BuildInput): Timeline {
           // Clean studio background: blurred unrelated footage behind the capture distracted from it.
           backgroundSrc: null,
           captureId: capture.id,
+          belowHeadline: Boolean(scene.headline) && scene.phase !== 'cta',
           // A public page (prices…) always shows where and when it was captured.
           stamp:
             capture.source === 'public-page' && capture.sourceUrl

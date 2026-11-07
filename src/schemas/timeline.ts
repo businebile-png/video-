@@ -118,6 +118,8 @@ export interface CaptureShot extends ShotBase {
   captureId: string;
   /** Source and date shown in the window bar for a public page ("systeme.io/fr/pricing · capture du 06/11/2026"). */
   stamp?: string;
+  /** The scene shows a headline above the window: the window starts lower so a two-line headline never covers it. */
+  belowHeadline?: boolean;
 }
 
 export type Shot = FootageShot | CaptureShot;

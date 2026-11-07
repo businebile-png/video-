@@ -9,8 +9,11 @@ export function coverTimeSec(t: Timeline): number {
   const head = t.headlines[0];
   // An opening that is complete on image 0 (headline and first shot): the cover is that image, before any
   // caption appears — never a half sentence.
-  const firstCaption = t.captions[0]?.from ?? Number.POSITIVE_INFINITY;
-  if (head && head.from === 0 && firstCaption >= 2) return Math.round((1 / t.fps) * 100) / 100;
+  // A caption is still invisible on the first image of its group (it springs in from there).
+  if (head && head.from === 0) {
+    const firstCaption = t.captions[0]?.from ?? 1;
+    return Math.round((Math.min(1, firstCaption) / t.fps) * 100) / 100;
+  }
   // Headline words rise one after another (2 frames apart) and settle in about 18 frames.
   const settled = head ? head.from + 2 * head.text.split(' ').filter(Boolean).length + 18 : Math.round(0.6 * t.fps);
   for (const g of t.captions) {
