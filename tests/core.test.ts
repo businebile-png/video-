@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {extractNumbers, normalize, similarity, wordErrorRate} from '../src/core/text.js';
 import {formatWithOffset, zonedInstant} from '../src/core/time.js';
 import {affiliateLinkProblems} from '../src/core/config.js';
-import {alignmentToWords, displayWords, mapToDisplay, prepareSpeech, spokenForm} from '../src/voice/speech.js';
+import {alignmentToWords, displayWords, mapToDisplay, numberInFrench, prepareSpeech, spokenForm} from '../src/voice/speech.js';
 import {normalizeDocs} from '../src/panel/panel.js';
 import {cropFilter} from '../src/edit/edit-step.js';
 import {freeSlots, nextSlots, postText} from '../src/publish/publish.js';
@@ -83,8 +83,19 @@ describe('voix et sous-titres', () => {
   it('prononce les marques et les montants correctement', () => {
     const pron = {'Systeme.io': 'Système I O'};
     expect(spokenForm('Systeme.io ?', pron)).toEqual(['Système', 'I', 'O?']);
-    expect(spokenForm('17 $', pron)).toEqual(['17', 'dollars']);
-    expect(spokenForm('60%', pron)).toEqual(['60', 'pour', 'cent']);
+    // Numbers in words: the synthetic voice once said « 907 » for « 97 € ».
+    expect(spokenForm('17 $', pron)).toEqual(['dix-sept', 'dollars']);
+    expect(spokenForm('97 €,', pron)).toEqual(['quatre-vingt-dix-sept', 'euros,']);
+    expect(spokenForm('60%', pron)).toEqual(['soixante', 'pour', 'cent']);
+  });
+  it('écrit les nombres en français', () => {
+    const cases: Array<[number, string]> = [[21, 'vingt-et-un'], [71, 'soixante-et-onze'], [80, 'quatre-vingts'], [97, 'quatre-vingt-dix-sept'],
+      [200, 'deux-cents'], [2000, 'deux-mille'], [2500, 'deux-mille-cinq-cents'], [80000, 'quatre-vingt-mille'], [200000, 'deux-cent-mille']];
+    for (const [n, w] of cases) expect(numberInFrench(n)).toBe(w);
+  });
+  it('dit « 2 000 » en un seul nombre même écrit en deux mots', () => {
+    const script = sampleScript({scenes: [{...sampleScript().scenes[0]!, voiceover: 'Jusqu’à 2 000 contacts, puis 5 000 €.'}]});
+    expect(prepareSpeech(script, {}, ' ').text).toContain('deux-mille contacts, puis cinq-mille euros.');
   });
   it('recolle le minutage de la synthèse sur les mots affichés', () => {
     const script = sampleScript();

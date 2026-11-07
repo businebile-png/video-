@@ -38,7 +38,52 @@ function core(word: string): {lead: string; body: string; trail: string} {
   return {lead: m?.[1] ?? '', body: m?.[2] ?? word, trail: m?.[3] ?? ''};
 }
 
-/** How a display word should be pronounced (brand names, currencies, acronyms). */
+const UNITS = ['zéro', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize'];
+const TENS = ['', 'dix', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante'];
+
+function below100(n: number, plural = true): string {
+  if (n < 17) return UNITS[n]!;
+  if (n < 20) return `dix-${UNITS[n - 10]}`;
+  if (n < 70) {
+    const u = n % 10;
+    return TENS[Math.floor(n / 10)]! + (u === 0 ? '' : u === 1 ? '-et-un' : `-${UNITS[u]}`);
+  }
+  if (n < 80) return n === 71 ? 'soixante-et-onze' : `soixante-${below100(n - 60)}`;
+  return n === 80 ? (plural ? 'quatre-vingts' : 'quatre-vingt') : `quatre-vingt-${below100(n - 80)}`;
+}
+
+/** `plural` = false before « mille » (« quatre-vingt-mille », « deux-cent-mille »). */
+function below1000(n: number, plural = true): string {
+  const h = Math.floor(n / 100);
+  const r = n % 100;
+  if (h === 0) return below100(r, plural);
+  const head = h === 1 ? 'cent' : `${UNITS[h]}-cent${r === 0 && plural ? 's' : ''}`;
+  return r === 0 ? head : `${head}-${below100(r, plural)}`;
+}
+
+/** A whole number in French words ("97" → "quatre-vingt-dix-sept"): the synthetic voice never misreads digits. */
+export function numberInFrench(n: number): string {
+  if (!Number.isInteger(n) || n < 0 || n >= 1_000_000_000) return String(n);
+  if (n < 1000) return below1000(n);
+  if (n < 1_000_000) {
+    const k = Math.floor(n / 1000);
+    const r = n % 1000;
+    const head = k === 1 ? 'mille' : `${below1000(k, false)}-mille`;
+    return r === 0 ? head : `${head}-${below1000(r)}`;
+  }
+  const m = Math.floor(n / 1_000_000);
+  const r = n % 1_000_000;
+  const head = `${below1000(m)} million${m > 1 ? 's' : ''}`;
+  return r === 0 ? head : `${head} ${numberInFrench(r)}`;
+}
+
+/** "2 000", "17", "500" (thin or plain spaces between thousands) → the number, or null. */
+function wholeNumber(text: string): number | null {
+  if (!/^\d{1,3}(?:[\u202f\u00a0 ]\d{3})*$|^\d+$/.test(text)) return null;
+  return Number(text.replace(/[^0-9]/g, ''));
+}
+
+/** How a display word should be pronounced (brand names, currencies, numbers in words, acronyms). */
 export function spokenForm(word: string, pronunciations: Record<string, string>): string[] {
   const {body, trail} = core(word);
   const lower = body.toLowerCase();
@@ -46,8 +91,13 @@ export function spokenForm(word: string, pronunciations: Record<string, string>)
   let spoken: string;
   if (hit) spoken = hit[1];
   else {
-    const money = body.match(/^(\d+(?:[.,]\d+)?)(?:\u202f|\s)?(€|\$)$/);
-    if (money) spoken = `${money[1]} ${money[2] === '€' ? 'euros' : 'dollars'}`;
+    const money = body.match(/^(\d{1,3}(?:[\u202f\u00a0 ]\d{3})*|\d+)([.,]\d+)?(?:\u202f|\u00a0|\s)?(€|\$)$/);
+    const whole = wholeNumber(body);
+    if (money) {
+      const n = wholeNumber(money[1]!);
+      const amount = n !== null && !money[2] ? numberInFrench(n) : `${money[1]}${money[2] ?? ''}`;
+      spoken = `${amount} ${money[3] === '€' ? 'euros' : 'dollars'}`;
+    } else if (whole !== null) spoken = numberInFrench(whole);
     else if (body === '€') spoken = 'euros';
     else if (body === '$') spoken = 'dollars';
     else spoken = body;
@@ -74,12 +124,31 @@ export function prepareSpeech(script: Script, pronunciations: Record<string, str
   let index = 0;
   for (const scene of script.scenes) {
     const words = displayWords(scene.voiceover);
+    const spokenList = words.map((w) => spokenForm(w, pronunciations));
+    // "2 000" written with a plain space is two display words: say the whole number once ("deux-mille")
+    // on the first one, and only the currency or punctuation that follows on the second.
+    for (let i = 0; i + 1 < words.length; i++) {
+      const a = core(words[i]!);
+      const b = core(words[i + 1]!);
+      const group = b.body.match(/^(\d{3})(?:[\u202f\u00a0 ]?(€|\$))?$/);
+      if (!/^\d{1,3}$/.test(a.body) || a.trail.trim() || !group) continue;
+      const amount = numberInFrench(Number(a.body) * 1000 + Number(group[1]));
+      const tail = b.trail.replace(/[\u202f\s]/g, '');
+      if (group[2]) {
+        spokenList[i] = [amount];
+        spokenList[i + 1] = [`${group[2] === '€' ? 'euros' : 'dollars'}${tail}`];
+      } else {
+        spokenList[i] = [`${amount}${tail}`];
+        spokenList[i + 1] = [];
+      }
+      i++;
+    }
     const spokenScene: string[] = [];
-    for (const w of words) {
-      const spoken = spokenForm(w, pronunciations);
+    words.forEach((w, i) => {
+      const spoken = spokenList[i]!;
       tokens.push({display: w, spoken, sceneId: scene.id, index: index++});
       spokenScene.push(...spoken);
-    }
+    });
     parts.push(spokenScene.join(' '));
   }
   return {text: parts.join(sceneBreak), tokens};
@@ -282,14 +351,22 @@ export interface PronunciationCheck {
  * written form or its spoken respelling ("e-mails" spoken "i-mèles") counts as correct, and amounts
  * or homophones written differently ("deux mille" / "2000", "dix" / "dit") are not errors.
  */
+/** How a transcript writes a display word that holds digits ("17 €" → "17 euros"), to compare with what was heard. */
+function digitForm(display: string): string {
+  const {body} = core(display);
+  const money = body.match(/^([\d\u202f\u00a0 .,]+?)(?:\u202f|\u00a0|\s)?(€|\$)$/);
+  if (money) return `${money[1]!.replace(/[\u202f\u00a0 ]/g, '')} ${money[2] === '€' ? 'euros' : 'dollars'}`;
+  return body;
+}
+
 export function pronunciationCheck(tokens: Token[], heardText: string): PronunciationCheck {
   const words = (text: string) => normalize(text).split(' ').filter(Boolean);
   const forms = (text: string) => words(text).map(heardForm).join('');
   const ref = tokens
     .map((t) => {
-      const variants = [words(t.display), words(t.spoken.join(' '))].filter((v) => v.length > 0);
+      const variants = [words(t.display), words(t.spoken.join(' ')), words(digitForm(t.display))].filter((v) => v.length > 0);
       const unique = [...new Map(variants.map((v) => [v.join(' '), v])).values()];
-      return {display: core(t.display).body, alts: [...new Set([forms(t.display), forms(t.spoken.join(' '))].filter(Boolean))], variants: unique};
+      return {display: core(t.display).body, alts: [...new Set([forms(t.display), forms(t.spoken.join(' ')), forms(digitForm(t.display))].filter(Boolean))], variants: unique};
     })
     .filter((r) => r.alts.length > 0);
   const hyp = words(heardText);
