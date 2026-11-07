@@ -277,7 +277,7 @@ const VIEWS = ['demarrage', 'a-valider', 'videos', 'statistiques', 'idees', 'reg
 const STATUS = {
   a_valider: ['Prête à diffuser', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
   correction: ['Correction demandée', 'info'], programmee: ['Programmée', 'info'], publiee: ['Publiée', 'ok'],
-  refusee: ['Refusée', ''], echec: ['Échec de production', 'bad'],
+  refusee: ['Refusée', ''], echec: ['Échec de production', 'bad'], en_relecture: ['En relecture', 'info'],
 };
 const PHASES = {hook: 'Accroche', problem: 'Problème', agitation: 'Enjeu', solution: 'Solution', demo: 'Démonstration', benefits: 'Bénéfices', proof: 'Preuve', objection: 'Objection', cta: 'Appel à l’action'};
 const NETS = {tiktok: 'TikTok', instagram: 'Instagram'};
@@ -576,7 +576,7 @@ function actionsBlock(v) {
     row.append(h('button', {class: 'btn', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'correct'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Demander une correction'}));
     row.append(h('button', {class: 'btn danger', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'refuse'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Refuser'}));
     box.append(row);
-    if (!canValidate) box.append(h('div', {class: 'hint', text: v.status === 'bloquee' ? 'Validation impossible : un contrôle obligatoire a échoué (voir la liste). Demandez une correction.' : 'Note sous 90/100 : demandez une correction, ou validez en connaissance de cause si la note est entre 85 et 89.'}));
+    if (!canValidate) box.append(h('div', {class: 'hint', text: v.status === 'en_relecture' ? 'Relecture indépendante en cours : la note sur 100 arrive dans quelques minutes, la validation s’activera alors (dès 90/100).' : v.status === 'bloquee' ? 'Validation impossible : un contrôle obligatoire a échoué (voir la liste). Demandez une correction.' : 'Note sous 90/100 : demandez une correction, ou validez en connaissance de cause si la note est entre 85 et 89.'}));
     return box;
   }
   if (mode === 'validate') {
@@ -668,7 +668,7 @@ function renderPending() {
     : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
-  const list = S.videos.filter((v) => ['a_valider', 'a_ameliorer', 'bloquee'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
+  const list = S.videos.filter((v) => ['a_valider', 'a_ameliorer', 'bloquee', 'en_relecture'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
   const flash = document.getElementById('flash') || h('div', {id: 'flash'});
   flash.replaceChildren(...(S.ui.flash ? [h('div', {class: 'result ' + S.ui.flash.tone, style: 'margin-bottom:16px', text: S.ui.flash.text})] : []));
   if (box.firstChild !== flash) box.prepend(flash);
