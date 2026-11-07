@@ -402,13 +402,14 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
 }
 
 function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: number) {
+  // Zones of this capture, with their index in the script (for the script's own label text).
   const regions = scene.visual.focusRegionIds
-    .map((id) => capture.focusRegions.find((r) => r.id === id))
-    .filter((r): r is NonNullable<typeof r> => Boolean(r));
+    .map((id, k) => ({r: capture.focusRegions.find((x) => x.id === id), k}))
+    .filter((e): e is {r: NonNullable<typeof e.r>; k: number} => Boolean(e.r));
   const keyframes: CaptureShot['keyframes'] = [{at: 0, focus: null}];
   const highlights: CaptureShot['highlights'] = [];
   let after = -1;
-  regions.forEach((r, i) => {
+  regions.forEach(({r, k}, i) => {
     // The camera moves on the first word that names the zone: its label or one of its cues ("5 000" for Startup).
     const hits = [findSpokenTime(r.label, span.words, after), ...(r.cues ?? []).map((c) => findCueTime(c, span.words, after))].filter(
       (h): h is {time: number; index: number} => h !== null,
@@ -420,7 +421,7 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
     const at = Math.min(durationF - 20, Math.max(12, toF(atSec)));
     const region: Region = {x: r.x, y: r.y, w: r.w, h: r.h};
     keyframes.push({at, focus: region});
-    highlights.push({from: at + 10, duration: 0, region, label: scene.visual.focusLabels?.[i] ?? r.label});
+    highlights.push({from: at + 10, duration: 0, region, label: scene.visual.focusLabels?.[k] ?? r.label});
   });
   highlights.forEach((h, i) => {
     const nextAt = keyframes[i + 2]?.at ?? durationF;
@@ -539,39 +540,58 @@ export function buildTimeline(input: BuildInput): Timeline {
     const sceneTo = toF(span.endSec);
     const target = TARGET_SHOT[ad.motion.pacing][scene.phase];
 
-    if (scene.visual.kind === 'demo' && scene.visual.captureId) {
-      const capture = input.captures.find((c) => c.id === scene.visual.captureId);
-      if (!capture) throw new Error(`Capture introuvable : ${scene.visual.captureId} (scène ${scene.id}).`);
-      const maxF = capture.type === 'video' && capture.durationSec ? toF(capture.durationSec) : Number.POSITIVE_INFINITY;
-      const durF = Math.min(sceneTo - sceneFrom, maxF);
-      const plan = focusPlan(capture, scene, span, durF);
-      shots.push({
-        kind: 'capture',
-        id: `shot-${++shotCounter}`,
-        sceneId: scene.id,
-        from: sceneFrom,
-        duration: durF,
-        transitionIn: 'cut',
-        transitionOut: 'cut',
-        src: `capture-${capture.id}${capture.file.slice(capture.file.lastIndexOf('.'))}`,
-        mediaType: capture.type,
-        width: capture.width,
-        height: capture.height,
-        keyframes: plan.keyframes,
-        highlights: plan.highlights,
-        // Clean studio background: blurred unrelated footage behind the capture distracted from it.
-        backgroundSrc: null,
-        captureId: capture.id,
-        // A public page (prices…) always shows where and when it was captured.
-        stamp:
-          capture.source === 'public-page' && capture.sourceUrl
-            ? `${capture.sourceUrl.replace(/^https?:\/\//, '')} · capture du ${capture.capturedAt.slice(8, 10)}/${capture.capturedAt.slice(5, 7)}/${capture.capturedAt.slice(0, 4)}`
-            : undefined,
+    const demoIds = scene.visual.captureIds?.length ? scene.visual.captureIds : scene.visual.captureId ? [scene.visual.captureId] : [];
+    if (scene.visual.kind === 'demo' && demoIds.length) {
+      const caps = demoIds.map((id) => {
+        const c = input.captures.find((x) => x.id === id);
+        if (!c) throw new Error(`Capture introuvable : ${id} (scène ${scene.id}).`);
+        return c;
       });
-      if (durF < sceneTo - sceneFrom) {
-        // The recording is shorter than the narration: finish the scene on real footage.
-        pushFootage(span, (sceneFrom + durF) / FPS, span.endSec, {layer: 'full', intensity: 0.7});
-      }
+      // Several captures play one after the other, each from the word that names it (evenly spaced otherwise).
+      const starts = caps.map((_, i) => {
+        if (i === 0) return span.startSec;
+        const cue = scene.visual.captureCues?.[i];
+        const hit = cue ? findCueTime(cue, span.words) ?? findSpokenTime(cue, span.words) : null;
+        return hit ? hit.time - 0.12 : span.startSec + (i * (span.endSec - span.startSec)) / caps.length;
+      });
+      for (let i = 1; i < starts.length; i++) starts[i] = Math.min(span.endSec - 0.6, Math.max(starts[i]!, starts[i - 1]! + 0.8));
+      caps.forEach((capture, i) => {
+        const segStart = starts[i]!;
+        const segEnd = i + 1 < caps.length ? starts[i + 1]! : span.endSec;
+        const fromF = toF(segStart) === toF(span.startSec) ? sceneFrom : toF(segStart);
+        const endF = i + 1 < caps.length ? toF(starts[i + 1]!) : sceneTo;
+        const maxF = capture.type === 'video' && capture.durationSec ? toF(capture.durationSec) : Number.POSITIVE_INFINITY;
+        const durF = Math.min(endF - fromF, maxF);
+        const segSpan: SceneSpan = {...span, startSec: segStart, endSec: segEnd, words: span.words.filter((w) => w.start >= segStart - 0.05 && w.start < segEnd)};
+        const plan = focusPlan(capture, scene, segSpan, durF);
+        shots.push({
+          kind: 'capture',
+          id: `shot-${++shotCounter}`,
+          sceneId: scene.id,
+          from: fromF,
+          duration: durF,
+          transitionIn: 'cut',
+          transitionOut: 'cut',
+          src: `capture-${capture.id}${capture.file.slice(capture.file.lastIndexOf('.'))}`,
+          mediaType: capture.type,
+          width: capture.width,
+          height: capture.height,
+          keyframes: plan.keyframes,
+          highlights: plan.highlights,
+          // Clean studio background: blurred unrelated footage behind the capture distracted from it.
+          backgroundSrc: null,
+          captureId: capture.id,
+          // A public page (prices…) always shows where and when it was captured.
+          stamp:
+            capture.source === 'public-page' && capture.sourceUrl
+              ? `${capture.sourceUrl.replace(/^https?:\/\//, '')} · capture du ${capture.capturedAt.slice(8, 10)}/${capture.capturedAt.slice(5, 7)}/${capture.capturedAt.slice(0, 4)}`
+              : undefined,
+        });
+        if (durF < endF - fromF) {
+          // The recording is shorter than the narration: finish its part of the scene on real footage.
+          pushFootage(span, (fromF + durF) / FPS, endF / FPS, {layer: 'full', intensity: 0.7});
+        }
+      });
     } else if (scene.visual.kind === 'graphic' || scene.phase === 'cta') {
       const own = input.clipsByScene[scene.id] ?? [];
       const bgFrom = span === ctaSpan ? cardSec : span.startSec;

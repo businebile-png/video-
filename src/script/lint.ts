@@ -298,12 +298,14 @@ export function lintScript(script: Script, ctx: LintContext): LintResult {
       }
     }
     if (scene.visual.kind === 'demo') {
-      const cap = ctx.captures.find((c) => c.id === scene.visual.captureId);
-      if (!cap) err('demo', scene.id, `capture réelle introuvable : ${scene.visual.captureId ?? '(aucune)'} — ne jamais inventer d’interface`);
+      const ids = scene.visual.captureIds?.length ? scene.visual.captureIds : [scene.visual.captureId];
+      const caps = ids.map((id) => ctx.captures.find((c) => c.id === id));
+      const missing = ids.filter((_, i) => !caps[i]);
+      if (missing.length) err('demo', scene.id, `capture réelle introuvable : ${missing.map((m) => m ?? '(aucune)').join(', ')} — ne jamais inventer d’interface`);
       else {
-        if (!cap.personalDataChecked) err('demo', scene.id, `capture ${cap.id} : absence de données personnelles non confirmée`);
+        for (const cap of caps) if (cap && !cap.personalDataChecked) err('demo', scene.id, `capture ${cap.id} : absence de données personnelles non confirmée`);
         for (const fid of scene.visual.focusRegionIds) {
-          if (!cap.focusRegions.some((r) => r.id === fid)) err('demo', scene.id, `zone « ${fid} » absente de la capture ${cap.id}`);
+          if (!caps.some((cap) => cap?.focusRegions.some((r) => r.id === fid))) err('demo', scene.id, `zone « ${fid} » absente des captures ${ids.join(', ')}`);
         }
       }
     }

@@ -98,6 +98,31 @@ describe('montage', () => {
     expect(findCueTime('50', words)).toBeNull();
   });
 
+  it('enchaîne plusieurs captures réelles dans une scène, chacune sur le mot qui la nomme', async () => {
+    const config = await loadConfig();
+    const words = fakeWords();
+    const cap = (id: string, regionId: string) => ({
+      id, file: `${id}.png`, type: 'image' as const, feature: 'funnels', title: id, description: id, capturedAt: '2026-11-07T10:00:00.000Z',
+      source: 'user-screenshot' as const, width: 1600, height: 1000, personalDataChecked: true,
+      focusRegions: [{id: regionId, x: 0.1, y: 0.1, w: 0.3, h: 0.3, label: regionId}],
+    });
+    const base = sampleScript();
+    const script = sampleScript({
+      scenes: base.scenes.map((s) =>
+        s.id === 's3'
+          ? {...s, visual: {...s.visual, kind: 'demo' as const, captureIds: ['page', 'mail'], captureCues: ['Systeme.io', 'endroit'], focusRegionIds: ['bloc', 'objet']}}
+          : s,
+      ),
+    });
+    const timeline = buildTimeline({runId: 'r', script, words, voiceDurationSec: 25, voiceSrc: 'voice.wav', clipsByScene: clips(), captures: [cap('page', 'bloc'), cap('mail', 'objet')] as never, music: null, ad: ART_DIRECTIONS[0]!, config, facts: [], seed: 1});
+    const shots = timeline.shots.filter((s) => s.sceneId === 's3');
+    expect(shots.map((s) => (s.kind === 'capture' ? s.captureId : s.kind))).toEqual(['page', 'mail']);
+    const [a, b] = shots as Array<{from: number; duration: number}>;
+    expect(a!.from + a!.duration).toBe(b!.from);
+    const endroit = words.find((w) => w.text.startsWith('endroit'))!;
+    expect(Math.abs(b!.from / 30 - endroit.start)).toBeLessThan(0.2);
+  });
+
   it('mesure l’agrandissement nécessaire', () => {
     const move = makeMove('push-in', 2, 1, 0);
     expect(upscaleOf({width: 3840, height: 2160}, move)).toBeLessThan(1);

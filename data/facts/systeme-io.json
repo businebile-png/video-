@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-06T17:24:13.750Z",
+  "updatedAt": "2026-11-07T17:02:56.749Z",
   "facts": [
     {
       "id": "feature.funnels",
@@ -579,10 +579,10 @@
       ],
       "sourceId": "pricing",
       "evidence": "Élèves 500 Illimité Illimité Illimité",
-      "status": "verified",
+      "status": "refuted",
       "verifiedAt": "2026-11-06T17:23:30.218Z",
       "ttlDays": 7,
-      "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
+      "notes": "Contradiction sur la même page officielle (copie du 06/11/2026) : le tableau « Comparer les plans » indique « Élèves 500 Illimité Illimité Illimité », mais la section « Tous les plans incluent » affiche « Nombre d'élèves illimité ». Limite non univoque : ne pas l'utiliser tant que Systeme.io ne l'a pas clarifiée (signalé par la relecture indépendante du 07/11/2026)."
     },
     {
       "id": "plan.table.courses",

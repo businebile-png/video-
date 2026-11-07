@@ -62,6 +62,10 @@ export const SceneSchema = z.object({
     shotIdeas: z.array(z.string()).max(4).default([]),
     mood: z.string().max(40).optional(),
     captureId: z.string().optional(),
+    /** Several real captures shown one after the other (e.g. page editor, e-mail, course), each on its cue. */
+    captureIds: z.array(z.string()).min(2).max(3).optional(),
+    /** Word of the voice-over on which each capture of `captureIds` appears (the first one opens the scene). */
+    captureCues: z.array(z.string().min(2).max(40)).max(3).optional(),
     // One zone per thing the voice names ("0 € sans carte", "3 tunnels", "10 tunnels", "17 €"): at most four moves.
     focusRegionIds: z.array(z.string()).max(4).default([]),
     /** Text of each zone's label pill when it should say what the voice says ("1 formation · 500 élèves"); a verified fact. */

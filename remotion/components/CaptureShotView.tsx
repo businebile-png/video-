@@ -4,7 +4,8 @@ import type {ArtDirection, CaptureShot, Region} from '../../src/schemas/timeline
 import {clamp, easeInOut, pop} from '../lib/anim';
 import {fontStack} from '../fonts';
 
-const CARD_W = 940;
+// Never wider than the safe area (TikTok and Instagram draw their buttons on the right).
+const CARD_W = 860;
 const CARD_MAX_H = 780;
 const CARD_TOP = 420;
 const BAR_H = 44;

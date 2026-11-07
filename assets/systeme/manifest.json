@@ -111,6 +111,46 @@
         }
       ],
       "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-formations",
+      "file": "tarifs-formations.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Tableau officiel : formations par formule",
+      "description": "Ligne « Formations » du tableau « Comparer les plans » (colonnes Gratuit puis Startup), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
+      "capturedAt": "2026-11-06T17:23:30.218Z",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 720,
+      "height": 470,
+      "focusRegions": [
+        {
+          "id": "formations-gratuit",
+          "x": 0.0194,
+          "y": 0.6638,
+          "w": 0.5778,
+          "h": 0.2979,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit",
+            "une formation"
+          ]
+        },
+        {
+          "id": "formations-startup",
+          "x": 0.5,
+          "y": 0.8596,
+          "w": 0.4028,
+          "h": 0.1021,
+          "label": "Startup",
+          "cues": [
+            "Startup",
+            "cinq"
+          ]
+        }
+      ],
+      "personalDataChecked": true
     }
   ]
 }
