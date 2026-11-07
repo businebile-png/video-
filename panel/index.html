@@ -225,7 +225,7 @@ a.btn { text-decoration: none; display: inline-block; }
 
   <section class="view" id="view-a-valider" hidden>
     <div class="viewhead">
-      <div><h2>À valider</h2><p>Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.</p></div>
+      <div><h2>À valider</h2><p id="pending-intro">Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.</p></div>
     </div>
     <div id="pending"></div>
   </section>
@@ -383,9 +383,34 @@ function mcpMessage(err, server) {
 }
 function deepFind(obj, key) {
   if (!obj || typeof obj !== 'object') return null;
-  if (Object.prototype.hasOwnProperty.call(obj, key) && (typeof obj[key] === 'string' || typeof obj[key] === 'number')) return String(obj[key]);
+  if (Object.prototype.hasOwnProperty.call(obj, key) && ['string', 'number', 'boolean'].includes(typeof obj[key])) return String(obj[key]);
   for (const v of Object.values(obj)) { const r = deepFind(v, key); if (r) return r; }
   return null;
+}
+// A tool result as data: its payload, or the JSON carried in its text (MCP content blocks, plain string).
+function toolJson(res) {
+  const p = res && res.payload !== undefined ? res.payload : res;
+  const parse = (t) => {
+    const str = String(t), a = str.indexOf('{'), b = str.lastIndexOf('}');
+    if (a < 0 || b <= a) return null;
+    try { return JSON.parse(str.slice(a, b + 1)); } catch (e) { return null; }
+  };
+  if (typeof p === 'string') return parse(p) || p;
+  if (p && Array.isArray(p.content)) for (const c of p.content) { if (c && c.type === 'text') { const j = parse(c.text); if (j) return j; } }
+  return p;
+}
+// "CRON_TZ=Europe/Paris 17 6 * * *" -> "6 h 17"
+function cronLabel(cron) {
+  const parts = String(cron || '').split(' ').filter(Boolean);
+  const f = parts[0] && parts[0].startsWith('CRON_TZ=') ? parts.slice(1) : parts;
+  const m = Number(f[0]), hh = Number(f[1]);
+  return f.length >= 2 && Number.isInteger(m) && Number.isInteger(hh) ? hh + ' h ' + String(m).padStart(2, '0') : null;
+}
+// Publication hours of the enabled networks, e.g. "12:00".
+function postTimesLabel(st) {
+  const pf = (st && st.platforms) || {};
+  const times = [...new Set(Object.values(pf).filter((x) => x && x.enabled).flatMap((x) => x.postTimes || []))].sort();
+  return times.length ? times.join(', ') : null;
 }
 function readMetricool(payload) {
   if (typeof payload === 'string') {
@@ -632,6 +657,10 @@ function deskContent(v) {
 const sheets = new Map();
 function renderPending() {
   const box = document.getElementById('pending');
+  const intro = document.getElementById('pending-intro');
+  if (intro) intro.textContent = S.settings && S.settings.approval === 'auto'
+    ? `Chaque matin, la production quotidienne prépare la vidéo du jour et la note sur 100. À partir de 90/100, avec tous les contrôles validés, elle est programmée automatiquement dans Metricool${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est refaite. Vous suivez tout ici et pouvez aussi programmer vous-même.`
+    : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
   const list = S.videos.filter((v) => ['a_valider', 'a_ameliorer', 'bloquee'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
@@ -866,7 +895,7 @@ function sdraft() {
 async function loadTrigger(force) {
   const id = S.settings && S.settings.triggerId;
   if (!id || !S.mcp || (S.ui.trigger && !force)) return;
-  try { const r = await S.mcp.callTool(CCR, 'get_trigger', {trigger_id: id}); const p = r.payload !== undefined ? r.payload : r; S.ui.trigger = {enabled: deepFind(p, 'enabled'), next: deepFind(p, 'next_run_at'), cron: deepFind(p, 'cron_expression')}; }
+  try { const r = await S.mcp.callTool(CCR, 'get_trigger', {trigger_id: id}); const p = toolJson(r); S.ui.trigger = {enabled: deepFind(p, 'enabled'), next: deepFind(p, 'next_run_at'), cron: deepFind(p, 'cron_expression')}; }
   catch (err) { S.ui.trigger = {error: mcpMessage(err, CCR)}; }
   if (S.ui.view === 'reglages') renderSettings();
 }
@@ -927,10 +956,10 @@ function renderSettings() {
   if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois la clé de séquences vidéo (Pixabay) et le lien affilié en place.'}));
   else {
     const t = S.ui.trigger;
-    prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${t.next ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
+    prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${cronLabel(t.cron) ? ' · chaque jour vers ' + cronLabel(t.cron) : ''}${t.next && t.enabled === 'true' ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
     prod.append(h('div', {class: 'actions'},
       h('button', {class: 'btn', disabled: ro || !t || t.error, onclick: () => setTrigger(!(t && t.enabled === 'true')), text: t && t.enabled === 'true' ? 'Mettre en pause' : 'Activer'}),
-      h('button', {class: 'btn primary', disabled: ro, onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: 'Lancer une production maintenant'})));
+      h('button', {class: 'btn primary', disabled: ro || !S.mcp, onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: 'Lancer une production maintenant'})));
   }
   if (S.ui.triggerMsg) prod.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
 
@@ -989,7 +1018,12 @@ function setupSteps() {
       how: S.voices.length ? ['Écoutez l’essai avec le son dans Réglages → Voix off, puis approuvez-le.'] : ['L’essai arrive au prochain passage de la production.'],
       goto: S.voices.length ? ['reglages', 'Écouter les voix'] : null},
     {key: 'daily', state: t && t.enabled === 'true' ? 'done' : 'todo', title: 'Activer la production quotidienne',
-      why: 'Chaque matin vers 7 h 45, la vidéo du jour arrive dans « À valider » ; vous la programmez d’un clic.',
+      why: (() => {
+        const at = t && cronLabel(t.cron), times = postTimesLabel(st);
+        return st.approval === 'auto'
+          ? `Chaque matin${at ? ' vers ' + at : ''}, la vidéo du jour est produite et notée ; à partir de 90/100, elle est programmée automatiquement${times ? ' à ' + times : ''} sur vos réseaux.`
+          : `Chaque matin${at ? ' vers ' + at : ''}, la vidéo du jour arrive dans « À valider » ; vous la programmez d’un clic.`;
+      })(),
       how: [keysOk && linkOk ? 'Tout est prêt : activez-la ci-dessous, ou lancez une première production tout de suite.' : 'À activer une fois les étapes précédentes faites (sinon elle s’arrêterait faute de clés).'],
       daily: true},
   ];
@@ -1043,7 +1077,7 @@ function renderSetup() {
       h('li', {text: `${setup.factsVerified ?? '–'} faits vérifiés mot pour mot sur systeme.io (fonctionnalités, plan gratuit, frais, lien affilié).` + (setup.pricesVerified ? '' : ' Les prix des formules restent à confirmer : aucune vidéo ne les citera d’ici là.')}),
       h('li', {text: 'Voix off française gratuite installée automatiquement, prononciation vérifiée par transcription à chaque vidéo.'}),
       h('li', {text: 'Environnement « Studio vidéo businebile » : accès à Pixabay, systeme.io et GitHub déjà ouvert.'}),
-      h('li', {text: 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool d’un clic : prêts.'}),
+      h('li', {text: st.approval === 'auto' ? 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool automatique : prêts.' : 'Panneau, contrôle qualité sur 100, mention « Publicité », programmation Metricool d’un clic : prêts.'}),
       h('li', {text: setup.capturesCount ? `${setup.capturesCount} capture(s) réelle(s) de Systeme.io disponibles pour les démonstrations.` : 'Facultatif : enregistrez quelques captures d’écran vidéo de votre compte Systeme.io pour des démonstrations à l’écran.'})));
 
   const flow = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Ce qui se passe chaque jour'}),
@@ -1054,13 +1088,13 @@ function renderSetup() {
       ['4. Images', 'Vraies séquences vidéo (Pixabay) choisies plan par plan.'],
       ['5. Montage', 'Sous-titres au mot, mention « Publicité », carte finale.'],
       ['6. Note /100', 'Relecture indépendante ; sous 90, la vidéo est refaite.'],
-      ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
+      st.approval === 'auto' ? ['7. Publication', 'À partir de 90/100, programmée automatiquement dans Metricool.'] : ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
       ['8. Résultats', 'Vues, clics, abonnements payants suivis dans Statistiques.'],
     ].map(([b, t]) => h('div', null, h('b', {text: b}), t))));
 
   const cost = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Coût : 0 €'}),
     h('div', {class: 'tablebox'}, h('table', null, h('tbody', null, ...[
-      ['Voix off (Kokoro, intégrée, sans compte)', '0 €'], ['Séquences vidéo (Pixabay)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
+      ['Voix off (Claire, intégrée, sans compte)', '0 €'], ['Séquences vidéo (Pixabay)', '0 €'], ['Publication (Metricool, votre plan actuel)', '0 €'], ['Montage, hébergement (Remotion, GitHub)', '0 €'], ['Écriture et relecture (votre abonnement Claude)', 'déjà inclus'],
     ].map(([a, b]) => h('tr', null, h('td', {text: a}), h('td', {class: 'num', text: b})))))));
 
   box.replaceChildren(h('div', {style: 'display:grid;gap:16px'}, prog, list, h('div', {class: 'grid2'}, extras, cost), flow));
@@ -1125,7 +1159,9 @@ async function start() {
     loadTrigger(false);
   }, () => { clearTimeout(st); S.loaded.settings = true; render(); });
   claude.use('user').then(async (u) => { S.user = u; if (u) { try { S.canEdit = await u.canEdit(); } catch (e) { S.canEdit = null; } } render(); });
-  claude.use('mcp').then((m) => { S.mcp = m; if (S.ui.view === 'reglages') loadTrigger(false); });
+  // Without connectors (panel opened outside claude.ai), say so instead of waiting for a task state that never comes.
+  const noMcp = () => { S.ui.trigger = {error: 'Les connecteurs ne sont pas disponibles dans cette vue : ouvrez le panneau sur claude.ai.'}; render(); };
+  claude.use('mcp').then((m) => { S.mcp = m; if (!m) return noMcp(); if (S.ui.view === 'reglages' || S.ui.view === 'demarrage') loadTrigger(false); }, noMcp);
 }
 
 route();
