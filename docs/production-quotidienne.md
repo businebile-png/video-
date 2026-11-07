@@ -93,6 +93,11 @@ Lire `runs/<runId>/plan.md` en entier.
 - **Objectif : l'abonnement payant.** Montrer concrètement ce que débloquent les formules payantes quand le sujet
   s'y prête, avec les faits tarifaires vérifiés ; appel à l'action avec une vraie raison de cliquer (comparer les
   formules, voir ce qui est inclus). Jamais « indispensable pour réussir », jamais de revenus promis, jamais d'urgence inventée.
+- **Consigne de l'utilisateur (07/11/2026)** : les vidéos servent à promouvoir l'application et ses différents
+  abonnements. Expliquer ce que fait chaque formule (Gratuit, Startup, Webinaire, Illimité) et son prix, en montrant
+  la carte correspondante sur la page officielle (zones `carte-gratuit`, `carte-startup`, `carte-webinaire`,
+  `carte-illimite`, et `cartes-toutes` pour l'ouverture) : la voix dit ce qu'on lit sur la carte, rien d'autre.
+  Le format « formules-payantes » s'y prête le mieux.
 - **Accroche** : l'idée tombe dans les 3 premières secondes, style différent des jours précédents.
 - **Écrire pour l'oreille** : français parlé, tutoiement, phrases de 8 à 16 mots, ponctuation aux respirations.
 - **Visuels** : 2 à 4 recherches de séquences en anglais par scène, concrètes et filmables. Scène `demo` seulement avec une
