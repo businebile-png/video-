@@ -8,7 +8,8 @@ Ce document résume les règles appliquées par le studio. Il ne remplace pas un
   commission d'affiliation, porte la mention « Publicité » ou « Collaboration commerciale », claire,
   lisible et identifiable **pendant toute la durée** de la promotion.
   → Badge « Publicité » visible de la première à la dernière image, et légende commençant par
-  « Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission, sans surcoût pour toi. »
+  « Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io. » (aucune source officielle ne parle de « surcoût » : on renvoie au prix public affiché,
+  vérifié par le studio)
 - **Pratiques commerciales trompeuses** : pas de promesse de gains, pas de résultat garanti, pas d'urgence
   inventée, pas de superlatif invérifiable, pas de faux témoignage, pas de prix ou de condition cachés.
   → Contrôleur automatique du script et des légendes (`src/script/lint.ts`), modifiable seulement par le code.
