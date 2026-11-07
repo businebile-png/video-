@@ -77,7 +77,10 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
             textWrap: 'balance',
           }}
         >
-          {card.subline}
+          {/* Options listed side by side in the script ("Gratuit : … · Startup : …") get one line each. */}
+          {card.subline.split(' · ').map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
         </div>
         {card.verifiedOn ? (
           <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: 600, fontSize: 28, color: ad.palette.muted, opacity: sub * 0.85}}>

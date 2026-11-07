@@ -98,27 +98,21 @@ function Steps({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; fra
   return (
     <>
       <Title text={g.title} ad={ad} frame={frame} fps={fps} />
-      <div style={{display: 'flex', flexDirection: 'column', gap: 22}}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 26}}>
         {g.steps.map((step, i) => {
           const at = item.revealAt[i] ?? 0;
           const s = pop(frame, fps, at);
+          const revealed = frame >= at;
           const active = i === current;
+          const dim = active || current < 0 ? 1 : 0.5;
           return (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 26,
-                opacity: s * (active || current < 0 ? 1 : 0.5),
-                transform: `translateY(${(1 - s) * 24}px)`,
-              }}
-            >
+            <div key={i} style={{display: 'flex', alignItems: 'center', gap: 26}}>
+              {/* The numbers wait, faint, from the start: the card announces a path instead of looking empty. */}
               <div
                 style={{
-                  flex: '0 0 64px',
-                  height: 64,
-                  borderRadius: 18,
+                  flex: '0 0 72px',
+                  height: 72,
+                  borderRadius: 20,
                   background: active ? ad.palette.accent : 'transparent',
                   border: `3px solid ${ad.palette.accent}`,
                   color: active ? ad.palette.accentInk : ad.palette.accent,
@@ -127,15 +121,17 @@ function Steps({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; fra
                   justifyContent: 'center',
                   fontFamily: fontStack(ad.fonts.display.family),
                   fontWeight: ad.fonts.display.weight,
-                  fontSize: 36,
+                  fontSize: 40,
+                  opacity: revealed ? dim : 0.3,
+                  transform: `scale(${revealed ? 0.9 + 0.1 * s : 0.9})`,
                 }}
               >
                 {i + 1}
               </div>
-              <div>
-                <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.display.weight, fontSize: 44, lineHeight: 1.12}}>{step.title}</div>
+              <div style={{opacity: s * dim, transform: `translateX(${(1 - s) * -24}px)`}}>
+                <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.display.weight, fontSize: 52, lineHeight: 1.1}}>{step.title}</div>
                 {step.detail ? (
-                  <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.text.weight, fontSize: 32, opacity: 0.75, marginTop: 6}}>
+                  <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.text.weight, fontSize: 34, opacity: 0.75, marginTop: 6}}>
                     {step.detail}
                   </div>
                 ) : null}

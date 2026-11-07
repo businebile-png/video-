@@ -192,7 +192,10 @@ export function findSpokenTime(phrase: string, words: VoiceWord[], afterIndex = 
     if (w.index <= afterIndex) continue;
     const wn = normalize(w.text);
     if (!wn) continue;
-    if (tokens.some((t) => wn === t || (wn.length >= 5 && t.length >= 5 && (wn.startsWith(t.slice(0, 5)) || t.startsWith(wn.slice(0, 5)))))) {
+    // "s'inscrit" normalizes to "s inscrit": its parts are compared too (French elisions).
+    const parts = [wn, ...wn.split(' ').filter((x) => x.length >= 4)];
+    const same = (a: string, t: string) => a === t || (a.length >= 5 && t.length >= 5 && (a.startsWith(t.slice(0, 5)) || t.startsWith(a.slice(0, 5))));
+    if (tokens.some((t) => parts.some((a) => same(a, t)))) {
       return {time: w.start, index: w.index};
     }
   }
@@ -524,9 +527,10 @@ export function buildTimeline(input: BuildInput): Timeline {
   };
 
   // The end card arrives with the last clause of the call to action ("… le lien est dans ma bio"):
-  // before it, the CTA's own shot plays sharp under the captions, so the close is not a still card.
+  // before it, the CTA's own shot plays sharp under the captions, so the close is not a still card,
+  // and every word said before the link is captioned.
   const ctaSpan = spans.find((s) => s.scene.phase === 'cta') ?? spans[spans.length - 1]!;
-  const lienAt = findSpokenTime('formule', ctaSpan.words) ?? findSpokenTime('lien', ctaSpan.words);
+  const lienAt = findSpokenTime('lien', ctaSpan.words) ?? findSpokenTime('formule', ctaSpan.words);
   const cardSec = lienAt ? Math.max(ctaSpan.startSec, Math.min(ctaSpan.endSec - 2.2, lienAt.time - 0.2)) : ctaSpan.startSec;
 
   for (const span of spans) {

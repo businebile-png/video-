@@ -38,6 +38,53 @@
             "Startup",
             "17 €"
           ]
+        },
+        {
+          "id": "gratuit-prix",
+          "x": 0.045,
+          "y": 0.69,
+          "w": 0.205,
+          "h": 0.125,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit",
+            "carte"
+          ]
+        },
+        {
+          "id": "gratuit-tunnels",
+          "x": 0.045,
+          "y": 0.37,
+          "w": 0.205,
+          "h": 0.178,
+          "label": "Gratuit",
+          "cues": [
+            "3 tunnels",
+            "3"
+          ]
+        },
+        {
+          "id": "startup-tunnels",
+          "x": 0.285,
+          "y": 0.37,
+          "w": 0.205,
+          "h": 0.149,
+          "label": "Startup",
+          "cues": [
+            "Startup",
+            "10"
+          ]
+        },
+        {
+          "id": "startup-prix",
+          "x": 0.285,
+          "y": 0.601,
+          "w": 0.205,
+          "h": 0.179,
+          "label": "Startup",
+          "cues": [
+            "17 €"
+          ]
         }
       ],
       "personalDataChecked": true

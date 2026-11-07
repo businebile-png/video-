@@ -11,6 +11,24 @@ const BAR_H = 44;
 /** Horizontal centre of the safe area (TikTok's buttons sit on the right), shared with the captions. */
 const CENTER_X = 500;
 
+/**
+ * Slow push while the camera rests on a zone (0 → 1 over 2 s), eased back to 0 during the glide to the
+ * next zone: a long proof shot never freezes, and nothing jumps.
+ */
+function holdDrift(shot: CaptureShot, frame: number): number {
+  const kfs = shot.keyframes;
+  for (let i = kfs.length - 1; i >= 1; i--) {
+    const k = kfs[i]!;
+    if (frame < k.at || !k.focus) continue;
+    const next = kfs[i + 1];
+    const glideStart = next ? next.at - 18 : Number.POSITIVE_INFINITY;
+    const rise = (f: number) => Math.min(1, Math.max(0, f - k.at) / 60);
+    if (frame < glideStart) return rise(frame);
+    return rise(glideStart) * (1 - easeInOut(interpolate(frame, [glideStart, glideStart + 18], [0, 1], clamp)));
+  }
+  return 0;
+}
+
 /** Interpolated focus region at a frame (null = full view). */
 function focusAt(shot: CaptureShot, frame: number): Region {
   const full: Region = {x: 0, y: 0, w: 1, h: 1};
@@ -47,7 +65,9 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
 
   const f = focusAt(shot, frame);
   // Zoom so the focus region fills ~86% of the visible window, without exposing outside the capture.
-  const zoom = Math.min(3.2, Math.max(1, 0.86 / Math.max(f.w, f.h)));
+  // Settled on a zone, the camera keeps pushing in very slowly (≈ +4 % over 2 s).
+  const drift = 1 + 0.04 * holdDrift(shot, frame);
+  const zoom = Math.min(3.2, Math.max(1, 0.86 / Math.max(f.w, f.h))) * drift;
   const cx = (f.x + f.w / 2) * contentW;
   const cy = (f.y + f.h / 2) * contentH;
   let tx = contentW / 2 - cx * zoom;

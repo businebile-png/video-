@@ -62,7 +62,8 @@ export const SceneSchema = z.object({
     shotIdeas: z.array(z.string()).max(4).default([]),
     mood: z.string().max(40).optional(),
     captureId: z.string().optional(),
-    focusRegionIds: z.array(z.string()).max(3).default([]),
+    // One zone per thing the voice names ("0 € sans carte", "3 tunnels", "10 tunnels", "17 €"): at most four moves.
+    focusRegionIds: z.array(z.string()).max(4).default([]),
     graphic: GraphicSchema.optional(),
   }),
   /** Ids from data/facts/systeme-io.json backing every factual claim of the scene. */
