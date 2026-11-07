@@ -88,7 +88,7 @@
   ],
   "metricoolBrandId": "7791839",
   "timezone": "Europe/Paris",
-  "triggerId": "trig_01UkKxyio3W9xS57ShSsGDaQ",
+  "triggerId": "trig_011TEQR59m7VckAPXTtVNrSt",
   "setup": {
     "azure": "ok",
     "pexels": "missing",
@@ -100,6 +100,6 @@
     "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T17:55:04+00:00",
-  "updatedBy": "agent (demande de l’utilisateur : publication automatique à midi sur TikTok et Instagram, sans validation manuelle)"
+  "updatedAt": "2026-11-07T01:19:54+00:00",
+  "updatedBy": "agent (production quotidienne automatique à 6 h 17, publication à midi sur TikTok et Instagram)"
 }
