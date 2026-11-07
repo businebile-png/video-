@@ -76,7 +76,8 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   tx = Math.min(0, Math.max(contentW - contentW * zoom, tx));
   ty = Math.min(0, Math.max(contentH - contentH * zoom, ty));
 
-  const enter = pop(frame, fps);
+  const instant = shot.from === 0;
+  const enter = instant ? 1 : pop(frame, fps);
   const cardScale = 0.94 + 0.06 * enter;
   const isVideo = shot.mediaType === 'video';
   const media = isVideo ? (
@@ -117,7 +118,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
           background: '#0d0f14',
           boxShadow: '0 40px 90px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08)',
           transform: `translateY(${(1 - enter) * 40}px) scale(${cardScale})`,
-          opacity: interpolate(frame, [0, 6], [0, 1], clamp),
+          opacity: instant ? 1 : interpolate(frame, [0, 6], [0, 1], clamp),
         }}
       >
         <div style={{height: BAR_H, display: 'flex', alignItems: 'center', gap: 10, paddingLeft: 18, background: '#1a1d24'}}>

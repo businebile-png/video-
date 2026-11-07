@@ -88,7 +88,7 @@ export const ScriptSchema = z.object({
   scenes: z.array(SceneSchema).min(4).max(14),
   cta: z.object({
     onScreen: z.string().min(4).max(48),
-    subline: z.string().min(4).max(64),
+    subline: z.string().min(4).max(90),
     /** The concrete reason to click (the benefit of visiting), not just "clique". */
     reason: z.string().min(10),
   }),

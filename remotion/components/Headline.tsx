@@ -50,7 +50,8 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
           background: isLabel ? palette.accent : 'transparent',
           padding: isLabel ? '10px 22px 14px' : 0,
           borderRadius: isLabel ? 12 : 0,
-          textShadow: isLabel ? 'none' : '0 4px 28px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5)',
+          textShadow: 'none',
+          filter: isLabel ? undefined : 'drop-shadow(0 4px 16px rgba(0,0,0,0.5)) drop-shadow(0 1px 2px rgba(0,0,0,0.55))',
           textWrap: 'balance',
           clipPath: isLabel ? `inset(0 ${((1 - wipe) * 100).toFixed(2)}% 0 0 round 12px)` : undefined,
         }}

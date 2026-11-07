@@ -22,7 +22,7 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
           position: 'absolute',
           left: 70,
           width: 860,
-          top: 640,
+          top: 600,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -77,10 +77,20 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
             textWrap: 'balance',
           }}
         >
-          {/* Options listed side by side in the script ("Gratuit : … · Startup : …") get one line each. */}
-          {card.subline.split(' · ').map((line, i) => (
-            <div key={i}>{line}</div>
-          ))}
+          {/* Options listed side by side in the script ("Gratuit : … · Startup : …") get one line each;
+              four or more sit in two columns so the card never grows past the safe area. */}
+          {(() => {
+            const lines = card.subline.split(' · ');
+            return lines.length >= 4 ? (
+              <div style={{display: 'grid', gridTemplateColumns: 'auto auto', gap: '4px 34px', fontSize: 40, textAlign: 'left'}}>
+                {lines.map((line, i) => (
+                  <div key={i}>{line}</div>
+                ))}
+              </div>
+            ) : (
+              lines.map((line, i) => <div key={i}>{line}</div>)
+            );
+          })()}
         </div>
         {card.verifiedOn ? (
           <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: 600, fontSize: 28, color: ad.palette.muted, opacity: sub * 0.85}}>
@@ -106,22 +116,9 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
         >
           {card.cta}
         </div>
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          left: 70,
-          width: 860,
-          top: 1380,
-          textAlign: 'center',
-          fontFamily: fontStack(ad.fonts.text.family),
-          fontWeight: 600,
-          fontSize: 31,
-          color: ad.palette.muted,
-          opacity: sub,
-        }}
-      >
-        {card.disclosure}
+        <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: 600, fontSize: 30, color: ad.palette.muted, opacity: sub, marginTop: -6}}>
+          {card.disclosure}
+        </div>
       </div>
     </AbsoluteFill>
   );
