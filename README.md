@@ -3,9 +3,10 @@
 Un studio de production automatisé qui fabrique chaque jour une vidéo publicitaire verticale
 (TikTok et Instagram Reels) pour faire découvrir **Systeme.io** et ses **abonnements payants**
 via votre lien affilié — avec de vraies séquences vidéo, une voix off naturelle, un montage
-professionnel, un contrôle qualité strict et **votre validation avant toute publication**.
+professionnel, un contrôle qualité strict et une **publication automatique seulement à partir de 90/100**
+(ou votre validation vidéo par vidéo, si vous la choisissez dans le panneau).
 
-**Panneau de validation :** https://claude.ai/artifact/PHv2PwELy8staCztefioMr
+**Panneau de pilotage :** https://claude.ai/artifact/PHv2PwELy8staCztefioMr
 (privé, ouvert avec votre compte claude.ai, utilisable sur téléphone)
 
 ## Ce que fait le studio, chaque jour
@@ -17,7 +18,7 @@ flowchart LR
   C --> D[Séquences réelles<br/>Pixabay]
   D --> E[Montage<br/>Remotion]
   E --> F[Contrôle qualité<br/>note /100 + verrous]
-  F --> G[Panneau<br/>vous validez]
+  F --> G[90/100 et plus<br/>sinon refaite]
   G --> H[Programmation<br/>Metricool → TikTok / Instagram]
   H --> I[Statistiques<br/>vues, clics, abonnements]
   I --> A
@@ -42,9 +43,11 @@ flowchart LR
    (si vous en fournissez) et habillage sonore. Cinq directions artistiques tournent pour éviter l'effet « modèle »,
    dont « Edit nuit » (noir cinéma, gros texte central, coupes rapides) pour le format court.
 6. **Note la vidéo sur 100** (grille ci-dessous) avec un relecteur indépendant et des mesures
-   techniques. Moins de 85 : refaite. 85 à 89 : améliorée. 90 et plus : proposée.
-7. **La dépose dans le panneau** : vous la regardez avec le son, ajustez la légende ou l'heure,
-   et cliquez « Valider et programmer » — la publication part dans Metricool.
+   techniques. Sous 90 ou avec un contrôle en échec : refaite et relue à nouveau (trois reprises au
+   maximum, sinon rien n'est publié ce jour-là). 90 et plus avec tous les contrôles : retenue.
+7. **La programme automatiquement** dans Metricool, à midi sur TikTok et Instagram (réglable dans le
+   panneau), avec une légende accrocheuse qui commence par « Publicité · Lien affilié » et ses hashtags,
+   et la dépose dans le panneau. En mode « validation », c'est vous qui cliquez « Valider et programmer ».
 8. **Suit les résultats** : vues et visionnage depuis Metricool, clics, inscriptions et
    abonnements payants depuis votre tableau de bord affilié (saisis dans le panneau).
 
@@ -84,7 +87,7 @@ Pas à pas complet : **[docs/mise-en-route.md](docs/mise-en-route.md)**.
 
 ## Ce que le studio ne fera jamais
 
-- Publier sans votre validation (sauf si vous activez vous-même la publication automatique).
+- Publier une vidéo sous 90/100 ou dont un contrôle obligatoire échoue, ni deux vidéos au même créneau.
 - Promettre des revenus, inventer une urgence, un témoignage, un prix ou une interface.
 - Annoncer « publiée » avant que la plateforme ne l'ait confirmé.
 - Contourner les règles de TikTok, d'Instagram ou de Metricool (TikTok interdit les outils

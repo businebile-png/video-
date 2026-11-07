@@ -80,10 +80,17 @@ Par défaut, pas de musique (voix et habillage sonore). Pour en ajouter gratuite
 pistes libres de droits (par exemple sur Pixabay Music, licence utilisable commercialement) et
 enregistrez-les : [assets/music/LISEZMOI.md](../assets/music/LISEZMOI.md).
 
-## 10. Activer la production quotidienne
+## 10. Production quotidienne automatique
 
-Panneau → **Réglages → Production quotidienne** : « Activer ». Chaque matin, la vidéo du jour
-arrive dans « À valider ». Vous pouvez aussi « Lancer une production maintenant ».
+Déjà active (choix du 6 novembre 2026 : « je veux que ce soit automatisé à 100 % ») : chaque matin vers
+6 h 17, la production fabrique la vidéo du jour, la fait noter par un relecteur indépendant, la refait
+si elle n'atteint pas 90/100, puis la programme elle-même dans Metricool à midi sur TikTok et
+Instagram. Elle se déroule dans la conversation Claude Code du studio, qui a accès à Metricool.
+Panneau → **Réglages → Production quotidienne** : mettre en pause, réactiver, ou « Lancer une production
+maintenant ». Pour revenir à une validation vidéo par vidéo : **Réglages → Validation**.
+
+Pour que la production trouve toujours ses séquences, même après un redémarrage de la session,
+la clé Pixabay doit être enregistrée dans l'environnement (étape 3).
 
 ## Vérifier où vous en êtes
 

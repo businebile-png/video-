@@ -21,8 +21,10 @@ répondre, commenter et écrire les messages de commit en français.
 - Réglages : `config/studio.json` (technique) et le panneau (choix de l'utilisateur, importés par `panel:import`).
 - Faits vérifiés : `data/facts/` ; une affirmation n'est utilisable que si son extrait figure mot pour mot
   dans une copie datée de la page officielle.
-- Voix off : locale et gratuite (Kokoro + faster-whisper), installée par `bash scripts/setup-voice.sh` ;
-  ne jamais imiter la voix d'une personne réelle.
+- Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
+  en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
+- Publication : mode automatique choisi par l'utilisateur (90/100 et plus, tous contrôles validés),
+  midi sur TikTok et Instagram via Metricool, jamais deux vidéos au même créneau (`freeSlots`).
 
 ## Règles pour modifier le code
 
