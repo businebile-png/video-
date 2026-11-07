@@ -30,13 +30,13 @@
       "artDirection": "clarte",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": null,
+      "durationSec": 41.73,
       "score": null,
       "decision": null,
-      "status": "created",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-07T17:37:36.988Z"
+      "updatedAt": "2026-11-07T18:39:44.937Z"
     }
   ]
 }
