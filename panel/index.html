@@ -517,7 +517,9 @@ function networkEditor(v, post) {
   if (already) { if (already.plannerUrl) box.append(h('a', {href: already.plannerUrl, target: '_blank', rel: 'noopener', text: 'Ouvrir dans Metricool'})); return box; }
   const slots = futureSlots(v, net);
   const sel = h('select', {id: slotKey, onchange: (e) => { saveDraft(slotKey, e.target.value); renderPending(); }});
-  const current = S.ui.drafts[slotKey] && (S.ui.drafts[slotKey] === 'custom' || slots.some((x) => x.iso === S.ui.drafts[slotKey])) ? S.ui.drafts[slotKey] : (slots[0] ? slots[0].iso : 'custom');
+  const known = (val) => val === 'custom' || val === 'asap' || slots.some((x) => x.iso === val);
+  const current = S.ui.drafts[slotKey] && known(S.ui.drafts[slotKey]) ? S.ui.drafts[slotKey] : 'asap';
+  sel.append(h('option', {value: 'asap', selected: current === 'asap', text: asapLabel()}));
   for (const x of slots) sel.append(h('option', {value: x.iso, selected: current === x.iso, text: x.label}));
   sel.append(h('option', {value: 'custom', selected: current === 'custom', text: 'Autre date et heure…'}));
   box.append(h('div', {class: 'field'}, h('label', {for: slotKey, text: 'Créneau'}), sel));
@@ -530,6 +532,17 @@ function networkEditor(v, post) {
   return box;
 }
 
+function asapSlot() {
+  const t = new Date(Date.now() + 20 * 60000);
+  t.setUTCSeconds(0, 0);
+  t.setUTCMinutes(t.getUTCMinutes() + ((5 - (t.getUTCMinutes() % 5)) % 5));
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {timeZone: tz(), year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false}).formatToParts(t).map((x) => [x.type, x.value]));
+  return localToSlot(`${p.year}-${p.month}-${p.day}T${p.hour === '24' ? '00' : p.hour}:${p.minute}`, tz());
+}
+function asapLabel() {
+  const s = asapSlot();
+  return 'Dès la validation (vers ' + (s ? new Intl.DateTimeFormat('fr-FR', {timeZone: tz(), hour: '2-digit', minute: '2-digit'}).format(s.instant) : '20 min') + ')';
+}
 function futureSlots(v, net) {
   return (v.slots || []).filter((x) => x.network === net && Date.parse(x.iso) > Date.now() + 15 * 60000);
 }
@@ -540,8 +553,8 @@ function chosenPosts(v) {
     if (v.publications && v.publications[net]) continue;
     const useKey = `use-${v.runId}-${net}`;
     if (S.ui.drafts[useKey] === false) continue;
-    const slotVal = S.ui.drafts[`slot-${v.runId}-${net}`] || (futureSlots(v, net)[0] || {iso: 'custom'}).iso;
-    let slot = futureSlots(v, net).find((x) => x.iso === slotVal) || null;
+    const slotVal = S.ui.drafts[`slot-${v.runId}-${net}`] || 'asap';
+    let slot = slotVal === 'asap' ? asapSlot() : futureSlots(v, net).find((x) => x.iso === slotVal) || null;
     if (!slot) slot = localToSlot(S.ui.drafts[`custom-${v.runId}-${net}`], tz());
     const text = S.ui.drafts[`cap-${v.runId}-${net}`] !== undefined ? S.ui.drafts[`cap-${v.runId}-${net}`] : post.text;
     out.push({post, net, slot, text});
