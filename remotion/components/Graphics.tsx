@@ -246,7 +246,7 @@ function Compare({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; f
           color: '#FFFFFF',
         }}
       >
-        <div style={{fontFamily: fontStack(ad.fonts.display.family), fontWeight: ad.fonts.display.weight, fontSize: 40, marginBottom: 20, color: good ? ad.palette.accent : 'rgba(255,255,255,0.8)'}}>
+        <div style={{fontFamily: fontStack(ad.fonts.display.family), fontWeight: ad.fonts.display.weight, fontSize: 48, marginBottom: 20, color: good ? ad.palette.accent : 'rgba(255,255,255,0.85)'}}>
           {data.title}
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
@@ -261,7 +261,7 @@ function Compare({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; f
                 ) : (
                   <Cross color="rgba(255,255,255,0.55)" />
                 )}
-                <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.text.weight, fontSize: 32, lineHeight: 1.15}}>{t}</div>
+                <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.text.weight, fontSize: 37, lineHeight: 1.15}}>{t}</div>
               </div>
             );
           })}

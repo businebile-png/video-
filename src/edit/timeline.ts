@@ -268,6 +268,18 @@ function bare(word: string): string {
   return word.toLowerCase().replace(/[’']$/u, '').replace(/^[«(\s\u202f]+|[»)\s\u202f?!:;,.…]+$/gu, '');
 }
 
+/** "5" + "000" (a number the transcriber split at its thousands) becomes one caption word, "5 000". */
+export function joinThousands(words: VoiceWord[]): VoiceWord[] {
+  const out: VoiceWord[] = [];
+  for (const w of words) {
+    const prev = out[out.length - 1];
+    if (prev && /^\d{1,3}( \d{3})*$/.test(prev.text) && /^\d{3}(?![\d])/.test(w.text)) {
+      out[out.length - 1] = {...prev, text: `${prev.text} ${w.text}`, end: Math.max(prev.end, w.end)};
+    } else out.push(w);
+  }
+  return out;
+}
+
 export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom: number): CaptionGroup[] {
   const groups: CaptionGroup[] = [];
   for (const span of spans) {
@@ -283,8 +295,9 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
       });
       current = [];
     };
-    span.words.forEach((w, i) => {
-      const prev = span.words[i - 1];
+    const words = joinThousands(span.words);
+    words.forEach((w, i) => {
+      const prev = words[i - 1];
       const chars = current.reduce((n, c) => n + c.text.length + 1, 0) + w.text.length;
       const pause = Boolean(prev && w.start - prev.end > 0.35);
       if (current.length > 0 && (current.length >= ad.caption.maxWords || chars > ad.caption.maxChars || pause)) {
@@ -390,7 +403,12 @@ export function buildTimeline(input: BuildInput): Timeline {
     return rng.pick(options.length ? options : ad.motion.moves);
   };
 
-  const pushFootage = (span: SceneSpan, fromSec: number, toSec: number, opts: {layer: 'full' | 'background'; intensity: number; move?: CameraMoveKind}) => {
+  const pushFootage = (
+    span: SceneSpan,
+    fromSec: number,
+    toSec: number,
+    opts: {layer: 'full' | 'background'; intensity: number; move?: CameraMoveKind; continueClip?: boolean},
+  ) => {
     const pool = input.clipsByScene[span.scene.id] ?? [];
     const fallbackPool = Object.values(input.clipsByScene).flat();
     // A lone clip cannot alternate: borrow from other scenes rather than jump-cut inside one clip.
@@ -400,12 +418,15 @@ export function buildTimeline(input: BuildInput): Timeline {
     const playbackRate = ad.motion.pacing === 'calm' && span.scene.phase !== 'hook' ? 0.9 : 1;
     const neededSec = durSec * playbackRate + 0.35;
     const ordered = [...candidates].sort((a, b) => (clipCursor.get(a.clipId) ?? 0) - (clipCursor.get(b.clipId) ?? 0));
+    const continued = opts.continueClip ? candidates.find((c) => c.clipId === lastClipId && c.durationSec - (clipCursor.get(c.clipId) ?? 0) + 0.3 >= neededSec) : undefined;
     const clip =
+      continued ??
       ordered.find((c) => c.clipId !== lastClipId && c.durationSec - (clipCursor.get(c.clipId) ?? c.durationSec * 0.08) >= neededSec) ??
       ordered.find((c) => c.clipId !== lastClipId && c.durationSec >= neededSec) ??
       ordered.find((c) => c.durationSec >= neededSec) ??
       ordered.reduce((a, b) => (a.durationSec >= b.durationSec ? a : b));
-    const startCursor = clipCursor.get(clip.clipId) ?? Math.min(0.5, clip.durationSec * 0.08);
+    // A continued shot picks up exactly where the previous one stopped (the cursor keeps a 0.3 s gap otherwise).
+    const startCursor = continued ? (clipCursor.get(clip.clipId) ?? 0.3) - 0.3 : clipCursor.get(clip.clipId) ?? Math.min(0.5, clip.durationSec * 0.08);
     let inSec = startCursor;
     if (inSec + neededSec > clip.durationSec - 0.15) inSec = Math.max(0.1, clip.durationSec - 0.15 - neededSec);
     const outSec = Math.min(clip.durationSec - 0.05, inSec + neededSec);
@@ -431,6 +452,12 @@ export function buildTimeline(input: BuildInput): Timeline {
     shots.push(shot);
     return shot;
   };
+
+  // The end card arrives with the last clause of the call to action ("… le lien est dans ma bio"):
+  // before it, the CTA's own shot plays sharp under the captions, so the close is not a still card.
+  const ctaSpan = spans.find((s) => s.scene.phase === 'cta') ?? spans[spans.length - 1]!;
+  const lienAt = findSpokenTime('lien', ctaSpan.words);
+  const cardSec = lienAt ? Math.max(ctaSpan.startSec, Math.min(ctaSpan.endSec - 2.2, lienAt.time - 0.2)) : ctaSpan.startSec;
 
   for (const span of spans) {
     const {scene} = span;
@@ -468,13 +495,22 @@ export function buildTimeline(input: BuildInput): Timeline {
       }
     } else if (scene.visual.kind === 'graphic' || scene.phase === 'cta') {
       const own = input.clipsByScene[scene.id] ?? [];
-      const sceneSec = span.endSec - span.startSec;
+      const bgFrom = span === ctaSpan ? cardSec : span.startSec;
+      const sharpLead = bgFrom - span.startSec >= 0.5;
+      if (sharpLead) pushFootage(span, span.startSec, bgFrom, {layer: 'full', intensity: 0.8});
+      const sceneSec = span.endSec - bgFrom;
       // Behind a card, one long calm shot reads better than cuts when a single clip covers it.
-      const cuts = own.length === 1 && own[0]!.durationSec >= sceneSec + 0.8 ? [span.startSec, span.endSec] : planCuts(span, target * 1.6, rng);
+      const cuts =
+        sharpLead || (own.length === 1 && own[0]!.durationSec >= sceneSec + 0.8) ? [bgFrom, span.endSec] : planCuts({...span, startSec: bgFrom}, target * 1.6, rng);
       // Chips that merge carry their own dark backing: the shot behind them stays sharp (a card keeps the blur).
       const sharp = scene.visual.graphic?.type === 'stack-merge';
       for (let i = 0; i < cuts.length - 1; i++) {
-        pushFootage(span, cuts[i]!, cuts[i + 1]!, {layer: sharp ? 'full' : 'background', intensity: 0.6, move: scene.phase === 'cta' ? 'pull-out' : undefined});
+        pushFootage(span, cuts[i]!, cuts[i + 1]!, {
+          layer: sharp ? 'full' : 'background',
+          intensity: 0.6,
+          move: scene.phase === 'cta' ? 'pull-out' : undefined,
+          continueClip: sharpLead && i === 0,
+        });
       }
       if (scene.visual.kind === 'graphic' && scene.visual.graphic) {
         const reveals = revealTimes(scene, span);
@@ -540,8 +576,7 @@ export function buildTimeline(input: BuildInput): Timeline {
     sfx.push({src: sfxName, from: Math.max(0, b.from - (t === 'zoom-punch' ? 1 : 6)), gainDb: t === 'blur-dissolve' ? -22 : -17});
   }
 
-  const ctaSpan = spans.find((s) => s.scene.phase === 'cta') ?? spans[spans.length - 1]!;
-  const endCardFrom = toF(ctaSpan.startSec);
+  const endCardFrom = toF(cardSec);
   if (ad.motion.riserBeforeCta && endCardFrom > 60) sfx.push({src: 'sfx-riser.wav', from: endCardFrom - 36, gainDb: -24});
   sfx.push({src: 'sfx-whoosh-soft.wav', from: Math.max(0, endCardFrom - 4), gainDb: -23});
 

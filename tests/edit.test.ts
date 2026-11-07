@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildCaptions, buildTimeline, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
+import {buildCaptions, buildTimeline, joinThousands, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
 import {ART_DIRECTIONS} from '../src/edit/art-directions.js';
 import {Rng} from '../src/core/rng.js';
 import {loadConfig} from '../src/core/config.js';
@@ -133,5 +133,16 @@ describe('note sur 100', () => {
     const silent = computeScore({...base, config: {...config, affiliate: {...config.affiliate, url: 'https://systeme.io/?sa=sa0012345678'}}, licenses, technical: {...technical, checks: [technical.checks[0]!, {...technical.checks[1]!, ok: false}]}});
     expect(silent.gates.find((g) => g.id === 'sound')!.ok).toBe(false);
     expect(silent.decision).toBe('redo');
+  });
+});
+
+describe('nombres dans les sous-titres', () => {
+  it('garde « 5 000 » entier quand la transcription coupe le nombre aux milliers', () => {
+    const w = (text: string, start: number, end: number, index: number) => ({text, start, end, sceneId: 's4', index});
+    const out = joinThousands([w('passe', 0, 0.2, 0), w('à', 0.2, 0.3, 1), w('5', 0.3, 0.4, 2), w('000', 0.4, 0.7, 3), w('contacts', 0.7, 1.1, 4), w('et', 1.1, 1.2, 5), w('5', 1.2, 1.4, 6), w('formations.', 1.4, 1.9, 7)]);
+    expect(out.map((x) => x.text)).toEqual(['passe', 'à', '5 000', 'contacts', 'et', '5', 'formations.']);
+    expect(out[2]!.start).toBe(0.3);
+    expect(out[2]!.end).toBe(0.7);
+    expect(joinThousands([w('2', 0, 0.1, 0), w('000.', 0.1, 0.4, 1)]).map((x) => x.text)).toEqual(['2 000.']);
   });
 });
