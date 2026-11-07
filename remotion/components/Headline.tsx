@@ -21,6 +21,8 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
   const lift = interpolate(frame, [item.duration - 8, item.duration], [0, -14], clamp);
   const {headline, palette, fonts} = ad;
   const isLabel = headline.style === 'label';
+  // The label band wipes in with its words: never an empty coloured band on screen.
+  const wipe = isLabel ? Math.min(1, spring({frame, fps, config: {damping: 26, stiffness: 260, mass: 0.6}})) : 1;
   return (
     <div
       style={{
@@ -48,6 +50,7 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
           borderRadius: isLabel ? 12 : 0,
           textShadow: isLabel ? 'none' : '0 4px 28px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5)',
           textWrap: 'balance',
+          clipPath: isLabel ? `inset(0 ${((1 - wipe) * 100).toFixed(2)}% 0 0 round 12px)` : undefined,
         }}
       >
         {words.map((w, i) => {

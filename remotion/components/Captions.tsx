@@ -67,8 +67,24 @@ const Word: React.FC<{w: CaptionWord; ad: ArtDirection; frame: number; fps: numb
     case 'karaoke-fill':
     default:
       // No box behind the words in this style: a denser shadow keeps them legible on bright footage.
-      return (
-        <span style={{...base, color: accentWord ? palette.accent : palette.ink, opacity: spoken ? 1 : 0.82, textShadow: '0 2px 14px rgba(0,0,0,0.78), 0 0 3px rgba(0,0,0,0.9)'}}>
+      // A key word, once said, sits white on an accent pill: red text alone vanishes on skin or warm light.
+      return accentWord ? (
+        <span
+          style={{
+            ...base,
+            color: palette.accentInk,
+            background: palette.accent,
+            borderRadius: 12,
+            padding: '0 0.14em',
+            textShadow: 'none',
+            boxShadow: '0 6px 22px rgba(0,0,0,0.35)',
+            transform: `scale(${0.94 + 0.06 * Math.min(1, on)})`,
+          }}
+        >
+          {w.text}
+        </span>
+      ) : (
+        <span style={{...base, color: palette.ink, opacity: spoken ? 1 : 0.82, textShadow: '0 2px 14px rgba(0,0,0,0.78), 0 0 3px rgba(0,0,0,0.9)'}}>
           {w.text}
         </span>
       );
@@ -82,6 +98,7 @@ export const Captions: React.FC<{groups: CaptionGroup[]; ad: ArtDirection}> = ({
   const group = groups.find((g) => frame >= g.from && frame < g.to);
   if (!group) return null;
   const local = frame - group.from;
+  const halo = ad.caption.style === 'karaoke-fill';
   const enter = spring({frame: local, fps, config: {damping: 20, stiffness: 320, mass: 0.6}});
   const exit = interpolate(frame, [group.to - 3, group.to], [1, 0.0], clamp);
   return (
@@ -104,12 +121,26 @@ export const Captions: React.FC<{groups: CaptionGroup[]; ad: ArtDirection}> = ({
         textWrap: 'balance',
       }}
     >
-      {group.words.map((w, i) => (
-        <React.Fragment key={`${group.from}-${i}`}>
-          {i > 0 ? ' ' : null}
-          <Word w={w} ad={ad} frame={frame} fps={fps} />
-        </React.Fragment>
-      ))}
+      <span style={{position: 'relative', display: 'inline-block', isolation: 'isolate'}}>
+        {halo ? (
+          // Box-less style: a soft dark halo (no visible edge) keeps white and accent words legible on bright footage.
+          <span
+            aria-hidden
+            style={{
+              position: 'absolute',
+              inset: '-46px -90px',
+              zIndex: -1,
+              background: 'radial-gradient(closest-side, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0.1) 78%, rgba(0,0,0,0) 100%)',
+            }}
+          />
+        ) : null}
+        {group.words.map((w, i) => (
+          <React.Fragment key={`${group.from}-${i}`}>
+            {i > 0 ? ' ' : null}
+            <Word w={w} ad={ad} frame={frame} fps={fps} />
+          </React.Fragment>
+        ))}
+      </span>
     </div>
   );
 };

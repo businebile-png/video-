@@ -60,14 +60,20 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
         >
           {card.headline}
         </div>
+        {/* The paid plan is the commercial goal: a clear white chip, not a grey footnote. */}
         <div
           style={{
             fontFamily: fontStack(ad.fonts.text.family),
-            fontWeight: ad.fonts.text.weight,
-            fontSize: 44,
-            lineHeight: 1.25,
-            color: ad.palette.muted,
+            fontWeight: 700,
+            fontSize: 46,
+            lineHeight: 1.22,
+            color: ad.palette.ink,
+            background: 'rgba(255,255,255,0.1)',
+            border: '2px solid rgba(255,255,255,0.24)',
+            borderRadius: 22,
+            padding: '16px 30px',
             opacity: sub,
+            transform: `translateY(${(1 - sub) * 14}px)`,
             textWrap: 'balance',
           }}
         >

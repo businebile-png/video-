@@ -166,7 +166,8 @@ ART_DIRECTIONS.push({
   },
   caption: {style: 'karaoke-fill', size: 84, uppercase: true, maxWords: 2, maxChars: 16, strokePx: 0},
   headline: {size: 66, uppercase: true, letterSpacing: 1, style: 'label'},
-  grade: {contrast: 1.16, saturate: 0.74, brightness: 0.92, tintOpacity: 0.24, vignette: 0.62, grain: 0.05},
+  // A bright daylight clip breaks the night look and drowns white captions: expose it down.
+  grade: {contrast: 1.16, saturate: 0.74, brightness: 0.92, tintOpacity: 0.24, vignette: 0.62, grain: 0.05, maxLuma: 0.4},
   motion: {
     pacing: 'punchy',
     signature: 'whip-up',

@@ -14,10 +14,10 @@
       "durationSec": 23.57,
       "score": 77,
       "decision": "redo",
-      "status": "rejected",
+      "status": "rendered",
       "reason": "77/100 — sous 85 : à refaire (points faibles : Explication de Systeme.io, Qualité visuelle).",
       "pexelsIds": [],
-      "updatedAt": "2026-11-07T11:12:53.879Z"
+      "updatedAt": "2026-11-07T11:50:32.055Z"
     }
   ]
 }

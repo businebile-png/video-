@@ -12,6 +12,8 @@ export const FocusRegionSchema = z
     w: rel,
     h: rel,
     label: z.string().max(32),
+    /** Words of the voice-over that bring the camera to this zone (exact, numbers allowed: "5 000"); the label always counts. */
+    cues: z.array(z.string().min(1).max(40)).max(6).optional(),
   })
   .refine((r) => r.x + r.w <= 1.0001 && r.y + r.h <= 1.0001, 'la zone dépasse la capture');
 

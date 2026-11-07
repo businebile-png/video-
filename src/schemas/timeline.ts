@@ -51,7 +51,16 @@ export interface ArtDirection {
     strokePx: number;
   };
   headline: {size: number; uppercase: boolean; letterSpacing: number; style: 'block' | 'serif-mix' | 'label'};
-  grade: {contrast: number; saturate: number; brightness: number; tintOpacity: number; vignette: number; grain: number};
+  grade: {
+    contrast: number;
+    saturate: number;
+    brightness: number;
+    tintOpacity: number;
+    vignette: number;
+    grain: number;
+    /** Brightest mean luma (0–1 of the video range) a sharp shot may have: brighter clips are exposed down to it. */
+    maxLuma?: number;
+  };
   motion: {
     pacing: 'calm' | 'balanced' | 'punchy';
     signature: TransitionKind;
@@ -84,6 +93,8 @@ export interface FootageShot extends ShotBase {
   layer: 'full' | 'background';
   /** Mezzanine pixel size after conform (for the upscale check). */
   mezzanine: {width: number; height: number} | null;
+  /** Exposure gain applied at conform to match the art direction's brightness (1 = untouched). */
+  exposure?: number;
 }
 
 export interface Region {

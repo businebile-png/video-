@@ -8,6 +8,8 @@ const CARD_W = 940;
 const CARD_MAX_H = 780;
 const CARD_TOP = 420;
 const BAR_H = 44;
+/** Horizontal centre of the safe area (TikTok's buttons sit on the right), shared with the captions. */
+const CENTER_X = 500;
 
 /** Interpolated focus region at a frame (null = full view). */
 function focusAt(shot: CaptureShot, frame: number): Region {
@@ -41,7 +43,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   const contentW = contentH / aspect;
   const cardW = Math.min(CARD_W, contentW);
   const cardH = contentH + BAR_H;
-  const left = (1080 - cardW) / 2;
+  const left = CENTER_X - cardW / 2;
 
   const f = focusAt(shot, frame);
   // Zoom so the focus region fills ~86% of the visible window, without exposing outside the capture.
@@ -69,7 +71,18 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
           <OffthreadVideo src={staticFile(shot.backgroundSrc)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </AbsoluteFill>
       ) : (
-        <AbsoluteFill style={{background: `radial-gradient(120% 80% at 50% 30%, ${ad.palette.tint} 0%, #07090d 70%)`}} />
+        <AbsoluteFill>
+          {/* Studio background: slow light drift plus a soft accent glow behind the window, never static. */}
+          <AbsoluteFill
+            style={{background: `radial-gradient(120% 80% at ${46 + 6 * Math.sin(frame / 70)}% ${28 + 4 * Math.cos(frame / 90)}%, ${ad.palette.tint} 0%, #07090d 72%)`}}
+          />
+          <AbsoluteFill
+            style={{
+              background: `radial-gradient(42% 26% at ${(CENTER_X / 1080) * 100}% ${((CARD_TOP + cardH / 2) / 1920) * 100}%, ${ad.palette.accent}2e 0%, transparent 100%)`,
+              opacity: 0.75 + 0.25 * Math.sin(frame / 45),
+            }}
+          />
+        </AbsoluteFill>
       )}
       <div
         style={{
@@ -136,9 +149,10 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
             key={`label-${i}`}
             style={{
               position: 'absolute',
-              left: 0,
-              right: 0,
-              top: CARD_TOP + cardH + 26,
+              left: CENTER_X - 430,
+              width: 860,
+              // Above the window: the captions live below it.
+              top: CARD_TOP - 92,
               display: 'flex',
               justifyContent: 'center',
               opacity: appear * fade,

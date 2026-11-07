@@ -199,6 +199,26 @@ export function findSpokenTime(phrase: string, words: VoiceWord[], afterIndex = 
   return null;
 }
 
+/** First word where an exact phrase is said (normalized, numbers allowed: "5 000", "17 €"), after a word index. */
+export function findCueTime(cue: string, words: VoiceWord[], afterIndex = -1): {time: number; index: number} | null {
+  const target = normalize(cue);
+  if (!target) return null;
+  let text = '';
+  const starts: Array<{pos: number; w: VoiceWord}> = [];
+  for (const w of words) {
+    if (w.index <= afterIndex) continue;
+    const n = normalize(w.text);
+    if (!n) continue;
+    if (text) text += ' ';
+    starts.push({pos: text.length, w});
+    text += n;
+  }
+  const at = ` ${text} `.indexOf(` ${target} `);
+  if (at < 0) return null;
+  const hit = [...starts].reverse().find((s) => s.pos <= at)!;
+  return {time: hit.w.start, index: hit.w.index};
+}
+
 function graphicLabels(scene: Scene): string[] {
   const g = scene.visual.graphic;
   if (!g) return [];
@@ -356,11 +376,12 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
     flush();
   }
   // A group on screen for less than 0.4 s cannot be read: it joins the next one when both fit on screen.
+  // Its time on screen ends when the next group starts, even if its own last word lingers longer.
   for (let i = 0; i < groups.length - 1; i++) {
     const g = groups[i]!;
     const next = groups[i + 1]!;
     const chars = [...g.words, ...next.words].reduce((n, w) => n + w.text.length + 1, 0);
-    if (g.to - g.from < 12 && next.y === g.y && next.from - g.to <= 6 && chars <= ad.caption.maxChars + 8) {
+    if (Math.min(g.to, next.from) - g.from < 12 && next.y === g.y && next.from - g.to <= 6 && chars <= ad.caption.maxChars + 10) {
       groups.splice(i, 2, {...g, to: next.to, words: [...g.words, ...next.words]});
       i--;
     }
@@ -385,7 +406,11 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
   const highlights: CaptureShot['highlights'] = [];
   let after = -1;
   regions.forEach((r, i) => {
-    const hit = findSpokenTime(r.label, span.words, after);
+    // The camera moves on the first word that names the zone: its label or one of its cues ("5 000" for Startup).
+    const hits = [findSpokenTime(r.label, span.words, after), ...(r.cues ?? []).map((c) => findCueTime(c, span.words, after))].filter(
+      (h): h is {time: number; index: number} => h !== null,
+    );
+    const hit = hits.sort((a, b) => a.time - b.time)[0] ?? null;
     const fallback = 0.3 + (i + 1) * ((span.endSec - span.startSec) / (regions.length + 1)) * 0.8;
     const atSec = hit ? Math.max(0.5, hit.time - span.startSec - 0.2) : fallback;
     if (hit) after = hit.index;
@@ -516,7 +541,6 @@ export function buildTimeline(input: BuildInput): Timeline {
       const maxF = capture.type === 'video' && capture.durationSec ? toF(capture.durationSec) : Number.POSITIVE_INFINITY;
       const durF = Math.min(sceneTo - sceneFrom, maxF);
       const plan = focusPlan(capture, scene, span, durF);
-      const bgClip = (input.clipsByScene[scene.id] ?? [])[0];
       shots.push({
         kind: 'capture',
         id: `shot-${++shotCounter}`,
@@ -531,7 +555,8 @@ export function buildTimeline(input: BuildInput): Timeline {
         height: capture.height,
         keyframes: plan.keyframes,
         highlights: plan.highlights,
-        backgroundSrc: bgClip ? `bg-${bgClip.clipId}.mp4` : null,
+        // Clean studio background: blurred unrelated footage behind the capture distracted from it.
+        backgroundSrc: null,
         captureId: capture.id,
         // A public page (prices…) always shows where and when it was captured.
         stamp:
@@ -597,8 +622,9 @@ export function buildTimeline(input: BuildInput): Timeline {
         headlines.push({
           id: `headline-${scene.id}`,
           sceneId: scene.id,
-          from: sceneFrom + 4,
-          duration: card ? untilCard : Math.max(24, sceneTo - sceneFrom - 6),
+          // The opening headline starts on the very first frame: the hook is readable at once.
+          from: sceneFrom + (span.index === 0 ? 0 : 4),
+          duration: card ? untilCard : Math.max(24, sceneTo - sceneFrom - (span.index === 0 ? 2 : 6)),
           text: scene.headline,
           emphasis: scene.emphasis,
         });

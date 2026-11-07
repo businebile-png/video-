@@ -2,7 +2,7 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import {PATHS, runPaths} from '../core/paths.js';
 import {exists, linkOrCopy, readJson, readValidated, writeJson} from '../core/fsx.js';
-import {ffmpeg} from '../core/exec.js';
+import {ffmpeg, run} from '../core/exec.js';
 import {durationSec} from '../core/audio.js';
 import {log} from '../core/log.js';
 import {loadCaptures} from '../core/stores.js';
@@ -59,6 +59,30 @@ export function cropFilter(width: number, height: number): string {
   return `crop=${width}:${ch}:0:${Math.floor((height - ch) / 2)}`;
 }
 
+/** Mean luma (0–1 of the video range) of a source segment, measured on a small proxy at 4 images/s. */
+async function meanLuma(src: string, inSec: number, seconds: number, crop: string): Promise<number | null> {
+  const res = await run('ffmpeg', [
+    '-hide_banner',
+    '-nostdin',
+    '-ss',
+    inSec.toFixed(3),
+    '-i',
+    src,
+    '-t',
+    Math.min(3, Math.max(0.5, seconds)).toFixed(3),
+    '-vf',
+    `${crop},scale=216:384,fps=4,signalstats,metadata=print:key=lavfi.signalstats.YAVG`,
+    '-an',
+    '-f',
+    'null',
+    '-',
+  ]);
+  const values = [...res.stderr.matchAll(/lavfi\.signalstats\.YAVG=([\d.]+)/g)].map((m) => Number(m[1]));
+  if (res.code !== 0 || values.length === 0) return null;
+  const y = values.reduce((a, b) => a + b, 0) / values.length;
+  return Math.max(0, Math.min(1, (y - 16) / 219));
+}
+
 async function pool<T>(items: T[], size: number, fn: (item: T) => Promise<void>): Promise<void> {
   const queue = [...items];
   await Promise.all(
@@ -78,16 +102,27 @@ export async function conformStep(runId: string): Promise<Timeline> {
   await fsp.rm(p.publicDir, {recursive: true, force: true});
   await fsp.mkdir(p.publicDir, {recursive: true});
   const footage = timeline.shots.filter((s): s is FootageShot => s.kind === 'footage');
+  const maxLuma = timeline.artDirection.grade.maxLuma;
   await pool(footage, 3, async (shot) => {
     const src = path.join(p.dir, shot.source.file);
     const seconds = (shot.duration / timeline.fps) * shot.playbackRate + 0.15;
+    const crop = cropFilter(shot.source.width, shot.source.height);
+    // Consistent look: a sharp clip brighter than the art direction allows is exposed down
+    // (RGB gain, blacks untouched), at most −30 % so it never turns muddy.
+    shot.exposure = 1;
+    if (maxLuma && shot.layer === 'full') {
+      const luma = await meanLuma(src, shot.source.inSec, seconds, crop);
+      if (luma !== null && luma > maxLuma) shot.exposure = Math.round(Math.max(0.7, maxLuma / luma) * 1000) / 1000;
+    }
+    const gain = shot.exposure;
     const vf = [
-      cropFilter(shot.source.width, shot.source.height),
+      crop,
       `scale=${MEZZ_W}:${MEZZ_H}:flags=lanczos`,
       'setsar=1',
       shot.playbackRate !== 1 ? `setpts=PTS/${shot.playbackRate}` : null,
       `fps=${timeline.fps}`,
       shot.layer === 'background' ? 'gblur=sigma=14' : null,
+      gain < 0.995 ? `colorlevels=romax=${gain}:gomax=${gain}:bomax=${gain}` : null,
     ]
       .filter(Boolean)
       .join(',');
@@ -162,6 +197,7 @@ export async function conformStep(runId: string): Promise<Timeline> {
   }
   timeline.metrics = computeMetrics(timeline);
   await writeJson(p.timeline, timeline);
-  log.ok(`Conformation : ${footage.length} plans préparés`);
+  const exposed = footage.filter((s) => (s.exposure ?? 1) < 0.995).map((s) => `${s.id} ×${s.exposure}`);
+  log.ok(`Conformation : ${footage.length} plans préparés${exposed.length ? ` (exposition ramenée au style : ${exposed.join(', ')})` : ''}`);
   return timeline;
 }

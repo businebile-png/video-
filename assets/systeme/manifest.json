@@ -15,19 +15,29 @@
       "focusRegions": [
         {
           "id": "gratuit",
-          "x": 0.04,
-          "y": 0.355,
-          "w": 0.212,
-          "h": 0.58,
-          "label": "Gratuit"
+          "x": 0.035,
+          "y": 0.595,
+          "w": 0.222,
+          "h": 0.225,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit",
+            "2 000",
+            "0 €"
+          ]
         },
         {
           "id": "startup",
-          "x": 0.276,
-          "y": 0.355,
-          "w": 0.212,
-          "h": 0.58,
-          "label": "Startup"
+          "x": 0.271,
+          "y": 0.585,
+          "w": 0.222,
+          "h": 0.2,
+          "label": "Startup",
+          "cues": [
+            "5 000",
+            "Startup",
+            "17 €"
+          ]
         }
       ],
       "personalDataChecked": true

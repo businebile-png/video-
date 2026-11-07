@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {buildCaptions, buildTimeline, joinThousands, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
+import {buildCaptions, buildTimeline, findCueTime, joinThousands, planCuts, sceneSpans, upscaleOf, makeMove, type PreparedClip} from '../src/edit/timeline.js';
 import {ART_DIRECTIONS} from '../src/edit/art-directions.js';
 import {Rng} from '../src/core/rng.js';
 import {loadConfig} from '../src/core/config.js';
@@ -75,6 +75,27 @@ describe('montage', () => {
     const groups = buildCaptions(spans, ad, 10_000).map((g) => g.words.map((w) => w.text).join(' '));
     for (const g of groups) expect(g).not.toMatch(/\b(dans|un|et|tes)$/);
     expect(groups).not.toContain('et');
+  });
+
+  it('ne laisse aucun sous-titre à l’écran moins de 0,4 s quand il peut rejoindre le suivant', () => {
+    // « Ta page » est coupé par « ici, » qui commence avant sa fin : il ne resterait que 0,27 s à l'écran.
+    const w = (text: string, start: number, end: number, index: number): VoiceWord => ({text, start, end, sceneId: 's1', index});
+    const words = [w('Ta', 0.07, 0.1, 0), w('page', 0.1, 0.33, 1), w('ici,', 0.33, 0.73, 2), w('tes', 1.03, 1.07, 3), w('e-mails', 1.27, 1.47, 4), w('là.', 1.47, 1.7, 5)];
+    const script = sampleScript();
+    const spans = [{scene: script.scenes[0]!, index: 0, startSec: 0, endSec: 2, words}];
+    const ad = ART_DIRECTIONS.find((a) => a.id === 'nuit-edit')!;
+    const groups = buildCaptions(spans, ad, 10_000);
+    expect(groups[0]!.words.map((x) => x.text).join(' ')).toBe('Ta page ici,');
+    for (let i = 0; i < groups.length - 1; i++) expect(groups[i]!.to - groups[i]!.from).toBeGreaterThanOrEqual(12);
+  });
+
+  it('repère un chiffre dit à la voix pour y amener la caméra', () => {
+    const w = (text: string, start: number, index: number): VoiceWord => ({text, start, end: start + 0.2, sceneId: 's4', index});
+    const words = [w('Le', 0, 0), w('gratuit', 0.2, 1), w('inclut', 0.5, 2), w('2', 0.8, 3), w('000', 0.9, 4), w('contacts.', 1.1, 5), w('jusqu’à', 1.6, 6), w('5', 1.9, 7), w('000,', 2.0, 8), w('17', 2.6, 9), w('€', 2.7, 10)];
+    expect(findCueTime('5 000', words)).toEqual({time: 1.9, index: 7});
+    expect(findCueTime('2 000', words, 5)).toBeNull();
+    expect(findCueTime('17 €', words)?.index).toBe(9);
+    expect(findCueTime('50', words)).toBeNull();
   });
 
   it('mesure l’agrandissement nécessaire', () => {
