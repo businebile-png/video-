@@ -533,6 +533,11 @@ export function buildTimeline(input: BuildInput): Timeline {
         highlights: plan.highlights,
         backgroundSrc: bgClip ? `bg-${bgClip.clipId}.mp4` : null,
         captureId: capture.id,
+        // A public page (prices…) always shows where and when it was captured.
+        stamp:
+          capture.source === 'public-page' && capture.sourceUrl
+            ? `${capture.sourceUrl.replace(/^https?:\/\//, '')} · capture du ${capture.capturedAt.slice(8, 10)}/${capture.capturedAt.slice(5, 7)}/${capture.capturedAt.slice(0, 4)}`
+            : undefined,
       });
       if (durF < sceneTo - sceneFrom) {
         // The recording is shorter than the narration: finish the scene on real footage.

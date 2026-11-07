@@ -90,6 +90,11 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
           {['#ff5f57', '#febc2e', '#28c840'].map((c) => (
             <div key={c} style={{width: 13, height: 13, borderRadius: 7, background: c, opacity: 0.85}} />
           ))}
+          {shot.stamp ? (
+            <div style={{marginLeft: 12, fontFamily: fontStack(ad.fonts.text.family), fontWeight: 600, fontSize: 22, color: 'rgba(255,255,255,0.78)', whiteSpace: 'nowrap'}}>
+              {shot.stamp}
+            </div>
+          ) : null}
         </div>
         <div style={{position: 'relative', width: contentW, height: contentH, overflow: 'hidden'}}>
           <div style={{position: 'absolute', left: 0, top: 0, transformOrigin: '0 0', transform: `translate(${tx}px, ${ty}px) scale(${zoom})`}}>

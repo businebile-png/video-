@@ -105,6 +105,8 @@ export interface CaptureShot extends ShotBase {
   /** Blurred footage behind the capture card, if any. */
   backgroundSrc: string | null;
   captureId: string;
+  /** Source and date shown in the window bar for a public page ("systeme.io/fr/pricing · capture du 06/11/2026"). */
+  stamp?: string;
 }
 
 export type Shot = FootageShot | CaptureShot;

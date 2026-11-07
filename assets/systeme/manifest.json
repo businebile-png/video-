@@ -1,1 +1,36 @@
-{"captures": []}
+{
+  "captures": [
+    {
+      "id": "tarifs-page",
+      "file": "tarifs-page.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Page tarifs officielle",
+      "description": "Grille officielle des formules Systeme.io en facturation mensuelle, page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
+      "capturedAt": "2026-11-06T17:23:30.218Z",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 1280,
+      "height": 1100,
+      "focusRegions": [
+        {
+          "id": "gratuit",
+          "x": 0.04,
+          "y": 0.355,
+          "w": 0.212,
+          "h": 0.58,
+          "label": "Gratuit"
+        },
+        {
+          "id": "startup",
+          "x": 0.276,
+          "y": 0.355,
+          "w": 0.212,
+          "h": 0.58,
+          "label": "Startup"
+        }
+      ],
+      "personalDataChecked": true
+    }
+  ]
+}
