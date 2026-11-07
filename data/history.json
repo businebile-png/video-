@@ -12,12 +12,12 @@
       "musicTrack": null,
       "voiceId": "ff_siwis",
       "durationSec": 23.23,
-      "score": 69,
+      "score": 81,
       "decision": "redo",
-      "status": "rendered",
-      "reason": "69/100 — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "status": "rejected",
+      "reason": "81/100 — sous 85 : à refaire (points faibles : Qualité visuelle, Explication de Systeme.io).",
       "pexelsIds": [],
-      "updatedAt": "2026-11-07T06:46:15.943Z"
+      "updatedAt": "2026-11-07T07:04:47.735Z"
     }
   ]
 }
