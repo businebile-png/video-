@@ -4,7 +4,7 @@ Ce guide est suivi par Claude à chaque production (tâche programmée du matin,
 production maintenant » du panneau, ou demande manuelle). Il produit **une** vidéo de haute qualité,
 la fait relire par un relecteur indépendant, la dépose dans le panneau, puis, en mode automatique
 (`approval: "auto"`, choix de l'utilisateur), la programme lui-même sur les réseaux connectés.
-Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 90/100.
+Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 80/100 (seuil choisi par l'utilisateur le 07/11/2026, `publish.minScore`).
 
 La qualité passe avant l'horaire : si la vidéo n'atteint pas le niveau, on l'écrit dans le journal du
 panneau et on ne dépose rien de médiocre.
@@ -151,12 +151,12 @@ Ne pas lui donner votre propre avis. Puis :
 npm run studio -- score <runId>
 ```
 
-- Moins de 90, ou contrôle bloquant : refaire. Corriger chaque problème bloquant et appliquer les pistes du
+- Sous le seuil (`publish.minScore`, 80), ou contrôle bloquant : refaire. Corriger chaque problème bloquant et appliquer les pistes du
   relecteur (script, plans, graphiques), reprendre à l'étape concernée, refaire le rendu, puis une **nouvelle**
   relecture indépendante (nouveau sous-agent) et `score`. Trois reprises au maximum : si la vidéo n'atteint
-  toujours pas 90, rien n'est publié ce jour-là ; déposer la fiche « bloquée » avec les raisons et l'écrire
+  toujours pas le seuil, rien n'est publié ce jour-là ; déposer la fiche « bloquée » avec les raisons et l'écrire
   dans le journal.
-- 90 et plus avec tous les contrôles validés : continuer.
+- Seuil atteint (80 et plus) avec tous les contrôles validés : continuer.
 - Avant chaque relecture, regarder soi-même la planche et quelques images (`qc/frames/`) : un défaut visible
   (carte vide, texte coupé, logo, visage, écran lisible) se corrige avant de solliciter le relecteur.
   Vérifier aussi, images extraites de `render/final.mp4` à l'appui : les 3 premières secondes (titre lisible dès
@@ -182,7 +182,7 @@ npm run studio -- media:push <runId>
 
 ## 9. Programmation automatique (réglage `approval: "auto"`, choisi par l'utilisateur)
 
-Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » (90/100 ou plus, tous
+Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » (80/100 ou plus, tous
 les contrôles validés) et le lien affilié vérifié. D'abord Metricool `getBrandSettings` (marque `7791839`) : un réseau activé dans le panneau mais non
 connecté à Metricool (pas de compte dans la réponse) est sauté et signalé dans le journal (« Instagram activé
 mais non connecté à Metricool »), jamais programmé à l'aveugle.
@@ -210,7 +210,7 @@ Pour chaque autre entrée `posts` de `runs/<runId>/publish/package.json`, Metric
 
 ## Interdits
 
-- Publier ou programmer une vidéo sous 90/100, avec un contrôle bloquant en échec, sans voix audible, sans la
+- Publier ou programmer une vidéo sous le seuil, avec un contrôle bloquant en échec, sans voix audible, sans la
   mention « Publicité » ou avec un lien affilié non vérifié.
 - Inventer un fait, un prix, un témoignage, une statistique, une interface de Systeme.io ou un résultat.
 - Annoncer « publiée » sans confirmation de la plateforme.

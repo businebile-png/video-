@@ -450,7 +450,7 @@ function renderBanner() {
 // ---------- pending view ----------
 function scoreDial(total) {
   const r = 40, c = 2 * Math.PI * r, val = Math.max(0, Math.min(100, total || 0));
-  const color = val >= 90 ? 'var(--ok)' : val >= 85 ? 'var(--warn)' : 'var(--bad)';
+  const color = val >= 80 ? 'var(--ok)' : val >= 75 ? 'var(--warn)' : 'var(--bad)';
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 92 92');
   svg.innerHTML = `<circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--line)" stroke-width="8"></circle><circle cx="46" cy="46" r="${r}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${(c * val / 100).toFixed(1)} ${c.toFixed(1)}"></circle>`;
   return h('div', {class: 'dial', role: 'img', 'aria-label': `Note ${fmtNum(total)} sur 100`}, svg, h('div', {class: 'num'}, h('div', null, fmtNum(total), h('small', {text: '/ 100'}))));
@@ -576,7 +576,7 @@ function actionsBlock(v) {
     row.append(h('button', {class: 'btn', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'correct'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Demander une correction'}));
     row.append(h('button', {class: 'btn danger', disabled: !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'refuse'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Refuser'}));
     box.append(row);
-    if (!canValidate) box.append(h('div', {class: 'hint', text: v.status === 'en_relecture' ? 'Relecture indépendante en cours : la note sur 100 arrive dans quelques minutes, la validation s’activera alors (dès 90/100).' : v.status === 'bloquee' ? 'Validation impossible : un contrôle obligatoire a échoué (voir la liste). Demandez une correction.' : 'Note sous 90/100 : demandez une correction, ou validez en connaissance de cause si la note est entre 85 et 89.'}));
+    if (!canValidate) box.append(h('div', {class: 'hint', text: v.status === 'en_relecture' ? 'Relecture indépendante en cours : la note sur 100 arrive dans quelques minutes, la validation s’activera alors (dès 80/100).' : v.status === 'bloquee' ? 'Validation impossible : un contrôle obligatoire a échoué (voir la liste). Demandez une correction.' : 'Note sous 80/100 : demandez une correction, ou validez en connaissance de cause si la note est entre 75 et 79.'}));
     return box;
   }
   if (mode === 'validate') {
@@ -597,7 +597,7 @@ function actionsBlock(v) {
     for (const c of chosen) conf.append(h('div', null, `${NETS[c.net]} — ${c.slot ? fmtDate(c.slot.iso, true) : 'créneau à choisir'}`));
     conf.append(h('div', {class: 'hint', text: delivery === 'auto' ? 'Metricool publiera automatiquement à l’heure choisie.' : delivery === 'notification' ? 'Metricool vous enverra une notification sur votre téléphone pour finaliser la publication.' : 'Metricool gardera la publication en brouillon : vous la programmerez vous-même.'}));
     if (needOverride) {
-      const ov = h('textarea', {id: `override-${v.runId}`, placeholder: 'Pourquoi publier malgré une note entre 85 et 89 ?', oninput: (e) => saveDraft(`override-${v.runId}`, e.target.value)});
+      const ov = h('textarea', {id: `override-${v.runId}`, placeholder: 'Pourquoi publier malgré une note entre 75 et 79 ?', oninput: (e) => saveDraft(`override-${v.runId}`, e.target.value)});
       ov.value = S.ui.drafts[`override-${v.runId}`] || '';
       conf.append(h('div', {class: 'field'}, h('label', {for: `override-${v.runId}`, text: 'Validation malgré la note (motif obligatoire)'}), ov));
     }
@@ -664,7 +664,7 @@ function renderPending() {
   const box = document.getElementById('pending');
   const intro = document.getElementById('pending-intro');
   if (intro) intro.textContent = S.settings && S.settings.approval === 'auto'
-    ? `Chaque matin, la production quotidienne prépare la vidéo du jour et la note sur 100. À partir de 90/100, avec tous les contrôles validés, elle est programmée automatiquement dans Metricool${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est refaite. Vous suivez tout ici et pouvez aussi programmer vous-même.`
+    ? `Chaque matin, la production quotidienne prépare la vidéo du jour et la note sur 100. À partir de 80/100, avec tous les contrôles validés, elle est programmée automatiquement dans Metricool${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est refaite. Vous suivez tout ici et pouvez aussi programmer vous-même.`
     : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
@@ -925,7 +925,7 @@ function renderSettings() {
   const radio = (name, value, label, hint) => h('label', {for: `${name}-${value}`}, h('input', {type: 'radio', name, id: `${name}-${value}`, value, checked: d[name] === value, disabled: ro, onchange: () => { d[name] = value; }}), h('span', null, label, hint ? h('div', {class: 'hint', text: hint}) : null));
   const flow = h('div', {class: 'card'},
     h('div', {class: 'lbl', text: 'Validation'}),
-    h('div', {class: 'radio'}, radio('approval', 'panel', 'Je valide chaque vidéo dans ce panneau', 'Recommandé : rien n’est publié sans votre accord.'), radio('approval', 'auto', 'Publication automatique si tout est conforme', 'Seulement les vidéos à 90/100 ou plus, tous contrôles obligatoires validés.')),
+    h('div', {class: 'radio'}, radio('approval', 'panel', 'Je valide chaque vidéo dans ce panneau', 'Recommandé : rien n’est publié sans votre accord.'), radio('approval', 'auto', 'Publication automatique si tout est conforme', 'Seulement les vidéos à 80/100 ou plus, tous contrôles obligatoires validés.')),
     h('div', {class: 'lbl', text: 'Mode de publication dans Metricool'}),
     h('div', {class: 'radio'}, radio('delivery', 'auto', 'Publication automatique à l’heure choisie'), radio('delivery', 'notification', 'Notification sur mon téléphone pour publier moi-même', 'Utile si votre compte TikTok ne permet pas la publication automatique via Metricool.'), radio('delivery', 'draft', 'Brouillon dans Metricool')));
 
@@ -1026,7 +1026,7 @@ function setupSteps() {
       why: (() => {
         const at = t && cronLabel(t.cron), times = postTimesLabel(st);
         return st.approval === 'auto'
-          ? `Chaque matin${at ? ' vers ' + at : ''}, la vidéo du jour est produite et notée ; à partir de 90/100, elle est programmée automatiquement${times ? ' à ' + times : ''} sur vos réseaux.`
+          ? `Chaque matin${at ? ' vers ' + at : ''}, la vidéo du jour est produite et notée ; à partir de 80/100, elle est programmée automatiquement${times ? ' à ' + times : ''} sur vos réseaux.`
           : `Chaque matin${at ? ' vers ' + at : ''}, la vidéo du jour arrive dans « À valider » ; vous la programmez d’un clic.`;
       })(),
       how: [keysOk && linkOk ? 'Tout est prêt : activez-la ci-dessous, ou lancez une première production tout de suite.' : 'À activer une fois les étapes précédentes faites (sinon elle s’arrêterait faute de clés).'],
@@ -1093,7 +1093,7 @@ function renderSetup() {
       ['4. Images', 'Vraies séquences vidéo (Pixabay) choisies plan par plan.'],
       ['5. Montage', 'Sous-titres au mot, mention « Publicité », carte finale.'],
       ['6. Note /100', 'Relecture indépendante ; sous 90, la vidéo est refaite.'],
-      st.approval === 'auto' ? ['7. Publication', 'À partir de 90/100, programmée automatiquement dans Metricool.'] : ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
+      st.approval === 'auto' ? ['7. Publication', 'À partir de 80/100, programmée automatiquement dans Metricool.'] : ['7. Vous validez', 'Ici, avec le son ; la programmation part dans Metricool.'],
       ['8. Résultats', 'Vues, clics, abonnements payants suivis dans Statistiques.'],
     ].map(([b, t]) => h('div', null, h('b', {text: b}), t))));
 

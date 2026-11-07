@@ -35,8 +35,8 @@
   "publish": {
     "approval": "auto",
     "delivery": "auto",
-    "minScore": 90,
-    "improveFrom": 85,
+    "minScore": 80,
+    "improveFrom": 75,
     "leadTimeMinutes": 90
   },
   "media": {

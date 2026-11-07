@@ -118,7 +118,7 @@ export function computeScore(input: {
         ? `${total}/100 — à améliorer avant publication : ${weakest.join(', ')}.`
         : !gatesOk
           ? `${total}/100 — bloquée : ${gates.filter((g) => !g.ok).map((g) => g.label).join(' ; ')}.`
-          : `${total}/100 — sous 85 : à refaire (points faibles : ${weakest.join(', ')}).`;
+          : `${total}/100 — sous ${config.publish.improveFrom} : à refaire (points faibles : ${weakest.join(', ')}).`;
   return {runId: input.runId, scoredAt: new Date().toISOString(), total, criteria, gates, decision, weakest, summary};
 }
 

@@ -23,7 +23,7 @@ répondre, commenter et écrire les messages de commit en français.
   dans une copie datée de la page officielle.
 - Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
   en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
-- Publication : mode automatique choisi par l'utilisateur (90/100 et plus, tous contrôles validés),
+- Publication : mode automatique choisi par l'utilisateur (80/100 et plus depuis le 07/11/2026, choix de l’utilisateur ; tous contrôles validés),
   midi sur TikTok et Instagram via Metricool, jamais deux vidéos au même créneau (`freeSlots`).
 
 ## Règles pour modifier le code
