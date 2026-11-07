@@ -8,6 +8,7 @@ import {run, runOrThrow} from '../core/exec.js';
 import {log} from '../core/log.js';
 import {formatLocal, formatWithOffset, isoDateInZone, addDays, zonedInstant} from '../core/time.js';
 import {loadPublications} from '../core/stores.js';
+import {loadFacts} from '../facts/facts.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {ScoreReport} from '../qc/score.js';
@@ -114,10 +115,15 @@ export function freeSlots(slots: Slot[], publications: Publication[], runId: str
 }
 
 /** Caption with the legal disclosure first (visible before "more"), the CTA and the hashtags. */
-export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig): string {
+export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string} = {}): string {
   const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
   const lines = [config.affiliate.disclosureCaption, '', body.trim()];
   if (!/\bbio\b/i.test(body)) lines.push('', `Lien en bio pour découvrir ${config.brand.name}.`);
+  // A quoted price carries its verification date, as on screen.
+  if (opts.priceVerifiedOn && /€/.test(body)) {
+    const [y, m, d] = opts.priceVerifiedOn.slice(0, 10).split('-');
+    lines.push('', `Prix vérifiés sur systeme.io le ${d}/${m}/${y}.`);
+  }
   if (config.voice.creditLine) lines.push('', config.voice.creditLine);
   lines.push('', script.captions.hashtags.join(' '));
   return lines.join('\n').slice(0, 2150);
@@ -215,6 +221,11 @@ export async function preparePublication(
     coverMs: exists(p.timeline) ? Math.round(coverTimeSec(await readJson<Timeline>(p.timeline)) * 1000) : 1200,
   };
   const connected = (n: 'tiktok' | 'instagram') => !opts.networks || opts.networks.includes(n);
+  const priceIds = new Set(script.scenes.flatMap((s) => s.claimFactIds).filter((id) => id.includes('price')));
+  const priceVerifiedOn = (await loadFacts()).facts
+    .filter((f) => priceIds.has(f.id) && f.verifiedAt)
+    .map((f) => f.verifiedAt!)
+    .sort()[0];
   const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
   for (const network of ['tiktok', 'instagram'] as const) {
@@ -225,7 +236,7 @@ export async function preparePublication(
     }
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
-    const text = postText(script, network, config);
+    const text = postText(script, network, config, {priceVerifiedOn});
     posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config})});
   }
   const gatesOk = score.gates.every((g) => g.ok);

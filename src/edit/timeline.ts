@@ -244,7 +244,24 @@ function revealTimes(scene: Scene, span: SceneSpan): number[] {
     return [...chips, Math.min(mergeAt, usable)];
   }
   // A comparison is read as one card: both columns come in together at the start of the scene.
-  if (g.type === 'compare') return [0.15, 0.45];
+  if (g.type === 'compare') {
+    // Both columns come in together (one card); each line lights up when the voice says it, otherwise
+    // shortly after the line before it.
+    const lines = (items: string[], from: number, afterIndex: number) => {
+      let after = afterIndex;
+      let prev = from;
+      return items.map((label) => {
+        const hit = findSpokenTime(label, span.words, after);
+        if (hit) after = hit.index;
+        prev = hit ? Math.max(prev + 0.15, hit.time - span.startSec - 0.1) : prev + 0.35;
+        return Math.min(prev, usable);
+      });
+    };
+    const right = findSpokenTime(g.right.title, span.words);
+    const leftLines = lines(g.left.items, 0.3, -1);
+    const rightLines = lines(g.right.items, right ? Math.max(0.6, right.time - span.startSec - 0.1) : leftLines[leftLines.length - 1]! + 0.4, right ? right.index : -1);
+    return [0.15, 0.45, ...leftLines, ...rightLines];
+  }
   const out: number[] = [];
   let after = -1;
   labels.forEach((label, i) => {
@@ -337,6 +354,16 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
       if (endsSentence(w.text)) flush();
     });
     flush();
+  }
+  // A group on screen for less than 0.4 s cannot be read: it joins the next one when both fit on screen.
+  for (let i = 0; i < groups.length - 1; i++) {
+    const g = groups[i]!;
+    const next = groups[i + 1]!;
+    const chars = [...g.words, ...next.words].reduce((n, w) => n + w.text.length + 1, 0);
+    if (g.to - g.from < 12 && next.y === g.y && next.from - g.to <= 6 && chars <= ad.caption.maxChars + 8) {
+      groups.splice(i, 2, {...g, to: next.to, words: [...g.words, ...next.words]});
+      i--;
+    }
   }
   // Chain groups (no flicker between close groups) and stop at the end card.
   for (let i = 0; i < groups.length; i++) {

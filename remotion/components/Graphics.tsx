@@ -251,9 +251,12 @@ function Compare({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; f
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
           {data.items.map((t, i) => {
-            const si = pop(frame, fps, at + 5 + i * 4);
+            // revealAt = [left column, right column, left lines…, right lines…]: a line lights up when it is said.
+            const lineAt = item.revealAt[2 + (side === 'left' ? 0 : g.left.items.length) + i];
+            const si = lineAt === undefined ? pop(frame, fps, at + 5 + i * 4) : pop(frame, fps, lineAt);
+            const shown = lineAt === undefined ? si : s * (0.4 + 0.6 * si);
             return (
-              <div key={i} style={{display: 'flex', alignItems: 'center', gap: 12, opacity: si}}>
+              <div key={i} style={{display: 'flex', alignItems: 'center', gap: 12, opacity: shown}}>
                 {good ? (
                   <Check progress={si} color={ad.palette.accent} ink={ad.palette.accentInk} />
                 ) : g.leftStyle === 'dot' ? (

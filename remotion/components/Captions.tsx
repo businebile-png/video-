@@ -68,7 +68,7 @@ const Word: React.FC<{w: CaptionWord; ad: ArtDirection; frame: number; fps: numb
     default:
       // No box behind the words in this style: a denser shadow keeps them legible on bright footage.
       return (
-        <span style={{...base, color: accentWord ? palette.accent : palette.ink, opacity: spoken ? 1 : 0.5, textShadow: '0 2px 14px rgba(0,0,0,0.78), 0 0 3px rgba(0,0,0,0.9)'}}>
+        <span style={{...base, color: accentWord ? palette.accent : palette.ink, opacity: spoken ? 1 : 0.82, textShadow: '0 2px 14px rgba(0,0,0,0.78), 0 0 3px rgba(0,0,0,0.9)'}}>
           {w.text}
         </span>
       );

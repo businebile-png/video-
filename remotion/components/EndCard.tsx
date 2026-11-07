@@ -95,9 +95,6 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
             transform: `scale(${0.85 + 0.15 * cta}) translateY(${bounce * 0.3}px)`,
           }}
         >
-          <svg width="40" height="40" viewBox="0 0 40 40" style={{transform: `translateY(${-Math.abs(bounce)}px)`}}>
-            <path d="M20 33 V9 M10 18 L20 8 L30 18" fill="none" stroke={ad.palette.accentInk} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
           {card.cta}
         </div>
       </div>
