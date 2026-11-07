@@ -108,6 +108,61 @@
           "cues": [
             "gratuit"
           ]
+        },
+        {
+          "id": "carte-gratuit",
+          "x": 0.045,
+          "y": 0.37,
+          "w": 0.215,
+          "h": 0.44,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit"
+          ]
+        },
+        {
+          "id": "carte-startup",
+          "x": 0.285,
+          "y": 0.37,
+          "w": 0.215,
+          "h": 0.405,
+          "label": "Startup",
+          "cues": [
+            "Startup"
+          ]
+        },
+        {
+          "id": "carte-webinaire",
+          "x": 0.52,
+          "y": 0.37,
+          "w": 0.225,
+          "h": 0.405,
+          "label": "Webinaire",
+          "cues": [
+            "Webinaire"
+          ]
+        },
+        {
+          "id": "carte-illimite",
+          "x": 0.757,
+          "y": 0.37,
+          "w": 0.225,
+          "h": 0.405,
+          "label": "Illimité",
+          "cues": [
+            "Illimité"
+          ]
+        },
+        {
+          "id": "cartes-toutes",
+          "x": 0.04,
+          "y": 0.37,
+          "w": 0.945,
+          "h": 0.44,
+          "label": "Les 4 formules",
+          "cues": [
+            "formules"
+          ]
         }
       ],
       "personalDataChecked": true

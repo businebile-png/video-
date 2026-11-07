@@ -162,7 +162,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
       </div>
       {shot.highlights.map((h, i) => {
         const local = frame - h.from;
-        if (local < 0 || local > h.duration) return null;
+        if (!h.label || local < 0 || local > h.duration) return null;
         const appear = pop(local, fps, 4);
         const fade = interpolate(local, [h.duration - 8, h.duration], [1, 0], clamp);
         return (

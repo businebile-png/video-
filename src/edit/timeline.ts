@@ -421,7 +421,7 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
     const at = Math.min(durationF - 20, Math.max(12, toF(atSec)));
     const region: Region = {x: r.x, y: r.y, w: r.w, h: r.h};
     keyframes.push({at, focus: region});
-    highlights.push({from: at + 10, duration: 0, region, label: scene.visual.focusLabels?.[k] ?? r.label});
+    highlights.push({from: at + 10, duration: 0, region, label: scene.headline ? '' : scene.visual.focusLabels?.[k] ?? r.label});
   });
   highlights.forEach((h, i) => {
     const nextAt = keyframes[i + 2]?.at ?? durationF;

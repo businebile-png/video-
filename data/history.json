@@ -18,6 +18,25 @@
       "reason": "73/100 — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
       "updatedAt": "2026-11-07T17:04:59.805Z"
+    },
+    {
+      "runId": "2026-11-07-a",
+      "date": "2026-11-07",
+      "category": "formules-payantes",
+      "hookStyle": "question-directe",
+      "hook": "Systeme.io a quatre formules. Laquelle est faite pour toi ?",
+      "angle": "Les quatre formules de Systeme.io expliquées une par une, sur la page officielle : ce que chacune permet et son prix, pour choisir sans payer trop ni bloquer trop tôt",
+      "workingTitle": "Les 4 formules de Systeme.io expliquées",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-07T17:37:36.988Z"
     }
   ]
 }
