@@ -11,13 +11,13 @@
       "artDirection": "nuit-edit",
       "musicTrack": null,
       "voiceId": "ff_siwis",
-      "durationSec": 23.23,
+      "durationSec": 23.57,
       "score": 81,
       "decision": "redo",
-      "status": "rejected",
+      "status": "rendered",
       "reason": "81/100 — sous 85 : à refaire (points faibles : Qualité visuelle, Explication de Systeme.io).",
       "pexelsIds": [],
-      "updatedAt": "2026-11-07T07:04:47.735Z"
+      "updatedAt": "2026-11-07T07:11:50.921Z"
     }
   ]
 }
