@@ -13,16 +13,8 @@
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
   --r: 10px;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0D1014; --surface: #151A20; --surface-2: #1C222A; --ink: #E6EAF0; --muted: #98A2AF; --line: #29303A;
-  --accent: #8FA5FF; --accent-ink: #0D1014; --accent-soft: #1E2641;
-  --ok: #4CC488; --ok-soft: #10261A; --warn: #E6A443; --warn-soft: #2A1F10; --bad: #F27A6B; --bad-soft: #2D1614;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3); color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #0D1014; --surface: #151A20; --surface-2: #1C222A; --ink: #E6EAF0; --muted: #98A2AF; --line: #29303A;
-  --accent: #8FA5FF; --accent-ink: #0D1014; --accent-soft: #1E2641;
-  --ok: #4CC488; --ok-soft: #10261A; --warn: #E6A443; --warn-soft: #2A1F10; --bad: #F27A6B; --bad-soft: #2D1614;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3); color-scheme: dark }
+/* Toujours blanc, quel que soit le réglage clair/sombre de l'appareil (choix de l'utilisateur, 7 novembre 2026). */
+:root, :root[data-theme="dark"] { color-scheme: light; }
 
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
