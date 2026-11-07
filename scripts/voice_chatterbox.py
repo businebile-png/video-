@@ -102,8 +102,9 @@ def tts(job):
                 spoken = [w for seg in segments for w in (seg.words or [])]
                 if spoken:
                     # Keep only the speech: the model leaves breaths and noise around a sentence.
-                    start = max(0, int((spoken[0].start - 0.06) * sr))
-                    end = min(len(audio), int((spoken[-1].end + 0.14) * sr))
+                    # Generous tail: Whisper often ends a word before its final consonant (« compte » heard « con »).
+                    start = max(0, int((spoken[0].start - 0.08) * sr))
+                    end = min(len(audio), int((spoken[-1].end + 0.28) * sr))
                     if end - start > sr * 0.3:
                         audio = audio[start:end]
                 error = take_error(sentence, heard)

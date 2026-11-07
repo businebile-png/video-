@@ -233,11 +233,18 @@ function revealTimes(scene: Scene, span: SceneSpan): number[] {
       return hit ? Math.max(0.15, hit.time - span.startSec - 0.1) : 0.25 + (i * (chipsEnd - 0.25)) / Math.max(1, g.items.length - 1);
     });
     for (let i = 1; i < chips.length; i++) chips[i] = Math.max(chips[i]!, chips[i - 1]! + 0.25);
+    if (after < 0) {
+      // None named here (a recap of what was just said): quick entrance, merge after ~1 s, the result holds.
+      const quick = g.items.map((_, i) => 0.1 + i * 0.15);
+      return [...quick, Math.min(quick[quick.length - 1]! + 0.9, usable)];
+    }
     const merge = findSpokenTime(g.result, span.words, after);
     // Chips stay readable (the first one at least 1.5 s, the last one 1 s) before they merge into the result.
     const mergeAt = Math.max(chips[0]! + 1.5, chips[chips.length - 1]! + 1, merge ? merge.time - span.startSec - 0.15 : 0);
     return [...chips, Math.min(mergeAt, usable)];
   }
+  // A comparison is read as one card: both columns come in together at the start of the scene.
+  if (g.type === 'compare') return [0.15, 0.45];
   const out: number[] = [];
   let after = -1;
   labels.forEach((label, i) => {
@@ -317,7 +324,7 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
           // Carry trailing articles/prepositions over to the next group, where their noun is; a group made only
           // of such words grows by one word instead of being shown alone ("dans un" + "seul").
           let keep = current.length;
-          while (keep > 0 && LEANING_WORDS.has(bare(current[keep - 1]!.text))) keep--;
+          while (keep > 0 && (LEANING_WORDS.has(bare(current[keep - 1]!.text)) || /^[0-9][0-9\u202f]*$/.test(current[keep - 1]!.text))) keep--;
           if (keep > 0) {
             const carried = current.slice(keep);
             current = current.slice(0, keep);
@@ -467,7 +474,7 @@ export function buildTimeline(input: BuildInput): Timeline {
   // The end card arrives with the last clause of the call to action ("… le lien est dans ma bio"):
   // before it, the CTA's own shot plays sharp under the captions, so the close is not a still card.
   const ctaSpan = spans.find((s) => s.scene.phase === 'cta') ?? spans[spans.length - 1]!;
-  const lienAt = findSpokenTime('lien', ctaSpan.words);
+  const lienAt = findSpokenTime('formule', ctaSpan.words) ?? findSpokenTime('lien', ctaSpan.words);
   const cardSec = lienAt ? Math.max(ctaSpan.startSec, Math.min(ctaSpan.endSec - 2.2, lienAt.time - 0.2)) : ctaSpan.startSec;
 
   for (const span of spans) {

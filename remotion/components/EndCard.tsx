@@ -12,7 +12,7 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
   const k = pop(frame, fps, 2);
   const h = pop(frame, fps, 6);
   const sub = pop(frame, fps, 12);
-  const cta = pop(frame, fps, 18);
+  const cta = pop(frame, fps, 10);
   const bounce = Math.sin(Math.max(0, frame - 24) / 7) * 6;
   return (
     <AbsoluteFill>

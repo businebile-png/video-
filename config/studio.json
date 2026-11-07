@@ -47,7 +47,7 @@
   },
   "voice": {
     "provider": "chatterbox",
-    "creditLine": "Voix de synthèse (IA), référence : corpus SIWIS, CC BY 4.0.",
+    "creditLine": "Voix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.",
     "sttProvider": "local",
     "local": {
       "python": ".venv-voice/bin/python",
@@ -136,7 +136,7 @@
       "sentenceBreakMs": 120,
       "sceneBreakMs": 240,
       "pronunciations": {
-        "Systeme.io": "Système, I-O",
+        "Systeme.io": "Système I-O",
         "e-mail": "e-mail",
         "e-mails": "e-mails",
         "mail": "mail",
