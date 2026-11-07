@@ -8,11 +8,11 @@ import {fontStack} from '../fonts';
 export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, ad}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const shade = interpolate(frame, [0, 10], [0, 1], clamp);
-  const k = pop(frame, fps, 2);
-  const h = pop(frame, fps, 6);
-  const sub = pop(frame, fps, 12);
-  const cta = pop(frame, fps, 10);
+  const shade = interpolate(frame, [0, 6], [0, 1], clamp);
+  const k = pop(frame, fps, 0);
+  const h = pop(frame, fps, 2);
+  const sub = pop(frame, fps, 4);
+  const cta = pop(frame, fps, 5);
   const bounce = Math.sin(Math.max(0, frame - 24) / 7) * 6;
   return (
     <AbsoluteFill>

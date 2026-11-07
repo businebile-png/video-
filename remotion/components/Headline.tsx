@@ -22,7 +22,9 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
   const {headline, palette, fonts} = ad;
   const isLabel = headline.style === 'label';
   // The label band wipes in with its words: never an empty coloured band on screen.
-  const wipe = isLabel ? Math.min(1, spring({frame, fps, config: {damping: 26, stiffness: 260, mass: 0.6}})) : 1;
+  // The video's first headline is already complete on image 0: the hook reads before anything moves.
+  const instant = item.from === 0;
+  const wipe = isLabel && !instant ? Math.min(1, spring({frame, fps, config: {damping: 26, stiffness: 260, mass: 0.6}})) : 1;
   return (
     <div
       style={{
@@ -54,7 +56,7 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
         }}
       >
         {words.map((w, i) => {
-          const s = spring({frame: frame - i * 2, fps, config: {damping: 22, stiffness: 200, mass: 0.7}});
+          const s = instant ? 1 : spring({frame: frame - i * 2, fps, config: {damping: 22, stiffness: 200, mass: 0.7}});
           const isEmph = emph.has(norm(w));
           const serif = headline.style === 'serif-mix' && isEmph;
           const boxed = headline.style === 'block' && isEmph;

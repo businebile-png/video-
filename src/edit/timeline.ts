@@ -51,7 +51,7 @@ export interface BuildInput {
 }
 
 const FPS = 30;
-const END_HOLD_SEC = 1.6;
+const END_HOLD_SEC = 2.1;
 const DISSOLVE_FRAMES = 8;
 const WHIP_FRAMES = 6;
 const MAX_STYLIZED_TRANSITIONS = 3;
@@ -420,7 +420,7 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
     const at = Math.min(durationF - 20, Math.max(12, toF(atSec)));
     const region: Region = {x: r.x, y: r.y, w: r.w, h: r.h};
     keyframes.push({at, focus: region});
-    highlights.push({from: at + 10, duration: 0, region, label: r.label});
+    highlights.push({from: at + 10, duration: 0, region, label: scene.visual.focusLabels?.[i] ?? r.label});
   });
   highlights.forEach((h, i) => {
     const nextAt = keyframes[i + 2]?.at ?? durationF;
@@ -578,11 +578,22 @@ export function buildTimeline(input: BuildInput): Timeline {
       const sharpLead = bgFrom - span.startSec >= 0.5;
       if (sharpLead) pushFootage(span, span.startSec, bgFrom, {layer: 'full', intensity: 0.8});
       const sceneSec = span.endSec - bgFrom;
+      const stepsCuts = (() => {
+        // A path told step by step: each step brings its own sharp shot, cut on the word that names it.
+        if (scene.visual.graphic?.type !== 'steps' || own.length < 2 || sharpLead) return null;
+        const at = revealTimes(scene, span)
+          .slice(1)
+          .map((t) => span.startSec + 3 / FPS + t)
+          .filter((t) => t > bgFrom + 0.6 && t < span.endSec - 0.6);
+        return at.length ? [bgFrom, ...at, span.endSec] : null;
+      })();
       // Behind a card, one long calm shot reads better than cuts when a single clip covers it.
       const cuts =
-        sharpLead || (own.length === 1 && own[0]!.durationSec >= sceneSec + 0.8) ? [bgFrom, span.endSec] : planCuts({...span, startSec: bgFrom}, target * 1.6, rng);
-      // Chips that merge carry their own dark backing: the shot behind them stays sharp (a card keeps the blur).
-      const sharp = scene.visual.graphic?.type === 'stack-merge';
+        stepsCuts ??
+        (sharpLead || (own.length === 1 && own[0]!.durationSec >= sceneSec + 0.8) ? [bgFrom, span.endSec] : planCuts({...span, startSec: bgFrom}, target * 1.6, rng));
+      // Chips that merge carry their own dark backing: the shot behind them stays sharp (a card keeps the blur);
+      // steps cut with the voice stay sharp too.
+      const sharp = scene.visual.graphic?.type === 'stack-merge' || stepsCuts !== null;
       for (let i = 0; i < cuts.length - 1; i++) {
         pushFootage(span, cuts[i]!, cuts[i + 1]!, {
           layer: sharp ? 'full' : 'background',

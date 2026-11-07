@@ -85,6 +85,29 @@
           "cues": [
             "17 €"
           ]
+        },
+        {
+          "id": "startup-prix-seul",
+          "x": 0.285,
+          "y": 0.69,
+          "w": 0.205,
+          "h": 0.085,
+          "label": "Startup",
+          "cues": [
+            "Startup",
+            "17 €"
+          ]
+        },
+        {
+          "id": "gratuit-prix-seul",
+          "x": 0.045,
+          "y": 0.69,
+          "w": 0.205,
+          "h": 0.085,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit"
+          ]
         }
       ],
       "personalDataChecked": true
