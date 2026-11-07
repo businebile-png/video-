@@ -2,8 +2,9 @@
 
 Ce guide est suivi par Claude à chaque production (tâche programmée du matin, bouton « Lancer une
 production maintenant » du panneau, ou demande manuelle). Il produit **une** vidéo de haute qualité,
-la fait relire par un relecteur indépendant, puis la dépose dans le panneau pour validation.
-Rien n'est publié qui n'a pas passé tous les contrôles.
+la fait relire par un relecteur indépendant, la dépose dans le panneau, puis, en mode automatique
+(`approval: "auto"`, choix de l'utilisateur), la programme lui-même sur les réseaux connectés.
+Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 90/100.
 
 La qualité passe avant l'horaire : si la vidéo n'atteint pas le niveau, on l'écrit dans le journal du
 panneau et on ne dépose rien de médiocre.
@@ -135,15 +136,22 @@ Ne pas lui donner votre propre avis. Puis :
 npm run studio -- score <runId>
 ```
 
-- Moins de 85, ou contrôle bloquant : corriger la cause et reprendre à l'étape concernée (deux reprises au maximum,
-  sinon déposer la fiche « bloquée » avec les raisons).
-- 85 à 89 : appliquer les pistes du relecteur sur les deux critères les plus faibles, refaire le rendu, re-noter une fois.
+- Moins de 90, ou contrôle bloquant : refaire. Corriger chaque problème bloquant et appliquer les pistes du
+  relecteur (script, plans, graphiques), reprendre à l'étape concernée, refaire le rendu, puis une **nouvelle**
+  relecture indépendante (nouveau sous-agent) et `score`. Trois reprises au maximum : si la vidéo n'atteint
+  toujours pas 90, rien n'est publié ce jour-là ; déposer la fiche « bloquée » avec les raisons et l'écrire
+  dans le journal.
 - 90 et plus avec tous les contrôles validés : continuer.
+- Avant chaque relecture, regarder soi-même la planche et quelques images (`qc/frames/`) : un défaut visible
+  (carte vide, texte coupé, logo, visage, écran lisible) se corrige avant de solliciter le relecteur.
 
 ## 8. Déposer dans le panneau
 
+Metricool `getBrandSettings` (marque `7791839`) d'abord : `networksData` liste les réseaux connectés
+(`tiktokData`, `instagramData`). Ne préparer que ceux-là :
+
 ```bash
-npm run studio -- publish:prepare <runId>
+npm run studio -- publish:prepare <runId> --networks tiktok,instagram   # seulement les réseaux connectés
 npm run studio -- media:push <runId>
 ```
 
@@ -154,12 +162,15 @@ npm run studio -- media:push <runId>
 2. `npm run studio -- panel:export <runId> --preview-asset <id> --preview-url <url> --cover-asset <id> --cover-url <url>`
 3. `ArtifactData set` sur `videos/<runId>` avec `file_path: "runs/<runId>/panel/video.json"`.
 
-## 9. Programmation automatique (seulement si l'utilisateur l'a choisie)
+## 9. Programmation automatique (réglage `approval: "auto"`, choisi par l'utilisateur)
 
-Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » et le lien affilié
-vérifié. D'abord Metricool `getBrandSettings` (marque `7791839`) : un réseau activé dans le panneau mais non
+Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » (90/100 ou plus, tous
+les contrôles validés) et le lien affilié vérifié. D'abord Metricool `getBrandSettings` (marque `7791839`) : un réseau activé dans le panneau mais non
 connecté à Metricool (pas de compte dans la réponse) est sauté et signalé dans le journal (« Instagram activé
 mais non connecté à Metricool »), jamais programmé à l'aveugle.
+Le paquet ne propose jamais un créneau déjà pris par une autre vidéo du studio ; vérifier aussi avec Metricool
+`getScheduledPosts` (marque `7791839`, fuseau `Europe/Paris`) qu'aucun autre post n'est prévu à la même heure sur
+le même réseau, sinon prendre le créneau suivant de `slots` dans `package.json`.
 Pour chaque autre entrée `posts` de `runs/<runId>/publish/package.json`, Metricool `createScheduledPost`
 (`blogId`, `date`, `info` = chaîne JSON). Enregistrer chaque réponse avec
 `npm run studio -- publish:record <runId> --network <réseau> --response <fichier.json>` et mettre à jour la fiche

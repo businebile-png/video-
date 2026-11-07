@@ -11,6 +11,7 @@ import {loadPublications} from '../core/stores.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {ScoreReport} from '../qc/score.js';
+import type {Publication} from '../schemas/records.js';
 
 export interface LinkHop {
   url: string;
@@ -97,6 +98,19 @@ export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slo
   return out;
 }
 
+/**
+ * Slots still free for a run: only the networks connected to Metricool (when known), and never a slot that
+ * already holds another video (scheduled or published), so two videos never go out at the same time.
+ */
+export function freeSlots(slots: Slot[], publications: Publication[], runId: string, networks?: Array<'tiktok' | 'instagram'>): Slot[] {
+  const taken = new Set(
+    publications
+      .filter((x) => x.runId !== runId && (x.status === 'scheduled' || x.status === 'published'))
+      .map((x) => `${x.network}@${Date.parse(x.scheduledFor)}`),
+  );
+  return slots.filter((s) => (!networks || networks.includes(s.network)) && !taken.has(`${s.network}@${Date.parse(s.iso)}`));
+}
+
 /** Caption with the legal disclosure first (visible before "more"), the CTA and the hashtags. */
 export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig): string {
   const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
@@ -170,12 +184,21 @@ export interface PublishPackage {
   slots: Slot[];
 }
 
-export async function preparePublication(runId: string, config: StudioConfig, opts: {skipLinkCheck?: boolean} = {}): Promise<PublishPackage> {
+/**
+ * `networks`: the networks actually connected to the Metricool brand (getBrandSettings); a network
+ * enabled in the settings but not connected gets no post, so nothing is ever scheduled blindly.
+ */
+export async function preparePublication(
+  runId: string,
+  config: StudioConfig,
+  opts: {skipLinkCheck?: boolean; networks?: Array<'tiktok' | 'instagram'>} = {},
+): Promise<PublishPackage> {
   const p = runPaths(runId);
   const score = await readJson<ScoreReport>(p.score);
   const script = await readValidated(p.script, ScriptSchema);
   const digest = await sha256File(p.final);
-  const dup = (await loadPublications()).find((x) => x.contentSha256 === digest && x.runId !== runId && x.status !== 'cancelled');
+  const publications = await loadPublications();
+  const dup = publications.find((x) => x.contentSha256 === digest && x.runId !== runId && x.status !== 'cancelled');
   const linkCheck = opts.skipLinkCheck
     ? {url: config.affiliate.url, checkedAt: new Date().toISOString(), ok: affiliateLinkProblems(config.affiliate.url).length === 0, problems: [...affiliateLinkProblems(config.affiliate.url), 'vérification en ligne non effectuée'], hops: [], finalUrl: null}
     : await checkAffiliateLink(config.affiliate.url);
@@ -188,10 +211,15 @@ export async function preparePublication(runId: string, config: StudioConfig, op
     coverUrl: `${base}/videos/${runId}.jpg`,
     coverMs: 1200,
   };
-  const slots = nextSlots(config);
+  const connected = (n: 'tiktok' | 'instagram') => !opts.networks || opts.networks.includes(n);
+  const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
   for (const network of ['tiktok', 'instagram'] as const) {
     if (!config.platforms[network].enabled) continue;
+    if (!connected(network)) {
+      log.warn(`${network === 'tiktok' ? 'TikTok' : 'Instagram'} activé mais non connecté à Metricool : aucune publication préparée pour ce réseau.`);
+      continue;
+    }
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
     const text = postText(script, network, config);

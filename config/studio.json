@@ -13,7 +13,7 @@
     "tiktok": {
       "enabled": true,
       "postTimes": [
-        "18:20"
+        "12:00"
       ],
       "privacy": "PUBLIC_TO_EVERYONE",
       "aiLabel": true,
@@ -22,8 +22,7 @@
     "instagram": {
       "enabled": true,
       "postTimes": [
-        "12:23",
-        "18:41"
+        "12:00"
       ],
       "aiLabel": true,
       "showReelOnFeed": true
@@ -34,7 +33,7 @@
     "timezone": "Europe/Paris"
   },
   "publish": {
-    "approval": "panel",
+    "approval": "auto",
     "delivery": "auto",
     "minScore": 90,
     "improveFrom": 85,

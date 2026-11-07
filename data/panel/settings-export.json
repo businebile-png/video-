@@ -1,20 +1,19 @@
 {
   "affiliateUrl": "https://systeme.io/fr?sa=sa0284377331559446b0fd317c047c9b41281fb597",
   "bioLinkCheckedOn": null,
-  "approval": "panel",
+  "approval": "auto",
   "delivery": "auto",
   "platforms": {
     "tiktok": {
       "enabled": true,
       "postTimes": [
-        "18:20"
+        "12:00"
       ]
     },
     "instagram": {
       "enabled": true,
       "postTimes": [
-        "12:23",
-        "18:41"
+        "12:00"
       ]
     }
   },
@@ -97,10 +96,10 @@
     "footageProvider": "pixabay",
     "checkedAt": "2026-11-06T13:27:46.696Z",
     "voiceProvider": "chatterbox",
-    "factsVerified": 48,
+    "factsVerified": 49,
     "pricesVerified": true,
     "capturesCount": 0
   },
-  "updatedAt": "2026-11-06T17:18:06.770Z",
-  "updatedBy": "agent"
+  "updatedAt": "2026-11-06T17:55:04+00:00",
+  "updatedBy": "agent (demande de l’utilisateur : publication automatique à midi sur TikTok et Instagram, sans validation manuelle)"
 }

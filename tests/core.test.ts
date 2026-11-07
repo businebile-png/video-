@@ -5,7 +5,8 @@ import {affiliateLinkProblems} from '../src/core/config.js';
 import {alignmentToWords, displayWords, mapToDisplay, prepareSpeech, spokenForm} from '../src/voice/speech.js';
 import {normalizeDocs} from '../src/panel/panel.js';
 import {cropFilter} from '../src/edit/edit-step.js';
-import {nextSlots, postText} from '../src/publish/publish.js';
+import {freeSlots, nextSlots, postText} from '../src/publish/publish.js';
+import type {Publication} from '../src/schemas/records.js';
 import {voiceMetrics, scoreVoice} from '../src/voice/voice-step.js';
 import {loadConfig} from '../src/core/config.js';
 import {sampleScript} from './fixtures.js';
@@ -42,6 +43,27 @@ describe('horaires de publication', () => {
     const slots = nextSlots(config, new Date('2026-11-06T17:00:00Z'));
     expect(slots[0]!.network).toBe('tiktok');
     expect(slots[0]!.iso).toBe('2026-11-07T19:07:00+01:00');
+  });
+  it('ne propose jamais un créneau déjà pris ni un réseau non connecté', async () => {
+    const config = await loadConfig();
+    config.platforms.tiktok = {...config.platforms.tiktok, enabled: true, postTimes: ['12:00']};
+    config.platforms.instagram = {...config.platforms.instagram, enabled: true, postTimes: ['12:00']};
+    config.publish.leadTimeMinutes = 90;
+    const slots = nextSlots(config, new Date('2026-11-07T01:00:00Z'));
+    const pub = (runId: string, network: 'tiktok' | 'instagram', scheduledFor: string, status: Publication['status']): Publication => ({
+      runId, network, scheduledFor, status, contentSha256: 'x', mediaUrl: 'https://example.org/v.mp4', delivery: 'auto', approvedBy: 'auto',
+      metricoolPostId: null, metricoolUuid: null, plannerUrl: null, permalink: null, captionStart: '', confirmedAt: null, note: null, recordedAt: '2026-11-07T01:00:00Z',
+    });
+    const pubs = [
+      pub('autre', 'tiktok', '2026-11-07T11:00:00.000Z', 'scheduled'), // même instant, autre écriture
+      pub('autre', 'instagram', '2026-11-07T12:00:00+01:00', 'cancelled'), // annulée : le créneau reste libre
+    ];
+    const free = freeSlots(slots, pubs, 'cette-video');
+    expect(free.find((s) => s.network === 'tiktok')!.iso).toBe('2026-11-08T12:00:00+01:00');
+    expect(free.find((s) => s.network === 'instagram')!.iso).toBe('2026-11-07T12:00:00+01:00');
+    // La vidéo elle-même ne se bloque pas son propre créneau (reprogrammation).
+    expect(freeSlots(slots, pubs, 'autre').find((s) => s.network === 'tiktok')!.iso).toBe('2026-11-07T12:00:00+01:00');
+    expect(freeSlots(slots, pubs, 'cette-video', ['tiktok']).every((s) => s.network === 'tiktok')).toBe(true);
   });
 });
 

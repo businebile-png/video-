@@ -65,7 +65,7 @@ Production (dans l'ordre)
 
 Publication et panneau
   link:check                   Vérifie le lien affilié en ligne (redirections, paramètre sa)
-  publish:prepare <runId>      Paquet de publication (légendes, créneaux, charge Metricool)
+  publish:prepare <runId> [--networks tiktok,instagram]  Paquet de publication (légendes, créneaux, charge Metricool) pour les réseaux connectés
   media:push <runId>           Publie le MP4 sur la branche média publique
   publish:record <runId> --network tiktok|instagram --response <fichier.json> [--status scheduled|draft]
   panel:export <runId> [--preview-asset <id> --preview-url <url> --cover-asset <id> --cover-url <url>]
@@ -213,6 +213,7 @@ async function main(): Promise<void> {
       force: {type: 'boolean'},
       only: {type: 'string'},
       'encode-only': {type: 'boolean'},
+      networks: {type: 'string'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -544,7 +545,11 @@ async function main(): Promise<void> {
     case 'publish:prepare': {
       const id = runId();
       const config = await loadConfig();
-      await step(id, 'publish-prepare', () => preparePublication(id, config, {skipLinkCheck: values['skip-link-check'] === true}));
+      const networks = str('networks')
+        ?.split(',')
+        .map((x) => x.trim())
+        .filter((x): x is 'tiktok' | 'instagram' => x === 'tiktok' || x === 'instagram');
+      await step(id, 'publish-prepare', () => preparePublication(id, config, {skipLinkCheck: values['skip-link-check'] === true, networks}));
       return;
     }
     case 'media:push': {
