@@ -203,6 +203,12 @@ export function renderBrief(plan: Plan, editorial: Editorial): string {
   lines.push('## Captures réelles de Systeme.io disponibles pour une démonstration');
   if (plan.captures.length === 0) lines.push('- Aucune : pas de scène « demo » (ne jamais inventer d’interface).');
   plan.captures.forEach((cp) => lines.push(`- \`${cp.id}\` [${cp.feature}] ${cp.title} — ${cp.description} — zones : ${cp.regions.join(', ') || 'aucune'}`));
+  const pricing = plan.captures.find((cp) => cp.feature === 'pricing');
+  if (pricing) {
+    lines.push(
+      `- Quand la voix cite un prix ou une limite de formule, montrer la preuve : scène \`demo\` avec \`${pricing.id}\` (la caméra va sur chaque formule au mot qui la nomme).`,
+    );
+  }
   lines.push('');
   lines.push('## Objectif commercial');
   lines.push('- Le but est l’abonnement payant à Systeme.io via le lien affilié (commission récurrente), pas les vues.');

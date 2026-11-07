@@ -98,6 +98,14 @@ Lire `runs/<runId>/plan.md` en entier.
 - **Visuels** : 2 à 4 recherches de séquences en anglais par scène, concrètes et filmables. Scène `demo` seulement avec une
   capture réelle listée dans le plan. Graphiques pour expliquer ; `stat` et `price` exigent un fait vérifié.
 - Tout chiffre, prix, formule, « gratuit », « illimité » ou fonctionnalité → son identifiant dans `claimFactIds`.
+- **Preuve visible** : quand la voix cite des prix ou des limites de formules, faire de cette phrase une scène `demo`
+  avec la capture officielle `tarifs-page` (`focusRegionIds` : `gratuit`, `startup`). La caméra va sur chaque formule
+  au mot qui la nomme (son nom ou un repère du manifeste, par exemple « 5 000 » pour Startup) ; la page affiche sa
+  source et sa date. C'est la seule image réelle de Systeme.io disponible tant que l'utilisateur n'a pas envoyé
+  d'enregistrement d'écran : elle compte beaucoup pour l'explication et la conversion.
+- **Leçons des relectures** (ce qui a fait perdre des points) : phrase abstraite (« tout tient dans un seul compte »)
+  sans exemple concret ; formule payante seulement en petit ; plans génériques sans rapport avec la phrase ; fonds
+  flous qui n'apportent rien. Chaque phrase doit montrer ce qu'elle dit.
 
 ```bash
 npm run studio -- script:check <runId>
@@ -114,7 +122,9 @@ npm run studio -- footage:search <runId>
 
 Ouvrir chaque planche `runs/<runId>/footage/sheets/<scène>.jpg` et choisir les séquences les plus justes :
 en rapport direct avec la phrase dite, nettes, naturelles, personnes crédibles, sans texte incrusté ni logo,
-rien qui laisse croire qu'une personne filmée recommande Systeme.io. Écrire
+rien qui laisse croire qu'une personne filmée recommande Systeme.io. Le premier plan est l'image qui arrête le
+pouce : un sujet clair et contrasté, jamais un plan terne ou délavé (le montage ramène automatiquement un plan
+trop clair au niveau du style « nuit », mais un plan sombre et net reste préférable). Écrire
 `runs/<runId>/footage/selection.json` : `{"by": "agent", "notes": "…", "scenes": {"s1": [idSéquence, …]}}`
 (nombre par scène : champ `needs` de `footage/candidates.json`). Puis :
 
@@ -144,6 +154,9 @@ npm run studio -- score <runId>
 - 90 et plus avec tous les contrôles validés : continuer.
 - Avant chaque relecture, regarder soi-même la planche et quelques images (`qc/frames/`) : un défaut visible
   (carte vide, texte coupé, logo, visage, écran lisible) se corrige avant de solliciter le relecteur.
+  Vérifier aussi, images extraites de `render/final.mp4` à l'appui : les 3 premières secondes (titre lisible dès
+  la première image, sous-titres contrastés), chaque chiffre à l'écran au moment où la voix le dit, le texte d'une
+  capture lisible sur un téléphone, aucun texte qui en chevauche un autre, la carte de fin complète.
 
 ## 8. Déposer dans le panneau
 
