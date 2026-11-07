@@ -8,6 +8,7 @@ import {PATHS, runPaths} from '../core/paths.js';
 import {readJson} from '../core/fsx.js';
 import {ffmpeg, ffprobe} from '../core/exec.js';
 import {MIN_FINAL_KBPS} from '../qc/limits.js';
+import {coverTimeSec} from './cover.js';
 import {loudnormArgs} from '../core/audio.js';
 import {log} from '../core/log.js';
 import type {StudioConfig} from '../schemas/config.js';
@@ -131,7 +132,7 @@ async function finishRender(p: ReturnType<typeof runPaths>, config: StudioConfig
     crf -= 2;
     log.info(`Débit ${Math.round(kbps)} kb/s sous ${MIN_FINAL_KBPS} kb/s (images sombres ou douces) : nouvel encodage plus fin (CRF ${crf}).`);
   }
-  const coverAt = Math.min(1.2, timeline.durationInFrames / timeline.fps / 3);
+  const coverAt = coverTimeSec(timeline);
   await ffmpeg(['-ss', coverAt.toFixed(2), '-i', p.final, '-frames:v', '1', '-q:v', '2', p.cover]);
   const preview = path.join(p.renderDir, 'preview.mp4');
   const durSec = timeline.durationInFrames / timeline.fps;

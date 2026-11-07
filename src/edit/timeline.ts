@@ -226,7 +226,8 @@ function revealTimes(scene: Scene, span: SceneSpan): number[] {
     const chipsEnd = Math.min(usable * 0.45, 0.25 + g.items.length * 0.18);
     const chips = g.items.map((_, i) => 0.25 + (i * (chipsEnd - 0.25)) / Math.max(1, g.items.length - 1));
     const merge = findSpokenTime(g.result, span.words);
-    const mergeAt = merge ? Math.max(chipsEnd + 0.4, merge.time - span.startSec - 0.15) : usable * 0.6;
+    // Every chip stays readable at least 1.5 s before they merge into the result.
+    const mergeAt = Math.max(chipsEnd + 1.5, merge ? merge.time - span.startSec - 0.15 : usable * 0.6);
     return [...chips, Math.min(mergeAt, usable)];
   }
   const out: number[] = [];
@@ -470,8 +471,10 @@ export function buildTimeline(input: BuildInput): Timeline {
       const sceneSec = span.endSec - span.startSec;
       // Behind a card, one long calm shot reads better than cuts when a single clip covers it.
       const cuts = own.length === 1 && own[0]!.durationSec >= sceneSec + 0.8 ? [span.startSec, span.endSec] : planCuts(span, target * 1.6, rng);
+      // Chips that merge carry their own dark backing: the shot behind them stays sharp (a card keeps the blur).
+      const sharp = scene.visual.graphic?.type === 'stack-merge';
       for (let i = 0; i < cuts.length - 1; i++) {
-        pushFootage(span, cuts[i]!, cuts[i + 1]!, {layer: 'background', intensity: 0.6, move: scene.phase === 'cta' ? 'pull-out' : undefined});
+        pushFootage(span, cuts[i]!, cuts[i + 1]!, {layer: sharp ? 'full' : 'background', intensity: 0.6, move: scene.phase === 'cta' ? 'pull-out' : undefined});
       }
       if (scene.visual.kind === 'graphic' && scene.visual.graphic) {
         const reveals = revealTimes(scene, span);

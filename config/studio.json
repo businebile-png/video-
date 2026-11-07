@@ -47,6 +47,7 @@
   },
   "voice": {
     "provider": "chatterbox",
+    "creditLine": "Voix de synthèse (IA), référence : corpus SIWIS, CC BY 4.0.",
     "sttProvider": "local",
     "local": {
       "python": ".venv-voice/bin/python",

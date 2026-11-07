@@ -25,6 +25,8 @@ export const GraphicSchema = z.discriminatedUnion('type', [
     type: z.literal('compare'),
     left: z.object({title: z.string().max(22), items: z.array(z.string().max(28)).min(2).max(4)}),
     right: z.object({title: z.string().max(22), items: z.array(z.string().max(28)).min(2).max(4)}),
+    /** "cross": the left column lists what is missing (default); "dot": it lists what it includes (e.g. a free plan). */
+    leftStyle: z.enum(['cross', 'dot']).optional(),
   }),
   z.object({
     type: z.literal('stat'),

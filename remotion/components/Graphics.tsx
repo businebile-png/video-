@@ -56,6 +56,12 @@ const Check: React.FC<{progress: number; color: string; ink: string}> = ({progre
   </svg>
 );
 
+const Dot: React.FC<{color: string}> = ({color}) => (
+  <svg width="40" height="40" viewBox="0 0 40 40" style={{flex: '0 0 40px'}}>
+    <circle cx="20" cy="20" r="7" fill={color} />
+  </svg>
+);
+
 const Cross: React.FC<{color: string}> = ({color}) => (
   <svg width="40" height="40" viewBox="0 0 40 40" style={{flex: '0 0 40px'}}>
     <path d="M12 12 L28 28 M28 12 L12 28" stroke={color} strokeWidth="4.5" strokeLinecap="round" />
@@ -175,8 +181,9 @@ function StackMerge({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection
               opacity: s * (1 - m),
               padding: '20px 34px',
               borderRadius: 999,
-              background: 'rgba(255,255,255,0.18)',
-              border: '1.5px solid rgba(255,255,255,0.38)',
+              background: 'rgba(12,12,16,0.8)',
+              border: '1.5px solid rgba(255,255,255,0.32)',
+              boxShadow: '0 12px 32px rgba(0,0,0,0.35)',
               color: '#FFFFFF',
               fontFamily: fontStack(ad.fonts.text.family),
               fontWeight: 700,
@@ -247,7 +254,13 @@ function Compare({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; f
             const si = pop(frame, fps, at + 5 + i * 4);
             return (
               <div key={i} style={{display: 'flex', alignItems: 'center', gap: 12, opacity: si}}>
-                {good ? <Check progress={si} color={ad.palette.accent} ink={ad.palette.accentInk} /> : <Cross color="rgba(255,255,255,0.55)" />}
+                {good ? (
+                  <Check progress={si} color={ad.palette.accent} ink={ad.palette.accentInk} />
+                ) : g.leftStyle === 'dot' ? (
+                  <Dot color="rgba(255,255,255,0.7)" />
+                ) : (
+                  <Cross color="rgba(255,255,255,0.55)" />
+                )}
                 <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: ad.fonts.text.weight, fontSize: 32, lineHeight: 1.15}}>{t}</div>
               </div>
             );

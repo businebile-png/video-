@@ -87,6 +87,8 @@ export const StudioConfigSchema = z.object({
      * azure = free F0 tier (account required); elevenlabs = paid plans only.
      */
     provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs']),
+    /** Credit line added to every post caption (licence of the voice's source recordings), empty for none. */
+    creditLine: z.string().max(140).default(''),
     /** Speech-to-text used to time captions and verify pronunciation (local = faster-whisper). */
     sttProvider: z.enum(['local', 'azure', 'elevenlabs']),
     local: z

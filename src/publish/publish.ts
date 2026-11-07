@@ -12,6 +12,8 @@ import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {ScoreReport} from '../qc/score.js';
 import type {Publication} from '../schemas/records.js';
+import type {Timeline} from '../schemas/timeline.js';
+import {coverTimeSec} from '../render/cover.js';
 
 export interface LinkHop {
   url: string;
@@ -116,6 +118,7 @@ export function postText(script: Script, network: 'tiktok' | 'instagram', config
   const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
   const lines = [config.affiliate.disclosureCaption, '', body.trim()];
   if (!/\bbio\b/i.test(body)) lines.push('', `Lien en bio pour découvrir ${config.brand.name}.`);
+  if (config.voice.creditLine) lines.push('', config.voice.creditLine);
   lines.push('', script.captions.hashtags.join(' '));
   return lines.join('\n').slice(0, 2150);
 }
@@ -209,7 +212,7 @@ export async function preparePublication(
     sha256: digest,
     publicUrl: `${base}/videos/${fileName}`,
     coverUrl: `${base}/videos/${runId}.jpg`,
-    coverMs: 1200,
+    coverMs: exists(p.timeline) ? Math.round(coverTimeSec(await readJson<Timeline>(p.timeline)) * 1000) : 1200,
   };
   const connected = (n: 'tiktok' | 'instagram') => !opts.networks || opts.networks.includes(n);
   const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
