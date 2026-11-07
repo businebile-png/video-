@@ -11,7 +11,7 @@ export function coverTimeSec(t: Timeline): number {
   const settled = head ? head.from + 2 * head.text.split(' ').filter(Boolean).length + 18 : Math.round(0.6 * t.fps);
   for (const g of t.captions) {
     const last = g.words[g.words.length - 1];
-    if (!last) continue;
+    if (!last || g.words.length < 2) continue; // a lone word ("ICI,") reads as a fragment
     const at = Math.max(settled, last.from + 4);
     if (at < g.to - 2) return Math.round((at / t.fps) * 100) / 100;
   }

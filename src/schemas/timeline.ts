@@ -153,6 +153,8 @@ export interface EndCard {
   subline: string;
   cta: string;
   disclosure: string;
+  /** Verification date (YYYY-MM-DD) of the price shown in the subline, if any. */
+  verifiedOn?: string;
 }
 
 export interface VolumePoint {

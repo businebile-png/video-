@@ -73,6 +73,11 @@ export const EndCard: React.FC<{card: EndCardData; ad: ArtDirection}> = ({card, 
         >
           {card.subline}
         </div>
+        {card.verifiedOn ? (
+          <div style={{fontFamily: fontStack(ad.fonts.text.family), fontWeight: 600, fontSize: 28, color: ad.palette.muted, opacity: sub * 0.85}}>
+            {`Prix vérifiés sur systeme.io le ${card.verifiedOn.slice(8, 10)}/${card.verifiedOn.slice(5, 7)}/${card.verifiedOn.slice(0, 4)}`}
+          </div>
+        ) : null}
         <div
           style={{
             marginTop: 16,

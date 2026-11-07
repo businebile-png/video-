@@ -53,6 +53,7 @@ export interface BuildInput {
 const FPS = 30;
 const END_HOLD_SEC = 1.6;
 const DISSOLVE_FRAMES = 8;
+const WHIP_FRAMES = 6;
 const MAX_STYLIZED_TRANSITIONS = 3;
 
 /** Target shot length (seconds) by pacing and narrative phase. */
@@ -224,10 +225,17 @@ function revealTimes(scene: Scene, span: SceneSpan): number[] {
   const usable = Math.max(0.6, span.endSec - span.startSec - 0.8);
   if (g.type === 'stack-merge') {
     const chipsEnd = Math.min(usable * 0.45, 0.25 + g.items.length * 0.18);
-    const chips = g.items.map((_, i) => 0.25 + (i * (chipsEnd - 0.25)) / Math.max(1, g.items.length - 1));
-    const merge = findSpokenTime(g.result, span.words);
-    // Every chip stays readable at least 1.5 s before they merge into the result.
-    const mergeAt = Math.max(chipsEnd + 1.5, merge ? merge.time - span.startSec - 0.15 : usable * 0.6);
+    // Each chip appears when the voice names it (evenly spaced if it is not said), in order.
+    let after = -1;
+    const chips = g.items.map((label, i) => {
+      const hit = findSpokenTime(label, span.words, after);
+      if (hit) after = hit.index;
+      return hit ? Math.max(0.15, hit.time - span.startSec - 0.1) : 0.25 + (i * (chipsEnd - 0.25)) / Math.max(1, g.items.length - 1);
+    });
+    for (let i = 1; i < chips.length; i++) chips[i] = Math.max(chips[i]!, chips[i - 1]! + 0.25);
+    const merge = findSpokenTime(g.result, span.words, after);
+    // Chips stay readable (the first one at least 1.5 s, the last one 1 s) before they merge into the result.
+    const mergeAt = Math.max(chips[0]! + 1.5, chips[chips.length - 1]! + 1, merge ? merge.time - span.startSec - 0.15 : 0);
     return [...chips, Math.min(mergeAt, usable)];
   }
   const out: number[] = [];
@@ -252,6 +260,9 @@ function captionY(kind: Scene['visual']['kind']): number {
 }
 
 function isEmphasis(word: string, emphasis: string[]): boolean {
+  // A number ("17 €", "5 000") is emphasised when an emphasis phrase holds the same number.
+  const num = word.replace(/[^0-9]/g, '');
+  if (num) return emphasis.some((phrase) => (phrase.match(/\d[\d\s  ]*/g) ?? []).some((n) => n.replace(/[^0-9]/g, '') === num));
   const wn = normalize(word);
   if (wn.length < 3) return false;
   return emphasis.some((phrase) => normalize(phrase).split(' ').some((t) => t.length >= 3 && (t === wn || (t.length >= 5 && wn.startsWith(t.slice(0, 5))))));
@@ -515,7 +526,8 @@ export function buildTimeline(input: BuildInput): Timeline {
       if (scene.visual.kind === 'graphic' && scene.visual.graphic) {
         const reveals = revealTimes(scene, span);
         const g = scene.visual.graphic;
-        const factId = g.type === 'price' || g.type === 'stat' ? g.factId : undefined;
+        // A price on screen always carries its verification date (cards, comparisons).
+        const factId = g.type === 'price' || g.type === 'stat' ? g.factId : scene.claimFactIds.find((id) => id.includes('price'));
         graphics.push({
           id: `graphic-${scene.id}`,
           sceneId: scene.id,
@@ -568,7 +580,12 @@ export function buildTimeline(input: BuildInput): Timeline {
     if (stylized >= MAX_STYLIZED_TRANSITIONS || b.from - lastStylizedFrame < 120) continue;
     const t: TransitionKind = ad.motion.signature;
     b.transitionIn = t;
-    if (t === 'whip-left' || t === 'whip-right' || t === 'whip-up') a.transitionOut = t;
+    if (t === 'whip-left' || t === 'whip-right' || t === 'whip-up') {
+      a.transitionOut = t;
+      // The incoming shot starts under the outgoing one: a push with no black frame between them.
+      b.from -= WHIP_FRAMES;
+      b.duration += WHIP_FRAMES;
+    }
     if (t === 'blur-dissolve') a.duration += DISSOLVE_FRAMES;
     stylized++;
     lastStylizedFrame = b.from;
@@ -605,6 +622,13 @@ export function buildTimeline(input: BuildInput): Timeline {
       kicker: config.brand.name,
       headline: script.cta.onScreen,
       subline: script.cta.subline,
+      // A price in the end card carries its verification date.
+      verifiedOn: /€/.test(script.cta.subline)
+        ? (() => {
+            const ids = ctaSpan.scene.claimFactIds.filter((id) => id.includes('price'));
+            return ids.map((id) => factById.get(id)?.verifiedAt?.slice(0, 10)).find(Boolean) ?? undefined;
+          })()
+        : undefined,
       cta: 'Lien en bio',
       disclosure: `${config.affiliate.disclosureBadge} · lien affilié`,
     },

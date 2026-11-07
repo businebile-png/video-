@@ -270,9 +270,14 @@ function Compare({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; f
     );
   };
   return (
-    <div style={{display: 'flex', gap: 20}}>
-      {col('left', item.revealAt[0] ?? 0)}
-      {col('right', item.revealAt[1] ?? 20)}
+    <div>
+      <div style={{display: 'flex', gap: 20}}>
+        {col('left', item.revealAt[0] ?? 0)}
+        {col('right', item.revealAt[1] ?? 20)}
+      </div>
+      <div style={{textAlign: 'center', color: '#FFFFFF', opacity: pop(frame, fps, item.revealAt[1] ?? 20)}}>
+        <VerifiedLine on={item.verifiedOn} ad={ad} />
+      </div>
     </div>
   );
 }
