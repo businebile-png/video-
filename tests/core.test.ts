@@ -164,3 +164,17 @@ describe('titre TikTok', () => {
     expect((info.tiktokData as {title: string}).title).toBe('Titre');
   });
 });
+
+describe('extrait de la musique choisie', () => {
+  it('prend un extrait jamais utilisé, sinon celui utilisé il y a le plus longtemps, toujours assez long', async () => {
+    const {pickExcerpt} = await import('../src/music/overlay.js');
+    const ex = [21.73, 32.83, 43.91, 54.87, 0, 10.75];
+    expect(pickExcerpt(ex, [], 108.8, 42)).toBe(21.73);
+    expect(pickExcerpt(ex, [21.73], 108.8, 42)).toBe(32.83);
+    expect(pickExcerpt(ex, [32.83, 21.73], 108.8, 42)).toBe(43.91);
+    // 54.87 + 42 + 1 <= 108.8 still fits; a 60 s video no longer fits from 54.87.
+    expect(pickExcerpt(ex, [43.91, 32.83, 21.73], 108.8, 60)).toBe(0);
+    // Every excerpt already used: the one used longest ago comes back.
+    expect(pickExcerpt(ex, [10.75, 0, 54.87, 43.91, 32.83, 21.73], 108.8, 42)).toBe(21.73);
+  });
+});

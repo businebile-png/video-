@@ -25,6 +25,7 @@ import {chatterboxProblems, chatterboxSynthesize} from './voice/chatterbox.js';
 import {spokenForm} from './voice/speech.js';
 import {autoSelection, fetchFootage, searchFootage} from './footage/footage-step.js';
 import {chooseMusic} from './music/music-step.js';
+import {overlayMusic} from './music/overlay.js';
 import {buildSfx} from './sfx/synth.js';
 import {addCapture, addFocusRegion} from './captures/captures.js';
 import {buildTimelineStep, conformStep} from './edit/edit-step.js';
@@ -57,6 +58,7 @@ Production (dans l'ordre)
   voice:measure <runId>        Mesure de nouveau la voix existante (débit, pauses entendues, note) sans la régénérer
   correction:start <runId> [--score N] [--steps voice,edit,…] [--reason …]  Commence une reprise (suivie en % dans le journal)
   progress <runId>             Avancement à inscrire dans le journal du panneau (JSON : progress, stage, correction)
+  music:overlay <runId> --file <mp3> [--start s] [--avoid a,b]  Pose la musique choisie par l'utilisateur sous la voix (extrait différent à chaque vidéo)
   footage:search <runId>       Recherche de séquences (Pixabay ou Pexels) + planches contact par scène
   footage:auto <runId>         Sélection automatique (sinon écrire footage/selection.json)
   footage:fetch <runId>        Téléchargement des séquences choisies + licences
@@ -220,6 +222,9 @@ async function main(): Promise<void> {
       networks: {type: 'string'},
       score: {type: 'string'},
       steps: {type: 'string'},
+      file: {type: 'string'},
+      start: {type: 'string'},
+      avoid: {type: 'string'},
       reason: {type: 'string'},
     },
   });
@@ -441,6 +446,16 @@ async function main(): Promise<void> {
       const config = await loadConfig();
       const report = await step(id, 'voice', () => runVoice(id, config), (r) => `${r.score}/15`);
       process.exitCode = report.pass ? 0 : 1;
+      return;
+    }
+    case 'music:overlay': {
+      // The user's chosen song under the voice (a different excerpt each video), after the review.
+      const id = runId();
+      const config = await loadConfig();
+      const file = need(str('file'), 'Fichier de musique manquant (--file <mp3>).');
+      const avoid = (str('avoid') ?? '').split(',').map((x) => Number(x)).filter((x) => Number.isFinite(x));
+      const r = await overlayMusic(id, config, {file, start: num('start'), avoid});
+      console.log(JSON.stringify(r));
       return;
     }
     case 'correction:start': {

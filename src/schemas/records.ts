@@ -71,6 +71,8 @@ export const HistoryRecordSchema = z.object({
   workingTitle: z.string().nullable(),
   artDirection: z.string().nullable(),
   musicTrack: z.string().nullable(),
+  /** Start (s) of the excerpt of the user's chosen song laid under this video: each video gets another one. */
+  musicStart: z.number().nullable().optional(),
   voiceId: z.string().nullable(),
   durationSec: z.number().nullable(),
   score: z.number().nullable(),

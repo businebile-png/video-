@@ -178,6 +178,23 @@ export const StudioConfigSchema = z.object({
     underVoiceDb: z.number().max(0),
     openDb: z.number().max(0),
     recentTrackCooldown: z.number().int().min(0),
+    /**
+     * Song chosen by the user for every video (their decision and their declared right to use it): laid under
+     * the voice after the review, a different excerpt each time. The file itself is never committed (public
+     * repository): it is kept in the panel's private file store.
+     */
+    userTrack: z
+      .object({
+        id: z.string(),
+        title: z.string(),
+        artist: z.string(),
+        credit: z.string(),
+        licence: z.string(),
+        panelAssetId: z.string().optional(),
+        excerpts: z.array(z.number().min(0)).min(1),
+        targetLufs: z.number().max(0).default(-19),
+      })
+      .optional(),
   }),
   render: z.object({
     fps: z.literal(30),

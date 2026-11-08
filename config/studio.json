@@ -171,7 +171,24 @@
     "mode": "library",
     "underVoiceDb": -21,
     "openDb": -13,
-    "recentTrackCooldown": 5
+    "recentTrackCooldown": 5,
+    "userTrack": {
+      "id": "all-for-nothing",
+      "title": "All For Nothing",
+      "artist": "Zachariehs",
+      "credit": "🎵 Musique : « All For Nothing » — Zachariehs",
+      "licence": "Choix de l'utilisateur, qui déclare avoir le droit de l'utiliser (licence non vérifiée par le studio) ; fichier fourni par l'utilisateur le 08/11/2026",
+      "excerpts": [
+        21.73,
+        32.83,
+        43.91,
+        54.87,
+        0.0,
+        10.75
+      ],
+      "targetLufs": -19,
+      "panelAssetId": "c1c32f018b8f42b392f88d45b26c039d"
+    }
   },
   "render": {
     "fps": 30,

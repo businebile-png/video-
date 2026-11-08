@@ -115,7 +115,7 @@ export function freeSlots(slots: Slot[], publications: Publication[], runId: str
 }
 
 /** Caption with the legal disclosure first (visible before "more"), the CTA and the hashtags. */
-export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string} = {}): string {
+export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string; musicCredit?: string} = {}): string {
   const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
   const lines = [config.affiliate.disclosureCaption, '', body.trim()];
   if (!/\bbio\b/i.test(body)) lines.push('', `Lien en bio pour découvrir ${config.brand.name}.`);
@@ -125,6 +125,7 @@ export function postText(script: Script, network: 'tiktok' | 'instagram', config
     lines.push('', `Prix vérifiés sur systeme.io le ${d}/${m}/${y}.`);
   }
   if (config.voice.creditLine) lines.push('', config.voice.creditLine);
+  if (opts.musicCredit) lines.push(opts.musicCredit);
   lines.push('', script.captions.hashtags.join(' '));
   return lines.join('\n').slice(0, 2150);
 }
@@ -232,6 +233,9 @@ export async function preparePublication(
     .filter((f) => priceIds.has(f.id) && f.verifiedAt)
     .map((f) => f.verifiedAt!)
     .sort()[0];
+  // The user's chosen song, when one was laid under this video, is credited in the caption.
+  const overlay = path.join(p.dir, 'music', 'overlay.json');
+  const musicCredit = exists(overlay) ? (await readJson<{credit?: string}>(overlay)).credit : undefined;
   const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
   for (const network of ['tiktok', 'instagram'] as const) {
@@ -242,7 +246,7 @@ export async function preparePublication(
     }
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
-    const text = postText(script, network, config, {priceVerifiedOn});
+    const text = postText(script, network, config, {priceVerifiedOn, musicCredit});
     posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config, title: tiktokTitle(script)})});
   }
   const gatesOk = score.gates.every((g) => g.ok);
