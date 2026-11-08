@@ -75,3 +75,17 @@ describe('homophones courts', () => {
     expect(soundKey(['ta'])).toBe(soundKey(['t', 'as']));
   });
 });
+
+describe('homophones avec chiffres', () => {
+  it('treats « sans » heard as « 100 » (cent) as the same sound', () => {
+    const t = tokens('Le gratuit suffit, sans carte bancaire.');
+    const res = pronunciationCheck(t, 'Le gratuit suffit ? 100 cartes bancaires ?');
+    expect(res.wer).toBe(0);
+  });
+
+  it('still flags a different word', () => {
+    const t = tokens('Le gratuit suffit, sans carte bancaire.');
+    const res = pronunciationCheck(t, 'Le gratuit suffit, avec carte bancaire.');
+    expect(res.substitutions).toEqual([['sans', 'avec']]);
+  });
+});

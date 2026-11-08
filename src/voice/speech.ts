@@ -318,6 +318,8 @@ export function heardForm(word: string): string {
 export function soundKey(words: string[]): string {
   const parts = words.map((raw) => {
     let w = normalize(raw).replace(/\s+/g, '');
+    // A number the transcriber wrote in digits is compared by its French sound: « sans » / « 100 » (cent).
+    if (/^\d{1,6}$/.test(w)) w = normalize(numberInFrench(Number(w))).replace(/[\s-]+/g, '');
     if (w.length > 2) w = w.replace(/(?<=.)[sxtdzp]+$/, ''); // silent final consonants: « dix », « dit », « est »
     if (w.length > 3) w = w.replace(/e$/, '');
     return w;
@@ -334,6 +336,8 @@ export function soundKey(words: string[]): string {
     .replace(/h/g, '')
     .replace(/y/g, 'i')
     .replace(/([a-z])\1+/g, '$1')
+    // « an », « en », « am », « em » before a consonant or at the end are one nasal sound: « sans » / « cent ».
+    .replace(/[ae][nm](?![aeiouynm])/g, 'an')
     .replace(/(?<=.)[sxtdzp]+$/, ''); // silent ending of the whole span: « ta » / « t'as »
 }
 

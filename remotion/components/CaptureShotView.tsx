@@ -18,7 +18,8 @@ const CENTER_X = 500;
  */
 function holdDrift(shot: CaptureShot, frame: number): number {
   const kfs = shot.keyframes;
-  for (let i = kfs.length - 1; i >= 1; i--) {
+  // Keyframe 0 counts when it already frames a zone (a shot that continues the previous one keeps its push).
+  for (let i = kfs.length - 1; i >= 0; i--) {
     const k = kfs[i]!;
     if (frame < k.at || !k.focus) continue;
     const next = kfs[i + 1];
@@ -59,12 +60,14 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   const {fps} = useVideoConfig();
   const aspect = shot.height / shot.width;
   // Under a headline (up to two lines from y = 318) the window starts lower and is a little shorter.
-  const top = shot.belowHeadline ? 500 : CARD_TOP;
+  const baseTop = shot.belowHeadline ? 500 : CARD_TOP;
   const maxH = shot.belowHeadline ? 700 : CARD_MAX_H;
   const contentH = Math.min(maxH - BAR_H, CARD_W * aspect);
   const contentW = contentH / aspect;
   const cardW = Math.min(CARD_W, contentW);
   const cardH = contentH + BAR_H;
+  // A wide, short capture (one table row) sits in the middle of the space, not glued under the top.
+  const top = baseTop + Math.max(0, Math.round((maxH - cardH) / 2));
   const left = CENTER_X - cardW / 2;
 
   const f = focusAt(shot, frame);
@@ -79,7 +82,10 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   tx = Math.min(0, Math.max(contentW - contentW * zoom, tx));
   ty = Math.min(0, Math.max(contentH - contentH * zoom, ty));
 
-  const instant = shot.from === 0;
+  // The video's first image, or the same page carrying on from the shot before: already in place.
+  const instant = shot.from === 0 || Boolean(shot.continues);
+  // Background light follows the whole video's clock, so a cut between two shots of the same page never jumps.
+  const g = frame + shot.from;
   const enter = instant ? 1 : pop(frame, fps);
   const cardScale = 0.94 + 0.06 * enter;
   const isVideo = shot.mediaType === 'video';
@@ -99,12 +105,12 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
         <AbsoluteFill>
           {/* Studio background: slow light drift plus a soft accent glow behind the window, never static. */}
           <AbsoluteFill
-            style={{background: `radial-gradient(120% 80% at ${46 + 6 * Math.sin(frame / 70)}% ${28 + 4 * Math.cos(frame / 90)}%, ${ad.palette.tint} 0%, #07090d 72%)`}}
+            style={{background: `radial-gradient(120% 80% at ${46 + 6 * Math.sin(g / 70)}% ${28 + 4 * Math.cos(g / 90)}%, ${ad.palette.tint} 0%, #07090d 72%)`}}
           />
           <AbsoluteFill
             style={{
               background: `radial-gradient(42% 26% at ${(CENTER_X / 1080) * 100}% ${((top + cardH / 2) / 1920) * 100}%, ${ad.palette.accent}2e 0%, transparent 100%)`,
-              opacity: 0.75 + 0.25 * Math.sin(frame / 45),
+              opacity: 0.75 + 0.25 * Math.sin(g / 45),
             }}
           />
         </AbsoluteFill>
@@ -140,7 +146,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
             {shot.highlights.map((h, i) => {
               const local = frame - h.from;
               if (local < 0 || local > h.duration) return null;
-              const appear = pop(local, fps);
+              const appear = h.carried ? 1 : pop(local, fps);
               const fade = interpolate(local, [h.duration - 8, h.duration], [1, 0], clamp);
               const pad = 10 / zoom;
               return (
@@ -167,7 +173,7 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
       {shot.highlights.map((h, i) => {
         const local = frame - h.from;
         if (!h.label || local < 0 || local > h.duration) return null;
-        const appear = pop(local, fps, 4);
+        const appear = h.carried ? 1 : pop(local, fps, 4);
         const fade = interpolate(local, [h.duration - 8, h.duration], [1, 0], clamp);
         return (
           <div

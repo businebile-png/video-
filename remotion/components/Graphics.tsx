@@ -18,9 +18,9 @@ function cardStyle(ad: ArtDirection): React.CSSProperties {
   return {...base, background: ad.palette.panel, border: `1px solid ${ad.palette.panelBorder}`, boxShadow: '0 30px 80px rgba(0,0,0,0.4)'};
 }
 
-const Title: React.FC<{text?: string; ad: ArtDirection; frame: number; fps: number}> = ({text, ad, frame, fps}) => {
+const Title: React.FC<{text?: string; ad: ArtDirection; frame: number; fps: number; at?: number}> = ({text, ad, frame, fps, at = 0}) => {
   if (!text) return null;
-  const s = pop(frame, fps);
+  const s = pop(frame, fps, at);
   return (
     <div
       style={{
@@ -68,12 +68,17 @@ const Cross: React.FC<{color: string}> = ({color}) => (
   </svg>
 );
 
+/** A checklist enters with its first line (never a card showing only its title while the voice talks). */
+function checklistStart(item: GraphicItem): number {
+  return Math.max(0, (item.revealAt[0] ?? 0) - 4);
+}
+
 function Checklist({item, ad, frame, fps}: {item: GraphicItem; ad: ArtDirection; frame: number; fps: number}) {
   const g = item.graphic;
   if (g.type !== 'checklist') return null;
   return (
     <>
-      <Title text={g.title} ad={ad} frame={frame} fps={fps} />
+      <Title text={g.title} ad={ad} frame={frame} fps={fps} at={checklistStart(item)} />
       <div style={{display: 'flex', flexDirection: 'column', gap: 26}}>
         {g.items.map((text, i) => {
           const at = item.revealAt[i] ?? 0;
@@ -337,8 +342,8 @@ export const GraphicView: React.FC<{item: GraphicItem; ad: ArtDirection}> = ({it
   const g = item.graphic;
   const bare = g.type === 'stack-merge' || g.type === 'compare';
   // A card never shows empty: it enters with its first content (its title, or the first reveal on the voice).
-  const titled = (g.type === 'checklist' || g.type === 'steps') && Boolean(g.title);
-  const enter = pop(frame, fps, bare || titled ? 0 : (item.revealAt[0] ?? 0));
+  const titled = g.type === 'steps' && Boolean(g.title);
+  const enter = pop(frame, fps, bare || titled ? 0 : g.type === 'checklist' ? checklistStart(item) : (item.revealAt[0] ?? 0));
   const shown = bare ? 1 : Math.min(1, enter * 1.6);
   const exit = interpolate(frame, [item.duration - 7, item.duration], [1, 0], clamp);
   const inner = (() => {

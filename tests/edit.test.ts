@@ -123,6 +123,38 @@ describe('montage', () => {
     expect(Math.abs(b!.from / 30 - endroit.start)).toBeLessThan(0.2);
   });
 
+  it('enchaîne deux scènes sur la même page sans revenir à la page entière', async () => {
+    const config = await loadConfig();
+    const words = fakeWords();
+    const page = {
+      id: 'page', file: 'page.png', type: 'image' as const, feature: 'pricing', title: 'page', description: 'page', capturedAt: '2026-11-07T10:00:00.000Z',
+      source: 'user-screenshot' as const, width: 1280, height: 1100, personalDataChecked: true,
+      focusRegions: [
+        {id: 'a', x: 0.05, y: 0.4, w: 0.2, h: 0.4, label: 'Alpha', cues: ['Systeme.io']},
+        {id: 'b', x: 0.3, y: 0.4, w: 0.2, h: 0.4, label: 'Beta', cues: ['endroit']},
+      ],
+    };
+    const base = sampleScript();
+    const script = sampleScript({
+      scenes: base.scenes.map((s) =>
+        s.id === 's2' || s.id === 's3'
+          ? {...s, headline: undefined, visual: {...s.visual, kind: 'demo' as const, captureId: 'page', captureIds: undefined, focusRegionIds: s.id === 's2' ? ['a'] : ['b']}}
+          : s,
+      ),
+    });
+    const timeline = buildTimeline({runId: 'r', script, words, voiceDurationSec: 25, voiceSrc: 'voice.wav', clipsByScene: clips(), captures: [page] as never, music: null, ad: ART_DIRECTIONS[0]!, config, facts: [], seed: 1});
+    const [first, second] = timeline.shots.filter((s) => s.sceneId === 's2' || s.sceneId === 's3') as Array<Extract<(typeof timeline.shots)[number], {kind: 'capture'}>>;
+    expect(first!.from + first!.duration).toBe(second!.from);
+    expect(second!.continues).toBe(true);
+    // The second scene opens on the zone the first one ended on, already labelled, then moves on.
+    const lastFocus = first!.keyframes[first!.keyframes.length - 1]!.focus;
+    expect(second!.keyframes[0]!.focus).toEqual(lastFocus);
+    expect(second!.keyframes[0]!.at).toBeLessThanOrEqual(0);
+    expect(second!.highlights[0]!.carried).toBe(true);
+    expect(second!.highlights[0]!.label).toBe('Alpha');
+    expect(second!.keyframes.some((k) => k.focus === null)).toBe(false);
+  });
+
   it('mesure l’agrandissement nécessaire', () => {
     const move = makeMove('push-in', 2, 1, 0);
     expect(upscaleOf({width: 3840, height: 2160}, move)).toBeLessThan(1);

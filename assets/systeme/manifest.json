@@ -117,7 +117,8 @@
           "h": 0.44,
           "label": "Gratuit",
           "cues": [
-            "gratuit"
+            "gratuit",
+            "trop petite"
           ]
         },
         {
@@ -150,7 +151,9 @@
           "h": 0.405,
           "label": "Illimité",
           "cues": [
-            "Illimité"
+            "Illimité",
+            "trop grande",
+            "tunnels et contacts"
           ]
         },
         {
@@ -222,10 +225,10 @@
       "focusRegions": [
         {
           "id": "badge-annuel",
-          "x": 0.336,
-          "y": 0.262,
-          "w": 0.375,
-          "h": 0.07,
+          "x": 0.125,
+          "y": 0.255,
+          "w": 0.75,
+          "h": 0.085,
           "label": "Annuel · 2 mois gratuits",
           "cues": [
             "annuel",
@@ -234,6 +237,82 @@
         }
       ],
       "personalDataChecked": true
+    },
+    {
+      "type": "image",
+      "feature": "pricing",
+      "capturedAt": "2026-11-06T17:23:30.218Z",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "personalDataChecked": true,
+      "id": "tarifs-contacts-a",
+      "file": "tarifs-contacts-a.png",
+      "title": "Tableau officiel : contacts, Gratuit et Startup",
+      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Gratuit et Startup, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
+      "width": 470,
+      "height": 250,
+      "focusRegions": [
+        {
+          "id": "contacts-gratuit",
+          "x": 0.084,
+          "y": 0.05,
+          "w": 0.36,
+          "h": 0.9,
+          "label": "Gratuit",
+          "cues": [
+            "2 000"
+          ]
+        },
+        {
+          "id": "contacts-startup",
+          "x": 0.546,
+          "y": 0.05,
+          "w": 0.36,
+          "h": 0.9,
+          "label": "Startup",
+          "cues": [
+            "5 000"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "feature": "pricing",
+      "capturedAt": "2026-11-06T17:23:30.218Z",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "personalDataChecked": true,
+      "id": "tarifs-contacts-b",
+      "file": "tarifs-contacts-b.png",
+      "title": "Tableau officiel : contacts, Webinaire et Illimité",
+      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Webinaire et Illimité, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
+      "width": 470,
+      "height": 250,
+      "focusRegions": [
+        {
+          "id": "contacts-webinaire",
+          "x": 0.052,
+          "y": 0.05,
+          "w": 0.36,
+          "h": 0.9,
+          "label": "Webinaire",
+          "cues": [
+            "10 000"
+          ]
+        },
+        {
+          "id": "contacts-illimite",
+          "x": 0.516,
+          "y": 0.05,
+          "w": 0.36,
+          "h": 0.9,
+          "label": "Illimité",
+          "cues": [
+            "illimités"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -401,13 +401,15 @@ export function buildCaptions(spans: SceneSpan[], ad: ArtDirection, endCardFrom:
     .filter((g) => g.to - g.from >= 4);
 }
 
-function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: number) {
+function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: number, opts: {startFocused?: boolean} = {}) {
   // Zones of this capture, with their index in the script (for the script's own label text).
   const regions = scene.visual.focusRegionIds
     .map((id, k) => ({r: capture.focusRegions.find((x) => x.id === id), k}))
     .filter((e): e is {r: NonNullable<typeof e.r>; k: number} => Boolean(e.r));
   const keyframes: CaptureShot['keyframes'] = [{at: 0, focus: null}];
   const highlights: CaptureShot['highlights'] = [];
+  /** Keyframe that brings each highlight's zone (to end the highlight when the camera leaves it). */
+  const kfOf: number[] = [];
   let after = -1;
   regions.forEach(({r, k}, i) => {
     // The camera moves on the first word that names the zone: its label or one of its cues ("5 000" for Startup).
@@ -420,11 +422,20 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
     if (hit) after = hit.index;
     const at = Math.min(durationF - 20, Math.max(12, toF(atSec)));
     const region: Region = {x: r.x, y: r.y, w: r.w, h: r.h};
+    const label = scene.headline ? '' : scene.visual.focusLabels?.[k] ?? r.label;
+    if (i === 0 && opts.startFocused && hit && hit.time - span.startSec <= 1.2) {
+      // The voice names the zone at once: open on it rather than on the whole page followed by a zoom.
+      keyframes[0] = {at: 0, focus: region};
+      highlights.push({from: 4, duration: 0, region, label});
+      kfOf.push(0);
+      return;
+    }
     keyframes.push({at, focus: region});
-    highlights.push({from: at + 10, duration: 0, region, label: scene.headline ? '' : scene.visual.focusLabels?.[k] ?? r.label});
+    highlights.push({from: at + 10, duration: 0, region, label});
+    kfOf.push(keyframes.length - 1);
   });
   highlights.forEach((h, i) => {
-    const nextAt = keyframes[i + 2]?.at ?? durationF;
+    const nextAt = keyframes[kfOf[i]! + 1]?.at ?? durationF;
     h.duration = Math.max(15, nextAt - h.from - 4);
   });
   return {keyframes, highlights};
@@ -563,7 +574,24 @@ export function buildTimeline(input: BuildInput): Timeline {
         const maxF = capture.type === 'video' && capture.durationSec ? toF(capture.durationSec) : Number.POSITIVE_INFINITY;
         const durF = Math.min(endF - fromF, maxF);
         const segSpan: SceneSpan = {...span, startSec: segStart, endSec: segEnd, words: span.words.filter((w) => w.start >= segStart - 0.05 && w.start < segEnd)};
-        const plan = focusPlan(capture, scene, segSpan, durF);
+        const belowHeadline = Boolean(scene.headline) && scene.phase !== 'cta';
+        // Same page as the shot just before (two scenes walking through the same plans): the camera carries
+        // on from the zone it was on, instead of going back to the whole page and zooming again.
+        const prev = shots[shots.length - 1];
+        const prevLast = prev?.kind === 'capture' ? prev.keyframes[prev.keyframes.length - 1] : undefined;
+        const continues =
+          prev?.kind === 'capture' && prev.captureId === capture.id && prev.from + prev.duration === fromF && Boolean(prev.belowHeadline) === belowHeadline && Boolean(prevLast?.focus);
+        const plan = focusPlan(capture, scene, segSpan, durF, {startFocused: !continues && fromF > 0 && scene.phase !== 'hook'});
+        if (continues && prev?.kind === 'capture' && prevLast?.focus) {
+          plan.keyframes[0] = {at: prevLast.at - prev.duration, focus: prevLast.focus};
+          const lastH = prev.highlights[prev.highlights.length - 1];
+          if (lastH && lastH.region === prevLast.focus) {
+            // The zone stays framed and labelled across the cut: no fade before it, no new entrance after it.
+            lastH.duration = prev.duration - lastH.from + 12;
+            const firstMove = plan.keyframes[1]?.at ?? durF;
+            plan.highlights.unshift({from: 0, duration: Math.max(8, firstMove - 4), region: lastH.region, label: lastH.label, carried: true});
+          }
+        }
         shots.push({
           kind: 'capture',
           id: `shot-${++shotCounter}`,
@@ -581,7 +609,8 @@ export function buildTimeline(input: BuildInput): Timeline {
           // Clean studio background: blurred unrelated footage behind the capture distracted from it.
           backgroundSrc: null,
           captureId: capture.id,
-          belowHeadline: Boolean(scene.headline) && scene.phase !== 'cta',
+          belowHeadline,
+          continues: continues || undefined,
           // A public page (prices…) always shows where and when it was captured.
           stamp:
             capture.source === 'public-page' && capture.sourceUrl
@@ -675,6 +704,8 @@ export function buildTimeline(input: BuildInput): Timeline {
     const a = shots[i - 1]!;
     const b = shots[i]!;
     if (a.sceneId === b.sceneId) continue;
+    // One continuous camera move over the same page is never broken by a whip or a punch.
+    if (b.kind === 'capture' && b.continues) continue;
     const pa = script.scenes.find((s) => s.id === a.sceneId)!.phase;
     const pb = script.scenes.find((s) => s.id === b.sceneId)!.phase;
     if (PHASE_GROUP[pa] === PHASE_GROUP[pb]) continue;

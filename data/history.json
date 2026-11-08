@@ -44,18 +44,18 @@
       "runId": "2026-11-07-a",
       "date": "2026-11-07",
       "category": "formules-payantes",
-      "hookStyle": "question-directe",
-      "hook": "Systeme.io a quatre formules. Laquelle est faite pour toi ?",
-      "angle": "Les quatre formules de Systeme.io expliquées une par une, sur la page officielle : ce que chacune permet et son prix, pour choisir sans payer trop ni bloquer trop tôt",
+      "hookStyle": "erreur",
+      "hook": "Trop petite, tu bloques. Trop grande, tu dépenses pour rien.",
+      "angle": "Les quatre formules de Systeme.io expliquées sur la page officielle : ce qui est commun, ce qui change (les limites) et quand passer à la formule payante, pour choisir sans payer trop ni bloquer trop tôt",
       "workingTitle": "Les 4 formules de Systeme.io expliquées",
       "artDirection": "clarte",
       "musicTrack": null,
       "voiceId": "claire",
       "durationSec": 39.77,
-      "score": null,
-      "decision": null,
-      "status": "rejected",
-      "reason": "fait en sorte que elle a minimum 80 en note",
+      "score": 76,
+      "decision": "improve",
+      "status": "rendered",
+      "reason": "76/100 — à améliorer avant publication : Qualité du montage, Qualité visuelle.",
       "pexelsIds": [
         122389,
         348444,
@@ -65,7 +65,7 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-08T05:23:50.443Z"
+      "updatedAt": "2026-11-08T05:43:49.756Z"
     }
   ]
 }

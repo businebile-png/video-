@@ -110,9 +110,13 @@ export interface CaptureShot extends ShotBase {
   mediaType: 'image' | 'video';
   width: number;
   height: number;
-  /** Camera framing over time (frame offsets inside the shot); null = whole capture. */
+  /**
+   * Camera framing over time (frame offsets inside the shot); null = whole capture. The first keyframe may sit
+   * before 0 when the shot continues the previous one (the camera keeps the push it had).
+   */
   keyframes: Array<{at: number; focus: Region | null}>;
-  highlights: Array<{from: number; duration: number; region: Region; label: string}>;
+  /** `carried`: the zone the previous shot ended on, already on screen (no entrance). */
+  highlights: Array<{from: number; duration: number; region: Region; label: string; carried?: boolean}>;
   /** Blurred footage behind the capture card, if any. */
   backgroundSrc: string | null;
   captureId: string;
@@ -120,6 +124,8 @@ export interface CaptureShot extends ShotBase {
   stamp?: string;
   /** The scene shows a headline above the window: the window starts lower so a two-line headline never covers it. */
   belowHeadline?: boolean;
+  /** Same capture as the shot just before, from the zone it ended on: no entrance, no return to the whole page. */
+  continues?: boolean;
 }
 
 export type Shot = FootageShot | CaptureShot;
