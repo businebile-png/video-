@@ -85,11 +85,24 @@ def distance(ref, hyp):
     return row[len(hyp)]
 
 
+NUMBER_WORDS = set(UNITS) | {"vingt", "vingts", "trente", "quarante", "cinquante", "soixante", "cent", "cents", "mille", "et"}
+
+
+def numbers_said(ref, hyp):
+    """Number words of the take that belong to an amount (« sans » heard « 100 » is the word « sans », not a number)."""
+    plain = {sound(w) for w in ref if w not in NUMBER_WORDS}
+    return [w for w in ref if w in NUMBER_WORDS and w != "et"], [w for w in hyp if w in NUMBER_WORDS and w != "et" and sound(w) not in plain]
+
+
 def take_error(sentence, heard):
-    """Share of words missing or wrong, plus a penalty when the take runs on past the text."""
+    """Share of words missing or wrong, plus a penalty when the take runs on past the text or says another
+    number: one wrong figure in a price (« quatre-vingt-sept » for « quatre-vingt-dix-sept ») forces a new take."""
     ref, hyp = words(sentence), words(heard)
     error = distance(ref, hyp) / max(1, len(ref))
     if len(hyp) > len(ref) + 1:
+        error += 0.5
+    ref_numbers, hyp_numbers = numbers_said(ref, hyp)
+    if ref_numbers != hyp_numbers:
         error += 0.5
     return error
 
