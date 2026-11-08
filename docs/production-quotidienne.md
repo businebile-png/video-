@@ -24,6 +24,13 @@ La mémoire du studio (historique des vidéos, accroches déjà utilisées, séq
 publications, statistiques, faits vérifiés) vit dans la base du panneau : chaque session repart d'un
 dépôt neuf et la reconstruit à l'étape 1. Aucune poussée vers la branche principale n'est nécessaire.
 
+Chaque production (tâche du matin ou bouton du panneau) démarre dans une **session neuve**. Si le dépôt
+n'y est pas, la récupérer avec l'outil `add_repo` (owner `businebile-png`, repo `video-`, accès `push`),
+exécuter la commande de clonage qu'il renvoie, puis `register_repo_root` et passer sur la branche
+`claude/serene-maxwell-pdm5wr`. Si les outils Metricool manquent dans la session (tâche créée sans
+connecteur), sauter les étapes Metricool (réseaux connectés, créneaux, statistiques) et le noter dans le
+journal : la programmation se fait de toute façon depuis le panneau, qui a son propre connecteur.
+
 ## 0. Démarrage
 
 1. `npm ci` si `node_modules` est absent, puis `bash scripts/setup-voice.sh` (voix gratuite ; ne refait
