@@ -788,10 +788,44 @@ function round3(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
 
+/** What a capture keyframe shows, as the view computes it: zoom and centre (clamped to the capture). */
+function framing(f: Region | null): [number, number, number] {
+  const r = f ?? {x: 0, y: 0, w: 1, h: 1};
+  const zoom = Math.min(3.2, Math.max(1, 0.86 / Math.max(r.w, r.h)));
+  const half = 0.5 / zoom;
+  const clampC = (c: number) => Math.min(1 - half, Math.max(half, c));
+  return [zoom, clampC(r.x + r.w / 2), clampC(r.y + r.h / 2)];
+}
+
+/**
+ * Lengths (s) of the images the viewer actually sees one after the other: every cut, and inside a capture
+ * every move of the camera to a new framing (a frame added on a table row the camera does not move over
+ * is not a new image). Counting footage alone said « 1.67 s per shot » for a video made of long captures.
+ */
+export function imageSegments(t: Timeline): number[] {
+  const out: number[] = [];
+  for (const s of t.shots) {
+    if (s.kind !== 'capture') {
+      out.push(s.duration / t.fps);
+      continue;
+    }
+    const cuts = [0];
+    let prev = framing(s.keyframes[0]?.focus ?? null);
+    for (const k of s.keyframes.slice(1)) {
+      const next = framing(k.focus);
+      if (k.at > 0 && k.at < s.duration && next.some((v, i) => Math.abs(v - prev[i]!) > 0.02)) cuts.push(k.at);
+      prev = next;
+    }
+    cuts.push(s.duration);
+    for (let i = 1; i < cuts.length; i++) if (cuts[i]! > cuts[i - 1]!) out.push((cuts[i]! - cuts[i - 1]!) / t.fps);
+  }
+  return out;
+}
+
 export function computeMetrics(t: Timeline): Timeline['metrics'] {
   const footage = t.shots.filter((s): s is FootageShot => s.kind === 'footage');
-  const visible = footage.filter((s) => s.layer === 'full');
-  const lens = (visible.length ? visible : footage).map((s) => s.duration / t.fps);
+  const lens = imageSegments(t);
+  const cutLens = t.shots.map((s) => s.duration / t.fps);
   const violations: string[] = [];
   const lineH = (size: number) => size * 1.12;
   for (const c of t.captions) {
@@ -813,7 +847,9 @@ export function computeMetrics(t: Timeline): Timeline['metrics'] {
     avgShotSec: lens.length ? Math.round((lens.reduce((a, b) => a + b, 0) / lens.length) * 100) / 100 : 0,
     minShotSec: lens.length ? Math.round(Math.min(...lens) * 100) / 100 : 0,
     maxShotSec: lens.length ? Math.round(Math.max(...lens) * 100) / 100 : 0,
+    avgCutSec: cutLens.length ? Math.round((cutLens.reduce((a, b) => a + b, 0) / cutLens.length) * 100) / 100 : 0,
     distinctClips: new Set(footage.map((s) => s.source.clipId)).size,
+    distinctCaptures: new Set(t.shots.filter((s): s is CaptureShot => s.kind === 'capture').map((s) => s.captureId)).size,
     stylizedTransitions: t.shots.filter((s) => s.transitionIn !== 'cut').length,
     captionGroups: t.captions.length,
     maxCaptionChars: Math.max(0, ...t.captions.map((c) => c.words.map((w) => w.text).join(' ').length)),

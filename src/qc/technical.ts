@@ -9,6 +9,7 @@ import {MIN_FINAL_KBPS} from './limits.js';
 import {ScriptSchema} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
+import {computeMetrics} from '../edit/timeline.js';
 import type {VoiceWord} from '../schemas/records.js';
 import {transcribeWords} from '../voice/voice-step.js';
 import {prepareSpeech, pronunciationCheck} from '../voice/speech.js';
@@ -133,7 +134,8 @@ export async function technicalQc(runId: string, config: StudioConfig): Promise<
   const frozen = await detect(p.final, 'freezedetect=n=0.002:d=1.8', /freeze_start:\s*([\d.]+)/, /freeze_end:\s*([\d.]+)/);
   add({id: 'freeze', label: 'Pas d’image figée', ok: frozen.length === 0, value: frozen.length ? frozen.map((f) => `${f.start.toFixed(1)} s`).join(', ') : 'aucune', expected: 'aucune > 1,8 s', impact: 'visual'});
 
-  const m = timeline.metrics;
+  // Measured again with the current rules (a timeline built before a metric changed keeps stale numbers).
+  const m = computeMetrics(timeline);
   add({
     id: 'upscale',
     label: 'Netteté des séquences (pas d’agrandissement excessif)',
@@ -143,9 +145,24 @@ export async function technicalQc(runId: string, config: StudioConfig): Promise<
     impact: 'visual',
   });
   add({id: 'safe-zone', label: 'Textes dans la zone sûre TikTok/Reels', ok: m.safeZoneViolations.length === 0, value: m.safeZoneViolations.join(' ; ') || 'ok', expected: 'aucun débordement', impact: 'visual'});
-  add({id: 'pacing', label: 'Rythme des plans', ok: m.avgShotSec >= 0.9 && m.avgShotSec <= 3.8 && m.minShotSec >= 0.5, value: `moy. ${m.avgShotSec} s, min ${m.minShotSec} s`, expected: 'moy. 0,9–3,8 s, min ≥ 0,5 s', impact: 'editing'});
+  add({
+    id: 'pacing',
+    label: 'Rythme des images',
+    ok: m.avgShotSec >= 0.9 && m.avgShotSec <= 3.8 && m.minShotSec >= 0.5,
+    value: `moy. ${m.avgShotSec} s entre deux changements d’image (coupe ou recadrage), min ${m.minShotSec} s ; ${m.shotCount} plans montés, moy. ${m.avgCutSec} s`,
+    expected: 'moy. 0,9–3,8 s, min ≥ 0,5 s',
+    impact: 'editing',
+  });
   const minClips = Math.max(3, Math.ceil(m.durationSec / 7));
-  add({id: 'variety', label: 'Variété des séquences', ok: m.distinctClips >= minClips || timeline.shots.some((s) => s.kind === 'capture'), value: `${m.distinctClips} séquences`, expected: `≥ ${minClips}`, impact: 'editing'});
+  const sources = m.distinctClips + (m.distinctCaptures ?? 0);
+  add({
+    id: 'variety',
+    label: 'Variété des images',
+    ok: sources >= minClips,
+    value: `${sources} sources (${m.distinctClips} séquences filmées, ${m.distinctCaptures ?? 0} captures réelles)`,
+    expected: `≥ ${minClips}`,
+    impact: 'editing',
+  });
   add({id: 'transitions', label: 'Transitions sobres', ok: m.stylizedTransitions <= 3, value: `${m.stylizedTransitions} stylisées`, expected: '≤ 3', impact: 'editing'});
   add({id: 'disclosure', label: 'Mention « Publicité » permanente', ok: Boolean(timeline.disclosure.text) && timeline.disclosure.text === config.affiliate.disclosureBadge, value: timeline.disclosure.text, expected: config.affiliate.disclosureBadge, impact: 'gate'});
   add({id: 'cta-card', label: 'Carte d’appel à l’action ≥ 2,5 s', ok: timeline.endCard.duration / timeline.fps >= 2.5, value: `${(timeline.endCard.duration / timeline.fps).toFixed(1)} s`, expected: '≥ 2,5 s', impact: 'gate'});

@@ -248,3 +248,14 @@ describe('nombres dans les sous-titres', () => {
     expect(joinThousands([w('2', 0, 0.1, 0), w('000.', 0.1, 0.4, 1)]).map((x) => x.text)).toEqual(['2 000.']);
   });
 });
+
+describe('rythme réel des images', () => {
+  it('compte un recadrage de la caméra comme une nouvelle image, pas un cadre ajouté sans mouvement', async () => {
+    const {imageSegments} = await import('../src/edit/timeline.js');
+    const base = {kind: 'capture' as const, sceneId: 's', transitionIn: 'cut' as const, transitionOut: 'cut' as const, src: 'c.png', mediaType: 'image' as const, width: 1280, height: 1100, backgroundSrc: null, captureId: 'c', highlights: []};
+    const moving = {...base, id: 'a', from: 0, duration: 300, keyframes: [{at: 0, focus: null}, {at: 100, focus: {x: 0.05, y: 0.37, w: 0.2, h: 0.44}}, {at: 200, focus: {x: 0.75, y: 0.37, w: 0.2, h: 0.44}}]};
+    const still = {...base, id: 'b', from: 300, duration: 90, keyframes: [{at: 0, focus: null}, {at: 40, focus: {x: 0.08, y: 0.05, w: 0.36, h: 0.9}}]};
+    const t = {fps: 30, shots: [moving, still]} as never;
+    expect(imageSegments(t)).toEqual([100 / 30, 100 / 30, 100 / 30, 3]);
+  });
+});

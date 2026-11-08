@@ -200,7 +200,11 @@ export interface TimelineMetrics {
   avgShotSec: number;
   minShotSec: number;
   maxShotSec: number;
+  /** Mean length of the edited shots (cuts only); avgShotSec counts every new image, camera moves included. */
+  avgCutSec: number;
   distinctClips: number;
+  /** Real Systeme.io captures shown (pages, table rows). */
+  distinctCaptures: number;
   stylizedTransitions: number;
   captionGroups: number;
   maxCaptionChars: number;
