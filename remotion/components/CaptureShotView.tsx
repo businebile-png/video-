@@ -113,6 +113,14 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
               opacity: 0.75 + 0.25 * Math.sin(g / 45),
             }}
           />
+          {/* Stage light under the window: the lower part of the frame (kept free for the platform's own
+              buttons and caption) reads as a lit floor, not as an empty black band. */}
+          <AbsoluteFill
+            style={{
+              background: `radial-gradient(75% 32% at ${(CENTER_X / 1080) * 100}% 100%, ${ad.palette.accent}52 0%, ${ad.palette.accent}14 55%, transparent 100%)`,
+              opacity: 0.85 + 0.15 * Math.sin(g / 60),
+            }}
+          />
         </AbsoluteFill>
       )}
       <div
