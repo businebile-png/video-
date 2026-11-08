@@ -47,6 +47,25 @@ h1, h2, h3 { font-family: var(--font-display); font-stretch: 82%; letter-spacing
 .prog .track > i { display: block; height: 100%; background: var(--accent); border-radius: 5px; transition: width .6s ease; }
 .prog .lab { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
 .prog.corr .track > i { background: var(--warn); }
+/* Aujourd'hui : the automatic pilot at a glance */
+.pilot { border-left: 4px solid var(--accent); }
+.pilothead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.pilothead strong { font-size: 18px; }
+ol.flow { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
+h3.sub { font-size: 16px; margin: 22px 0 10px; }
+.slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.slot { align-content: start; }
+.slothead { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.slottime { font-family: var(--font-display); font-size: 30px; line-height: 1; }
+.slottitle { font-weight: 600; }
+.slot .links { display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px; }
+.chips.bare { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+.chips.bare span { padding: 3px 9px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.chips.bare span.done { background: var(--ok-soft); color: var(--ok); }
+.event { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--line); }
+.today-stack { display: grid; gap: 16px; }
+@media (max-width: 980px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .slots { grid-template-columns: minmax(0, 1fr); } .event { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 .prog .chips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
 .prog .chips span { padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--muted); }
 .prog .chips span.done { background: var(--ok-soft); color: var(--ok); }
@@ -206,6 +225,7 @@ a.btn { text-decoration: none; display: inline-block; }
       <div class="lights" id="lights"><span class="light">Connexion aux données…</span></div>
     </div>
     <nav class="tabs" aria-label="Sections">
+      <a href="#aujourdhui" data-view="aujourdhui">Aujourd’hui</a>
       <a href="#demarrage" data-view="demarrage">Démarrage<span class="count" id="count-setup" hidden>0</span></a>
       <a href="#a-valider" data-view="a-valider">À valider<span class="count" id="count-pending" hidden>0</span></a>
       <a href="#videos" data-view="videos">Vidéos</a>
@@ -219,6 +239,13 @@ a.btn { text-decoration: none; display: inline-block; }
 
 <main class="wrap">
   <div id="banner"></div>
+
+  <section class="view" id="view-aujourdhui" hidden>
+    <div class="viewhead">
+      <div><h2>Aujourd’hui</h2><p>Ce que fait le pilote automatique, en direct : les vidéos de la journée et de demain, leur avancement, leur publication.</p></div>
+    </div>
+    <div id="today" class="today-stack"></div>
+  </section>
 
   <section class="view" id="view-demarrage" hidden>
     <div class="viewhead">
@@ -285,7 +312,7 @@ a.btn { text-decoration: none; display: inline-block; }
 'use strict';
 const METRICOOL = 'Metricool Social Media Management';
 const CCR = 'Claude Code Remote';
-const VIEWS = ['demarrage', 'a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
+const VIEWS = ['aujourdhui', 'demarrage', 'a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
 const STATUS = {
   a_valider: ['Prête à diffuser', 'ok'], prete: ['Publication automatique prévue', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
   correction: ['Correction demandée', 'info'], programmee: ['Programmée', 'info'], publiee: ['Publiée', 'ok'],
@@ -427,7 +454,8 @@ function readMetricool(payload) {
 // ---------- routing ----------
 function route() {
   const v = (location.hash || '').replace('#', '');
-  S.ui.view = VIEWS.includes(v) ? v : (setupSteps().filter((x) => x.state !== 'done').length ? 'demarrage' : 'a-valider');
+  // Home is the automatic pilot's dashboard: what is happening today, at a glance.
+  S.ui.view = VIEWS.includes(v) ? v : 'aujourdhui';
   for (const id of VIEWS) document.getElementById('view-' + id).hidden = id !== S.ui.view;
   document.querySelectorAll('nav.tabs a').forEach((a) => a.setAttribute('aria-current', a.dataset.view === S.ui.view ? 'page' : 'false'));
   render();
@@ -1201,8 +1229,99 @@ function renderRuns() {
 }
 
 // ---------- render & data ----------
+// ---------- today view: the automatic pilot ----------
+function dayKey(offset) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {timeZone: tz(), year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date(Date.now() + offset * 86400000)).map((x) => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
+function slotInstant(day, hhmm) { const sl = localToSlot(`${day}T${hhmm}`, tz()); return sl ? sl.instant.getTime() : NaN; }
+const nearSlot = (iso, t) => Math.abs(Date.parse(iso || '') - t) < 20 * 60000;
+function autoTimes() { const st = S.settings || {}; return (st.autoSchedule && st.autoSchedule.times) || ['10:00', '20:00']; }
+const PROD_AT = {'10:00': '5:47', '20:00': '14:47'};
+const SCHED_AT = {'10:00': '9:35', '20:00': '19:35'};
+function secLabel(sec) { const v = Math.max(0, Math.round(Number(sec) || 0)); return `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`; }
+function clipText(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+function runLabel(r) { return r.status === 'terminee' ? 'Terminée' : r.status === 'echec' ? 'Échec' : r.status === 'interrompue' ? 'Interrompue' : 'En cours'; }
+function runTone(st) { return st === 'terminee' ? 'ok' : st === 'echec' ? 'bad' : st === 'interrompue' ? 'warn' : 'info'; }
+function musicUses() {
+  const um = (S.settings && S.settings.userMusic) || {};
+  const fromVideos = S.videos.filter((v) => v.music && typeof v.music.start === 'number').map((v) => ({runId: v.runId, start: v.music.start}));
+  return [...fromVideos, ...(um.used || [])];
+}
+// One slot (today or tomorrow at 10:00 / 20:00): the video that goes out then, or the production making it.
+function slotCard(day, hhmm, when) {
+  const t = slotInstant(day, hhmm);
+  const now = Date.now();
+  const vid = S.videos.find((v) => Object.values(v.publications || {}).some((p) => nearSlot(p.scheduledFor, t)))
+    || S.videos.find((v) => v.autoSlot && nearSlot(v.autoSlot.iso, t) && ['prete', 'programmee', 'publiee'].includes(v.status));
+  const run = S.runs.filter((r) => r.slot && nearSlot(r.slot.iso, t)).sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt)))[0] || null;
+  const card = h('div', {class: 'card slot'}, h('div', {class: 'slothead'}, h('strong', {class: 'slottime', text: hhmm}), h('span', {class: 'muted', text: when})));
+  if (vid) {
+    const pubs = Object.entries(vid.publications || {});
+    const published = vid.status === 'publiee' || (pubs.length && pubs.every(([, p]) => p.status === 'published'));
+    card.append(h('div', null, pill(published ? 'publiee' : vid.status)), h('div', {class: 'slottitle', text: vid.title || vid.runId}));
+    const meta = [];
+    if (vid.score) meta.push(`${vid.score.total}/100`);
+    if (vid.music && vid.music.title) meta.push(`🎵 ${vid.music.title} ${secLabel(vid.music.start)}–${secLabel(vid.music.end)}`);
+    if (meta.length) card.append(h('div', {class: 'small muted', text: meta.join(' · ')}));
+    const links = pubs.filter(([, p]) => p.permalink).map(([n, p]) => h('a', {href: p.permalink, target: '_blank', rel: 'noopener', text: 'Voir sur ' + (NETS[n] || n)}));
+    if (links.length) card.append(h('div', {class: 'links'}, ...links));
+    else if (vid.status === 'programmee') card.append(h('div', {class: 'small', text: `Programmée dans Metricool : elle part toute seule à ${hhmm}.`}));
+    else if (vid.status === 'prete') card.append(h('div', {class: 'small', text: `Prête : programmée automatiquement à ${SCHED_AT[hhmm] || 'l’avance'}, publiée à ${hhmm}.`}));
+    return card;
+  }
+  if (run && run.status === 'en_cours') {
+    card.append(h('div', null, h('span', {class: 'pill info', text: 'En production'})), progressBlock(run));
+    return card;
+  }
+  if (run && (run.status === 'echec' || run.status === 'terminee')) {
+    card.append(h('div', null, h('span', {class: 'pill ' + (run.status === 'echec' ? 'bad' : 'warn'), text: run.status === 'echec' ? 'Production en échec' : 'Pas de vidéo prête'})));
+    if (run.report || run.message) card.append(h('div', {class: 'small', text: clipText(run.report || run.message, 240)}));
+    card.append(h('div', {class: 'small muted', text: t < now ? 'Rien n’a été publié à ce créneau.' : 'Rien n’est prêt pour ce créneau pour l’instant.'}));
+    return card;
+  }
+  if (t < now) {
+    card.append(h('div', null, h('span', {class: 'pill', text: 'Passé'})), h('div', {class: 'small muted', text: 'Aucune vidéo publiée à ce créneau.'}));
+    return card;
+  }
+  card.append(h('div', null, h('span', {class: 'pill', text: 'À venir'})), h('div', {class: 'small', text: PROD_AT[hhmm] ? `Production à ${PROD_AT[hhmm]}, programmation à ${SCHED_AT[hhmm]}, publication à ${hhmm}.` : 'Production à venir.'}));
+  return card;
+}
+function renderToday() {
+  const box = document.getElementById('today'); if (!box) return;
+  const st = S.settings || {};
+  const auto = st.approval === 'auto';
+  const times = autoTimes();
+  const out = [];
+  out.push(h('div', {class: 'card pilot'},
+    h('div', {class: 'pilothead'}, h('strong', {text: auto ? 'Pilote automatique activé' : 'Pilote automatique en pause : vous validez chaque vidéo'}), h('span', {class: 'pill ' + (auto ? 'ok' : 'warn'), text: auto ? 'Sans validation' : 'Validation par vous'})),
+    h('div', {class: 'small', text: auto ? `Chaque jour, une vidéo à ${times.join(' et une à ')} sur TikTok et Instagram. Seules les vidéos à ${st.minScore || 80}/100 ou plus, avec tous les contrôles obligatoires validés, partent ; sinon le créneau reste vide et la raison s’affiche ici.` : 'Les vidéos attendent votre validation dans « À valider ».'}),
+    h('ol', {class: 'flow'}, ...times.map((x) => h('li', null, h('strong', {text: `Vidéo de ${x} : `}), `production ${PROD_AT[x] || '?'} → programmation ${SCHED_AT[x] || '?'} → publication ${x}`)))));
+  const run = activeRun();
+  if (run && !run.slot) out.push(h('div', {class: 'card'}, progressBlock(run)));
+  out.push(h('h3', {class: 'sub', text: 'Créneaux'}));
+  out.push(h('div', {class: 'slots'}, ...times.map((x) => slotCard(dayKey(0), x, 'aujourd’hui')), ...times.map((x) => slotCard(dayKey(1), x, 'demain'))));
+  const um = st.userMusic;
+  if (um) {
+    const uses = musicUses();
+    out.push(h('div', {class: 'card'},
+      h('strong', {text: `🎵 Musique : « ${um.title} » — ${um.artist}`}),
+      h('div', {class: 'small', text: 'Un extrait différent sous chaque vidéo, sous la voix, crédité dans la légende.' + (um.licence ? ' Licence : ' + um.licence + '.' : '')}),
+      h('div', {class: 'chips bare'}, ...(um.excerpts || []).map((sec) => { const used = uses.find((u) => Math.abs(u.start - sec) < 0.5); return h('span', {class: used ? 'done' : '', text: `extrait ${secLabel(sec)}` + (used ? ' · déjà utilisé' : '')}); }))));
+  }
+  const runs = S.runs.slice().sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt))).slice(0, 6);
+  out.push(h('div', {class: 'card'}, h('strong', {text: 'Derniers événements'}),
+    ...(runs.length ? runs.map((r) => h('div', {class: 'event'}, h('span', {class: 'mono small', text: fmtDate(r.startedAt, true)}), h('span', {class: 'pill ' + runTone(r.status), text: runLabel(r)}), h('span', {class: 'small', text: clipText(r.report || r.message || r.stage || '', 160)}))) : [h('div', {class: 'small muted', text: 'Aucune production pour l’instant.'})]),
+    h('a', {href: '#journal', text: 'Tout le journal'})));
+  if (st.triggerId) out.push(h('div', {class: 'actions'},
+    h('button', {class: 'btn', disabled: Boolean(activeRun()), onclick: () => fireTrigger('Production demandée depuis le panneau (tableau de bord).'), text: activeRun() ? 'Une production est en cours' : 'Lancer une production maintenant'}),
+    S.ui.triggerMsg ? h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}) : null));
+  box.replaceChildren(...out);
+}
+
 function render() {
   renderBanner(); renderLights(); renderSetupCount();
+  if (S.ui.view === 'aujourdhui') renderToday();
   if (S.ui.view === 'demarrage') renderSetup();
   if (S.ui.view === 'a-valider') renderPending();
   if (S.ui.view === 'videos') renderVideos();
