@@ -97,3 +97,28 @@ describe('terminaisons muettes', () => {
     expect(res.wer).toBe(0);
   });
 });
+
+describe('pauses mesurées sur le son', () => {
+  it('ignores a gap between word timings that is not silent in the audio', async () => {
+    const {voiceMetrics} = await import('../src/voice/voice-step.js');
+    const words = [
+      {text: 'contacts,', start: 12.62, end: 13.14, sceneId: 's3', index: 0},
+      {text: '5 000,', start: 13.92, end: 14.24, sceneId: 's3', index: 1},
+    ];
+    expect(voiceMetrics(words, 15, 0.75).pausesOver).toHaveLength(1);
+    const quiet = [{start: 13.31, end: 13.38}];
+    const m = voiceMetrics(words, 15, 0.75, quiet);
+    expect(m.pausesOver).toEqual([]);
+    expect(m.maxInternalPauseSec).toBeCloseTo(0.07, 2);
+  });
+
+  it('still reports a real long silence', async () => {
+    const {voiceMetrics} = await import('../src/voice/voice-step.js');
+    const words = [
+      {text: 'exemple,', start: 11.0, end: 11.4, sceneId: 's3', index: 0},
+      {text: 'deux', start: 12.8, end: 13.0, sceneId: 's3', index: 1},
+    ];
+    const m = voiceMetrics(words, 15, 0.75, [{start: 11.45, end: 12.75}]);
+    expect(m.pausesOver).toEqual([{afterWord: 'exemple,', sec: 1.3}]);
+  });
+});

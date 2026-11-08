@@ -16,7 +16,7 @@ import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
-import {runVoice} from './voice/voice-step.js';
+import {remeasureVoice, runVoice} from './voice/voice-step.js';
 import {listMyVoices, textToSpeechWithTimestamps} from './voice/elevenlabs.js';
 import {azureListVoices, azureSynthesize, buildSsml} from './voice/azure.js';
 import {localListVoices, localSynthesize, localVoiceProblems} from './voice/local.js';
@@ -53,6 +53,7 @@ Production (dans l'ordre)
   new [--date AAAA-MM-JJ] [--category <id>] [--correction-of <runId> --notes <texte>]
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
+  voice:measure <runId>        Mesure de nouveau la voix existante (débit, pauses entendues, note) sans la régénérer
   footage:search <runId>       Recherche de séquences (Pixabay ou Pexels) + planches contact par scène
   footage:auto <runId>         Sélection automatique (sinon écrire footage/selection.json)
   footage:fetch <runId>        Téléchargement des séquences choisies + licences
@@ -433,6 +434,13 @@ async function main(): Promise<void> {
       const id = runId();
       const config = await loadConfig();
       const report = await step(id, 'voice', () => runVoice(id, config), (r) => `${r.score}/15`);
+      process.exitCode = report.pass ? 0 : 1;
+      return;
+    }
+    case 'voice:measure': {
+      const id = runId();
+      const config = await loadConfig();
+      const report = await step(id, 'voice', () => remeasureVoice(id, config), (r) => `${r.score}/15`);
       process.exitCode = report.pass ? 0 : 1;
       return;
     }

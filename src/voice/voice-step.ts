@@ -3,7 +3,7 @@ import path from 'node:path';
 import {runPaths} from '../core/paths.js';
 import {readJson, readValidated, writeJson} from '../core/fsx.js';
 import {log} from '../core/log.js';
-import {durationSec, masterVoice, measureLoudness} from '../core/audio.js';
+import {durationSec, masterVoice, measureLoudness, silences} from '../core/audio.js';
 import {wordCount} from '../core/text.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig, VoiceSettings} from '../schemas/config.js';
@@ -18,6 +18,10 @@ import type {ApprovedVoice} from '../schemas/config.js';
 type Provider = StudioConfig['voice']['provider'];
 
 /** Engine of an approved voice, and whether it can run on this machine right now. */
+/** A pause is audio below this level for at least this long (breaths and room tone included). */
+const QUIET_DB = -35;
+const QUIET_MIN_SEC = 0.15;
+
 export function voiceEngine(v: ApprovedVoice, config: StudioConfig): {provider: Provider; ready: boolean; missing: string[]} {
   const provider = v.provider ?? config.voice.provider;
   const missing =
@@ -54,7 +58,12 @@ export interface VoiceMetrics {
 }
 
 /** Pace and pauses from word timings. Scene changes are allowed a slightly longer breath. */
-export function voiceMetrics(words: VoiceWord[], totalSec: number, maxPause: number): VoiceMetrics {
+/**
+ * Pace and pauses of a voice-over. `quiet` (silences measured on the audio itself) keeps a transcription
+ * timing error from passing for a pause: the transcriber often places a number late (« 5 000 » said at
+ * 13.49 s, timed at 13.92 s), and a gap between word timings only counts for the silence really heard in it.
+ */
+export function voiceMetrics(words: VoiceWord[], totalSec: number, maxPause: number, quiet: Array<{start: number; end: number}> | null = null): VoiceMetrics {
   if (words.length === 0) {
     return {durationSec: totalSec, speechSec: 0, wpm: 0, leadingSilenceSec: totalSec, trailingSilenceSec: 0, maxInternalPauseSec: 0, pausesOver: []};
   }
@@ -64,7 +73,9 @@ export function voiceMetrics(words: VoiceWord[], totalSec: number, maxPause: num
   let maxGap = 0;
   const over: Array<{afterWord: string; sec: number}> = [];
   for (let i = 1; i < words.length; i++) {
-    const gap = words[i]!.start - words[i - 1]!.end;
+    const from = words[i - 1]!.end;
+    const to = words[i]!.start;
+    const gap = quiet ? Math.max(0, ...quiet.map((q) => Math.min(q.end, to) - Math.max(q.start, from))) : to - from;
     const sceneChange = words[i]!.sceneId !== words[i - 1]!.sceneId;
     const allowed = sceneChange ? maxPause * 1.4 : maxPause;
     if (gap > maxGap) maxGap = gap;
@@ -220,7 +231,8 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     await masterVoice(rawFile, mastered, trim, -16);
     const words = rawWords.map((w) => ({...w, start: Math.max(0, round(w.start - trim)), end: Math.max(0, round(w.end - trim))}));
     const total = await durationSec(mastered);
-    const metrics = voiceMetrics(words, total, config.voice.targets.maxInternalPauseSec);
+    const quiet = await silences(mastered, QUIET_DB, QUIET_MIN_SEC).catch(() => null);
+    const metrics = voiceMetrics(words, total, config.voice.targets.maxInternalPauseSec, quiet);
     let wer: number | null = null;
     let mismatches: string[] = [];
     try {
@@ -270,4 +282,22 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
 
 function round(n: number): number {
   return Math.round(n * 1000) / 1000;
+}
+
+/**
+ * Measure an existing voice-over again with the current rules (pace, pauses heard on the audio, score),
+ * without generating anything: the audio, the transcription and the pronunciation check are kept.
+ */
+export async function remeasureVoice(runId: string, config: StudioConfig): Promise<VoiceReport> {
+  const p = runPaths(runId);
+  const report = await readJson<VoiceReport>(p.voiceReport);
+  const words = await readJson<VoiceWord[]>(p.voiceWords);
+  const total = await durationSec(p.voiceWav);
+  const quiet = await silences(p.voiceWav, QUIET_DB, QUIET_MIN_SEC).catch(() => null);
+  const metrics = voiceMetrics(words, total, config.voice.targets.maxInternalPauseSec, quiet);
+  const scored = scoreVoice(metrics, report.wer, report.approvedVoice, config.voice.targets);
+  const next: VoiceReport = {...report, ...metrics, pass: scored.pass, problems: scored.problems, score: scored.score};
+  await writeJson(p.voiceReport, next);
+  log[next.pass ? 'ok' : 'warn'](`Voix mesurée de nouveau : ${report.score}/15 → ${next.score}/15 (pause max ${next.maxInternalPauseSec} s, ${next.wpm} mots/min)`);
+  return next;
 }
