@@ -16,7 +16,12 @@ export const Headline: React.FC<{item: HeadlineItem; ad: ArtDirection}> = ({item
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const emph = new Set(item.emphasis.flatMap((e) => e.split(/\s+/)).map(norm).filter((t) => t.length >= 3));
-  const words = item.text.split(/\s+/);
+  // French typography: « : », « ? », « ! », « ; » and « » » stay on the line of the word before them (a line
+  // never starts with a colon). Words are split on ordinary spaces only, never on the non-breaking ones.
+  const words = item.text
+    .replace(/ ([:?!;»])/g, '\u00a0$1')
+    .replace(/« /g, '«\u00a0')
+    .split(/ +/);
   const exit = interpolate(frame, [item.duration - 8, item.duration], [1, 0], clamp);
   const lift = interpolate(frame, [item.duration - 8, item.duration], [0, -14], clamp);
   const {headline, palette, fonts} = ad;
