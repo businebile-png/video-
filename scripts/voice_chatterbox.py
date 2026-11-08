@@ -19,13 +19,63 @@ MIN_WORDS = 5  # the model garbles very short sentences: they are merged with th
 BRAND_WORDS = {"systeme", "system", "systemio", "systemi", "systemie", "systamio", "io", "i", "o", "ou", "au", "iot", "aie", "neo"}
 
 
+UNITS = ["zero", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize"]
+TENS = {20: "vingt", 30: "trente", 40: "quarante", 50: "cinquante", 60: "soixante"}
+
+
+def below_100(n):
+    if n <= 16:
+        return UNITS[n]
+    if n < 20:
+        return "dix " + UNITS[n - 10]
+    if n < 70:
+        t, u = n // 10 * 10, n % 10
+        return TENS[t] + ("" if u == 0 else " et un" if u == 1 else " " + UNITS[u])
+    if n < 80:
+        return "soixante " + ("et onze" if n == 71 else below_100(n - 60))
+    return "quatre vingt" + ("s" if n == 80 else " " + below_100(n - 80))
+
+
+def below_1000(n):
+    h, r = divmod(n, 100)
+    head = "" if h == 0 else "cent" if h == 1 else UNITS[h] + " cent" + ("s" if r == 0 else "")
+    tail = below_100(r) if r or not head else ""
+    return f"{head} {tail}".strip()
+
+
+def french_number(n):
+    """How a number is said in French (the text sent to the voice spells numbers out, the transcriber writes digits)."""
+    if n == 0:
+        return "zero"
+    th, r = divmod(n, 1000)
+    head = "" if th == 0 else "mille" if th == 1 else below_1000(th) + " mille"
+    return f"{head} {below_1000(r) if r else ''}".strip()
+
+
 def words(text):
     text = unicodedata.normalize("NFD", text.lower())
     text = "".join(c for c in text if unicodedata.category(c) != "Mn")
+    # « 2 000 » / « 2000 » heard for « deux mille »: digits become the words that were said.
+    text = re.sub(r"(?<=\d)[\s\u202f\u00a0.,](?=\d{3}\b)", "", text)
+    text = re.sub(r"\d{1,6}", lambda m: " " + french_number(int(m.group())) + " ", text)
     return [w for w in re.sub(r"[^a-z0-9]+", " ", text).split() if w not in BRAND_WORDS]
 
 
+def sound(word):
+    """Rough French sound of a word: silent endings, doubled letters and nasal spellings do not count
+    (« sans » / « cent », « illimités » / « illimitées », « tunnel » / « tunel », « mails » / « mail »)."""
+    w = word
+    if len(w) > 2:
+        w = re.sub(r"[sxtdzp]+$", "", w)
+    if len(w) > 3:
+        w = re.sub(r"e+$", "", w)
+    w = re.sub(r"c(?=[eiy])", "s", w)
+    w = re.sub(r"(.)\1+", r"\1", w)
+    return re.sub(r"[ae][nm](?![aeiouynm])", "an", w)
+
+
 def distance(ref, hyp):
+    ref, hyp = [sound(w) for w in ref], [sound(w) for w in hyp]
     row = list(range(len(hyp) + 1))
     for i in range(1, len(ref) + 1):
         prev, row[0] = row[0], i

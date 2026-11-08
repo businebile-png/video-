@@ -307,7 +307,8 @@ export function heardForm(word: string): string {
   let w = normalize(word).replace(/\s+/g, '');
   if (NUMBER_WORDS[w]) return NUMBER_WORDS[w]!;
   if (w.length > 3) w = w.replace(/[sx]$/, '');
-  if (w.length > 3) w = w.replace(/e$/, '');
+  // « illimités » / « illimitées », « réunis » / « réunies »: silent feminine endings.
+  if (w.length > 3) w = w.replace(/e+$/, '');
   return w;
 }
 
@@ -321,7 +322,7 @@ export function soundKey(words: string[]): string {
     // A number the transcriber wrote in digits is compared by its French sound: « sans » / « 100 » (cent).
     if (/^\d{1,6}$/.test(w)) w = normalize(numberInFrench(Number(w))).replace(/[\s-]+/g, '');
     if (w.length > 2) w = w.replace(/(?<=.)[sxtdzp]+$/, ''); // silent final consonants: « dix », « dit », « est »
-    if (w.length > 3) w = w.replace(/e$/, '');
+    if (w.length > 3) w = w.replace(/e+$/, '');
     return w;
   });
   return parts

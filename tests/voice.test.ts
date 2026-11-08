@@ -89,3 +89,11 @@ describe('homophones avec chiffres', () => {
     expect(res.substitutions).toEqual([['sans', 'avec']]);
   });
 });
+
+describe('terminaisons muettes', () => {
+  it('treats « illimités » heard as « illimitées » as the same word', () => {
+    const t = tokens('Tunnels et contacts illimités : Illimité, 97 € par mois.');
+    const res = pronunciationCheck(t, 'Tunnels et contacts illimitées, illimitées, 97 euros par mois.');
+    expect(res.wer).toBe(0);
+  });
+});
