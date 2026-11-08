@@ -208,15 +208,22 @@ npm run studio -- media:push <runId>
 L'utilisateur ne valide plus : deux vidéos par jour partent toutes seules sur TikTok et Instagram, **à 10:00 et à
 20:00** (Europe/Paris), à condition d'avoir 80/100 ou plus avec tous les contrôles obligatoires validés.
 
-- **Productions** : la tâche « Production quotidienne » démarre à 5:47 (vidéo de 10:00) et à 14:47 (vidéo de
-  20:00), chacune dans une session neuve. Créneau visé : 10:00 si la production démarre avant 12:00, sinon 20:00 ;
-  un lancement depuis le panneau vise le prochain de ces deux créneaux encore à plus de 90 minutes, sinon celui du
-  lendemain. Jamais deux vidéos sur le même créneau : si une fiche `prete` ou `programmee` l'occupe déjà, prendre
-  le suivant.
-- **La production ne programme pas elle-même** (ses sessions n'ont pas le connecteur Metricool). Si la vidéo
+- **Productions** : la tâche « Lancement des productions » réveille la session principale à 5:47 (vidéo de
+  10:00) et à 14:47 (vidéo de 20:00) ; elle crée une **session de production** (`create_session`) qui a le
+  dépôt rattaché (droit d'écriture, installation de la voix par le script de l'environnement). Les sessions
+  neuves créées directement par une tâche planifiée n'ont pas ce droit : ne plus s'en servir. Créneau visé :
+  10:00 avant 12:00, 20:00 avant 18:30, sinon 10:00 le lendemain ; un créneau déjà occupé par une fiche
+  `prete` ou `programmee` passe au suivant. Le journal porte `slot` (créneau) pour le tableau de bord.
+- **Musique choisie par l'utilisateur** (« All For Nothing », Zachariehs) : une fois la vidéo relue et notée
+  80/100 ou plus, télécharger la chanson depuis le stockage privé du panneau (outil `Artifact`, action
+  `read`, `path` = `music.userTrack.panelAssetId`), puis `npm run studio -- music:overlay <runId> --file
+  <fichier>` (extrait différent à chaque vidéo, choisi d'après `data/history.json`), puis `qc` et `score`.
+  Licence déclarée par l'utilisateur, non vérifiée par le studio ; la chanson n'entre jamais dans le dépôt
+  public, et la tâche de programmation retire le MP4 du dépôt une fois copié par Metricool.
+- **La production ne programme pas elle-même** (les sessions de production n'ont pas le connecteur Metricool). Si la vidéo
   atteint 80/100 avec tous les contrôles validés et que `media:push` a réussi (adresse publique vérifiée), après le
   dépôt de l'étape 8 : `ArtifactData update` de `videos/<runId>` avec `status: "prete"` et
-  `autoSlot: {iso: "AAAA-MM-JJTHH:MM:00+01:00", label: "dimanche 9 novembre à 10:00"}`. Sinon : `a_ameliorer` ou
+  `autoSlot: {iso: "AAAA-MM-JJTHH:MM:00+01:00", label: "dimanche 9 novembre à 10:00"}` et `music: {title, start, end}`. Sinon : `a_ameliorer` ou
   `bloquee`, rien n'est publié pour ce créneau, et la raison va dans le journal.
 - **Programmation** : la tâche « Programmation automatique » tourne à 9:35 et 19:35 dans la session principale
   (celle qui a le connecteur Metricool). Elle prend la fiche `prete` du créneau qui arrive (à défaut la plus ancienne fiche `prete` ; une seule vidéo par créneau), vérifie avec Metricool
