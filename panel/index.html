@@ -39,6 +39,13 @@ h1, h2, h3 { font-family: var(--font-display); font-stretch: 82%; letter-spacing
 .light { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); font-size: 12.5px; white-space: nowrap; }
 .light::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
 .light.ok::before { background: var(--ok); } .light.warn::before { background: var(--warn); } .light.bad::before { background: var(--bad); }
+.light.run { background: linear-gradient(90deg, var(--accent-soft) var(--p, 0%), var(--surface-2) var(--p, 0%)); color: var(--accent); font-weight: 650; }
+.light.run::before { background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+.prog { display: grid; gap: 6px; }
+.prog .track { height: 10px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.prog .track > i { display: block; height: 100%; background: var(--accent); border-radius: 5px; transition: width .6s ease; }
+.prog .lab { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
 nav.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-bottom: -1px; }
 nav.tabs::-webkit-scrollbar { display: none; }
 nav.tabs a { padding: 10px 12px 11px; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; white-space: nowrap; }
@@ -424,11 +431,34 @@ function route() {
 window.addEventListener('hashchange', route);
 
 // ---------- header ----------
+// The production in progress (started less than 4 hours ago), if any: its journal carries progress (0–100) and stage.
+function activeRun() {
+  const now = Date.now();
+  return S.runs.filter((r) => r.status === 'en_cours' && now - Date.parse(r.startedAt || 0) < 4 * 3600000)
+    .sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt)))[0] || null;
+}
+function progressBlock(r) {
+  const p = Math.max(0, Math.min(100, Math.round(Number(r.progress) || 0)));
+  return h('div', {class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(p)},
+    h('div', {class: 'lab'}, h('strong', {text: `Production en cours · ${p} %`}), h('span', {class: 'muted', text: r.stage || ''})),
+    h('div', {class: 'track'}, h('i', {style: `width:${p}%`})));
+}
+// State of the daily task: read live when the organisation allows it, otherwise as recorded by the production.
+function dailyTask() {
+  const t = S.ui.trigger;
+  if (t && !t.error) return t;
+  const rec = S.settings && S.settings.trigger;
+  if (rec) return {enabled: rec.enabled ? 'true' : 'false', cron: rec.cron || null, next: null, recorded: true, error: t && t.error ? t.error : null};
+  return t;
+}
+
 function renderLights() {
   const box = document.getElementById('lights'); box.replaceChildren();
   if (S.dbState === 'absent') { box.append(h('span', {class: 'light bad', text: 'Données indisponibles'})); return; }
   if (S.dbState === 'loading' && !S.loaded.videos) { box.append(h('span', {class: 'light', text: 'Connexion aux données…'})); return; }
   const st = S.settings || {};
+  const run = activeRun();
+  if (run) { const p = Math.max(0, Math.min(100, Math.round(Number(run.progress) || 0))); box.append(h('a', {class: 'light run', href: '#journal', style: `--p:${p}%;text-decoration:none`, title: run.stage || '', text: `Production en cours · ${p} %`})); }
   const lp = linkProblems(st.affiliateUrl || '');
   box.append(h('span', {class: 'light ' + (lp.length ? 'bad' : 'ok'), text: lp.length ? 'Lien affilié à renseigner' : 'Lien affilié configuré'}));
   box.append(h('span', {class: 'light ' + (st.approval === 'auto' ? 'warn' : 'ok'), text: st.approval === 'auto' ? 'Publication automatique' : 'Validation par vous'}));
@@ -677,6 +707,7 @@ function renderPending() {
   if (!list.length) {
     const st = S.settings || {};
     if (!S.loaded.videos && S.dbState !== 'absent') box.append(h('div', {class: 'empty'}, h('strong', {text: 'Chargement des vidéos…'})));
+    else if (activeRun()) box.append(h('div', {class: 'card'}, progressBlock(activeRun()), h('div', {class: 'hint', text: 'La vidéo apparaîtra ici dès qu’elle sera rendue et notée.'})));
     else box.append(h('div', {class: 'empty'},
       h('strong', {text: 'Aucune vidéo en attente de validation'}),
       h('div', {text: 'La production quotidienne dépose ici chaque nouvelle vidéo avec son aperçu, sa note et ses légendes.'}),
@@ -745,10 +776,17 @@ async function fireTrigger(text) {
   const id = S.settings && S.settings.triggerId;
   if (!id) return;
   if (!S.mcp) { S.ui.triggerMsg = {tone: 'bad', text: 'Les connecteurs ne sont pas disponibles dans cette vue.'}; render(); return; }
+  if (activeRun()) { S.ui.triggerMsg = {tone: 'warn', text: 'Une production est déjà en cours : suivez son avancement en haut de la page.'}; render(); return; }
+  const runId = new Intl.DateTimeFormat('sv-SE', {timeZone: tz(), year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(new Date()).replace(' ', '-').replace(':', '');
+  const ref = S.db ? S.db.doc('runs/' + runId) : null;
+  try { if (ref) await ref.set({runId, startedAt: new Date().toISOString(), status: 'en_cours', progress: 2, stage: 'Demande envoyée à Claude Code', source: 'panneau', steps: [], message: ''}); } catch (e) {}
   try {
-    await S.mcp.callTool(CCR, 'fire_trigger', {trigger_id: id, text});
-    S.ui.triggerMsg = {tone: 'ok', text: 'Production lancée. Elle prend en général 20 à 40 minutes ; la vidéo apparaîtra ici.'};
-  } catch (err) { S.ui.triggerMsg = {tone: 'bad', text: mcpMessage(err, CCR)}; }
+    await S.mcp.callTool(CCR, 'fire_trigger', {trigger_id: id, text: `${text} Journal de cette production : runs/${runId} (mettre à jour progress, stage et steps à chaque étape).`});
+    S.ui.triggerMsg = {tone: 'ok', text: 'Production lancée : son avancement s’affiche en pourcentage en haut de la page et dans le Journal. La vidéo arrivera dans « À valider ».'};
+  } catch (err) {
+    S.ui.triggerMsg = {tone: 'bad', text: mcpMessage(err, CCR)};
+    try { if (ref) await ref.update({status: 'echec', progress: 0, stage: '', message: 'Le lancement n’a pas abouti : ' + mcpMessage(err, CCR), finishedAt: new Date().toISOString()}); } catch (e) {}
+  }
   render();
 }
 
@@ -960,11 +998,15 @@ function renderSettings() {
   const prod = h('div', {class: 'card'}, h('div', {class: 'lbl', text: 'Production quotidienne'}));
   if (!(S.settings && S.settings.triggerId)) prod.append(h('div', {class: 'hint', text: 'Pas encore branchée : elle sera créée dans Claude Code une fois la clé de séquences vidéo (Pixabay) et le lien affilié en place.'}));
   else {
-    const t = S.ui.trigger;
-    prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : t.error ? t.error : `${t.enabled === 'true' ? 'Active' : 'En pause'}${cronLabel(t.cron) ? ' · chaque jour vers ' + cronLabel(t.cron) : ''}${t.next && t.enabled === 'true' ? ' · prochain passage ' + fmtDate(t.next, true) : ''}`}));
+    const t = dailyTask();
+    const live = t && !t.recorded && !t.error;
+    prod.append(h('div', {class: 'small', text: !t ? 'État en cours de lecture…' : (t.recorded || !t.error) ? `${t.enabled === 'true' ? 'Active' : 'En pause'}${cronLabel(t.cron) ? ' · chaque jour vers ' + cronLabel(t.cron) : ''}${t.next && t.enabled === 'true' ? ' · prochain passage ' + fmtDate(t.next, true) : ''}` : t.error}));
+    if (t && t.recorded) prod.append(h('div', {class: 'hint', text: 'Votre organisation ne permet pas de modifier la tâche depuis cette page : pour la mettre en pause ou changer l’heure, demandez-le à Claude dans Claude Code. Le lancement immédiat ci-dessous fonctionne.'}));
+    const run = activeRun();
+    if (run) prod.append(progressBlock(run));
     prod.append(h('div', {class: 'actions'},
-      h('button', {class: 'btn', disabled: ro || !t || t.error, onclick: () => setTrigger(!(t && t.enabled === 'true')), text: t && t.enabled === 'true' ? 'Mettre en pause' : 'Activer'}),
-      h('button', {class: 'btn primary', disabled: ro || !S.mcp, onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: 'Lancer une production maintenant'})));
+      live ? h('button', {class: 'btn', disabled: ro, onclick: () => setTrigger(!(t.enabled === 'true')), text: t.enabled === 'true' ? 'Mettre en pause' : 'Activer'}) : null,
+      h('button', {class: 'btn primary', disabled: ro || !S.mcp || Boolean(run), onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: run ? 'Production en cours…' : 'Lancer une production maintenant'})));
   }
   if (S.ui.triggerMsg) prod.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
 
@@ -993,7 +1035,7 @@ function setupSteps() {
   const setup = st.setup || {};
   const approved = (st.approvedVoices || []).length > 0 || S.voices.some((v) => v.status === 'approved');
   const linkOk = linkProblems(st.affiliateUrl || '').length === 0;
-  const t = S.ui.trigger;
+  const t = dailyTask();
   const azureNeeded = setup.voiceProvider === 'azure';
   const pexelsMode = setup.footageProvider === 'pexels';
   const footageOk = (setup.footage || (pexelsMode ? setup.pexels : null)) === 'ok';
@@ -1109,11 +1151,14 @@ function renderSetup() {
 function renderRuns() {
   const box = document.getElementById('runs');
   if (!S.runs.length) { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: S.loaded.runs ? 'Aucun passage enregistré' : 'Chargement…'}), h('div', {text: 'Chaque production quotidienne y laisse son déroulé : étapes, durée, erreurs éventuelles.'}))); return; }
-  const tone = (s) => (s === 'terminee' ? 'ok' : s === 'echec' ? 'bad' : 'info');
-  const lab = (s) => (s === 'terminee' ? 'Terminée' : s === 'echec' ? 'Échec' : 'En cours');
-  box.replaceChildren(...S.runs.slice().sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt))).map((r) => h('details', {class: 'block', style: 'margin-bottom:10px'},
-    h('summary', null, h('span', null, h('span', {class: 'mono', text: r.runId || r.id}), ' · ', fmtDate(r.startedAt, true)), h('span', {class: 'pill ' + tone(r.status), text: lab(r.status)})),
-    h('div', {class: 'in small'}, r.message ? h('div', {text: r.message}) : null, ...(r.steps || []).map((s) => h('div', null, h('span', {class: 'mono', text: (s.status === 'done' ? '✓ ' : s.status === 'failed' ? '✕ ' : '· ') + s.name}), s.note ? h('span', {class: 'muted', text: ' — ' + s.note}) : null))))));
+  const running = activeRun();
+  // A journal still "en cours" long after its start was interrupted (session restarted…): say so.
+  const state = (r) => (r.status === 'en_cours' && r !== running ? 'interrompue' : r.status);
+  const tone = (s) => (s === 'terminee' ? 'ok' : s === 'echec' ? 'bad' : s === 'interrompue' ? 'warn' : 'info');
+  const lab = (s) => (s === 'terminee' ? 'Terminée' : s === 'echec' ? 'Échec' : s === 'interrompue' ? 'Interrompue' : 'En cours');
+  box.replaceChildren(...S.runs.slice().sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt))).map((r) => h('details', {class: 'block', style: 'margin-bottom:10px', open: r === running},
+    h('summary', null, h('span', null, h('span', {class: 'mono', text: r.runId || r.id}), ' · ', fmtDate(r.startedAt, true)), h('span', {class: 'pill ' + tone(state(r)), text: r === running ? `En cours · ${Math.round(Number(r.progress) || 0)} %` : lab(state(r))})),
+    h('div', {class: 'in small'}, r === running ? progressBlock(r) : null, r.message ? h('div', {text: r.message}) : null, ...(r.steps || []).map((s) => h('div', null, h('span', {class: 'mono', text: (s.status === 'done' ? '✓ ' : s.status === 'failed' ? '✕ ' : '· ') + s.name}), (s.note || s.detail) ? h('span', {class: 'muted', text: ' — ' + (s.note || s.detail)}) : null))))));
 }
 
 // ---------- render & data ----------

@@ -33,7 +33,7 @@
     "timezone": "Europe/Paris"
   },
   "publish": {
-    "approval": "auto",
+    "approval": "panel",
     "delivery": "auto",
     "minScore": 80,
     "improveFrom": 75,
