@@ -57,6 +57,37 @@
       "lang": "fr-fr",
       "sceneBreakMs": 300
     },
+    "chatterbox": {
+      "python": ".venv-chatterbox/bin/python",
+      "modelDir": "models/chatterbox",
+      "reference": "models/voice-refs/claire.wav",
+      "exaggeration": 0.55,
+      "cfgWeight": 0.4,
+      "temperature": 0.7,
+      "maxTakes": 4,
+      "sentenceBreakMs": 120,
+      "sceneBreakMs": 240,
+      "targetWpm": 160,
+      "maxSpeedup": 1.25,
+      "pronunciations": {
+        "Systeme.io": "Système I-O",
+        "e-mail": "e-mail",
+        "e-mails": "e-mails",
+        "mail": "mail",
+        "mails": "mails",
+        "webinaire": "webinaire",
+        "webinaires": "webinaires",
+        "Startup": "Startup",
+        "startups": "startups",
+        "newsletter": "newsletter",
+        "newsletters": "newsletters",
+        "upsell": "upsell",
+        "upsells": "upsells",
+        "order": "order",
+        "bump": "bump",
+        "bumps": "bumps"
+      }
+    },
     "azure": {
       "region": "francecentral",
       "locale": "fr-FR",
@@ -85,9 +116,9 @@
         "approvedOn": "2026-11-06",
         "approvedBy": "utilisateur (écoute dans la conversation)",
         "modelId": "kokoro-82m",
+        "provider": "local",
         "settings": {},
-        "notes": "Kokoro-82M, licence Apache-2.0, voix ff_siwis (corpus SIWIS, CC BY 4.0). Gratuite, sans compte, usage commercial autorisé.",
-        "provider": "local"
+        "notes": "Kokoro-82M, licence Apache-2.0, voix ff_siwis (corpus SIWIS, CC BY 4.0). Gratuite, sans compte, usage commercial autorisé."
       }
     ],
     "defaultSettings": {
@@ -124,38 +155,7 @@
       "maxLeadingSilenceSec": 0.25,
       "maxWer": 0.08
     },
-    "maxAttempts": 3,
-    "chatterbox": {
-      "python": ".venv-chatterbox/bin/python",
-      "modelDir": "models/chatterbox",
-      "reference": "models/voice-refs/claire.wav",
-      "exaggeration": 0.55,
-      "cfgWeight": 0.4,
-      "temperature": 0.7,
-      "maxTakes": 4,
-      "sentenceBreakMs": 120,
-      "sceneBreakMs": 240,
-      "pronunciations": {
-        "Systeme.io": "Système I-O",
-        "e-mail": "e-mail",
-        "e-mails": "e-mails",
-        "mail": "mail",
-        "mails": "mails",
-        "webinaire": "webinaire",
-        "webinaires": "webinaires",
-        "Startup": "Startup",
-        "startups": "startups",
-        "newsletter": "newsletter",
-        "newsletters": "newsletters",
-        "upsell": "upsell",
-        "upsells": "upsells",
-        "order": "order",
-        "bump": "bump",
-        "bumps": "bumps"
-      },
-      "targetWpm": 160,
-      "maxSpeedup": 1.25
-    }
+    "maxAttempts": 3
   },
   "footage": {
     "provider": "pixabay",
