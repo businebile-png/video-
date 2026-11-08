@@ -576,6 +576,11 @@ function asapLabel() {
 function futureSlots(v, net) {
   return (v.slots || []).filter((x) => x.network === net && Date.parse(x.iso) > Date.now() + 15 * 60000);
 }
+/** How this video is published: its own mode when it needs a step in the app (a sound added by hand), else the setting. */
+function deliveryFor(v) {
+  return (v && v.delivery) || (S.settings && S.settings.delivery) || 'auto';
+}
+
 function chosenPosts(v) {
   const out = [];
   for (const post of v.posts || []) {
@@ -621,7 +626,7 @@ function actionsBlock(v) {
     const lp = linkProblems((S.settings || {}).affiliateUrl || '');
     for (const p of lp) issues.push(p);
     const needOverride = !v.publishable;
-    const delivery = (S.settings && S.settings.delivery) || 'auto';
+    const delivery = deliveryFor(v);
     const conf = h('div', {class: 'confirm'});
     conf.append(h('strong', {text: 'Confirmer la programmation'}));
     for (const c of chosen) conf.append(h('div', null, `${NETS[c.net]} — ${c.slot ? fmtDate(c.slot.iso, true) : 'créneau à choisir'}`));
@@ -681,6 +686,7 @@ function deskContent(v) {
   if (v.score) out.push(h('div', {class: 'scorebox'}, scoreDial(v.score.total), h('div', {style: 'display:grid;gap:8px;min-width:0'}, h('div', {class: 'small', text: v.score.summary}), criteriaBlock(v))));
   out.push(h('div', null, h('div', {class: 'lbl', style: 'margin-bottom:6px', text: 'Contrôles obligatoires'}), gatesBlock(v)));
   const nets = h('div', {style: 'display:grid;gap:10px'});
+  if (v.soundNote) out.push(h('div', {class: 'result warn'}, h('strong', {text: 'Son à ajouter dans l’appli : '}), v.soundNote));
   for (const post of v.posts || []) nets.append(networkEditor(v, post));
   if (!(v.posts || []).length) nets.append(h('div', {class: 'hint', text: 'Aucun réseau activé pour cette vidéo (Réglages).'}));
   out.push(nets, scriptBlock(v), sourcesBlock(v));
@@ -732,7 +738,7 @@ function renderPending() {
 async function schedule(v) {
   if (!S.mcp) { S.ui.msg[v.runId] = {tone: 'bad', text: 'Les connecteurs ne sont pas disponibles dans cette vue : ouvrez le panneau sur claude.ai.'}; renderPending(); return; }
   S.ui.busy[v.runId] = true; renderPending();
-  const delivery = (S.settings && S.settings.delivery) || 'auto';
+  const delivery = deliveryFor(v);
   const pubs = Object.assign({}, v.publications || {});
   const lines = []; let anyOk = false; let anyFail = false;
   for (const c of chosenPosts(v)) {
