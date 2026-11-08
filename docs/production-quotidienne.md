@@ -1,9 +1,10 @@
 # Production quotidienne — guide d'exécution
 
-Ce guide est suivi par Claude à chaque production (tâche programmée du matin, bouton « Lancer une
+Ce guide est suivi par Claude à chaque production (tâches programmées de 5:47 et 14:47, bouton « Lancer une
 production maintenant » du panneau, ou demande manuelle). Il produit **une** vidéo de haute qualité,
 la fait relire par un relecteur indépendant, la dépose dans le panneau, puis, en mode automatique
-(`approval: "auto"`, choix de l'utilisateur), la programme lui-même sur les réseaux connectés.
+(`approval: "auto"`, choix de l'utilisateur), la marque prête pour son créneau (10:00 ou 20:00) : la tâche de
+programmation la publie (section 9).
 Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 80/100 (seuil choisi par l'utilisateur le 07/11/2026, `publish.minScore`).
 
 La qualité passe avant l'horaire : si la vidéo n'atteint pas le niveau, on l'écrit dans le journal du
@@ -202,19 +203,30 @@ npm run studio -- media:push <runId>
 2. `npm run studio -- panel:export <runId> --preview-asset <id> --preview-url <url> --cover-asset <id> --cover-url <url>`
 3. `ArtifactData set` sur `videos/<runId>` avec `file_path: "runs/<runId>/panel/video.json"`.
 
-## 9. Programmation automatique (réglage `approval: "auto"`, choisi par l'utilisateur)
+## 9. Publication automatique à 10:00 et 20:00 (réglage `approval: "auto"`, choisi par l'utilisateur le 08/11/2026)
 
-Uniquement si le réglage du panneau est `approval: "auto"`, la fiche « Prête à diffuser » (80/100 ou plus, tous
-les contrôles validés) et le lien affilié vérifié. D'abord Metricool `getBrandSettings` (marque `7791839`) : un réseau activé dans le panneau mais non
-connecté à Metricool (pas de compte dans la réponse) est sauté et signalé dans le journal (« Instagram activé
-mais non connecté à Metricool »), jamais programmé à l'aveugle.
-Le paquet ne propose jamais un créneau déjà pris par une autre vidéo du studio ; vérifier aussi avec Metricool
-`getScheduledPosts` (marque `7791839`, fuseau `Europe/Paris`) qu'aucun autre post n'est prévu à la même heure sur
-le même réseau, sinon prendre le créneau suivant de `slots` dans `package.json`.
-Pour chaque autre entrée `posts` de `runs/<runId>/publish/package.json`, Metricool `createScheduledPost`
-(`blogId`, `date`, `info` = chaîne JSON). Enregistrer chaque réponse avec
-`npm run studio -- publish:record <runId> --network <réseau> --response <fichier.json>` et mettre à jour la fiche
-(`status: "programmee"`, `publications`). Sinon l'utilisateur programme d'un clic depuis le panneau.
+L'utilisateur ne valide plus : deux vidéos par jour partent toutes seules sur TikTok et Instagram, **à 10:00 et à
+20:00** (Europe/Paris), à condition d'avoir 80/100 ou plus avec tous les contrôles obligatoires validés.
+
+- **Productions** : la tâche « Production quotidienne » démarre à 5:47 (vidéo de 10:00) et à 14:47 (vidéo de
+  20:00), chacune dans une session neuve. Créneau visé : 10:00 si la production démarre avant 12:00, sinon 20:00 ;
+  un lancement depuis le panneau vise le prochain de ces deux créneaux encore à plus de 90 minutes, sinon celui du
+  lendemain. Jamais deux vidéos sur le même créneau : si une fiche `prete` ou `programmee` l'occupe déjà, prendre
+  le suivant.
+- **La production ne programme pas elle-même** (ses sessions n'ont pas le connecteur Metricool). Si la vidéo
+  atteint 80/100 avec tous les contrôles validés et que `media:push` a réussi (adresse publique vérifiée), après le
+  dépôt de l'étape 8 : `ArtifactData update` de `videos/<runId>` avec `status: "prete"` et
+  `autoSlot: {iso: "AAAA-MM-JJTHH:MM:00+01:00", label: "dimanche 9 novembre à 10:00"}`. Sinon : `a_ameliorer` ou
+  `bloquee`, rien n'est publié pour ce créneau, et la raison va dans le journal.
+- **Programmation** : la tâche « Programmation automatique » tourne à 9:35 et 19:35 dans la session principale
+  (celle qui a le connecteur Metricool). Elle prend la fiche `prete` du créneau qui arrive (à défaut la plus ancienne fiche `prete` ; une seule vidéo par créneau), vérifie avec Metricool
+  `getBrandSettings` (réseaux connectés) et `getScheduledPosts` (aucun autre post à la même heure), puis crée un
+  post par réseau avec `createScheduledPost` (`posts[].info` de la fiche, `autoPublish: true`, `draft: false`,
+  date du créneau, titre TikTok obligatoire). Elle passe la fiche en `programmee` avec `publications`, et confirme
+  au passage les publications précédentes (statut `PUBLISHED` de Metricool → fiche `publiee` avec les liens).
+- L'utilisateur peut toujours arrêter une vidéo avant son heure depuis le panneau (refus ou correction).
+
+En mode `approval: "panel"`, la fiche reste « À valider » et l'utilisateur programme d'un clic depuis le panneau.
 
 ## 10. Clôture
 

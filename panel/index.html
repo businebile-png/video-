@@ -287,7 +287,7 @@ const METRICOOL = 'Metricool Social Media Management';
 const CCR = 'Claude Code Remote';
 const VIEWS = ['demarrage', 'a-valider', 'videos', 'statistiques', 'idees', 'reglages', 'journal'];
 const STATUS = {
-  a_valider: ['Prête à diffuser', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
+  a_valider: ['Prête à diffuser', 'ok'], prete: ['Publication automatique prévue', 'ok'], a_ameliorer: ['À améliorer', 'warn'], bloquee: ['Bloquée', 'bad'],
   correction: ['Correction demandée', 'info'], programmee: ['Programmée', 'info'], publiee: ['Publiée', 'ok'],
   refusee: ['Refusée', ''], echec: ['Échec de production', 'bad'], en_relecture: ['En relecture', 'info'],
 };
@@ -496,7 +496,7 @@ function renderLights() {
   const now = Date.now();
   const next = S.videos.flatMap((v) => Object.entries(v.publications || {}).map(([n, p]) => ({n, t: Date.parse(p.scheduledFor), s: p.status}))).filter((x) => x.t > now && x.s !== 'cancelled').sort((a, b) => a.t - b.t)[0];
   box.append(h('span', {class: 'light ' + (next ? 'ok' : ''), text: next ? `Prochaine publication : ${NETS[next.n] || next.n}, ${fmtDate(new Date(next.t).toISOString(), true)}` : 'Aucune publication programmée'}));
-  const pending = S.videos.filter((v) => v.status === 'a_valider' || v.status === 'a_ameliorer').length;
+  const pending = S.videos.filter((v) => v.status === 'prete' || v.status === 'a_valider' || v.status === 'a_ameliorer').length;
   const c = document.getElementById('count-pending'); c.hidden = pending === 0; c.textContent = String(pending);
 }
 
@@ -636,6 +636,8 @@ function actionsBlock(v) {
   const canValidate = v.publishable || (v.status === 'a_ameliorer' && v.overrideAllowed);
   const editable = S.canEdit !== false && S.db;
   if (msg) box.append(h('div', {class: 'result ' + (msg.tone || ''), text: msg.text}));
+  // Automatic mode: this video goes out on its own at its slot; the user can still stop it or ask for a change.
+  if (v.status === 'prete' && !mode) box.append(h('div', {class: 'result ok', text: `Publication automatique sur TikTok et Instagram ${v.autoSlot && v.autoSlot.label ? v.autoSlot.label : 'au prochain créneau'} : rien à faire. Pour l’empêcher, refusez-la ou demandez une correction avant l’heure.`}));
   if (!mode) {
     const row = h('div', {class: 'actions'});
     row.append(h('button', {class: 'btn primary', disabled: !canValidate || !editable || busy, onclick: () => { S.ui.panel[v.runId] = 'validate'; S.ui.msg[v.runId] = null; renderPending(); }, text: 'Valider et programmer'}));
@@ -731,11 +733,11 @@ function renderPending() {
   const box = document.getElementById('pending');
   const intro = document.getElementById('pending-intro');
   if (intro) intro.textContent = S.settings && S.settings.approval === 'auto'
-    ? `Chaque matin, la production quotidienne prépare la vidéo du jour et la note sur 100. À partir de 80/100, avec tous les contrôles validés, elle est programmée automatiquement dans Metricool${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est refaite. Vous suivez tout ici et pouvez aussi programmer vous-même.`
+    ? `Publication 100 % automatique : deux productions par jour préparent chacune une vidéo et la font noter sur 100. À partir de 80/100, avec tous les contrôles validés, elle part toute seule sur TikTok et Instagram${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est corrigée et rien n’est publié tant qu’elle n’y arrive pas. Vous suivez tout ici et pouvez arrêter une vidéo avant son heure.`
     : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
-  const list = S.videos.filter((v) => ['a_valider', 'a_ameliorer', 'bloquee', 'en_relecture'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
+  const list = S.videos.filter((v) => ['prete', 'a_valider', 'a_ameliorer', 'bloquee', 'en_relecture'].includes(v.status)).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
   const flash = document.getElementById('flash') || h('div', {id: 'flash'});
   flash.replaceChildren(...(S.ui.flash ? [h('div', {class: 'result ' + S.ui.flash.tone, style: 'margin-bottom:16px', text: S.ui.flash.text})] : []));
   if (box.firstChild !== flash) box.prepend(flash);
@@ -832,7 +834,7 @@ const FILTERS = [['tout', 'Toutes'], ['attente', 'En attente'], ['programmee', '
 function renderVideos() {
   const f = document.getElementById('filters'); f.replaceChildren(...FILTERS.map(([k, label]) => h('button', {type: 'button', 'aria-pressed': S.ui.filter === k ? 'true' : 'false', onclick: () => { S.ui.filter = k; renderVideos(); }, text: label})));
   const box = document.getElementById('videos-list');
-  const match = (v) => S.ui.filter === 'tout' || (S.ui.filter === 'attente' ? ['a_valider', 'a_ameliorer', 'bloquee'].includes(v.status) : v.status === S.ui.filter);
+  const match = (v) => S.ui.filter === 'tout' || (S.ui.filter === 'attente' ? ['prete', 'a_valider', 'a_ameliorer', 'bloquee'].includes(v.status) : v.status === S.ui.filter);
   const list = S.videos.filter(match).sort((a, b) => String(b.runId).localeCompare(String(a.runId)));
   if (!list.length) { box.replaceChildren(h('div', {class: 'empty'}, h('strong', {text: S.loaded.videos ? 'Aucune vidéo pour ce filtre' : 'Chargement…'}), h('div', {text: 'Les vidéos produites apparaissent ici avec leur statut et leurs statistiques.'}))); return; }
   const table = h('table', null, h('thead', null, h('tr', null, h('th', {text: 'Date'}), h('th', {text: 'Vidéo'}), h('th', {text: 'Statut'}), h('th', {class: 'num', text: 'Note'}), h('th', {text: 'Publication'}), h('th', {class: 'num', text: 'Vues'}), h('th', {class: 'num', text: 'Visionnage moy.'}))));

@@ -23,8 +23,10 @@ répondre, commenter et écrire les messages de commit en français.
   dans une copie datée de la page officielle.
 - Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
   en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
-- Publication : mode automatique choisi par l'utilisateur (80/100 et plus depuis le 07/11/2026, choix de l’utilisateur ; tous contrôles validés),
-  midi sur TikTok et Instagram via Metricool, jamais deux vidéos au même créneau (`freeSlots`).
+- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : deux vidéos par jour,
+  à 10:00 et 20:00 sur TikTok et Instagram via Metricool, seulement à 80/100 et plus avec tous les contrôles
+  validés ; productions à 5:47 et 14:47 (sessions neuves), programmation à 9:35 et 19:35 (session principale,
+  connecteur Metricool) ; jamais deux vidéos au même créneau (`freeSlots`).
 
 ## Règles pour modifier le code
 
