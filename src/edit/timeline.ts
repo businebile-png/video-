@@ -410,7 +410,11 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
   const highlights: CaptureShot['highlights'] = [];
   /** Keyframe that brings each highlight's zone (to end the highlight when the camera leaves it). */
   const kfOf: number[] = [];
+  // Zones that all fit the window without zooming (two columns of a table row): the camera does not move,
+  // so each frame stays on once named and the columns add up; only the label follows the voice.
+  const accumulate = regions.length > 1 && regions.every(({r}) => 0.86 / Math.max(r.w, r.h) <= 1.05);
   let after = -1;
+  let lastAt = 0;
   regions.forEach(({r, k}, i) => {
     // The camera moves on the first word that names the zone: its label or one of its cues ("5 000" for Startup).
     const hits = [findSpokenTime(r.label, span.words, after), ...(r.cues ?? []).map((c) => findCueTime(c, span.words, after))].filter(
@@ -420,7 +424,9 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
     const fallback = 0.3 + (i + 1) * ((span.endSec - span.startSec) / (regions.length + 1)) * 0.8;
     const atSec = hit ? Math.max(0.5, hit.time - span.startSec - 0.2) : fallback;
     if (hit) after = hit.index;
-    const at = Math.min(durationF - 20, Math.max(12, toF(atSec)));
+    // Never back in time: a zone named later never takes the camera before the one named first.
+    const at = Math.min(durationF - 20, Math.max(12, toF(atSec), lastAt + 12));
+    lastAt = at;
     const region: Region = {x: r.x, y: r.y, w: r.w, h: r.h};
     const label = scene.headline ? '' : scene.visual.focusLabels?.[k] ?? r.label;
     if (i === 0 && opts.startFocused && hit && hit.time - span.startSec <= 1.2) {
@@ -436,7 +442,11 @@ function focusPlan(capture: Capture, scene: Scene, span: SceneSpan, durationF: n
   });
   highlights.forEach((h, i) => {
     const nextAt = keyframes[kfOf[i]! + 1]?.at ?? durationF;
-    h.duration = Math.max(15, nextAt - h.from - 4);
+    if (accumulate) {
+      h.duration = Math.max(15, durationF - h.from + 8);
+      const next = highlights[i + 1];
+      if (next) h.labelDuration = Math.max(12, next.from - h.from - 2);
+    } else h.duration = Math.max(15, nextAt - h.from - 4);
   });
   return {keyframes, highlights};
 }
@@ -573,7 +583,8 @@ export function buildTimeline(input: BuildInput): Timeline {
         const endF = i + 1 < caps.length ? toF(starts[i + 1]!) : sceneTo;
         const maxF = capture.type === 'video' && capture.durationSec ? toF(capture.durationSec) : Number.POSITIVE_INFINITY;
         const durF = Math.min(endF - fromF, maxF);
-        const segSpan: SceneSpan = {...span, startSec: segStart, endSec: segEnd, words: span.words.filter((w) => w.start >= segStart - 0.05 && w.start < segEnd)};
+        // Numbers stay whole (« 5 » and « 000 » on either side of the cut would hide the cue « 5 000 »).
+        const segSpan: SceneSpan = {...span, startSec: segStart, endSec: segEnd, words: joinThousands(span.words).filter((w) => w.start >= segStart - 0.05 && w.start < segEnd)};
         const belowHeadline = Boolean(scene.headline) && scene.phase !== 'cta';
         // Same page as the shot just before (two scenes walking through the same plans): the camera carries
         // on from the zone it was on, instead of going back to the whole page and zooming again.

@@ -155,6 +155,30 @@ describe('montage', () => {
     expect(second!.keyframes.some((k) => k.focus === null)).toBe(false);
   });
 
+  it('sur une ligne de tableau, les cadres s’ajoutent et la caméra ne revient jamais en arrière', async () => {
+    const config = await loadConfig();
+    const words = fakeWords();
+    const row = {
+      id: 'row', file: 'row.png', type: 'image' as const, feature: 'pricing', title: 'row', description: 'row', capturedAt: '2026-11-07T10:00:00.000Z',
+      source: 'user-screenshot' as const, width: 470, height: 250, personalDataChecked: true,
+      focusRegions: [
+        {id: 'g', x: 0.08, y: 0.05, w: 0.36, h: 0.9, label: 'Gauche', cues: ['endroit']},
+        {id: 'd', x: 0.55, y: 0.05, w: 0.36, h: 0.9, label: 'Droite', cues: ['Systeme.io']},
+      ],
+    };
+    const base = sampleScript();
+    const script = sampleScript({
+      scenes: base.scenes.map((s) => (s.id === 's3' ? {...s, headline: undefined, visual: {...s.visual, kind: 'demo' as const, captureId: 'row', captureIds: undefined, focusRegionIds: ['g', 'd']}} : s)),
+    });
+    const timeline = buildTimeline({runId: 'r', script, words, voiceDurationSec: 25, voiceSrc: 'voice.wav', clipsByScene: clips(), captures: [row] as never, music: null, ad: ART_DIRECTIONS[0]!, config, facts: [], seed: 1});
+    const shot = timeline.shots.find((s) => s.sceneId === 's3') as Extract<(typeof timeline.shots)[number], {kind: 'capture'}>;
+    const ats = shot.keyframes.map((k) => k.at);
+    expect([...ats].sort((a, b) => a - b)).toEqual(ats);
+    // Both frames stay to the end of the shot; the first label leaves when the second arrives.
+    for (const h of shot.highlights) expect(h.from + h.duration).toBeGreaterThanOrEqual(shot.duration);
+    expect(shot.highlights[0]!.labelDuration).toBeLessThanOrEqual(shot.highlights[1]!.from - shot.highlights[0]!.from);
+  });
+
   it('mesure l’agrandissement nécessaire', () => {
     const move = makeMove('push-in', 2, 1, 0);
     expect(upscaleOf({width: 3840, height: 2160}, move)).toBeLessThan(1);

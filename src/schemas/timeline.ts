@@ -115,8 +115,11 @@ export interface CaptureShot extends ShotBase {
    * before 0 when the shot continues the previous one (the camera keeps the push it had).
    */
   keyframes: Array<{at: number; focus: Region | null}>;
-  /** `carried`: the zone the previous shot ended on, already on screen (no entrance). */
-  highlights: Array<{from: number; duration: number; region: Region; label: string; carried?: boolean}>;
+  /**
+   * `carried`: the zone the previous shot ended on, already on screen (no entrance). `labelDuration`: the
+   * label leaves before the frame does (frames that add up on a table row, one label at a time).
+   */
+  highlights: Array<{from: number; duration: number; region: Region; label: string; carried?: boolean; labelDuration?: number}>;
   /** Blurred footage behind the capture card, if any. */
   backgroundSrc: string | null;
   captureId: string;
