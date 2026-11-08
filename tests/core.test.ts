@@ -152,3 +152,15 @@ describe('import du panneau', () => {
     expect(normalizeDocs([{runId: 'r1', status: 'refusee'}])[0]!.id).toBe('r1');
   });
 });
+
+describe('titre TikTok', () => {
+  it('prend le titre d’ouverture de la vidéo, sinon son titre de travail (Metricool refuse un post TikTok sans titre)', async () => {
+    const {tiktokTitle, metricoolInfo} = await import('../src/publish/publish.js');
+    expect(tiktokTitle({scenes: [{}, {headline: 'Quelle formule Systeme.io choisir ?'}], workingTitle: 'Les formules'})).toBe('Quelle formule Systeme.io choisir ?');
+    expect(tiktokTitle({scenes: [{}], workingTitle: 'Les 4 formules de Systeme.io expliquées'})).toBe('Les 4 formules de Systeme.io expliquées');
+    const {loadConfig} = await import('../src/core/config.js');
+    const config = await loadConfig();
+    const info = metricoolInfo('tiktok', {text: 't', mediaUrl: 'https://x/v.mp4', slot: {iso: '2026-11-09T12:00:00+01:00', local: '2026-11-09T12:00:00'} as never, coverMs: 0, config, title: 'Titre'});
+    expect((info.tiktokData as {title: string}).title).toBe('Titre');
+  });
+});

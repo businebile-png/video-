@@ -130,7 +130,13 @@ export function postText(script: Script, network: 'tiktok' | 'instagram', config
 }
 
 /** The `info` object of Metricool's createScheduledPost, built exactly as its tool schema describes. */
-export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: string; mediaUrl: string; slot: Slot; coverMs: number; config: StudioConfig}): Record<string, unknown> {
+/** TikTok title of a post (Metricool refuses a TikTok post without one): the video's opening headline, else its working title. */
+export function tiktokTitle(script: {scenes: Array<{headline?: string}>; workingTitle: string}): string {
+  const raw = script.scenes.find((s) => s.headline)?.headline ?? script.workingTitle;
+  return raw.replace(/\s+/g, ' ').trim().slice(0, 90);
+}
+
+export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: string; mediaUrl: string; slot: Slot; coverMs: number; config: StudioConfig; title?: string}): Record<string, unknown> {
   const {config} = input;
   const delivery = config.publish.delivery;
   const info: Record<string, unknown> = {
@@ -156,7 +162,7 @@ export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: str
       privacyOption: config.platforms.tiktok.privacy,
       commercialContentThirdParty: config.platforms.tiktok.commercialContentThirdParty,
       commercialContentOwnBrand: false,
-      title: '',
+      title: input.title ?? '',
       autoAddMusic: false,
       photoCoverIndex: 0,
       isAigc: config.platforms.tiktok.aiLabel,
@@ -237,7 +243,7 @@ export async function preparePublication(
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
     const text = postText(script, network, config, {priceVerifiedOn});
-    posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config})});
+    posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config, title: tiktokTitle(script)})});
   }
   const gatesOk = score.gates.every((g) => g.ok);
   const pkg: PublishPackage = {
