@@ -9,6 +9,7 @@ import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from './co
 import {log} from './core/log.js';
 import {run} from './core/exec.js';
 import {loadState, step, type StepName} from './core/run.js';
+import {CORRECTION_STEPS, journalProgress, startCorrection, type CorrectionStep} from './core/progress.js';
 import {loadCaptures, loadHistory, loadTracks, upsertAffiliate, upsertHistory, upsertPublication} from './core/stores.js';
 import {ScriptSchema} from './schemas/script.js';
 import {FEATURES, type Feature} from './schemas/config.js';
@@ -54,6 +55,8 @@ Production (dans l'ordre)
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
   voice:measure <runId>        Mesure de nouveau la voix existante (débit, pauses entendues, note) sans la régénérer
+  correction:start <runId> [--score N] [--steps voice,edit,…] [--reason …]  Commence une reprise (suivie en % dans le journal)
+  progress <runId>             Avancement à inscrire dans le journal du panneau (JSON : progress, stage, correction)
   footage:search <runId>       Recherche de séquences (Pixabay ou Pexels) + planches contact par scène
   footage:auto <runId>         Sélection automatique (sinon écrire footage/selection.json)
   footage:fetch <runId>        Téléchargement des séquences choisies + licences
@@ -215,6 +218,9 @@ async function main(): Promise<void> {
       only: {type: 'string'},
       'encode-only': {type: 'boolean'},
       networks: {type: 'string'},
+      score: {type: 'string'},
+      steps: {type: 'string'},
+      reason: {type: 'string'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -435,6 +441,21 @@ async function main(): Promise<void> {
       const config = await loadConfig();
       const report = await step(id, 'voice', () => runVoice(id, config), (r) => `${r.score}/15`);
       process.exitCode = report.pass ? 0 : 1;
+      return;
+    }
+    case 'correction:start': {
+      const id = runId();
+      const steps = (str('steps') ?? '').split(',').map((x) => x.trim()).filter(Boolean);
+      const unknown = steps.filter((x) => !(CORRECTION_STEPS as readonly string[]).includes(x));
+      if (unknown.length) throw new Error(`Étapes inconnues : ${unknown.join(', ')} (possibles : ${CORRECTION_STEPS.join(', ')}).`);
+      const c = await startCorrection(id, {score: num('score'), steps: steps as CorrectionStep[], reason: str('reason')});
+      log.ok(`Correction ${c.attempt}/${c.max} commencée (note de départ ${c.lastScore ?? 'n/d'}/100) : ${c.steps.join(', ')}`);
+      console.log(JSON.stringify(await journalProgress(id)));
+      return;
+    }
+    case 'progress': {
+      // One line of JSON for the panel journal (ArtifactData update of runs/<journal>): progress, stage, correction.
+      console.log(JSON.stringify(await journalProgress(runId())));
       return;
     }
     case 'voice:measure': {

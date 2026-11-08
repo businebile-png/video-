@@ -46,6 +46,11 @@ h1, h2, h3 { font-family: var(--font-display); font-stretch: 82%; letter-spacing
 .prog .track { height: 10px; background: var(--line); border-radius: 5px; overflow: hidden; }
 .prog .track > i { display: block; height: 100%; background: var(--accent); border-radius: 5px; transition: width .6s ease; }
 .prog .lab { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+.prog.corr .track > i { background: var(--warn); }
+.prog .chips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+.prog .chips span { padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--muted); }
+.prog .chips span.done { background: var(--ok-soft); color: var(--ok); }
+.prog .chips span.now { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
 nav.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-bottom: -1px; }
 nav.tabs::-webkit-scrollbar { display: none; }
 nav.tabs a { padding: 10px 12px 11px; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 14px; border-bottom: 2px solid transparent; white-space: nowrap; }
@@ -434,14 +439,36 @@ window.addEventListener('hashchange', route);
 // The production in progress (started less than 4 hours ago), if any: its journal carries progress (0–100) and stage.
 function activeRun() {
   const now = Date.now();
-  return S.runs.filter((r) => r.status === 'en_cours' && now - Date.parse(r.startedAt || 0) < 4 * 3600000)
+  // Still running: started less than 4 hours ago, or written to less than an hour ago (a long correction).
+  const live = (r) => now - Date.parse(r.startedAt || 0) < 4 * 3600000 || (r.updatedAt && now - Date.parse(r.updatedAt) < 3600000);
+  return S.runs.filter((r) => r.status === 'en_cours' && live(r))
     .sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt)))[0] || null;
+}
+function sinceLabel(iso) {
+  const t = Date.parse(iso || '');
+  if (!t) return '';
+  const min = Math.max(0, Math.round((Date.now() - t) / 60000));
+  return min < 1 ? 'mis à jour à l’instant' : `mis à jour il y a ${min} min`;
+}
+// A correction (new version after a score under the threshold): its own bar, the steps it redoes ticked off
+// as they are done, the score it started from. The percentage comes from what the production has really done.
+function correctionBlock(c) {
+  const p = Math.max(0, Math.min(100, Math.round(Number(c.progress) || 0)));
+  const steps = Array.isArray(c.steps) ? c.steps : [];
+  const firstOpen = steps.findIndex((s) => !s.done);
+  return h('div', {class: 'prog corr', role: 'progressbar', 'aria-label': 'Avancement de la correction', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(p)},
+    h('div', {class: 'lab'}, h('strong', {text: `Correction ${c.attempt || 1}/${c.max || 3} · ${p} %`}), h('span', {class: 'muted', text: (c.step ? 'étape : ' + c.step : '') + (c.lastScore != null ? ` · note précédente ${c.lastScore}/100` : '')})),
+    h('div', {class: 'track'}, h('i', {style: `width:${p}%`})),
+    steps.length ? h('div', {class: 'chips'}, ...steps.map((s, i) => h('span', {class: s.done ? 'done' : i === firstOpen ? 'now' : '', text: (s.done ? '✓ ' : '') + s.label}))) : null);
 }
 function progressBlock(r) {
   const p = Math.max(0, Math.min(100, Math.round(Number(r.progress) || 0)));
-  return h('div', {class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(p)},
-    h('div', {class: 'lab'}, h('strong', {text: `Production en cours · ${p} %`}), h('span', {class: 'muted', text: r.stage || ''})),
-    h('div', {class: 'track'}, h('i', {style: `width:${p}%`})));
+  const box = h('div', {style: 'display:grid;gap:12px'});
+  box.append(h('div', {class: 'prog', role: 'progressbar', 'aria-label': 'Avancement de la production', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(p)},
+    h('div', {class: 'lab'}, h('strong', {text: `Production en cours · ${p} %`}), h('span', {class: 'muted', text: [r.stage || '', sinceLabel(r.updatedAt)].filter(Boolean).join(' · ')})),
+    h('div', {class: 'track'}, h('i', {style: `width:${p}%`}))));
+  if (r.correction && r.correction.attempt) box.append(correctionBlock(r.correction));
+  return box;
 }
 // State of the daily task: read live when the organisation allows it, otherwise as recorded by the production.
 function dailyTask() {
@@ -458,7 +485,11 @@ function renderLights() {
   if (S.dbState === 'loading' && !S.loaded.videos) { box.append(h('span', {class: 'light', text: 'Connexion aux données…'})); return; }
   const st = S.settings || {};
   const run = activeRun();
-  if (run) { const p = Math.max(0, Math.min(100, Math.round(Number(run.progress) || 0))); box.append(h('a', {class: 'light run', href: '#journal', style: `--p:${p}%;text-decoration:none`, title: run.stage || '', text: `Production en cours · ${p} %`})); }
+  if (run) {
+    const c = run.correction && run.correction.attempt ? run.correction : null;
+    const p = Math.max(0, Math.min(100, Math.round(Number(c ? c.progress : run.progress) || 0)));
+    box.append(h('a', {class: 'light run', href: '#journal', style: `--p:${p}%;text-decoration:none`, title: run.stage || '', text: c ? `Correction ${c.attempt}/${c.max || 3} · ${p} %` : `Production en cours · ${p} %`}));
+  }
   const lp = linkProblems(st.affiliateUrl || '');
   box.append(h('span', {class: 'light ' + (lp.length ? 'bad' : 'ok'), text: lp.length ? 'Lien affilié à renseigner' : 'Lien affilié configuré'}));
   box.append(h('span', {class: 'light ' + (st.approval === 'auto' ? 'warn' : 'ok'), text: st.approval === 'auto' ? 'Publication automatique' : 'Validation par vous'}));

@@ -27,9 +27,24 @@ dépôt neuf et la reconstruit à l'étape 1. Aucune poussée vers la branche pr
 Chaque production (tâche du matin ou bouton du panneau) démarre dans une **session neuve**. Si le dépôt
 n'y est pas, la récupérer avec l'outil `add_repo` (owner `businebile-png`, repo `video-`, accès `push`),
 exécuter la commande de clonage qu'il renvoie, puis `register_repo_root` et passer sur la branche
-`claude/serene-maxwell-pdm5wr`. Si les outils Metricool manquent dans la session (tâche créée sans
+`claude/serene-maxwell-pdm5wr`. `add_repo` est un outil différé : le charger d'abord avec `ToolSearch`
+(`select:mcp__claude-code-remote__add_repo`). Sans lui, le dépôt public se clone en lecture mais toute
+écriture est refusée (403) : ni `media:push`, ni commit. Si les outils Metricool manquent dans la session (tâche créée sans
 connecteur), sauter les étapes Metricool (réseaux connectés, créneaux, statistiques) et le noter dans le
 journal : la programmation se fait de toute façon depuis le panneau, qui a son propre connecteur.
+
+## Avancement affiché dans le panneau
+
+Après **chaque** commande du studio, `npm run studio -- progress <runId>` affiche une ligne JSON
+(`progress`, `stage`, `updatedAt`, `correction`) : l'écrire telle quelle dans le journal de la production
+(`ArtifactData` update du document `runs/<journal>`). Le pourcentage vient de ce qui est réellement fait
+(étapes de `state.json`, contrôle du script, relecture), il ne se devine pas.
+
+Pour une **reprise** (note sous 80 ou contrôle obligatoire en échec), commencer par
+`npm run studio -- correction:start <runId> --score <note> --steps <étapes refaites>` (étapes possibles :
+`script`, `voice`, `footage`, `edit`, `render`, `qc`, `review`, `score` ; toutes par défaut), puis le même
+`progress` après chaque commande. Le panneau affiche alors « Correction 1/3 · 40 % », les étapes cochées,
+l'étape en cours et la note précédente. Le journal ne reste jamais figé plus de 10 minutes.
 
 ## 0. Démarrage
 
