@@ -60,13 +60,13 @@ export function pickSlot(slots: Array<{iso: string; label: string}>, taken: stri
 }
 
 /**
- * Remove what Metricool no longer needs: queued videos whose slot is over by 6 hours (scheduled or missed)
+ * Remove what Metricool no longer needs: queued videos whose slot is over by 30 hours (scheduled, or missed twice)
  * and their MP4 (it carries the user's song, which must not stay in the public repository).
  */
 export async function cleanQueue(now = new Date()): Promise<string[]> {
   const removed: string[] = [];
   for (const e of queueEntries()) {
-    if (now.getTime() - Date.parse(e.autoSlot.iso) < 6 * 3_600_000) continue;
+    if (now.getTime() - Date.parse(e.autoSlot.iso) < 30 * 3_600_000) continue;
     for (const f of [path.join(QUEUE_DIR, `${e.runId}.json`), path.join(PATHS.root, 'videos', `${e.runId}.mp4`), path.join(PATHS.root, 'videos', `${e.runId}.jpg`)]) {
       if (fs.existsSync(f)) {
         await runOrThrow('git', ['rm', '-q', '--', path.relative(PATHS.root, f)], {cwd: PATHS.root});

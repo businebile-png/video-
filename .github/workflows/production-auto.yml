@@ -107,7 +107,7 @@ jobs:
           git config user.name "Studio pub (GitHub Actions)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Retirer les vidéos déjà passées (créneau + 6 h)
+      - name: Retirer les vidéos déjà passées (créneau + 30 h)
         run: |
           npm run studio -- queue:clean
           if ! git diff --cached --quiet; then git commit -q -m "Retrait des vidéos déjà publiées ou expirées (file d'attente)" && git push -q origin HEAD:claude/serene-maxwell-pdm5wr; fi
