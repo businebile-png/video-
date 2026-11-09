@@ -1,5 +1,6 @@
 # Production automatique SANS Claude : l'IA gratuite (FreeLLMAPI, Gemini…) écrit et relit, le studio fait le reste.
-# Mêmes règles que les productions de Claude : faits vérifiés, contrôleur de script, relecture, 80/100 minimum.
+# Mêmes contrôles qu'avant (faits vérifiés, contrôleur de script, mention « Publicité ») ; pas de note minimum :
+# la vidéo part si la relecture la juge cohérente et de bonne qualité (choix de l'utilisateur, 09/11/2026).
 # La vidéo prête est déposée dans queue/<runId>.json ; la programmation Metricool la publie au créneau.
 name: Production automatique (sans Claude)
 

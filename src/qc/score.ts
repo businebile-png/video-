@@ -126,11 +126,29 @@ export function computeScore(input: {
     {id: 'sound', label: 'Vidéo sonore : voix off présente et audible', ok: technical.checks.find((c) => c.id === 'voice-present')?.ok ?? false, detail: technical.checks.find((c) => c.id === 'voice-present')?.value ?? 'non mesuré'},
     {id: 'review', label: 'Aucun problème bloquant ni doute factuel relevé à la relecture', ok: review.blockingIssues.length === 0 && review.factualConcerns.length === 0, detail: [...review.blockingIssues, ...review.factualConcerns].join(' ; ') || 'ok'},
   ];
+  const coherenceRule = config.publish.decisionRule === 'coherence';
+  if (coherenceRule) {
+    const v = review.verdict;
+    gates.push({
+      id: 'coherence',
+      label: 'Vidéo cohérente et de bonne qualité (verdict de la relecture)',
+      ok: Boolean(v?.coherent && v?.goodQuality),
+      detail: v ? (v.coherent && v.goodQuality ? v.justification : `${v.coherent ? '' : 'incohérente'}${!v.coherent && !v.goodQuality ? ' et ' : ''}${v.goodQuality ? '' : 'qualité insuffisante'} : ${v.justification}`) : 'verdict de cohérence absent de la relecture',
+    });
+  }
   const gatesOk = gates.every((g) => g.ok);
-  const decision: ScoreReport['decision'] = !gatesOk ? 'redo' : total >= config.publish.minScore ? 'publishable' : total >= config.publish.improveFrom ? 'improve' : 'redo';
+  const onlyCoherenceFails = coherenceRule && gates.filter((g) => !g.ok).every((g) => g.id === 'coherence');
+  const decision: ScoreReport['decision'] = coherenceRule
+    ? gatesOk ? 'publishable' : onlyCoherenceFails ? 'improve' : 'redo'
+    : !gatesOk ? 'redo' : total >= config.publish.minScore ? 'publishable' : total >= config.publish.improveFrom ? 'improve' : 'redo';
   const weakest = [...criteria].sort((a, b) => a.score / a.max - b.score / b.max).slice(0, 2).map((c) => c.label);
-  const summary =
-    decision === 'publishable'
+  const summary = coherenceRule
+    ? decision === 'publishable'
+      ? `${total}/100 (note indicative) — publiable : cohérente et de bonne qualité selon la relecture, tous les contrôles obligatoires validés.`
+      : decision === 'improve'
+        ? `${total}/100 (note indicative) — à corriger : ${gates.find((g) => g.id === 'coherence')!.detail}.`
+        : `${total}/100 (note indicative) — bloquée : ${gates.filter((g) => !g.ok).map((g) => g.label).join(' ; ')}.`
+    : decision === 'publishable'
       ? `${total}/100 — publiable (tous les contrôles obligatoires sont validés).`
       : decision === 'improve'
         ? `${total}/100 — à améliorer avant publication : ${weakest.join(', ')}.`

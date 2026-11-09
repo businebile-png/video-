@@ -210,6 +210,7 @@ describe('note sur 100', () => {
       improvements: [],
       factualConcerns: [],
       rightsConcerns: [],
+      verdict: {coherent: true, goodQuality: true, justification: 'La voix et les images disent la même chose, tout est net.'},
     };
     const technical = {runId: 'r', checkedAt: '', durationSec: 25, loudnessLufs: -14, truePeakDb: -1.2, finalWer: 0.03, frames: [], contactSheet: null, checks: [{id: 'disclosure', label: 'Mention', ok: true, value: 'Publicité', expected: 'Publicité', impact: 'gate' as const}, {id: 'voice-present', label: 'Voix', ok: true, value: '60 mots', expected: 'voix', impact: 'gate' as const}]};
     const voice = {voiceId: 'v', voiceName: 'Voix', modelId: 'm', attempt: 1, durationSec: 25, speechSec: 24, wpm: 170, leadingSilenceSec: 0.06, trailingSilenceSec: 0.3, maxInternalPauseSec: 0.4, pausesOver: [], wer: 0.02, sttText: '', mismatches: [], loudnessLufs: -16, truePeakDb: -1.5, approvedVoice: true, pass: true, problems: [], score: 15, characters: 400, generatedAt: ''};
@@ -235,6 +236,21 @@ describe('note sur 100', () => {
     const silent = computeScore({...base, config: {...config, affiliate: {...config.affiliate, url: 'https://systeme.io/?sa=sa0012345678'}}, licenses, technical: {...technical, checks: [technical.checks[0]!, {...technical.checks[1]!, ok: false}]}});
     expect(silent.gates.find((g) => g.id === 'sound')!.ok).toBe(false);
     expect(silent.decision).toBe('redo');
+
+    // Rule chosen by the user (09/11/2026): no minimum score, a coherent video of good quality goes out…
+    const linked = {...base, licenses, config: {...config, publish: {...config.publish, decisionRule: 'coherence' as const}, affiliate: {...config.affiliate, url: 'https://systeme.io/?sa=sa0012345678'}}};
+    const low = (n: number) => ({score: n, justification: 'x'.repeat(50)});
+    const modest = computeScore({...linked, review: {...review, criteria: {visual: low(11), editing: low(8), script: low(8), explanation: low(8), conversion: low(8)}}});
+    expect(modest.total).toBeLessThan(80);
+    expect(modest.decision).toBe('publishable');
+    // …but not one the reviewer finds incoherent or sloppy (corrected), nor one that fails a mandatory check.
+    const incoherent = computeScore({...linked, review: {...review, verdict: {coherent: false, goodQuality: true, justification: 'Le plan de la scène 3 ne montre pas ce que dit la voix.'}}});
+    expect(incoherent.decision).toBe('improve');
+    expect(incoherent.gates.find((g) => g.id === 'coherence')!.ok).toBe(false);
+    const noVerdict = computeScore({...linked, review: {...review, verdict: undefined}});
+    expect(noVerdict.decision).toBe('improve');
+    const silentCoherent = computeScore({...linked, technical: {...technical, checks: [technical.checks[0]!, {...technical.checks[1]!, ok: false}]}});
+    expect(silentCoherent.decision).toBe('redo');
   });
 });
 

@@ -69,6 +69,14 @@ export const ReviewSchema = z.object({
    * Viral potential, judged on the same frames: a separate indicator (/20) that never enters the 100-point
    * grid nor the publication locks. Optional so that reviews written before it still validate.
    */
+  /** Publication verdict: does the video make sense (voice, images, text agree) and is it of good quality? */
+  verdict: z
+    .object({
+      coherent: z.boolean(),
+      goodQuality: z.boolean(),
+      justification: z.string().min(20, 'justification du verdict trop courte (20 caractères minimum)'),
+    })
+    .optional(),
   virality: z
     .object({
       hook: ViralCriterionSchema,

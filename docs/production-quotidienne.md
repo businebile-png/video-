@@ -13,6 +13,8 @@ panneau et on ne dépose rien de médiocre.
 
 > Depuis le 09/11/2026, la production quotidienne tourne **sans Claude** (`npm run studio -- auto`, GitHub Actions,
 > IA gratuite) : voir `docs/production-sans-claude.md`. Ce guide reste valable pour une production faite à la main.
+> Règle de publication depuis le 09/11/2026 : plus de note minimum ; la vidéo doit être jugée cohérente et de bonne
+> qualité par la relecture (bloc `verdict`), avec tous les contrôles obligatoires validés. La note sur 100 est indicative.
 
 ## Constantes
 

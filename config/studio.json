@@ -39,7 +39,8 @@
     "delivery": "auto",
     "minScore": 80,
     "improveFrom": 75,
-    "leadTimeMinutes": 90
+    "leadTimeMinutes": 90,
+    "decisionRule": "coherence"
   },
   "media": {
     "repo": "businebile-png/video-",

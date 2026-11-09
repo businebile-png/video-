@@ -35,7 +35,7 @@ export async function reviewWithLlm(runId: string): Promise<Review> {
         `qc/technical.json :\n${read(p.qcTechnical).slice(0, 6000)}`,
         `script-lint.json :\n${read(p.lint).slice(0, 4000)}`,
         '',
-        `Réponds uniquement avec l’objet JSON de la relecture : "runId": "${runId}", "reviewer": "independent-llm", "framesSeen" = les noms de fichiers des images reçues préfixés par « qc/frames/ », chaque justification de 2 à 4 phrases concrètes, le bloc "virality" compris.`,
+        `Réponds uniquement avec l’objet JSON de la relecture : "runId": "${runId}", "reviewer": "independent-llm", "framesSeen" = les noms de fichiers des images reçues préfixés par « qc/frames/ », chaque justification de 2 à 4 phrases concrètes, les blocs "verdict" (cohérente et de bonne qualité ? dans le doute, false) et "virality" compris.`,
       ].join('\n'),
     },
   ];

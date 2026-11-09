@@ -23,6 +23,20 @@ qu'elle ne soit présentée à l'utilisateur. Une vidéo moyenne doit recevoir u
 
 Repères : 90 % du maximum = niveau agence ; 75 % = correct mais générique ; 60 % ou moins = à refaire.
 
+## Verdict de publication (c'est lui qui décide, pas la note)
+
+Règle choisie par l'utilisateur le 09/11/2026 : pas de note minimum. Une vidéo part si elle est **cohérente** et de
+**bonne qualité**, avec tous les contrôles obligatoires validés (mention « Publicité », faits vérifiés, droits, son…).
+
+- `coherent` : vrai seulement si ce qui est dit correspond à ce qui est montré, si le message se suit du début à la
+  fin sans contradiction ni phrase hors sujet, si chaque chiffre à l'écran est celui que la voix dit, et si un
+  spectateur comprend ce que propose Systeme.io et ce qu'on lui suggère de faire.
+- `goodQuality` : vrai seulement si aucune image n'est floue, pixelisée, déformée ou hors sujet, aucun texte coupé,
+  illisible ou qui en chevauche un autre, aucune coupure brutale ou plan noir, et si l'ensemble a l'air soigné sur
+  un téléphone.
+- `justification` : 2 à 4 phrases concrètes. Dans le doute, réponds `false` : une vidéo refusée est corrigée,
+  une vidéo ratée publiée ne se rattrape pas.
+
 ## Potentiel viral (indicateur séparé, sur 20)
 
 Il n'entre **pas** dans la note sur 80 et ne débloque jamais une publication : il dit si la vidéo a des chances
@@ -72,6 +86,7 @@ l'honnêteté : jamais de mystère trompeur, de fausse urgence ni de promesse.
   "improvements": [],
   "factualConcerns": [],
   "rightsConcerns": [],
+  "verdict": {"coherent": true, "goodQuality": true, "justification": "…"},
   "virality": {
     "hook": {"score": 0, "justification": "…"},
     "retention": {"score": 0, "justification": "…"},

@@ -9,7 +9,7 @@ hebdomadaire), mais par une IA gratuite, avec **le même studio et les mêmes r�
 | Script | l'IA gratuite (`src/auto/writer.ts`), refusé et renvoyé tant que le contrôleur (`script:check`) trouve une erreur ; checklist viralité visée : 10/12 |
 | Voix « Claire », séquences, montage, rendu, contrôles techniques | le studio (code), comme avant |
 | Relecture indépendante (images regardées) | l'IA gratuite avec images (`src/auto/reviewer.ts`), consigne `docs/relecteur.md`, relecteur noté `independent-llm` |
-| Note sur 100 et verrous de publication | inchangés (`src/qc/score.ts`) : 80/100 minimum, tous les contrôles obligatoires validés |
+| Décision de publier | plus de note minimum (choix de l'utilisateur le 09/11/2026) : la relecture doit juger la vidéo **cohérente et de bonne qualité**, et tous les contrôles obligatoires restent exigés (mention « Publicité », faits vérifiés, droits, son, format) ; la note sur 100 reste affichée, à titre indicatif |
 | Corrections | jusqu'à 2 reprises automatiques à partir de la relecture |
 | Musique « All For Nothing » | ajoutée si le lien privé `STUDIO_MUSIC_URL` est fourni ; jamais copiée dans le dépôt |
 | Publication Metricool | la seule partie qui demande encore Claude (le connecteur Metricool n'existe que là) : une courte tâche à 9:35 et 19:35 |
@@ -48,15 +48,15 @@ elle-même (mode par défaut de create_trigger, sans `persistent_session_id`), l
 ci-dessous. Puis désactiver l'ancienne tâche « Programmation automatique Systeme.io » si elle est encore active.
 
 ```
-Publication automatique (une vidéo à 10:00 et une à 20:00, Europe/Paris, TikTok et Instagram, seulement à 80/100
-ou plus avec tous les contrôles validés). Les vidéos sont produites sans Claude par GitHub Actions et attendent dans
+Publication automatique (une vidéo à 10:00 et une à 20:00, Europe/Paris, TikTok et Instagram, seulement les vidéos
+dont score.decision vaut « publishable »). Les vidéos sont produites sans Claude par GitHub Actions et attendent dans
 queue/ (branche claude/serene-maxwell-pdm5wr du dépôt public businebile-png/video-). Ne produis rien, ne modifie
 aucun fichier. Sois bref et économe. Réponds en français.
 1. curl -s "https://api.github.com/repos/businebile-png/video-/contents/queue?ref=claude/serene-maxwell-pdm5wr",
    télécharge chaque JSON (download_url). Créneau = le prochain parmi 10:00 et 20:00 aujourd'hui (dans ~25 min).
    Prends l'entrée dont autoSlot.iso est ce créneau, à défaut la plus ancienne dont le créneau n'est pas passé de
    plus de 6 h. Aucune : réponds « Aucune vidéo prête pour HH:MM » et arrête-toi.
-2. Contrôles, sinon rien n'est publié : score.total ≥ 80 ; toutes les score.gates ok ; chaque posts[].text commence
+2. Contrôles, sinon rien n'est publié : score.decision = « publishable » ; toutes les score.gates ok ; chaque posts[].text commence
    par « Publicité » ; media.publicUrl répond 200 (curl -sI) ; posts contient tiktok et instagram.
 3. Panneau https://claude.ai/artifact/PHv2PwELy8staCztefioMr (ArtifactData) : get videos/<runId> ; déjà
    « programmee » ou « publiee » → arrête-toi. Sinon set videos/<runId> avec l'entrée (status « prete »).
@@ -70,13 +70,14 @@ aucun fichier. Sois bref et économe. Réponds en français.
    sans Claude) »}.
 6. Fiches « programmee » dont l'heure est passée : si Metricool dit PUBLISHED avec un lien public → « publiee »
    (permalink, confirmedAt).
-7. Une ligne de compte rendu. Jamais sous 80, jamais deux vidéos sur un créneau, jamais « publiée » sans confirmation.
+7. Une ligne de compte rendu. Jamais une vidéo non « publishable », jamais deux vidéos sur un créneau, jamais « publiée » sans confirmation.
 ```
 
 ## Ce qui change honnêtement
 
-- Une IA gratuite écrit et relit moins finement que Claude : les mêmes verrous refusent toute vidéo sous 80/100 ou
-  avec un contrôle en échec, donc **moins de vidéos peuvent passer**, jamais de moins bonnes vidéos publiées.
+- Une IA gratuite écrit et relit moins finement que Claude. Il n'y a plus de note minimum : une vidéo part dès que
+  la relecture la juge cohérente et de bonne qualité (dans le doute, elle la refuse et la vidéo est corrigée), et les
+  contrôles obligatoires (légaux et techniques) bloquent toujours.
 - Le panneau montre une vidéo dès que la tâche de publication l'y dépose (avant, la production l'y mettait).
 - L'apprentissage sur les statistiques (temps regardé, partages) reste dans le panneau ; la production GitHub ne
   le lit pas encore.

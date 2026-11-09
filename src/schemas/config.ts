@@ -68,6 +68,11 @@ export const StudioConfigSchema = z.object({
     delivery: DeliverySchema,
     minScore: z.number().int().min(50).max(100),
     improveFrom: z.number().int().min(50).max(100),
+    /**
+     * `score`: publishable from `minScore`/100. `coherence` (user's choice, 09/11/2026): no minimum score; the video
+     * goes out when the reviewer judges it coherent and of good quality, with every mandatory check passed.
+     */
+    decisionRule: z.enum(['score', 'coherence']).default('score'),
     leadTimeMinutes: z.number().int().min(15),
   }),
   media: z.object({
