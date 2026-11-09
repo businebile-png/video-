@@ -833,7 +833,7 @@ function renderPending() {
     else box.append(h('div', {class: 'empty'},
       h('strong', {text: 'Aucune vidéo en attente de validation'}),
       h('div', {text: 'La production quotidienne dépose ici chaque nouvelle vidéo avec son aperçu, sa note et ses légendes.'}),
-      st.triggerId ? h('button', {class: 'btn primary', onclick: () => fireTrigger('Production demandée depuis le panneau (aucune vidéo en attente).'), text: 'Lancer une production maintenant'}) : h('div', {class: 'hint', text: 'La production quotidienne n’est pas encore branchée (voir Réglages).'}),
+      st.triggerId ? h('button', {class: 'btn primary', onclick: () => fireTrigger('Production demandée depuis le panneau (aucune vidéo en attente).'), text: 'Lancer une vidéo (GitHub, gratuit)'}) : h('div', {class: 'hint', text: 'La production quotidienne n’est pas encore branchée (voir Réglages).'}),
       S.ui.triggerMsg ? h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}) : null));
   }
   list.forEach((v, idx) => {
@@ -894,21 +894,16 @@ async function decide(v, mode, notes, runNow) {
   S.ui.busy[v.runId] = false; renderPending();
 }
 
+const GH = 'https://github.com/businebile-png/video-';
+const GH_RUN = GH + '/actions/workflows/production-auto.yml';
+const GH_QUEUE = GH + '/tree/claude/serene-maxwell-pdm5wr/queue';
+/**
+ * Productions no longer go through Claude (choice of 09/11/2026, weekly quota): they run on GitHub with a free AI.
+ * Launching one opens the GitHub page with its « Run workflow » button; nothing is spent on Claude.
+ */
 async function fireTrigger(text) {
-  const id = S.settings && S.settings.triggerId;
-  if (!id) return;
-  if (!S.mcp) { S.ui.triggerMsg = {tone: 'bad', text: 'Les connecteurs ne sont pas disponibles dans cette vue.'}; render(); return; }
-  if (activeRun()) { S.ui.triggerMsg = {tone: 'warn', text: 'Une production est déjà en cours : suivez son avancement en haut de la page.'}; render(); return; }
-  const runId = new Intl.DateTimeFormat('sv-SE', {timeZone: tz(), year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(new Date()).replace(' ', '-').replace(':', '');
-  const ref = S.db ? S.db.doc('runs/' + runId) : null;
-  try { if (ref) await ref.set({runId, startedAt: new Date().toISOString(), status: 'en_cours', progress: 2, stage: 'Demande envoyée à Claude Code', source: 'panneau', steps: [], message: ''}); } catch (e) {}
-  try {
-    await S.mcp.callTool(CCR, 'fire_trigger', {trigger_id: id, text: `${text} Journal de cette production : runs/${runId} (mettre à jour progress, stage et steps à chaque étape).`});
-    S.ui.triggerMsg = {tone: 'ok', text: 'Production lancée : son avancement s’affiche en pourcentage en haut de la page et dans le Journal. La vidéo arrivera dans « À valider ».'};
-  } catch (err) {
-    S.ui.triggerMsg = {tone: 'bad', text: mcpMessage(err, CCR)};
-    try { if (ref) await ref.update({status: 'echec', progress: 0, stage: '', message: 'Le lancement n’a pas abouti : ' + mcpMessage(err, CCR), finishedAt: new Date().toISOString()}); } catch (e) {}
-  }
+  window.open(GH_RUN, '_blank', 'noopener');
+  S.ui.triggerMsg = {tone: 'ok', text: 'Page GitHub ouverte : cliquez « Run workflow » puis « Run workflow » (vert). La vidéo est prête en 1 à 2 h, puis publiée au créneau suivant (10:00 ou 20:00).' + (/Correction/.test(text) ? ' La correction demandée est notée sur la fiche ; la prochaine production repart d’un nouveau sujet.' : '')};
   render();
 }
 
@@ -1128,7 +1123,7 @@ function renderSettings() {
     if (run) prod.append(progressBlock(run));
     prod.append(h('div', {class: 'actions'},
       live ? h('button', {class: 'btn', disabled: ro, onclick: () => setTrigger(!(t.enabled === 'true')), text: t.enabled === 'true' ? 'Mettre en pause' : 'Activer'}) : null,
-      h('button', {class: 'btn primary', disabled: ro || !S.mcp || Boolean(run), onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: run ? 'Production en cours…' : 'Lancer une production maintenant'})));
+      h('button', {class: 'btn primary', disabled: ro, onclick: () => fireTrigger('Production demandée depuis le panneau.'), text: 'Lancer une vidéo (GitHub, gratuit)'})));
   }
   if (S.ui.triggerMsg) prod.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
 
@@ -1231,7 +1226,7 @@ function renderSetup() {
       const t = S.ui.trigger;
       if (st.triggerId && S.mcp && t && !t.error) {
         acts.append(h('button', {class: 'btn' + (t.enabled === 'true' ? '' : ' primary'), disabled: S.canEdit === false, onclick: () => setTrigger(!(t.enabled === 'true')), text: t.enabled === 'true' ? 'Mettre en pause' : 'Activer la production quotidienne'}));
-        acts.append(h('button', {class: 'btn', disabled: S.canEdit === false, onclick: () => fireTrigger('Production demandée depuis le panneau (Démarrage).'), text: 'Lancer une production maintenant'}));
+        acts.append(h('button', {class: 'btn', disabled: S.canEdit === false, onclick: () => fireTrigger('Production demandée depuis le panneau (Démarrage).'), text: 'Lancer une vidéo (GitHub, gratuit)'}));
       } else if (t && t.error) acts.append(h('div', {class: 'result warn', text: t.error}));
       else acts.append(h('div', {class: 'hint', text: st.triggerId ? 'Lecture de l’état de la tâche…' : 'Tâche programmée non trouvée.'}));
       if (S.ui.triggerMsg) acts.append(h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}));
@@ -1351,11 +1346,18 @@ function renderToday() {
   out.push(h('div', {class: 'card pilot'},
     h('div', {class: 'pilothead'}, h('strong', {text: auto ? 'Pilote automatique activé' : 'Pilote automatique en pause : vous validez chaque vidéo'}), h('span', {class: 'pill ' + (auto ? 'ok' : 'warn'), text: auto ? 'Sans validation' : 'Validation par vous'})),
     h('div', {class: 'small', text: auto ? `Chaque jour, une vidéo à ${times.join(' et une à ')} sur TikTok et Instagram. Seules les vidéos jugées cohérentes et de bonne qualité par la relecture, avec tous les contrôles obligatoires validés (mention « Publicité », faits vérifiés, droits, son), partent ; sinon elles sont corrigées, ou le créneau reste vide et la raison s’affiche ici.` : 'Les vidéos attendent votre validation dans « À valider ».'}),
-    h('ol', {class: 'flow'}, ...times.map((x) => h('li', null, h('strong', {text: `Vidéo de ${x} : `}), `production ${PROD_AT[x] || '?'} → programmation ${SCHED_AT[x] || '?'} → publication ${x}`)))));
+    h('ol', {class: 'flow'}, ...times.map((x) => h('li', null, h('strong', {text: `Vidéo de ${x} : `}), `production sur GitHub ${PROD_AT[x] || '?'} → programmation Metricool ${SCHED_AT[x] || '?'} → publication ${x}`)))));
   const run = activeRun();
   if (run && !run.slot) out.push(h('div', {class: 'card'}, progressBlock(run)));
   out.push(h('h3', {class: 'sub', text: 'Créneaux'}));
   out.push(h('div', {class: 'slots'}, ...times.map((x) => slotCard(dayKey(0), x, 'aujourd’hui')), ...times.map((x) => slotCard(dayKey(1), x, 'demain'))));
+  out.push(h('div', {class: 'card'},
+    h('strong', {text: '⚙️ Production gratuite sur GitHub (sans Claude)'}),
+    h('div', {class: 'small', text: `Chaque jour à ${Object.values(PROD_AT).join(' et ')}, GitHub fabrique une vidéo avec une IA gratuite (ChatGPT via GitHub Models) et le même studio : voix Claire, vraies captures des tarifs, montage, relecture. Une vidéo cohérente et de bonne qualité, avec tous les contrôles validés, attend dans la file puis part au créneau suivant.`}),
+    h('div', {class: 'actions'},
+      h('a', {class: 'btn', href: GH_RUN, target: '_blank', rel: 'noopener', text: 'Lancer une vidéo maintenant'}),
+      h('a', {class: 'btn', href: GH + '/actions', target: '_blank', rel: 'noopener', text: 'Voir l’avancement'}),
+      h('a', {class: 'btn', href: GH_QUEUE, target: '_blank', rel: 'noopener', text: 'Vidéos prêtes (file)'}))));
   const um = st.userMusic;
   if (um) {
     const uses = musicUses();
@@ -1374,7 +1376,7 @@ function renderToday() {
     ...(runs.length ? runs.map((r) => h('div', {class: 'event'}, h('span', {class: 'mono small', text: fmtDate(r.startedAt, true)}), h('span', {class: 'pill ' + runTone(r.status), text: runLabel(r)}), h('span', {class: 'small', text: clipText(r.report || r.message || r.stage || '', 160)}))) : [h('div', {class: 'small muted', text: 'Aucune production pour l’instant.'})]),
     h('a', {href: '#journal', text: 'Tout le journal'})));
   if (st.triggerId) out.push(h('div', {class: 'actions'},
-    h('button', {class: 'btn', disabled: Boolean(activeRun()), onclick: () => fireTrigger('Production demandée depuis le panneau (tableau de bord).'), text: activeRun() ? 'Une production est en cours' : 'Lancer une production maintenant'}),
+    h('button', {class: 'btn', onclick: () => fireTrigger('Production demandée depuis le panneau (tableau de bord).'), text: 'Lancer une vidéo (GitHub, gratuit)'}),
     S.ui.triggerMsg ? h('div', {class: 'result ' + S.ui.triggerMsg.tone, text: S.ui.triggerMsg.text}) : null));
   box.replaceChildren(...out);
 }
