@@ -50,6 +50,7 @@
       "workingTitle": "Les 4 formules de Systeme.io expliquées",
       "artDirection": "clarte",
       "musicTrack": "all-for-nothing",
+      "musicStart": 21.73,
       "voiceId": "claire",
       "durationSec": 42,
       "score": 75,
@@ -65,8 +66,26 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-08T10:16:22.146Z",
-      "musicStart": 21.73
+      "updatedAt": "2026-11-08T10:16:22.146Z"
+    },
+    {
+      "runId": "2026-11-09-a",
+      "date": "2026-11-09",
+      "category": "conseils-debutant",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-09T11:35:07.372Z"
     }
   ]
 }
