@@ -60,13 +60,26 @@ export interface ChatOptions {
  */
 export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg: LlmConfig = llmConfig()): Promise<{text: string; model: string}> {
   const models = (opts.vision ? cfg.visionModel : cfg.model).split(',').map((m) => m.trim()).filter(Boolean);
+  // Several endpoints may be listed (comma-separated): the next one is tried when one does not answer properly.
+  const bases = cfg.baseUrl.split(',').map((b) => b.trim().replace(/\/+$/, '')).filter(Boolean);
   const errors: string[] = [];
-  for (const model of models) {
+  for (const base of bases) {
+  const github = /models\.github\.ai/.test(base);
+  const azure = /inference\.ai\.azure\.com/.test(base);
+  for (const listed of models) {
+    // The Azure endpoint of GitHub Models names models without their publisher (« gpt-4.1 »).
+    const model = azure ? listed.replace(/^[^/]+\//, '') : listed;
     for (let attempt = 0; attempt < 2; attempt++) {
-      const res = await http(`${cfg.baseUrl}/chat/completions`, {
+      const res = await http(`${base}/chat/completions`, {
         method: 'POST',
-        headers: {'content-type': 'application/json', authorization: `Bearer ${cfg.apiKey}`},
+        headers: {
+          'content-type': 'application/json',
+          accept: github ? 'application/vnd.github+json' : 'application/json',
+          ...(github ? {'x-github-api-version': '2022-11-28'} : {}),
+          authorization: `Bearer ${cfg.apiKey}`,
+        },
         body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
+        redirect: 'manual',
         timeoutMs: 240_000,
         retries: 3,
         retryOn: [500, 502, 503, 504],
@@ -85,11 +98,12 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
         if (text.trim()) return {text, model: body?.model ?? model};
         // Say exactly what came back, so a broken endpoint or a filter is visible in the job log.
         const why = choice?.finish_reason ? `fin : ${choice.finish_reason}` : choice?.message?.refusal ? `refus : ${choice.message.refusal}` : `corps : ${raw.replace(/\s+/g, ' ').slice(0, 240) || '(vide)'}`;
-        errors.push(`${model} : réponse sans texte (HTTP ${res.status}, ${res.headers.get('content-type') ?? 'type inconnu'}, ${why})`);
+        errors.push(`${base} ${model} : réponse sans texte (HTTP ${res.status}, ${res.headers.get('content-type') ?? 'type inconnu'}, ${why})`);
         break;
       }
-      const msg = typeof body?.error === 'string' ? body.error : body?.error?.message ?? '';
-      errors.push(`${model} : erreur ${res.status} ${msg}`.trim());
+      const msg = typeof body?.error === 'string' ? body.error : body?.error?.message ?? raw.replace(/\s+/g, ' ').slice(0, 160);
+      const loc = res.headers.get('location');
+      errors.push(`${base} ${model} : erreur ${res.status} ${msg}${loc ? ` (redirigé vers ${loc})` : ''}`.trim());
       // A short wait is worth one more try on the same model; a daily quota is not.
       const wait = Number(res.headers.get('retry-after'));
       if (res.status === 429 && attempt === 0 && Number.isFinite(wait) && wait > 0 && wait <= 60) {
@@ -98,6 +112,7 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
       }
       break;
     }
+  }
   }
   throw new Error(`IA indisponible : ${errors.join(' | ')}`);
 }

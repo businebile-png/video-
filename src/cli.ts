@@ -18,6 +18,7 @@ import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
 import {autoProduce, cleanQueue} from './auto/auto.js';
+import {chat} from './llm/client.js';
 import {viralChecklist, VIRAL_MIN_PASSED} from './script/viral.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
 import {remeasureVoice, runVoice} from './voice/voice-step.js';
@@ -84,6 +85,7 @@ Publication et panneau
 
 Suivi
   auto [--max-corrections 2] [--file <musique>]   Production complète sans Claude (IA gratuite : STUDIO_LLM_*)
+  llm:ping                     Vérifie que l’IA gratuite répond (STUDIO_LLM_*)
   queue:clean                  Retire les vidéos de la file dont le créneau est passé de 6 h
   stats:metricool <export.json> [--videos <dossier>]  Lignes Metricool → chiffres par vidéo (panneau + stats)
   stats:import <fichier.json>  Statistiques des publications (Metricool)
@@ -670,6 +672,12 @@ async function main(): Promise<void> {
       const res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null});
       await writeJson(path.join(PATHS.cache, 'auto-result.json'), res);
       (res.status === 'prete' ? log.ok : log.warn)(res.message);
+      return;
+    }
+    case 'llm:ping': {
+      // A tiny request: says which free AI answers, before an hour of production depends on it.
+      const r = await chat([{role: 'user', content: 'Réponds seulement par le mot : prêt'}], {temperature: 0, maxTokens: 10});
+      log.ok(`IA joignable : ${r.model} — « ${r.text.trim().slice(0, 40)} »`);
       return;
     }
     case 'queue:clean': {
