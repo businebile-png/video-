@@ -86,6 +86,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-09T11:35:07.372Z"
+    },
+    {
+      "runId": "2026-11-09-b",
+      "date": "2026-11-09",
+      "category": "probleme-entrepreneur",
+      "hookStyle": "scenario",
+      "hook": "Tu viens de perdre une vente à cause du copier‑coller d’emails.",
+      "angle": "Les ventes qui se perdent entre deux outils",
+      "workingTitle": "Perdre une vente à cause de copier-coller",
+      "artDirection": "studio-nuit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-09T11:58:44.068Z"
     }
   ]
 }
