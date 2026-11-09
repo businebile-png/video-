@@ -1,5 +1,11 @@
 # Production sans Claude (IA gratuite + GitHub Actions)
 
+> **Relève (choix de l'utilisateur, 09/11/2026)** : Claude fabrique les vidéos tant qu'il reste du quota (5:47 et
+> 14:47, il réserve son créneau dans `queue/claude-en-cours.json`). À 6:47 et 15:47, GitHub Actions ne produit
+> avec les IA gratuites que si le prochain créneau n'a ni vidéo prête dans `queue/` ni réservation de Claude de
+> moins de 4 h. Le bouton « Run workflow » (lancement à la main) produit toujours. Limite : la publication
+> Metricool passe par Claude ; quota à zéro, les vidéos attendent dans la file jusqu'au retour du quota.
+
 Choix de l'utilisateur le 09/11/2026 : les vidéos ne sont plus fabriquées par des sessions Claude (quota
 hebdomadaire), mais par une IA gratuite, avec **le même studio et les mêmes règles** :
 

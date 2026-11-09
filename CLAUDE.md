@@ -23,10 +23,11 @@ répondre, commenter et écrire les messages de commit en français.
   dans une copie datée de la page officielle.
 - Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
   en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
-- Production **sans Claude** (choix de l'utilisateur le 09/11/2026, quota hebdomadaire) : `npm run studio -- auto`
-  dans GitHub Actions à 5:47 et 14:47, IA gratuite (FreeLLMAPI, Gemini…) pour le script et la relecture, mêmes
-  verrous ; vidéo prête dans `queue/` : voir `docs/production-sans-claude.md`. Ne plus lancer de session de
-  production Claude sans demande explicite.
+- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47 et 14:47,
+  la session principale lance une production Claude, qui réserve son créneau (`queue:claim`) et met sa vidéo dans
+  `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
+  GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
+  échec) : voir `docs/production-sans-claude.md`.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : deux vidéos par jour,
   à 10:00 et 20:00 sur TikTok et Instagram via Metricool. Pas de note minimum (choix de l'utilisateur le
   09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente et de bonne

@@ -42,7 +42,7 @@ export function queueEntries(): QueueEntry[] {
   if (!fs.existsSync(QUEUE_DIR)) return [];
   return fs
     .readdirSync(QUEUE_DIR)
-    .filter((f) => f.endsWith('.json'))
+    .filter((f) => f.endsWith('.json') && f !== 'claude-en-cours.json')
     .map((f) => JSON.parse(fs.readFileSync(path.join(QUEUE_DIR, f), 'utf8')) as QueueEntry);
 }
 
@@ -89,18 +89,71 @@ async function produceVideo(runId: string): Promise<void> {
   await studio(['produce', runId]);
 }
 
+/**
+ * Claude first, free AI as relief (user's choice, 09/11/2026). A Claude production claims its slot in the public
+ * repository when it starts (`queue/claude-en-cours.json`) and queues its video at the end; the free-AI production
+ * runs one hour later and only when the next slot has neither a queued video nor a fresh claim (Claude out of quota).
+ */
+export const CLAIM_FILE = path.join(QUEUE_DIR, 'claude-en-cours.json');
+
+export async function claimSlot(slot: {iso: string; label: string}): Promise<void> {
+  await fsp.mkdir(QUEUE_DIR, {recursive: true});
+  await writeJson(CLAIM_FILE, {slot, startedAt: new Date().toISOString(), by: 'claude'});
+}
+
+export async function releaseClaim(): Promise<void> {
+  await fsp.rm(CLAIM_FILE, {force: true});
+}
+
+/** The next publication slot (at least 2 h away), whether or not a video already holds it. */
+export function nextSlot(slots: Array<{iso: string; label: string}>, now = new Date()): {iso: string; label: string} | null {
+  return slots.filter((s) => Date.parse(s.iso) - now.getTime() >= 2 * 3_600_000).sort((a, b) => Date.parse(a.iso) - Date.parse(b.iso))[0] ?? null;
+}
+
+/** Why the free AI should not produce now (a video or Claude already holds the next slot), or null. */
+export function reliefNotNeeded(slot: {iso: string} | null, queued: string[], claim: {slot?: {iso?: string}; startedAt?: string} | null, now = new Date()): string | null {
+  if (!slot) return 'aucun créneau à servir';
+  if (queued.some((iso) => Date.parse(iso) === Date.parse(slot.iso))) return 'une vidéo est déjà prête pour ce créneau';
+  const fresh = claim?.startedAt && now.getTime() - Date.parse(claim.startedAt) < 4 * 3_600_000;
+  if (fresh && claim?.slot?.iso && Date.parse(claim.slot.iso) === Date.parse(slot.iso)) return 'Claude prépare déjà la vidéo de ce créneau';
+  return null;
+}
+
+/** Puts a finished video in the queue (both pipelines), for the publication task. */
+export async function enqueue(runId: string, slot: {iso: string; label: string}, producedBy: Record<string, unknown>): Promise<string> {
+  const p = runPaths(runId);
+  const doc = await readJson<Record<string, unknown>>(path.join(p.dir, 'panel', 'video.json'));
+  const overlay = path.join(p.dir, 'music', 'overlay.json');
+  const ov = exists(overlay) ? await readJson<{title: string; start: number; end: number}>(overlay) : null;
+  await fsp.mkdir(QUEUE_DIR, {recursive: true});
+  const file = path.join(QUEUE_DIR, `${runId}.json`);
+  await writeJson(file, {...doc, status: 'prete', autoSlot: slot, music: ov ? {title: ov.title, start: ov.start, end: ov.end} : null, producedBy, queuedAt: new Date().toISOString()});
+  await releaseClaim();
+  return file;
+}
+
 export interface AutoResult {
   runId: string;
-  status: 'prete' | 'bloquee';
+  status: 'prete' | 'bloquee' | 'inutile';
   score: number | null;
   slot: {iso: string; label: string} | null;
   message: string;
 }
 
-export async function autoProduce(opts: {maxCorrections?: number; musicFile?: string | null} = {}): Promise<AutoResult> {
+export async function autoProduce(opts: {maxCorrections?: number; musicFile?: string | null; ifNeeded?: boolean} = {}): Promise<AutoResult> {
   const config = await loadConfig();
   const editorial = await loadEditorial();
   const maxCorrections = opts.maxCorrections ?? 2;
+  if (opts.ifNeeded) {
+    const upcoming = nextSlot(nextSlots(config, new Date(), 2).filter((s) => s.network === 'tiktok'));
+    const claim = fs.existsSync(CLAIM_FILE) ? await readJson<{slot?: {iso?: string}; startedAt?: string}>(CLAIM_FILE) : null;
+    const why = reliefNotNeeded(upcoming, queueEntries().map((e) => e.autoSlot.iso), claim);
+    if (why) {
+      const message = `Relève des IA gratuites inutile pour ${upcoming?.label ?? 'le prochain créneau'} : ${why}.`;
+      log.ok(message);
+      return {runId: '', status: 'inutile', score: null, slot: upcoming, message};
+    }
+  }
 
   // Facts: re-read the official pages; a fact whose excerpt disappeared can no longer be cited (the lint refuses it).
   try {
@@ -172,16 +225,7 @@ export async function autoProduce(opts: {maxCorrections?: number; musicFile?: st
   const review = await readJsonIfExists<{model?: string}>(p.review, {});
   const finalSlot = slot ?? pickSlot(nextSlots(config, new Date(), 4).filter((s) => s.network === 'tiktok'), taken);
   if (!finalSlot) throw new Error('Aucun créneau libre dans les 4 prochains jours.');
-  const entry = {
-    ...doc,
-    status: 'prete',
-    autoSlot: finalSlot,
-    music,
-    producedBy: {pipeline: 'github-actions', writer: process.env.STUDIO_LLM_MODEL || 'gemini-2.5-flash', reviewer: review.model ?? null},
-    queuedAt: new Date().toISOString(),
-  };
-  await fsp.mkdir(QUEUE_DIR, {recursive: true});
-  await writeJson(path.join(QUEUE_DIR, `${runId}.json`), entry);
+  await enqueue(runId, finalSlot, {pipeline: 'github-actions', writer: process.env.STUDIO_LLM_MODEL || 'gemini-2.5-flash', reviewer: review.model ?? null, music: Boolean(music)});
   await upsertHistory({runId, status: 'rendered', score: report.total, decision: report.decision, reason: null});
   const message = `Vidéo « ${String(doc.title ?? runId)} » prête : ${report.total}/100, publication prévue ${finalSlot.label}.`;
   log.ok(message);

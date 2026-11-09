@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {extractJson} from '../src/llm/client.js';
-import {pickSlot} from '../src/auto/auto.js';
+import {nextSlot, pickSlot, reliefNotNeeded} from '../src/auto/auto.js';
 import {viralChecklist} from '../src/script/viral.js';
 import {matchPost, metricoolDate, parseTable, postKey} from '../src/analytics/metricool.js';
 import {hookStyleIndex, videoPerformance} from '../src/analytics/analytics.js';
@@ -22,6 +22,19 @@ describe('production sans Claude', () => {
     expect(pickSlot(slots, [], now)?.label).toBe('lundi 10:00');
     expect(pickSlot(slots, ['2026-11-09T09:00:00Z'], now)?.label).toBe('lundi 20:00');
     expect(pickSlot(slots, [], new Date('2026-11-09T08:30:00Z'))?.label).toBe('lundi 20:00');
+  });
+});
+
+describe('relève par les IA gratuites', () => {
+  it('ne produit que si ni une vidéo prête ni Claude ne tiennent le prochain créneau', () => {
+    const now = new Date('2026-11-09T05:47:00Z');
+    const slot = nextSlot([{iso: '2026-11-09T20:00:00+01:00', label: '20:00'}, {iso: '2026-11-09T10:00:00+01:00', label: '10:00'}], now)!;
+    expect(slot.label).toBe('10:00');
+    expect(reliefNotNeeded(slot, [], null, now)).toBeNull();
+    expect(reliefNotNeeded(slot, ['2026-11-09T09:00:00Z'], null, now)).toMatch(/déjà prête/);
+    expect(reliefNotNeeded(slot, [], {slot: {iso: '2026-11-09T10:00:00+01:00'}, startedAt: '2026-11-09T04:47:00Z'}, now)).toMatch(/Claude/);
+    // A claim older than 4 hours (Claude stopped mid-way) no longer blocks the relief.
+    expect(reliefNotNeeded(slot, [], {slot: {iso: '2026-11-09T10:00:00+01:00'}, startedAt: '2026-11-09T00:30:00Z'}, now)).toBeNull();
   });
 });
 

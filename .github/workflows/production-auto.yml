@@ -8,8 +8,10 @@ name: Production automatique (sans Claude)
 
 on:
   schedule:
-    - cron: '47 4 * * *'   # 5:47 à Paris (heure d'hiver) → vidéo de 10:00
-    - cron: '47 13 * * *'  # 14:47 à Paris (heure d'hiver) → vidéo de 20:00
+    # Relève : Claude produit d'abord (5:47 et 14:47) ; une heure plus tard, l'IA gratuite ne produit que si
+    # aucune vidéo n'est prête ni en préparation par Claude pour le créneau (quota de Claude épuisé, échec).
+    - cron: '47 5 * * *'   # 6:47 à Paris (heure d'hiver) → vidéo de 10:00
+    - cron: '47 14 * * *'  # 15:47 à Paris (heure d'hiver) → vidéo de 20:00
   workflow_dispatch: {}
 
 permissions:
@@ -111,7 +113,7 @@ jobs:
           if ! git diff --cached --quiet; then git commit -q -m "Retrait des vidéos déjà publiées ou expirées (file d'attente)" && git push -q origin HEAD:claude/serene-maxwell-pdm5wr; fi
 
       - name: Produire la vidéo (IA gratuite, même studio)
-        run: npm run studio -- auto
+        run: npm run studio -- auto ${{ github.event_name == 'schedule' && '--if-needed' || '' }}
 
       - name: Enregistrer le résultat dans le dépôt
         if: always()

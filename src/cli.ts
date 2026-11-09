@@ -17,7 +17,8 @@ import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
-import {autoProduce, cleanQueue} from './auto/auto.js';
+import {autoProduce, claimSlot, cleanQueue, enqueue, nextSlot, releaseClaim} from './auto/auto.js';
+import {nextSlots} from './publish/publish.js';
 import {chat} from './llm/client.js';
 import {viralChecklist, VIRAL_MIN_PASSED} from './script/viral.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
@@ -84,8 +85,11 @@ Publication et panneau
   state:facts                  Prépare la base de faits pour le document state/facts du panneau
 
 Suivi
-  auto [--max-corrections 2] [--file <musique>]   Production complète sans Claude (IA gratuite : STUDIO_LLM_*)
+  auto [--if-needed] [--max-corrections 2] [--file <musique>]   Production complète sans Claude (IA gratuite : STUDIO_LLM_*)
   llm:ping                     Vérifie que l’IA gratuite répond (STUDIO_LLM_*)
+  queue:claim [--slot <iso>]   Production Claude : réserve le prochain créneau (la relève gratuite s'abstient)
+  queue:add <runId> [--slot <iso>]  Met une vidéo prête dans la file de publication (et libère la réservation)
+  queue:release                Retire la réservation de créneau
   queue:clean                  Retire les vidéos de la file dont le créneau est passé de 6 h
   stats:metricool <export.json> [--videos <dossier>]  Lignes Metricool → chiffres par vidéo (panneau + stats)
   stats:import <fichier.json>  Statistiques des publications (Metricool)
@@ -233,6 +237,7 @@ async function main(): Promise<void> {
       file: {type: 'string'},
       videos: {type: 'string'},
       'max-corrections': {type: 'string'},
+      'if-needed': {type: 'boolean'},
       start: {type: 'string'},
       avoid: {type: 'string'},
       reason: {type: 'string'},
@@ -669,7 +674,7 @@ async function main(): Promise<void> {
     }
     case 'auto': {
       // Whole production without Claude: free AI for the script and the review (see docs/production-sans-claude.md).
-      const res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null});
+      const res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null, ifNeeded: values['if-needed'] === true});
       await writeJson(path.join(PATHS.cache, 'auto-result.json'), res);
       (res.status === 'prete' ? log.ok : log.warn)(res.message);
       return;
@@ -678,6 +683,31 @@ async function main(): Promise<void> {
       // A tiny request: says which free AI answers, before an hour of production depends on it.
       const r = await chat([{role: 'user', content: 'Réponds seulement par le mot : prêt'}], {temperature: 0, maxTokens: 10});
       log.ok(`IA joignable : ${r.model} — « ${r.text.trim().slice(0, 40)} »`);
+      return;
+    }
+    case 'queue:claim': {
+      // Claude production: holds the next slot so the free-AI relief does not produce it too.
+      const config = await loadConfig();
+      const iso = str('slot');
+      const slot = iso ? {iso, label: iso} : nextSlot(nextSlots(config, new Date(), 2).filter((s) => s.network === 'tiktok'));
+      if (!slot) throw new Error('Aucun créneau à réserver.');
+      await claimSlot(slot);
+      log.ok(`Créneau réservé par Claude : ${slot.label} (queue/claude-en-cours.json, à pousser sur la branche)`);
+      return;
+    }
+    case 'queue:release': {
+      await releaseClaim();
+      log.ok('Réservation de créneau retirée.');
+      return;
+    }
+    case 'queue:add': {
+      const id = runId();
+      const config = await loadConfig();
+      const iso = str('slot');
+      const slot = iso ? {iso, label: new Intl.DateTimeFormat('fr-FR', {timeZone: config.metricool.timezone, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}).format(new Date(iso))} : nextSlot(nextSlots(config, new Date(), 2).filter((s) => s.network === 'tiktok'));
+      if (!slot) throw new Error('Aucun créneau.');
+      const file = await enqueue(id, slot, {pipeline: 'claude'});
+      log.ok(`Vidéo ${id} dans la file pour ${slot.label} : ${path.relative(PATHS.root, file)}`);
       return;
     }
     case 'queue:clean': {
