@@ -1,0 +1,126 @@
+# Production automatique SANS Claude : l'IA gratuite (FreeLLMAPI, Gemini…) écrit et relit, le studio fait le reste.
+# Mêmes contrôles qu'avant (faits vérifiés, contrôleur de script, mention « Publicité ») ; pas de note minimum :
+# la vidéo part si la relecture la juge cohérente et de bonne qualité (choix de l'utilisateur, 09/11/2026).
+# La vidéo prête est déposée dans queue/<runId>.json ; la programmation Metricool la publie au créneau.
+name: Production automatique (sans Claude)
+
+on:
+  schedule:
+    - cron: '47 4 * * *'   # 5:47 à Paris (heure d'hiver) → vidéo de 10:00
+    - cron: '47 13 * * *'  # 14:47 à Paris (heure d'hiver) → vidéo de 20:00
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: production-auto
+  cancel-in-progress: false
+
+jobs:
+  produire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      STUDIO_LLM_API_KEY: ${{ secrets.STUDIO_LLM_API_KEY }}
+      STUDIO_LLM_BASE_URL: ${{ vars.STUDIO_LLM_BASE_URL }}
+      STUDIO_LLM_MODEL: ${{ vars.STUDIO_LLM_MODEL }}
+      STUDIO_LLM_VISION_MODEL: ${{ vars.STUDIO_LLM_VISION_MODEL }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Récupérer le dépôt (branche du studio)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/serene-maxwell-pdm5wr
+          fetch-depth: 20
+
+      - name: Vérifier les secrets
+        run: |
+          test -n "$STUDIO_LLM_API_KEY" || { echo "::error::Secret STUDIO_LLM_API_KEY manquant (voir docs/production-sans-claude.md)"; exit 1; }
+          test -n "$PIXABAY_API_KEY" || { echo "::error::Secret PIXABAY_API_KEY manquant (voir docs/production-sans-claude.md)"; exit 1; }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Outils système (FFmpeg)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Cache de la voix « Claire » (environnements Python et modèles)
+        uses: actions/cache@v4
+        with:
+          path: |
+            .venv-voice
+            .venv-chatterbox
+            models
+            ~/.cache/huggingface
+            ~/.local/share/uv
+          key: voix-${{ runner.os }}-${{ hashFiles('scripts/setup-voice.sh', 'scripts/fetch_voice_models.py') }}
+
+      - name: Cache des recherches de séquences
+        uses: actions/cache@v4
+        with:
+          path: .cache/pixabay
+          key: pixabay-${{ github.run_id }}
+          restore-keys: pixabay-
+
+      - name: Installer le studio
+        run: |
+          npm ci
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+          npx remotion browser ensure
+          bash scripts/setup-voice.sh
+
+      - name: Musique choisie par l'utilisateur (lien privé, jamais copiée dans le dépôt)
+        env:
+          STUDIO_MUSIC_URL: ${{ secrets.STUDIO_MUSIC_URL }}
+        run: |
+          if [ -n "$STUDIO_MUSIC_URL" ]; then
+            curl -fsSL "$STUDIO_MUSIC_URL" -o "$RUNNER_TEMP/musique-utilisateur" && echo "STUDIO_MUSIC_FILE=$RUNNER_TEMP/musique-utilisateur" >> "$GITHUB_ENV" || echo "::warning::Musique non téléchargée : la vidéo partira sans musique."
+          else
+            echo "::notice::Pas de secret STUDIO_MUSIC_URL : vidéo sans musique."
+          fi
+
+      - name: Identité Git
+        run: |
+          git config user.name "Studio pub (GitHub Actions)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Retirer les vidéos déjà passées (créneau + 6 h)
+        run: |
+          npm run studio -- queue:clean
+          if ! git diff --cached --quiet; then git commit -q -m "Retrait des vidéos déjà publiées ou expirées (file d'attente)" && git push -q origin HEAD:claude/serene-maxwell-pdm5wr; fi
+
+      - name: Produire la vidéo (IA gratuite, même studio)
+        run: npm run studio -- auto
+
+      - name: Enregistrer le résultat dans le dépôt
+        if: always()
+        run: |
+          git add queue data/history.json data/facts/systeme-io.json data/footage-usage.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Production automatique sans Claude : $(node -e "try{const r=require('./.cache/auto-result.json');console.log(r.message)}catch{console.log('journal')}")"
+            git pull -q --rebase origin claude/serene-maxwell-pdm5wr && git push -q origin HEAD:claude/serene-maxwell-pdm5wr
+          fi
+
+      - name: Garder le compte rendu (7 jours)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compte-rendu
+          retention-days: 7
+          path: |
+            .cache/auto-result.json
+            runs/*/script.json
+            runs/*/script-lint.json
+            runs/*/qc/review.json
+            runs/*/qc/score.json
+            runs/*/qc/contact-sheet.jpg
+            runs/*/logs.jsonl
+          if-no-files-found: ignore
