@@ -1,4 +1,6 @@
-# Production automatique SANS Claude : l'IA gratuite (FreeLLMAPI, Gemini…) écrit et relit, le studio fait le reste.
+# Production automatique SANS Claude : une IA gratuite écrit et relit, le studio fait le reste. Par défaut,
+# GitHub Models (gratuit, inclus dans GitHub : ChatGPT GPT-4.1 et d'autres IA), sans aucune clé à ajouter ;
+# une clé Google AI Studio ou FreeLLMAPI peut le remplacer (secret STUDIO_LLM_API_KEY).
 # Mêmes contrôles qu'avant (faits vérifiés, contrôleur de script, mention « Publicité ») ; pas de note minimum :
 # la vidéo part si la relecture la juge cohérente et de bonne qualité (choix de l'utilisateur, 09/11/2026).
 # La vidéo prête est déposée dans queue/<runId>.json ; la programmation Metricool la publie au créneau.
@@ -12,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  models: read
 
 concurrency:
   group: production-auto
@@ -22,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 300
     env:
-      STUDIO_LLM_API_KEY: ${{ secrets.STUDIO_LLM_API_KEY }}
-      STUDIO_LLM_BASE_URL: ${{ vars.STUDIO_LLM_BASE_URL }}
-      STUDIO_LLM_MODEL: ${{ vars.STUDIO_LLM_MODEL }}
-      STUDIO_LLM_VISION_MODEL: ${{ vars.STUDIO_LLM_VISION_MODEL }}
+      STUDIO_LLM_API_KEY: ${{ secrets.STUDIO_LLM_API_KEY || github.token }}
+      STUDIO_LLM_BASE_URL: ${{ vars.STUDIO_LLM_BASE_URL || (secrets.STUDIO_LLM_API_KEY && 'https://generativelanguage.googleapis.com/v1beta/openai' || 'https://models.github.ai/inference') }}
+      STUDIO_LLM_MODEL: ${{ vars.STUDIO_LLM_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4.1-mini,openai/gpt-4o-mini') }}
+      STUDIO_LLM_VISION_MODEL: ${{ vars.STUDIO_LLM_VISION_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini') }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       HF_HUB_DISABLE_TELEMETRY: '1'
       HF_HUB_DISABLE_XET: '1'
@@ -38,7 +41,8 @@ jobs:
 
       - name: Vérifier les secrets
         run: |
-          test -n "$STUDIO_LLM_API_KEY" || { echo "::error::Secret STUDIO_LLM_API_KEY manquant (voir docs/production-sans-claude.md)"; exit 1; }
+          echo "IA : $STUDIO_LLM_BASE_URL — modèles $STUDIO_LLM_MODEL"
+
           test -n "$PIXABAY_API_KEY" || { echo "::error::Secret PIXABAY_API_KEY manquant (voir docs/production-sans-claude.md)"; exit 1; }
 
       - uses: actions/setup-node@v4
