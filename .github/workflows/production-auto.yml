@@ -107,10 +107,10 @@ jobs:
       - name: Enregistrer le résultat dans le dépôt
         if: always()
         run: |
-          git add queue data/history.json data/facts/systeme-io.json data/footage-usage.json 2>/dev/null || true
+          git add queue data/history.json data/facts data/footage-usage.json 2>/dev/null || true
           if ! git diff --cached --quiet; then
             git commit -q -m "Production automatique sans Claude : $(node -e "try{const r=require('./.cache/auto-result.json');console.log(r.message)}catch{console.log('journal')}")"
-            git pull -q --rebase origin claude/serene-maxwell-pdm5wr && git push -q origin HEAD:claude/serene-maxwell-pdm5wr
+            git pull -q --rebase --autostash origin claude/serene-maxwell-pdm5wr && git push -q origin HEAD:claude/serene-maxwell-pdm5wr
           fi
 
       - name: Garder le compte rendu (7 jours)
