@@ -565,6 +565,59 @@ function criteriaBlock(v) {
   return box;
 }
 
+function viralBlock(v) {
+  const vr = v.score && v.score.virality;
+  if (!vr) return null;
+  const box = h('div', {class: 'crit'});
+  for (const p of vr.parts) {
+    const key = `viral-${v.runId}-${p.id}`;
+    const open = !!S.ui.open[key];
+    const pct = (p.score / 5) * 100;
+    box.append(h('div', {class: 'crow'},
+      h('button', {type: 'button', 'aria-expanded': open ? 'true' : 'false', onclick: () => { S.ui.open[key] = !open; renderPending(); }, text: p.label}),
+      h('div', {class: 'bar'}, h('i', {class: pct < 60 ? 'low' : '', style: `width:${pct.toFixed(0)}%`})),
+      h('div', {class: 'v', text: `${fmtNum(p.score)}/5`})));
+    if (open) box.append(h('div', {class: 'just', text: p.justification}));
+  }
+  return h('div', {style: 'display:grid;gap:8px'},
+    h('div', {class: 'lbl', text: `Potentiel viral : ${fmtNum(vr.total)}/20 — avis du relecteur, à part de la note (ne débloque aucune publication)`}),
+    box,
+    vr.actions && vr.actions.length ? h('div', {class: 'small muted', text: 'Pour aller plus loin : ' + vr.actions.join(' ; ')}) : null);
+}
+
+const PCT = (x) => (typeof x === 'number' ? fmtNum(x) + ' %' : '–');
+const NUMV = (x) => (typeof x === 'number' ? fmtNum(x) : '–');
+function resultsLine(v) {
+  const m = v.metrics || {};
+  const parts = [];
+  for (const k of ['tiktok', 'instagram']) {
+    const r = m[k];
+    if (!r) continue;
+    const watch = typeof r.retentionPct === 'number' ? r.retentionPct : (typeof r.avgWatchTimeSec === 'number' && v.durationSec ? Math.min(100, (100 * r.avgWatchTimeSec) / v.durationSec) : null);
+    parts.push(`${NETS[k] || k} : ${NUMV(r.views)} vues · ${NUMV(r.likes)} j’aime · ${NUMV(r.comments)} comm. · ${NUMV(r.shares)} partages${typeof r.saves === 'number' ? ' · ' + fmtNum(r.saves) + ' enreg.' : ''} · regardée ${PCT(watch)}`);
+  }
+  return parts.join('  |  ');
+}
+function resultsBlock(v) {
+  const m = v.metrics;
+  if (!m || (!m.tiktok && !m.instagram)) return null;
+  const rows = [];
+  const line = (label, f) => h('tr', null, h('td', {text: label}), ...['tiktok', 'instagram'].map((k) => h('td', {class: 'num', text: m[k] ? f(m[k]) : '–'})));
+  rows.push(line('Vues', (r) => NUMV(r.views)));
+  rows.push(line('Regardée en moyenne', (r) => (typeof r.avgWatchTimeSec === 'number' ? fmtNum(r.avgWatchTimeSec) + ' s' : '–') + (typeof r.retentionPct === 'number' ? ' (' + PCT(r.retentionPct) + ')' : '')));
+  rows.push(line('Vue jusqu’au bout', (r) => PCT(r.completionRate)));
+  rows.push(line('Restés plus de 3 s', (r) => PCT(r.hookRatePct)));
+  rows.push(line('Venues de « Pour toi »', (r) => PCT(r.forYouPct)));
+  rows.push(line('J’aime', (r) => NUMV(r.likes)));
+  rows.push(line('Commentaires', (r) => NUMV(r.comments)));
+  rows.push(line('Partages', (r) => NUMV(r.shares)));
+  rows.push(line('Enregistrements', (r) => NUMV(r.saves)));
+  return h('div', {style: 'display:grid;gap:6px'},
+    h('div', {class: 'lbl', text: 'Résultats réels (Metricool)' + (m.updatedAt ? ' · relevés le ' + fmtDate(m.updatedAt, true) : '')}),
+    h('div', {class: 'tablebox'}, h('table', null, h('thead', null, h('tr', null, h('th', {text: ''}), h('th', {class: 'num', text: 'TikTok'}), h('th', {class: 'num', text: 'Instagram'}))), h('tbody', null, ...rows))),
+    h('div', {class: 'small muted', text: '« – » : chiffre pas encore fourni par la plateforme (souvent 24 à 48 h après la publication). Ce qui fait pousser une vidéo : le temps regardé, les partages, les commentaires et les enregistrements.'}));
+}
+
 function gatesBlock(v) {
   const gates = (v.score && v.score.gates) || [];
   const list = h('ul', {class: 'gates'});
@@ -745,6 +798,8 @@ function deskContent(v) {
     h('h3', {text: v.title || v.runId}),
     v.hook ? h('p', {class: 'hook', text: '« ' + v.hook + ' »'}) : null));
   if (v.score) out.push(h('div', {class: 'scorebox'}, scoreDial(v.score.total), h('div', {style: 'display:grid;gap:8px;min-width:0'}, h('div', {class: 'small', text: v.score.summary}), criteriaBlock(v))));
+  const vb = viralBlock(v); if (vb) out.push(vb);
+  const rb = resultsBlock(v); if (rb) out.push(rb);
   out.push(h('div', null, h('div', {class: 'lbl', style: 'margin-bottom:6px', text: 'Contrôles obligatoires'}), gatesBlock(v)));
   const nets = h('div', {style: 'display:grid;gap:10px'});
   if (v.soundNote) out.push(h('div', {class: 'result warn'}, h('strong', {text: 'Son à ajouter dans l’appli : '}), v.soundNote));
@@ -874,9 +929,9 @@ function renderVideos() {
     const watch = ['tiktok', 'instagram'].map((k) => m[k] && m[k].avgWatchTimeSec).filter((x) => typeof x === 'number');
     tb.append(h('tr', null,
       h('td', {class: 'mono', text: v.date || v.runId.slice(0, 10)}),
-      h('td', null, h('div', {text: v.title || v.runId}), h('div', {class: 'muted small', text: v.category ? v.category.label : ''}), v.decision && v.decision.notes ? h('div', {class: 'muted small', text: 'Note : ' + v.decision.notes}) : null),
+      h('td', null, h('div', {text: v.title || v.runId}), h('div', {class: 'muted small', text: v.category ? v.category.label : ''}), v.decision && v.decision.notes ? h('div', {class: 'muted small', text: 'Note : ' + v.decision.notes}) : null, resultsLine(v) ? h('div', {class: 'small', text: resultsLine(v)}) : null),
       h('td', null, pill(v.status)),
-      h('td', {class: 'num', text: v.score ? fmtNum(v.score.total) : '–'}),
+      h('td', {class: 'num'}, h('div', {text: v.score ? fmtNum(v.score.total) : '–'}), v.score && v.score.virality ? h('div', {class: 'muted small', text: 'viral ' + fmtNum(v.score.virality.total) + '/20'}) : null),
       h('td', null, pubs.length ? pubs.map(([n, p]) => h('div', {class: 'small'}, `${NETS[n] || n} · ${p.status === 'published' ? 'publiée' : p.status === 'draft' ? 'brouillon' : 'programmée'} · ${fmtDate(p.scheduledFor, true)} `, p.permalink ? h('a', {href: p.permalink, target: '_blank', rel: 'noopener', text: 'voir'}) : p.plannerUrl ? h('a', {href: p.plannerUrl, target: '_blank', rel: 'noopener', text: 'Metricool'}) : null)) : h('span', {class: 'muted', text: '–'})),
       h('td', {class: 'num', text: views ? fmtNum(views) : '–'}),
       h('td', {class: 'num', text: watch.length ? fmtNum(watch.reduce((a, b) => a + b, 0) / watch.length) + ' s' : '–'})));
@@ -1309,6 +1364,11 @@ function renderToday() {
       h('div', {class: 'small', text: 'Un extrait différent sous chaque vidéo, sous la voix, crédité dans la légende.' + (um.licence ? ' Licence : ' + um.licence + '.' : '')}),
       h('div', {class: 'chips bare'}, ...(um.excerpts || []).map((sec) => { const used = uses.find((u) => Math.abs(u.start - sec) < 0.5); return h('span', {class: used ? 'done' : '', text: `extrait ${secLabel(sec)}` + (used ? ' · déjà utilisé' : '')}); }))));
   }
+  const measured = S.videos.filter((v) => v.metrics && (v.metrics.tiktok || v.metrics.instagram)).sort((a, b) => String(b.runId).localeCompare(String(a.runId))).slice(0, 3);
+  out.push(h('div', {class: 'card'},
+    h('strong', {text: '📈 Viralité : ce que disent les chiffres'}),
+    h('div', {class: 'small', text: 'TikTok et Instagram poussent les vidéos regardées longtemps, partagées, commentées et enregistrées. Chaque script passe une checklist « viralité » avant la voix, le relecteur donne un potentiel viral sur 20, et les chiffres réels de Metricool sont relevés à 9:35 et 19:35 pour que les vidéos suivantes reprennent ce qui marche.'}),
+    ...(measured.length ? measured.map((v) => h('div', {class: 'event'}, h('span', {class: 'small', text: (v.title || v.runId) + (v.score && v.score.virality ? ` · potentiel viral ${fmtNum(v.score.virality.total)}/20` : '')}), h('span', {class: 'small muted', text: resultsLine(v)}))) : [h('div', {class: 'small muted', text: 'Pas encore de chiffres : ils arrivent quelques heures après une publication.'})])));
   const runs = S.runs.slice().sort((a, b) => String(b.startedAt).localeCompare(String(a.startedAt))).slice(0, 6);
   out.push(h('div', {class: 'card'}, h('strong', {text: 'Derniers événements'}),
     ...(runs.length ? runs.map((r) => h('div', {class: 'event'}, h('span', {class: 'mono small', text: fmtDate(r.startedAt, true)}), h('span', {class: 'pill ' + runTone(r.status), text: runLabel(r)}), h('span', {class: 'small', text: clipText(r.report || r.message || r.stage || '', 160)}))) : [h('div', {class: 'small muted', text: 'Aucune production pour l’instant.'})]),

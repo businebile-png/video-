@@ -23,10 +23,14 @@ répondre, commenter et écrire les messages de commit en français.
   dans une copie datée de la page officielle.
 - Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
   en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
+- Production **sans Claude** (choix de l'utilisateur le 09/11/2026, quota hebdomadaire) : `npm run studio -- auto`
+  dans GitHub Actions à 5:47 et 14:47, IA gratuite (FreeLLMAPI, Gemini…) pour le script et la relecture, mêmes
+  verrous ; vidéo prête dans `queue/` : voir `docs/production-sans-claude.md`. Ne plus lancer de session de
+  production Claude sans demande explicite.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : deux vidéos par jour,
   à 10:00 et 20:00 sur TikTok et Instagram via Metricool, seulement à 80/100 et plus avec tous les contrôles
-  validés ; à 5:47 et 14:47 la session principale crée une session de production avec le dépôt rattaché,
-  programmation à 9:35 et 19:35 (session principale, connecteur Metricool) ; jamais deux vidéos au même créneau.
+  validés ; tâche courte à 9:35 et 19:35 dans une conversation Claude qui a le connecteur Metricool ; jamais deux
+  vidéos au même créneau.
 - Musique : « All For Nothing » (Zachariehs), choix de l'utilisateur qui déclare en avoir le droit (licence non
   vérifiée par le studio) : un extrait différent sous chaque vidéo (`music:overlay`, après la relecture) ; le
   fichier reste dans le stockage privé du panneau, jamais dans le dépôt public.

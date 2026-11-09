@@ -41,10 +41,17 @@ export const ReviewCriterionSchema = z.object({
   justification: z.string().min(40, 'justification trop courte (40 caractères minimum)'),
 });
 
+const ViralCriterionSchema = z.object({
+  score: z.number().min(0).max(5),
+  justification: z.string().min(20, 'justification trop courte (20 caractères minimum)'),
+});
+
 /** Written by an independent reviewer (fresh-context subagent or human) after looking at the frames. */
 export const ReviewSchema = z.object({
   runId: z.string(),
-  reviewer: z.enum(['independent-subagent', 'human']),
+  /** `independent-llm`: another AI than the one that wrote the script (production without Claude); `model` says which. */
+  reviewer: z.enum(['independent-subagent', 'independent-llm', 'human']),
+  model: z.string().optional(),
   reviewedAt: z.string(),
   framesSeen: z.array(z.string()).min(4, 'le relecteur doit avoir regardé au moins 4 images'),
   criteria: z.object({
@@ -58,6 +65,19 @@ export const ReviewSchema = z.object({
   improvements: z.array(z.string()).default([]),
   factualConcerns: z.array(z.string()).default([]),
   rightsConcerns: z.array(z.string()).default([]),
+  /**
+   * Viral potential, judged on the same frames: a separate indicator (/20) that never enters the 100-point
+   * grid nor the publication locks. Optional so that reviews written before it still validate.
+   */
+  virality: z
+    .object({
+      hook: ViralCriterionSchema,
+      retention: ViralCriterionSchema,
+      shareability: ViralCriterionSchema,
+      engagement: ViralCriterionSchema,
+      actions: z.array(z.string()).max(4).default([]),
+    })
+    .optional(),
 });
 export type Review = z.infer<typeof ReviewSchema>;
 
@@ -107,6 +127,8 @@ export type Publication = z.infer<typeof PublicationSchema>;
 /** Normalised post metrics, assembled from Metricool (or official APIs) by the daily agent. */
 export const PostMetricsSchema = z.object({
   network: z.enum(['tiktok', 'instagram']),
+  /** Set when the post was already matched to a video (by the scheduling session, from the panel). */
+  runId: z.string().nullable().optional(),
   permalink: z.string().nullable().default(null),
   postId: z.string().nullable().default(null),
   publishedAt: z.string(),
@@ -119,7 +141,16 @@ export const PostMetricsSchema = z.object({
     shares: z.number().nullable().default(null),
     saves: z.number().nullable().default(null),
     avgWatchTimeSec: z.number().nullable().default(null),
+    /** TikTok: share of viewers who watched the whole video (%). */
     completionRate: z.number().nullable().default(null),
+    /** Instagram: average share of the reel watched (%). */
+    retentionPct: z.number().nullable().optional(),
+    /** Instagram: share of views from people who watched more than 3 seconds (%), i.e. the hook's pull. */
+    hookRatePct: z.number().nullable().optional(),
+    /** TikTok: share of views coming from the For You feed (%), i.e. how much the algorithm pushed it. */
+    forYouPct: z.number().nullable().optional(),
+    /** TikTok: share of views coming from search (%). */
+    searchPct: z.number().nullable().optional(),
     profileVisits: z.number().nullable().default(null),
     linkClicks: z.number().nullable().default(null),
   }),

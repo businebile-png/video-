@@ -16,6 +16,9 @@ import {FEATURES, type Feature} from './schemas/config.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
+import {convertMetricool} from './analytics/metricool.js';
+import {autoProduce, cleanQueue} from './auto/auto.js';
+import {viralChecklist, VIRAL_MIN_PASSED} from './script/viral.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
 import {remeasureVoice, runVoice} from './voice/voice-step.js';
 import {listMyVoices, textToSpeechWithTimestamps} from './voice/elevenlabs.js';
@@ -80,6 +83,9 @@ Publication et panneau
   state:facts                  Prépare la base de faits pour le document state/facts du panneau
 
 Suivi
+  auto [--max-corrections 2] [--file <musique>]   Production complète sans Claude (IA gratuite : STUDIO_LLM_*)
+  queue:clean                  Retire les vidéos de la file dont le créneau est passé de 6 h
+  stats:metricool <export.json> [--videos <dossier>]  Lignes Metricool → chiffres par vidéo (panneau + stats)
   stats:import <fichier.json>  Statistiques des publications (Metricool)
   affiliate:add --date AAAA-MM-JJ [--clicks N] [--signups N] [--paid N] [--commission X]
   insights                     Recalcule l'indice de performance par catégorie
@@ -223,6 +229,8 @@ async function main(): Promise<void> {
       score: {type: 'string'},
       steps: {type: 'string'},
       file: {type: 'string'},
+      videos: {type: 'string'},
+      'max-corrections': {type: 'string'},
       start: {type: 'string'},
       avoid: {type: 'string'},
       reason: {type: 'string'},
@@ -431,9 +439,13 @@ async function main(): Promise<void> {
         recentAngles: plan.recentAngles,
         lastHookStyle: history[0]?.hookStyle ?? null,
       });
-      await writeJson(p.lint, result);
+      // The virality checklist is advice for the writer: it never counts as a lint warning nor changes the score.
+      const viral = viralChecklist(script);
+      await writeJson(p.lint, {...result, viral});
       for (const e of result.errors) log.error(`${e.where} [${e.rule}] ${e.message}`);
       for (const w of result.warnings) log.warn(`${w.where} [${w.rule}] ${w.message}`);
+      for (const v of viral.items.filter((i) => !i.ok)) log.warn(`[viralité] ${v.label} — ${v.detail}. ${v.fix}`);
+      (viral.passed >= VIRAL_MIN_PASSED ? log.ok : log.warn)(`Checklist viralité : ${viral.passed}/${viral.total}${viral.passed >= VIRAL_MIN_PASSED ? '' : ` (viser ${VIRAL_MIN_PASSED} au moins avant la voix)`}`);
       (result.ok ? log.ok : log.error)(`Script ${result.ok ? 'conforme' : 'NON conforme'} — ${result.wordCount} mots, ~${result.estimatedDurationSec} s`);
       if (result.ok) {
         await upsertHistory({runId: id, hook: script.scenes[0]!.voiceover, hookStyle: script.hookStyle, angle: script.angle, workingTitle: script.workingTitle});
@@ -651,6 +663,26 @@ async function main(): Promise<void> {
     case 'panel:import': {
       const summary = await importPanelDump(need(positionals[0], 'Fichier d’export du panneau manquant.'));
       log.ok(`Panneau importé : ${JSON.stringify(summary)}`);
+      return;
+    }
+    case 'auto': {
+      // Whole production without Claude: free AI for the script and the review (see docs/production-sans-claude.md).
+      const res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null});
+      await writeJson(path.join(PATHS.cache, 'auto-result.json'), res);
+      (res.status === 'prete' ? log.ok : log.warn)(res.message);
+      return;
+    }
+    case 'queue:clean': {
+      const removed = await cleanQueue();
+      log.ok(removed.length ? `Retiré du dépôt : ${removed.join(', ')}` : 'File d’attente : rien à retirer.');
+      return;
+    }
+    case 'stats:metricool': {
+      const res = await convertMetricool(need(positionals[0], 'Fichier d’export Metricool manquant.'), str('videos') ?? path.join(PATHS.cache, 'panel-dump', 'videos'));
+      const runs = Object.keys(res.panel);
+      log.ok(`${res.confirmations.length} publication(s) rattachée(s) à ${runs.length} vidéo(s)${runs.length ? ` (${runs.join(', ')})` : ''}, ${res.unmatched.length} non rattachée(s)`);
+      for (const u of res.unmatched) log.warn(`Non rattachée : ${u.network} ${u.publishedAt ?? '?'} « ${u.captionStart} »`);
+      console.log(`Mises à jour du panneau : ${path.relative(PATHS.root, path.join(PATHS.cache, 'metrics-update.json'))} · statistiques : ${path.relative(PATHS.root, res.statsFile)}`);
       return;
     }
     case 'stats:import': {

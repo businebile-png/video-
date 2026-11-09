@@ -1,0 +1,258 @@
+{
+  "runId": "2026-11-07-a",
+  "category": "formules-payantes",
+  "angle": "Les quatre formules de Systeme.io expliquées sur la page officielle : ce qui est commun, ce qui change (les limites) et quand passer à la formule payante, pour choisir sans payer trop ni bloquer trop tôt",
+  "persona": "Personne qui veut se lancer en ligne avec Systeme.io et hésite entre les formules",
+  "hookStyle": "erreur",
+  "workingTitle": "Les 4 formules de Systeme.io expliquées",
+  "targetDurationSec": 40,
+  "scenes": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Trop petite, tu bloques. Trop grande, tu dépenses pour rien.",
+      "headline": "Quelle formule Systeme.io choisir ?",
+      "emphasis": [
+        "bloques",
+        "pour rien"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "phone scrolling hand"
+        ],
+        "shotIdeas": [
+          "la vraie page officielle des tarifs dès la première image, la caméra va sur la plus petite puis sur la plus grande formule"
+        ],
+        "focusRegionIds": [
+          "carte-gratuit",
+          "carte-illimite"
+        ],
+        "captureId": "tarifs-page"
+      },
+      "claimFactIds": [
+        "plan.free.price",
+        "plan.unlimited.price",
+        "plan.prices.ttc"
+      ]
+    },
+    {
+      "id": "s2",
+      "phase": "solution",
+      "voiceover": "Tunnels de vente, e-mails, formation : chez Systeme.io, les quatre formules ont tout ça.",
+      "emphasis": [
+        "quatre formules"
+      ],
+      "visual": {
+        "kind": "graphic",
+        "queries": [
+          "woman laptop desk",
+          "workspace laptop bright",
+          "hands laptop desk"
+        ],
+        "shotIdeas": [
+          "plan calme et lumineux de travail sur ordinateur derrière la liste"
+        ],
+        "focusRegionIds": [],
+        "graphic": {
+          "type": "checklist",
+          "title": "Dans les 4 formules",
+          "items": [
+            "Tunnels de vente",
+            "E-mails envoyés en illimité",
+            "Formations en ligne"
+          ]
+        }
+      },
+      "claimFactIds": [
+        "feature.funnels",
+        "feature.email-marketing",
+        "feature.courses",
+        "plan.table.funnels",
+        "plan.table.emails-sent",
+        "plan.table.courses"
+      ]
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Ce sont les limites qui changent. Par exemple, 2 000 contacts, 5 000, 10 000, ou illimités.",
+      "emphasis": [
+        "limites"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "city night"
+        ],
+        "shotIdeas": [
+          "le tableau officiel « Comparer les plans » : la ligne Contacts, colonne par colonne"
+        ],
+        "focusRegionIds": [
+          "contacts-gratuit",
+          "contacts-startup",
+          "contacts-webinaire",
+          "contacts-illimite"
+        ],
+        "captureIds": [
+          "tarifs-contacts-a",
+          "tarifs-contacts-b"
+        ],
+        "captureCues": [
+          "limites",
+          "10 000"
+        ]
+      },
+      "claimFactIds": [
+        "plan.free.contacts",
+        "plan.startup.contacts",
+        "plan.webinar.limits",
+        "plan.unlimited.limits"
+      ],
+      "headline": "Ce qui change : les limites"
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "Pour tester, le gratuit suffit, sans carte bancaire. Il te faut plus de trois tunnels ? Startup, c'est dix tunnels pour 17 € par mois.",
+      "emphasis": [
+        "tester",
+        "17 €"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "city night"
+        ],
+        "captureId": "tarifs-page",
+        "shotIdeas": [
+          "page officielle des tarifs, cadrage serré sur la carte de la formule dont parle la voix"
+        ],
+        "focusRegionIds": [
+          "carte-gratuit",
+          "carte-startup"
+        ],
+        "focusLabels": [
+          "Gratuit · 0 €",
+          "Startup · 17 €/mois"
+        ]
+      },
+      "claimFactIds": [
+        "plan.free.exists",
+        "plan.free.price",
+        "plan.free.no-card",
+        "plan.free.limits",
+        "plan.startup.limits",
+        "plan.startup.price",
+        "plan.prices.ttc",
+        "plan.table.funnels"
+      ]
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Tu vends en webinaire ? Webinaire, 47 € par mois. Et pour des tunnels et contacts illimités, c'est Illimité, 97 € par mois.",
+      "emphasis": [
+        "47 €",
+        "97 €"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "city night"
+        ],
+        "captureId": "tarifs-page",
+        "shotIdeas": [
+          "suite du même plan : la caméra glisse de Startup à Webinaire puis à Illimité"
+        ],
+        "focusRegionIds": [
+          "carte-webinaire",
+          "carte-illimite"
+        ],
+        "focusLabels": [
+          "Webinaire · 47 €/mois",
+          "Illimité · 97 €/mois"
+        ]
+      },
+      "claimFactIds": [
+        "plan.webinar.price",
+        "plan.webinar.limits",
+        "plan.table.webinars",
+        "plan.unlimited.price",
+        "plan.unlimited.limits",
+        "plan.prices.ttc"
+      ]
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Et en annuel, deux mois sont offerts.",
+      "emphasis": [
+        "deux mois"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "city night"
+        ],
+        "captureId": "tarifs-annuel",
+        "shotIdeas": [
+          "la vraie page en facturation annuelle : le titre, l'interrupteur et le badge « 2 mois gratuits »"
+        ],
+        "focusRegionIds": [
+          "badge-annuel"
+        ]
+      },
+      "claimFactIds": [
+        "plan.annual-discount"
+      ]
+    },
+    {
+      "id": "s7",
+      "phase": "cta",
+      "voiceover": "Commence gratuitement : le lien est dans ma bio.",
+      "emphasis": [
+        "gratuitement",
+        "dans ma bio"
+      ],
+      "visual": {
+        "kind": "broll",
+        "queries": [
+          "phone hand night",
+          "smartphone scrolling"
+        ],
+        "shotIdeas": [
+          "téléphone dans la main, écran non lisible"
+        ],
+        "focusRegionIds": []
+      },
+      "claimFactIds": [
+        "plan.free.exists",
+        "plan.free.no-card",
+        "plan.free.price",
+        "plan.startup.price",
+        "plan.webinar.price",
+        "plan.unlimited.price",
+        "plan.prices.ttc"
+      ]
+    }
+  ],
+  "cta": {
+    "onScreen": "Commence gratuitement",
+    "subline": "Gratuit 0 € · Startup 17 €/mois · Webinaire 47 €/mois · Illimité 97 €/mois",
+    "reason": "Commencer gratuitement, sans carte bancaire, puis passer à Startup dès qu'il faut plus de 3 tunnels de vente"
+  },
+  "captions": {
+    "tiktok": "Quelle formule Systeme.io choisir ? 👇\n\nTrop petite, tu bloques. Trop grande, tu dépenses pour rien.\n\n🆓 Gratuit : pour tester, sans carte bancaire (3 tunnels de vente, 2 000 contacts).\n🚀 Startup : 17 €/mois TTC, 10 tunnels de vente et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC, avec les webinaires.\n♾️ Illimité : 97 €/mois TTC, tunnels et contacts illimités.\n\nEn annuel : 2 mois offerts.\n👉 Commence gratuitement : lien en bio.",
+    "instagram": "Quelle formule Systeme.io choisir ? Dis-moi la tienne en commentaire 👇\n\nTrop petite, tu bloques. Trop grande, tu dépenses pour rien.\n\n🆓 Gratuit : pour tester, sans carte bancaire (3 tunnels de vente, 2 000 contacts).\n🚀 Startup : 17 €/mois TTC, 10 tunnels de vente et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC, avec les webinaires.\n♾️ Illimité : 97 €/mois TTC, tunnels et contacts illimités.\n\nEn annuel : 2 mois offerts.\n👉 Commence gratuitement : le lien est dans ma bio.",
+    "hashtags": [
+      "#systemeio",
+      "#entrepreneur",
+      "#businessenligne",
+      "#marketingdigital",
+      "#tunneldevente",
+      "#emailmarketing"
+    ]
+  },
+  "author": "agent"
+}

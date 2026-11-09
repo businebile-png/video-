@@ -71,7 +71,7 @@ export async function exportVideoDoc(
     artDirection: {id: ad.id, label: ad.label},
     durationSec: timeline?.metrics.durationSec ?? technical?.durationSec ?? null,
     score: score
-      ? {total: score.total, decision: score.decision, summary: score.summary, criteria: score.criteria, gates: score.gates}
+      ? {total: score.total, decision: score.decision, summary: score.summary, criteria: score.criteria, gates: score.gates, virality: score.virality ?? null}
       : null,
     review: review
       ? {

@@ -13,6 +13,7 @@ import type {Capture} from '../schemas/assets.js';
 import type {Fact} from '../schemas/facts.js';
 import {WORDS_PER_SECOND} from '../script/lint.js';
 import {saveState} from '../core/run.js';
+import {performanceLines, type Insights} from '../analytics/analytics.js';
 
 export interface PanelIdea {
   id: string;
@@ -39,6 +40,8 @@ export interface Plan {
   captures: Array<Pick<Capture, 'id' | 'feature' | 'title' | 'description' | 'type' | 'durationSec'> & {regions: string[]}>;
   facts: Array<Pick<Fact, 'id' | 'statement' | 'tags' | 'verifiedAt'>>;
   insights: unknown;
+  /** Real results of past videos (watch time, shares) worth repeating, one line each; null without data. */
+  performance?: string[] | null;
   correction: {runId: string; notes: string} | null;
 }
 
@@ -115,7 +118,7 @@ export async function createPlan(config: StudioConfig, editorial: Editorial, opt
     path.join(PATHS.panelInbox, 'inbox.json'),
     {},
   );
-  const insights = await readJsonIfExists<{categoryIndex?: Record<string, number>}>(PATHS.insights, {});
+  const insights = await readJsonIfExists<Partial<Insights>>(PATHS.insights, {});
   const category = opts.category
     ? editorial.categories.find((c) => c.id === opts.category) ?? (() => {
         throw new Error(`Catégorie inconnue : ${opts.category}`);
@@ -148,6 +151,7 @@ export async function createPlan(config: StudioConfig, editorial: Editorial, opt
     })),
     facts: facts.map((f) => ({id: f.id, statement: f.statement, tags: f.tags, verifiedAt: f.verifiedAt})),
     insights,
+    performance: performanceLines(insights),
     correction: opts.correction ?? null,
   };
   const p = runPaths(runId);
@@ -216,6 +220,21 @@ export function renderBrief(plan: Plan, editorial: Editorial): string {
   lines.push('- Le plan gratuit peut servir de porte d’entrée honnête (« commence gratuitement, passe à une formule payante quand ton activité grandit »), sans jamais le dénigrer.');
   lines.push('- Appel à l’action concret : donner une raison de cliquer (comparer les formules, voir ce qui est inclus, tester sur son propre projet).');
   lines.push('- Interdit : présenter un abonnement comme indispensable pour réussir, cacher un prix ou une condition, inventer une offre ou une urgence.');
+  lines.push('');
+  lines.push('## Pour que la vidéo soit vue jusqu’au bout, commentée et partagée');
+  lines.push('Ce que les plateformes disent récompenser : TikTok classe les vidéos selon les interactions (temps de visionnage, partages, commentaires, j’aime) ; Instagram cite d’abord le temps de visionnage, les j’aime et les envois en message rapportés à la portée. Personne ne peut garantir qu’une vidéo devienne virale : on met toutes les chances de son côté, honnêtement.');
+  lines.push('- **0–2 s, arrêter le pouce** : première phrase de 12 mots au plus, sur le problème ou un fait vérifié surprenant, avec « tu » ou en question ; titre court (36 caractères au plus) à l’écran dès la première image. La marque vient après, pas dans la première phrase.');
+  lines.push('- **Une raison de rester** : annoncer ce qui vient (« trois limites changent », « je te montre en 20 secondes ») et le tenir. Jamais de mystère trompeur, de « secret » ni de « la suite va te choquer ».');
+  lines.push('- **Rythme** : une phrase = une scène = une image, une nouvelle scène toutes les 5 s au plus ; aucune phrase de remplissage.');
+  lines.push('- **Court** : 40 s au plus quand le sujet le permet ; enlever une idée plutôt qu’accélérer la voix.');
+  lines.push('- **Fin qui ne traîne pas** : une phrase d’appel à l’action. Idéalement, la dernière phrase répond à l’accroche, pour que la vidéo s’enchaîne naturellement si elle repart au début.');
+  lines.push('- **Légende** : première ligne = le sujet en clair avec les mots que les gens tapent (« automatiser ses e-mails », « tunnel de vente gratuit ») ; une vraie question facile à commenter ; une phrase honnête pour enregistrer ou envoyer la vidéo (« Enregistre-la pour comparer plus tard ») ; 3 à 5 hashtags précis.');
+  lines.push('- **Contrôle** : `script:check` affiche la « checklist viralité » (12 points) ; viser 10 points au moins avant la voix.');
+  if (plan.performance) {
+    lines.push('');
+    lines.push('### Ce qui a marché chez ton audience (statistiques réelles)');
+    plan.performance.forEach((l) => lines.push(`- ${l}`));
+  }
   lines.push('');
   lines.push('## Écrire pour l’oreille (voix naturelle)');
   lines.push('- Français parlé, tutoiement, phrases courtes (8 à 16 mots), une idée par phrase.');

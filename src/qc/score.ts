@@ -36,6 +36,24 @@ export interface ScoreReport {
   decision: 'publishable' | 'improve' | 'redo';
   weakest: string[];
   summary: string;
+  /** Reviewer's viral potential (/20), shown beside the score, never added to it. */
+  virality: Virality | null;
+}
+
+export interface Virality {
+  total: number;
+  max: 20;
+  parts: Array<{id: 'hook' | 'retention' | 'shareability' | 'engagement'; label: string; score: number; justification: string}>;
+  actions: string[];
+}
+
+const VIRAL_LABELS = {hook: 'Accroche (arrêter le pouce)', retention: 'Rétention (rester jusqu’au bout)', shareability: 'Envie d’envoyer ou d’enregistrer', engagement: 'Envie de commenter'} as const;
+
+export function viralityOf(review: Review): Virality | null {
+  const v = review.virality;
+  if (!v) return null;
+  const parts = (['hook', 'retention', 'shareability', 'engagement'] as const).map((id) => ({id, label: VIRAL_LABELS[id], score: half(v[id].score), justification: v[id].justification}));
+  return {total: half(parts.reduce((n, p) => n + p.score, 0)), max: 20, parts, actions: v.actions};
 }
 
 const LABELS: Record<Criterion['id'], string> = {
@@ -119,7 +137,7 @@ export function computeScore(input: {
         : !gatesOk
           ? `${total}/100 — bloquée : ${gates.filter((g) => !g.ok).map((g) => g.label).join(' ; ')}.`
           : `${total}/100 — sous ${config.publish.improveFrom} : à refaire (points faibles : ${weakest.join(', ')}).`;
-  return {runId: input.runId, scoredAt: new Date().toISOString(), total, criteria, gates, decision, weakest, summary};
+  return {runId: input.runId, scoredAt: new Date().toISOString(), total, criteria, gates, decision, weakest, summary, virality: viralityOf(review)};
 }
 
 export async function scoreStep(runId: string, config: StudioConfig): Promise<ScoreReport> {

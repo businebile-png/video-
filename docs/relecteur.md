@@ -23,6 +23,23 @@ qu'elle ne soit présentée à l'utilisateur. Une vidéo moyenne doit recevoir u
 
 Repères : 90 % du maximum = niveau agence ; 75 % = correct mais générique ; 60 % ou moins = à refaire.
 
+## Potentiel viral (indicateur séparé, sur 20)
+
+Il n'entre **pas** dans la note sur 80 et ne débloque jamais une publication : il dit si la vidéo a des chances
+d'être poussée par TikTok et Instagram, qui récompensent le temps de visionnage, les partages (envois en message),
+les commentaires et les enregistrements. Juge-le sur les mêmes images, sévèrement, de 0 à 5 par point :
+
+| Point | Ce qui fait 5/5 |
+|---|---|
+| `hook` | La première image et la première seconde arrêtent le pouce : texte gros et lisible dès l'image 0, problème ou fait surprenant pour le spectateur (pas la marque ni un logo), mouvement immédiat. |
+| `retention` | Une raison de rester jusqu'au bout (liste annoncée, question, démonstration) tenue jusqu'à la fin, un changement d'image toutes les 2 à 3 s, aucun temps mort, une fin qui ne traîne pas. |
+| `shareability` | On a envie de l'envoyer à quelqu'un ou de l'enregistrer : information utile et concrète, comparaison claire, situation dans laquelle la cible se reconnaît. |
+| `engagement` | La vidéo ou sa légende pose une vraie question facile à commenter, sans « like et abonne-toi » forcé ni promesse. |
+
+`actions` : 1 à 3 changements concrets qui augmenteraient le plus ce potentiel (« raccourcir l'accroche à 8 mots »,
+« titre d'accroche plus gros dès l'image 0 », « couper le plan de 6 s en deux »). Ne les invente pas au détriment de
+l'honnêteté : jamais de mystère trompeur, de fausse urgence ni de promesse.
+
 ## À signaler impérativement
 
 - `blockingIssues` : tout ce qui interdit la diffusion (texte illisible ou coupé, image choquante ou
@@ -54,7 +71,14 @@ Repères : 90 % du maximum = niveau agence ; 75 % = correct mais générique ; 6
   "blockingIssues": [],
   "improvements": [],
   "factualConcerns": [],
-  "rightsConcerns": []
+  "rightsConcerns": [],
+  "virality": {
+    "hook": {"score": 0, "justification": "…"},
+    "retention": {"score": 0, "justification": "…"},
+    "shareability": {"score": 0, "justification": "…"},
+    "engagement": {"score": 0, "justification": "…"},
+    "actions": ["…"]
+  }
 }
 ```
 

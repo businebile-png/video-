@@ -10,6 +10,10 @@ Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 80/100 (
 La qualité passe avant l'horaire : si la vidéo n'atteint pas le niveau, on l'écrit dans le journal du
 panneau et on ne dépose rien de médiocre.
 
+
+> Depuis le 09/11/2026, la production quotidienne tourne **sans Claude** (`npm run studio -- auto`, GitHub Actions,
+> IA gratuite) : voir `docs/production-sans-claude.md`. Ce guide reste valable pour une production faite à la main.
+
 ## Constantes
 
 | Élément | Valeur |

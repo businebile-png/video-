@@ -36,8 +36,8 @@
       "label": "Ce que débloquent les formules payantes",
       "description": "Quand et pourquoi passer à une formule payante de Systeme.io : ce qu'elle débloque concrètement, chiffres vérifiés sur la page tarifs officielle, sans dénigrer le plan gratuit.",
       "durationSec": [
-        30,
-        55
+        25,
+        45
       ],
       "phases": [
         "hook",
@@ -71,8 +71,8 @@
       "label": "Tutoriel pratique",
       "description": "Un pas-à-pas concret réalisé dans Systeme.io, montré à l'écran.",
       "durationSec": [
-        55,
-        90
+        40,
+        70
       ],
       "phases": [
         "hook",
@@ -102,8 +102,8 @@
       "label": "Démonstration de fonctionnalité",
       "description": "Une fonctionnalité précise montrée sur l'interface réelle, avec son intérêt concret.",
       "durationSec": [
-        40,
-        60
+        30,
+        50
       ],
       "phases": [
         "hook",
@@ -133,8 +133,8 @@
       "label": "Problème d'entrepreneur",
       "description": "Une difficulté quotidienne vécue par les indépendants et la façon dont Systeme.io l'allège.",
       "durationSec": [
-        30,
-        45
+        25,
+        40
       ],
       "phases": [
         "hook",
@@ -162,8 +162,8 @@
       "label": "Outils séparés ou plateforme unique",
       "description": "Comparaison factuelle entre empiler des outils séparés et centraliser, sans citer de marque concurrente.",
       "durationSec": [
-        35,
-        55
+        30,
+        45
       ],
       "phases": [
         "hook",
@@ -194,8 +194,8 @@
       "label": "Conseils pour débuter",
       "description": "Un conseil actionnable pour lancer son activité en ligne, avec Systeme.io comme outil naturel.",
       "durationSec": [
-        30,
-        50
+        25,
+        40
       ],
       "phases": [
         "hook",
@@ -223,8 +223,8 @@
       "label": "Les tunnels de vente",
       "description": "Ce qu'est un tunnel de vente, à quoi il sert et comment Systeme.io permet d'en construire un.",
       "durationSec": [
-        30,
-        60
+        25,
+        45
       ],
       "phases": [
         "hook",
@@ -252,8 +252,8 @@
       "label": "Automatisation du marketing",
       "description": "Les tâches répétitives qu'on peut confier à des automatisations dans Systeme.io.",
       "durationSec": [
-        30,
-        60
+        25,
+        45
       ],
       "phases": [
         "hook",
@@ -280,8 +280,8 @@
       "label": "Créer et vendre une formation",
       "description": "Héberger, vendre et donner accès à une formation en ligne avec Systeme.io.",
       "durationSec": [
-        30,
-        60
+        25,
+        45
       ],
       "phases": [
         "hook",
@@ -309,8 +309,8 @@
       "label": "Vendre des produits numériques",
       "description": "Vendre un guide, un modèle ou un fichier téléchargeable avec Systeme.io.",
       "durationSec": [
-        30,
-        50
+        25,
+        40
       ],
       "phases": [
         "hook",
@@ -338,8 +338,8 @@
       "label": "Organiser son activité en ligne",
       "description": "Mettre de l'ordre dans ses contacts, ses ventes et ses contenus en centralisant.",
       "durationSec": [
-        30,
-        45
+        25,
+        40
       ],
       "phases": [
         "hook",
@@ -368,8 +368,8 @@
       "label": "Erreurs fréquentes des débutants",
       "description": "Une erreur courante quand on lance une activité en ligne et comment l'éviter.",
       "durationSec": [
-        30,
-        50
+        25,
+        40
       ],
       "phases": [
         "hook",
@@ -470,6 +470,21 @@
       "id": "curiosite",
       "label": "Curiosité",
       "principle": "Une phrase courte qui donne envie de voir la suite, sans promesse, sans mystère trompeur ni « secret »."
+    },
+    {
+      "id": "contre-intuitif",
+      "label": "Contre-intuitif",
+      "principle": "Un fait vérifié qui contredit ce que la cible croit (« des e-mails envoyés en illimité, même en gratuit »), dit en une phrase et prouvé à l'écran juste après."
+    },
+    {
+      "id": "pov",
+      "label": "POV",
+      "principle": "« POV : tu… » : une scène vécue à la première personne, typique de TikTok, montrée telle quelle, sans promesse de résultat."
+    },
+    {
+      "id": "chrono",
+      "label": "Démonstration chronométrée",
+      "principle": "« Je te montre en 20 secondes… » : la durée de la vidéo, jamais un résultat ; exige ce qu'on montre (capture réelle ou tableau officiel)."
     }
   ],
   "rules": {
