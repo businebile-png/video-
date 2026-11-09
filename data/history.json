@@ -105,6 +105,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-09T11:58:44.068Z"
+    },
+    {
+      "runId": "2026-11-09-c",
+      "date": "2026-11-09",
+      "category": "comparaison-outils",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "energie",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-09T15:42:55.659Z"
     }
   ]
 }
