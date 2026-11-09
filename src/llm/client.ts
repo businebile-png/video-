@@ -54,6 +54,12 @@ export interface ChatOptions {
   maxTokens?: number;
 }
 
+/** Addresses that answered something other than a chat completion: skipped for the rest of the run. */
+const brokenBases = new Set<string>();
+/** Keyless free tier (Pollinations): one reply every 45 seconds per address, so requests are spaced. */
+let lastKeyless = 0;
+const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 /**
  * One chat completion; returns the text of the first choice. Models are tried in the configured order: a model
  * out of free quota (429), refusing the request size (413) or failing is replaced by the next one.
@@ -64,15 +70,22 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
   const bases = cfg.baseUrl.split(',').map((b) => b.trim().replace(/\/+$/, '')).filter(Boolean);
   const errors: string[] = [];
   for (const base of bases) {
+  if (brokenBases.has(base)) continue;
   const github = /models\.github\.ai/.test(base);
   const azure = /inference\.ai\.azure\.com/.test(base);
   // Pollinations: free, no account, several AIs behind one OpenAI-compatible address. Never send it our key.
   const keyless = /pollinations\.ai/.test(base);
   const url = /pollinations\.ai\/openai$/.test(base) ? base : `${base}/chat/completions`;
-  for (const listed of keyless ? (opts.vision ? ['openai-large', 'openai'] : ['openai-large', 'openai', 'mistral']) : models) {
+  for (const listed of keyless ? (opts.vision ? ['openai'] : ['openai', 'mistral']) : models) {
+    if (brokenBases.has(base)) break;
     // The Azure endpoint of GitHub Models names models without their publisher (« gpt-4.1 »).
     const model = azure ? listed.replace(/^[^/]+\//, '') : listed;
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (let attempt = 0; attempt < (keyless ? 4 : 2); attempt++) {
+      if (keyless) {
+        const wait = lastKeyless + 46_000 - Date.now();
+        if (wait > 0) await pause(wait);
+        lastKeyless = Date.now();
+      }
       let res: Awaited<ReturnType<typeof http>>;
       try {
         res = await http(url, {
@@ -108,7 +121,15 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
         // Say exactly what came back, so a broken endpoint or a filter is visible in the job log.
         const why = choice?.finish_reason ? `fin : ${choice.finish_reason}` : choice?.message?.refusal ? `refus : ${choice.message.refusal}` : `corps : ${raw.replace(/\s+/g, ' ').slice(0, 240) || '(vide)'}`;
         errors.push(`${base} ${model} : réponse sans texte (HTTP ${res.status}, ${res.headers.get('content-type') ?? 'type inconnu'}, ${why})`);
+        // Not a chat completion at all (e.g. a bare « OK »): this address is not serving the API, skip it.
+        if (!body) brokenBases.add(base);
         break;
+      }
+      // Keyless free tier: « Retry after 45s » means wait, then the same model answers.
+      const retryIn = Number(/retry after (\d+)\s*s/i.exec(raw)?.[1]);
+      if (keyless && (res.status === 402 || res.status === 429) && Number.isFinite(retryIn) && attempt < 3) {
+        lastKeyless = Date.now() + retryIn * 1000 - 46_000 + 1500;
+        continue;
       }
       const msg = typeof body?.error === 'string' ? body.error : body?.error?.message ?? raw.replace(/\s+/g, ' ').slice(0, 160);
       const loc = res.headers.get('location');
