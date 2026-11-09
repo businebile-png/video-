@@ -1,0 +1,154 @@
+{
+  "runId": "2026-11-06-b",
+  "category": "edit-court",
+  "angle": "Une page ici, des e-mails là, une formation ailleurs : tout le parcours d'un client dans un seul outil, commencer gratuitement avec une formation, puis passer à Startup dès la deuxième, preuve sur le tableau officiel",
+  "persona": "Créatrice qui veut lancer une offre en ligne sans assembler cinq outils",
+  "hookStyle": "curiosite",
+  "workingTitle": "Tout le parcours dans un seul outil",
+  "targetDurationSec": 21,
+  "scenes": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Ta page ici, tes e-mails là, ta formation ailleurs ?",
+      "headline": "Trop d’outils pour vendre ?",
+      "emphasis": [
+        "ailleurs"
+      ],
+      "visual": {
+        "kind": "broll",
+        "queries": [
+          "sticky notes desk",
+          "desk papers mess",
+          "hands typing laptop"
+        ],
+        "shotIdeas": [
+          "trois outils différents dans l'ordre de la voix : un ordinateur (ta page), un téléphone (tes e-mails), du papier (ta formation)"
+        ],
+        "focusRegionIds": []
+      },
+      "claimFactIds": []
+    },
+    {
+      "id": "s2",
+      "phase": "solution",
+      "voiceover": "Avec Systeme.io, quelqu'un s'inscrit sur ta page, reçoit tes e-mails, puis achète ta formation.",
+      "emphasis": [
+        "Systeme.io"
+      ],
+      "visual": {
+        "kind": "graphic",
+        "queries": [
+          "typing smartphone",
+          "email laptop",
+          "woman laptop night"
+        ],
+        "shotIdeas": [
+          "un plan net par étape : inscription sur un téléphone, e-mail sur un ordinateur, formation suivie sur un ordinateur"
+        ],
+        "focusRegionIds": [],
+        "graphic": {
+          "type": "steps",
+          "steps": [
+            {
+              "title": "Ta page d'inscription"
+            },
+            {
+              "title": "Tes e-mails"
+            },
+            {
+              "title": "Ta formation en vente"
+            }
+          ]
+        }
+      },
+      "claimFactIds": [
+        "feature.funnels",
+        "feature.website",
+        "feature.email-marketing",
+        "feature.courses",
+        "feature.payments",
+        "feature.contacts"
+      ]
+    },
+    {
+      "id": "s3",
+      "phase": "benefits",
+      "voiceover": "Le gratuit permet une formation. Dès la deuxième, Startup passe à cinq formations, pour 17 € par mois.",
+      "emphasis": [
+        "une formation",
+        "cinq formations",
+        "17 €"
+      ],
+      "visual": {
+        "kind": "demo",
+        "queries": [
+          "city night",
+          "office night"
+        ],
+        "shotIdeas": [
+          "tableau officiel « Comparer les plans » : ligne Formations, 1 en Gratuit puis 5 en Startup"
+        ],
+        "focusRegionIds": [
+          "formations-gratuit",
+          "formations-startup"
+        ],
+        "captureId": "tarifs-formations",
+        "focusLabels": [
+          "Gratuit : 1 formation",
+          "Startup : 5 formations"
+        ]
+      },
+      "claimFactIds": [
+        "plan.free.exists",
+        "plan.table.courses",
+        "plan.startup.price",
+        "plan.prices.ttc"
+      ]
+    },
+    {
+      "id": "s4",
+      "phase": "cta",
+      "voiceover": "Ouvre ton compte gratuit, sans carte bancaire : le lien est dans ma bio.",
+      "emphasis": [
+        "dans ma bio"
+      ],
+      "visual": {
+        "kind": "broll",
+        "queries": [
+          "phone hand night",
+          "smartphone scrolling"
+        ],
+        "shotIdeas": [
+          "téléphone dans la main, écran non lisible"
+        ],
+        "focusRegionIds": []
+      },
+      "claimFactIds": [
+        "plan.free.exists",
+        "plan.free.no-card",
+        "plan.table.courses",
+        "plan.startup.price",
+        "plan.prices.ttc"
+      ]
+    }
+  ],
+  "cta": {
+    "onScreen": "Lance ta formation",
+    "subline": "Gratuit : 1 formation · Startup : 5 formations, 17 €/mois TTC",
+    "reason": "Ouvrir un compte gratuit sans carte bancaire, puis passer à Startup pour lancer plus d'une formation"
+  },
+  "captions": {
+    "tiktok": "Ta page ici, tes e-mails là, ta formation ailleurs… Et toi, tu jongles avec combien d'outils ? 👇\n\nAvec Systeme.io, quelqu'un s'inscrit sur ta page, reçoit tes e-mails, puis achète ta formation : tout au même endroit.\nLe gratuit permet une formation, sans carte bancaire.\nDès la deuxième, Startup passe à 5 formations, pour 17 €/mois TTC.\n\n👉 Ouvre ton compte gratuit : lien en bio.",
+    "instagram": "Ta page ici, tes e-mails là, ta formation ailleurs… Et toi, tu jongles avec combien d'outils ? Dis-le en commentaire 👇\n\nAvec Systeme.io, tout se passe au même endroit : quelqu'un s'inscrit sur ta page, reçoit tes e-mails, puis achète ta formation.\n✔️ Gratuit, sans carte bancaire : 1 formation.\n✔️ Startup, 17 €/mois TTC : 5 formations, dès ta deuxième.\n\n👉 Ouvre ton compte gratuit : le lien est dans ma bio.",
+    "hashtags": [
+      "#systemeio",
+      "#entrepreneur",
+      "#businessenligne",
+      "#formationenligne",
+      "#emailmarketing",
+      "#marketingdigital"
+    ]
+  },
+  "author": "agent"
+}

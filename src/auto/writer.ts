@@ -8,7 +8,7 @@ import {loadFacts} from '../facts/facts.js';
 import {lintScript, type LintResult} from '../script/lint.js';
 import {viralChecklist, VIRAL_MIN_PASSED, type ViralChecklist} from '../script/viral.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
-import {chat, compact, estimateTokens, extractJson, type ChatMessage} from '../llm/client.js';
+import {chat, compact, estimateTokens, extractJson, promptBudget, type ChatMessage} from '../llm/client.js';
 import {log} from '../core/log.js';
 import type {Plan} from '../editorial/plan.js';
 
@@ -42,6 +42,8 @@ const FORMAT = `FORMAT (objet JSON unique, sans texte autour) :
 function systemPrompt(): string {
   return [
     'Tu es scénariste de publicités verticales (TikTok, Instagram Reels) en français pour Systeme.io, payées par affiliation.',
+    'CONSIGNE N° 1 DE L’UTILISATEUR : la vidéo doit être COHÉRENTE. Un seul sujet du début à la fin ; chaque phrase suit logiquement la précédente ; chaque scène montre exactement ce que dit sa phrase (capture réelle, graphique ou plan filmé en rapport direct) ; chaque chiffre dit est celui affiché à l’écran et celui du fait vérifié ; l’appel à l’action découle de ce qui vient d’être montré.',
+    'CONSIGNE N° 2 DE L’UTILISATEUR : inspire-toi ÉNORMÉMENT des scripts du studio donnés en exemple (vidéos déjà publiées) : même ton, même structure, même longueur de phrases, mêmes preuves à l’écran (captures officielles des tarifs, zones de focus), même façon de finir. Change seulement le sujet, l’angle et les mots de l’accroche.',
     'Tu écris pour l’oreille, en tutoyant, des phrases courtes ; tu ne cites que les faits vérifiés fournis, avec leurs identifiants.',
     'Interdits absolus : promesse de revenus ou de résultat, fausse urgence, superlatif (« le meilleur »), faux témoignage, nom de concurrent, image de richesse, « secret de ma réussite », interface inventée.',
     'Tu réponds uniquement avec l’objet JSON demandé.',
@@ -111,8 +113,9 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
   const p = runPaths(runId);
   const plan = await readJson<Plan>(p.plan);
   const brief = fs.readFileSync(p.planMd, 'utf8');
-  const examplePath = path.join(PATHS.root, 'docs', 'exemple-script.json');
-  const example = fs.existsSync(examplePath) ? fs.readFileSync(examplePath, 'utf8') : '';
+  // Scripts of the studio's published videos: the model to imitate (the user's choice: « prendre énormément exemple »).
+  const examplesDir = path.join(PATHS.root, 'docs', 'exemples');
+  const examples = fs.existsSync(examplesDir) ? fs.readdirSync(examplesDir).filter((f) => f.endsWith('.json')).sort().reverse().map((f) => fs.readFileSync(path.join(examplesDir, f), 'utf8')) : [];
   const config = await loadConfig();
   const editorial = await loadEditorial();
   const category = editorial.categories.find((c) => c.id === plan.category.id)!;
@@ -132,16 +135,21 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
       FORMAT,
       opts.notes ? `\nCORRECTIONS DEMANDÉES par la relecture de la version précédente (à appliquer toutes) :\n${opts.notes}` : '',
     ].join('\n');
-  // Free tiers with small requests (GitHub Models, about 8 000 tokens): trimmed facts, then the example only if it fits.
+  // Free tiers with small requests: trimmed facts, then as many examples as fit (GitHub Models about 8 000 tokens).
   const small = compact();
-  const budget = 6800;
+  const budget = promptBudget();
   let request = build(brief);
   if (small && estimateTokens(systemPrompt() + request) > budget - 1500) {
     const words = [...category.features, 'plan', 'pric', 'tarif', 'free', 'gratuit'];
     request = build(trimFacts(brief, (l) => words.some((w) => l.toLowerCase().includes(w))));
   }
-  const exampleBlock = example ? `\n\nEXEMPLE d’un script déjà publié par le studio (le niveau et le genre de vidéo attendus ; ne pas le copier, ne pas reprendre son accroche) :\n${small ? compactExample(example) : example}` : '';
-  const withExample = !small || estimateTokens(systemPrompt() + request + exampleBlock) <= budget ? request + exampleBlock : request;
+  let exampleBlock = '';
+  for (const [i, ex] of examples.entries()) {
+    const block = `\n\nEXEMPLE ${i + 1} — script d’une vidéo déjà publiée par le studio (le niveau, le ton et le genre de vidéo à imiter énormément ; ne pas copier son accroche) :\n${small ? compactExample(ex) : ex}`;
+    if (estimateTokens(systemPrompt() + request + exampleBlock + block) > budget) break;
+    exampleBlock += block;
+  }
+  const withExample = request + exampleBlock;
   const system: ChatMessage = {role: 'system', content: systemPrompt()};
   let messages: ChatMessage[] = [system, {role: 'user', content: withExample}];
   const max = opts.maxAttempts ?? 6;

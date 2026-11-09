@@ -27,6 +27,13 @@ export function compact(cfg: LlmConfig = llmConfig()): boolean {
   return /models\.github\.ai|models\.inference\.ai\.azure\.com|pollinations\.ai/.test(cfg.baseUrl) || process.env.STUDIO_LLM_COMPACT === '1';
 }
 
+/** How large a prompt may be: GitHub Models accepts about 8 000 tokens, Pollinations more, others much more. */
+export function promptBudget(cfg: LlmConfig = llmConfig()): number {
+  if (/models\.github\.ai|models\.inference\.ai\.azure\.com/.test(cfg.baseUrl.split(',')[0] ?? '')) return /pollinations\.ai/.test(cfg.baseUrl) ? 14_000 : 6800;
+  if (/pollinations\.ai/.test(cfg.baseUrl)) return 14_000;
+  return 60_000;
+}
+
 /** Rough token count of a prompt (French text and JSON: about 3 characters per token). */
 export const estimateTokens = (text: string) => Math.ceil(text.length / 3);
 

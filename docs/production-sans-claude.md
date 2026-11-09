@@ -20,6 +20,21 @@ en hiver) dans GitHub Actions (`.github/workflows/production-auto.yml`), gratuit
 prête est déposée dans `queue/<runId>.json` avec son créneau (10:00 ou 20:00) ; son MP4 est en ligne dans `videos/`
 le temps que Metricool le copie, puis retiré automatiquement 6 h après le créneau.
 
+## Consignes de l'utilisateur pour l'IA gratuite (09/11/2026)
+
+1. **Des vidéos cohérentes** : un seul sujet, chaque scène montre ce que dit sa phrase, chaque chiffre dit est
+   celui affiché et vérifié ; la relecture refuse (`coherent: false`) tout passage qui ne suit pas.
+2. **S'inspirer énormément des vidéos faites par Claude** : les scripts publiés sont dans `docs/exemples/`
+   (2026-11-07-a « formules », 2026-11-06-b « edit ») et sont donnés au rédacteur comme modèles (ton, structure,
+   preuves à l'écran) ; la relecture compare à ce niveau (`goodQuality: false` si nettement en dessous).
+
+## IA utilisée (constat du 09/11/2026)
+
+GitHub Models est essayé en premier, mais répond « OK » en texte au lieu d'une réponse d'IA ; le studio passe
+alors à **Pollinations** (gratuit, sans compte : modèle `openai`, `mistral` en secours), limité à une réponse
+toutes les 45 s par adresse : le studio espace ses demandes. Une clé gratuite Pollinations (enter.pollinations.ai)
+ou une clé Google AI Studio (secret `STUDIO_LLM_API_KEY` + variable `STUDIO_LLM_BASE_URL`) lève cette limite.
+
 ## À faire une seule fois (sur github.com, dépôt `businebile-png/video-`)
 
 1. **Lancement planifié** : GitHub ne lance les tâches planifiées que depuis la branche par défaut

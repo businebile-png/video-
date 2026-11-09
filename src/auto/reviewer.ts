@@ -54,6 +54,7 @@ export async function reviewWithLlm(runId: string): Promise<Review> {
         `Production ${runId}. Tu n’as pas écrit cette vidéo. Voici ses données, puis ses images (dans l’ordre : ${small ? '' : 'planche contact, puis '}${shown.join(', ')}).`,
         context,
         '',
+        'Exigence de l’utilisateur : la vidéo doit être cohérente (un seul sujet, chaque image montre ce que dit la voix, chaque chiffre affiché est celui dit) et du même niveau que les vidéos déjà publiées par le studio. Si elle est nettement en dessous de ce niveau, « goodQuality » vaut false ; si un passage ne suit pas, « coherent » vaut false.',
         `Réponds uniquement avec l’objet JSON de la relecture : "runId": "${runId}", "reviewer": "independent-llm", "framesSeen" = les noms de fichiers des images reçues préfixés par « qc/frames/ », chaque justification de 2 à 4 phrases concrètes, les blocs "verdict" (cohérente et de bonne qualité ? dans le doute, false) et "virality" compris.`,
       ].join('\n'),
     },
