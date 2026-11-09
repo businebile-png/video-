@@ -24,7 +24,7 @@ export interface LlmConfig {
 
 /** Free tiers with a small request size (GitHub Models): prompts are trimmed to fit. */
 export function compact(cfg: LlmConfig = llmConfig()): boolean {
-  return /models\.github\.ai|models\.inference\.ai\.azure\.com/.test(cfg.baseUrl) || process.env.STUDIO_LLM_COMPACT === '1';
+  return /models\.github\.ai|models\.inference\.ai\.azure\.com|pollinations\.ai/.test(cfg.baseUrl) || process.env.STUDIO_LLM_COMPACT === '1';
 }
 
 /** Rough token count of a prompt (French text and JSON: about 3 characters per token). */
@@ -66,24 +66,33 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
   for (const base of bases) {
   const github = /models\.github\.ai/.test(base);
   const azure = /inference\.ai\.azure\.com/.test(base);
-  for (const listed of models) {
+  // Pollinations: free, no account, several AIs behind one OpenAI-compatible address. Never send it our key.
+  const keyless = /pollinations\.ai/.test(base);
+  const url = /pollinations\.ai\/openai$/.test(base) ? base : `${base}/chat/completions`;
+  for (const listed of keyless ? (opts.vision ? ['openai-large', 'openai'] : ['openai-large', 'openai', 'mistral']) : models) {
     // The Azure endpoint of GitHub Models names models without their publisher (« gpt-4.1 »).
     const model = azure ? listed.replace(/^[^/]+\//, '') : listed;
     for (let attempt = 0; attempt < 2; attempt++) {
-      const res = await http(`${base}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          accept: github ? 'application/vnd.github+json' : 'application/json',
-          ...(github ? {'x-github-api-version': '2022-11-28'} : {}),
-          authorization: `Bearer ${cfg.apiKey}`,
-        },
-        body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
-        redirect: 'manual',
-        timeoutMs: 240_000,
-        retries: 3,
-        retryOn: [500, 502, 503, 504],
-      });
+      let res: Awaited<ReturnType<typeof http>>;
+      try {
+        res = await http(url, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            accept: github ? 'application/vnd.github+json' : 'application/json',
+            ...(github ? {'x-github-api-version': '2022-11-28'} : {}),
+            ...(keyless ? {} : {authorization: `Bearer ${cfg.apiKey}`}),
+          },
+          body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
+          redirect: 'manual',
+          timeoutMs: 240_000,
+          retries: 2,
+          retryOn: [500, 502, 503, 504],
+        });
+      } catch (e) {
+        errors.push(`${base} ${model} : ${(e as Error).message}`);
+        break;
+      }
       const raw = await res.text().catch(() => '');
       let body: {choices?: Array<{message?: {content?: string | Array<{text?: string}> | null; refusal?: string | null}; finish_reason?: string}>; model?: string; error?: {message?: string; code?: string} | string} | null = null;
       try {
