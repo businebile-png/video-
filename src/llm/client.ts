@@ -71,12 +71,21 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
         retries: 3,
         retryOn: [500, 502, 503, 504],
       });
-      const body = (await res.json().catch(() => null)) as {choices?: Array<{message?: {content?: string | Array<{text?: string}>}}>; model?: string; error?: {message?: string} | string} | null;
+      const raw = await res.text().catch(() => '');
+      let body: {choices?: Array<{message?: {content?: string | Array<{text?: string}> | null; refusal?: string | null}; finish_reason?: string}>; model?: string; error?: {message?: string; code?: string} | string} | null = null;
+      try {
+        body = JSON.parse(raw);
+      } catch {
+        body = null;
+      }
       if (res.ok) {
-        const content = body?.choices?.[0]?.message?.content;
+        const choice = body?.choices?.[0];
+        const content = choice?.message?.content;
         const text = typeof content === 'string' ? content : Array.isArray(content) ? content.map((c) => c.text ?? '').join('') : '';
         if (text.trim()) return {text, model: body?.model ?? model};
-        errors.push(`${model} : réponse vide`);
+        // Say exactly what came back, so a broken endpoint or a filter is visible in the job log.
+        const why = choice?.finish_reason ? `fin : ${choice.finish_reason}` : choice?.message?.refusal ? `refus : ${choice.message.refusal}` : `corps : ${raw.replace(/\s+/g, ' ').slice(0, 240) || '(vide)'}`;
+        errors.push(`${model} : réponse sans texte (HTTP ${res.status}, ${res.headers.get('content-type') ?? 'type inconnu'}, ${why})`);
         break;
       }
       const msg = typeof body?.error === 'string' ? body.error : body?.error?.message ?? '';

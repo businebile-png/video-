@@ -11,6 +11,7 @@ import {createPlan} from '../editorial/plan.js';
 import {nextSlots} from '../publish/publish.js';
 import {writeScript} from './writer.js';
 import {correctionNotes, reviewWithLlm} from './reviewer.js';
+import {chooseFootageWithLlm} from './footage.js';
 import {log} from '../core/log.js';
 import type {ScoreReport} from '../qc/score.js';
 
@@ -76,6 +77,18 @@ export async function cleanQueue(now = new Date()): Promise<string[]> {
   return removed;
 }
 
+/** Voice, then the shots chosen by eye on the contact sheets (as a Claude session did), then the rest of the studio. */
+async function produceVideo(runId: string): Promise<void> {
+  await studio(['voice', runId]);
+  await studio(['footage:search', runId]);
+  try {
+    await chooseFootageWithLlm(runId);
+  } catch (e) {
+    log.warn(`Choix des plans par l’IA impossible (${(e as Error).message.slice(0, 160)}) : classement automatique.`);
+  }
+  await studio(['produce', runId]);
+}
+
 export interface AutoResult {
   runId: string;
   status: 'prete' | 'bloquee';
@@ -106,7 +119,7 @@ export async function autoProduce(opts: {maxCorrections?: number; musicFile?: st
   log.ok(`Production ${runId} (${plan.category.label}) pour ${slot?.label ?? 'le prochain créneau libre'}`);
 
   await writeScript(runId);
-  await studio(['produce', runId]);
+  await produceVideo(runId);
   let report: ScoreReport | null = null;
   for (let round = 0; ; round++) {
     await reviewWithLlm(runId);
@@ -121,7 +134,8 @@ export async function autoProduce(opts: {maxCorrections?: number; musicFile?: st
     }
     log.info(`Correction ${round + 1}/${maxCorrections} : ${report.summary}`);
     await writeScript(runId, {notes: await correctionNotes(runId)});
-    await studio(['produce', runId]);
+    await fsp.rm(p.footageSelection, {force: true});
+    await produceVideo(runId);
   }
 
   // The user's song, under the voice, a different excerpt each time; dropped if the mix breaks a check.

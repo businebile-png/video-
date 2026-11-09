@@ -48,6 +48,57 @@ function systemPrompt(): string {
   ].join('\n');
 }
 
+/** The script instructions a Claude session follows (guide, section 5), so the free AI writes the same kind of video. */
+function studioGuide(): string {
+  const file = path.join(PATHS.root, 'docs', 'production-quotidienne.md');
+  if (!fs.existsSync(file)) return '';
+  const text = fs.readFileSync(file, 'utf8');
+  const start = text.indexOf('## 5. Script');
+  const end = text.indexOf('\n## 6.', start);
+  if (start < 0) return '';
+  return text
+    .slice(start, end > start ? end : undefined)
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/^Corriger jusqu.*$/m, '')
+    .trim();
+}
+
+/** A published script reduced to what shows the expected level: words, titles, proofs, graphics, captions. */
+function compactExample(raw: string): string {
+  try {
+    const s = JSON.parse(raw) as Script;
+    return JSON.stringify({
+      hookStyle: s.hookStyle,
+      targetDurationSec: s.targetDurationSec,
+      scenes: s.scenes.map((x) => ({
+        id: x.id,
+        phase: x.phase,
+        voiceover: x.voiceover,
+        headline: x.headline,
+        emphasis: x.emphasis,
+        visual: {kind: x.visual.kind, captureId: x.visual.captureId, captureIds: x.visual.captureIds, captureCues: x.visual.captureCues, focusRegionIds: x.visual.focusRegionIds, focusLabels: x.visual.focusLabels, graphic: x.visual.graphic, queries: x.visual.queries.slice(0, 2)},
+        claimFactIds: x.claimFactIds,
+      })),
+      cta: s.cta,
+      captions: {tiktok: s.captions.tiktok.slice(0, 400), hashtags: s.captions.hashtags},
+    });
+  } catch {
+    return raw;
+  }
+}
+
+/** Small free quotas: keep only the verified facts the category can use (pricing, plans, its own features). */
+function trimFacts(brief: string, keep: (line: string) => boolean): string {
+  const lines = brief.split('\n');
+  let inFacts = false;
+  return lines
+    .filter((l) => {
+      if (l.startsWith('## ')) inFacts = l.startsWith('## Faits vérifiés');
+      return !inFacts || !l.startsWith('- `') || keep(l);
+    })
+    .join('\n');
+}
+
 export interface WriteResult {
   script: Script;
   lint: LintResult;
@@ -70,18 +121,27 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
   const history = (await loadHistory()).filter((h) => h.runId !== runId).sort((a, b) => b.runId.localeCompare(a.runId));
   const ctx = {category, editorial, config, facts, captures, recentHooks: plan.recentHooks, recentAngles: plan.recentAngles, lastHookStyle: history[0]?.hookStyle ?? null};
 
-  const request = [
-    `Écris le script de la production ${runId} en suivant ce brief à la lettre.`,
-    '',
-    brief,
-    '',
-    FORMAT,
-    opts.notes ? `\nCORRECTIONS DEMANDÉES par la relecture de la version précédente (à appliquer toutes) :\n${opts.notes}` : '',
-  ].join('\n');
-  // Free tiers with small requests (GitHub Models, about 8 000 tokens): the example only when it fits.
+  const guide = studioGuide();
+  const build = (b: string) =>
+    [
+      `Écris le script de la production ${runId} en suivant ce brief à la lettre.`,
+      '',
+      b,
+      '',
+      guide ? `CONSIGNES DU STUDIO (les mêmes que pour les vidéos déjà publiées) :\n${guide}\n` : '',
+      FORMAT,
+      opts.notes ? `\nCORRECTIONS DEMANDÉES par la relecture de la version précédente (à appliquer toutes) :\n${opts.notes}` : '',
+    ].join('\n');
+  // Free tiers with small requests (GitHub Models, about 8 000 tokens): trimmed facts, then the example only if it fits.
   const small = compact();
-  const exampleBlock = example ? `\n\nEXEMPLE d’un script déjà publié (pour le niveau attendu et le format ; ne pas le copier, ne pas reprendre son accroche) :\n${example}` : '';
-  const withExample = !small || estimateTokens(systemPrompt() + request + exampleBlock) <= 6800 ? request + exampleBlock : request;
+  const budget = 6800;
+  let request = build(brief);
+  if (small && estimateTokens(systemPrompt() + request) > budget - 1500) {
+    const words = [...category.features, 'plan', 'pric', 'tarif', 'free', 'gratuit'];
+    request = build(trimFacts(brief, (l) => words.some((w) => l.toLowerCase().includes(w))));
+  }
+  const exampleBlock = example ? `\n\nEXEMPLE d’un script déjà publié par le studio (le niveau et le genre de vidéo attendus ; ne pas le copier, ne pas reprendre son accroche) :\n${small ? compactExample(example) : example}` : '';
+  const withExample = !small || estimateTokens(systemPrompt() + request + exampleBlock) <= budget ? request + exampleBlock : request;
   const system: ChatMessage = {role: 'system', content: systemPrompt()};
   let messages: ChatMessage[] = [system, {role: 'user', content: withExample}];
   const max = opts.maxAttempts ?? 6;
