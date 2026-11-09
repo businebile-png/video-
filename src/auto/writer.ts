@@ -8,7 +8,7 @@ import {loadFacts} from '../facts/facts.js';
 import {lintScript, type LintResult} from '../script/lint.js';
 import {viralChecklist, VIRAL_MIN_PASSED, type ViralChecklist} from '../script/viral.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
-import {chat, extractJson, type ChatMessage} from '../llm/client.js';
+import {chat, compact, estimateTokens, extractJson, type ChatMessage} from '../llm/client.js';
 import {log} from '../core/log.js';
 import type {Plan} from '../editorial/plan.js';
 
@@ -70,22 +70,20 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
   const history = (await loadHistory()).filter((h) => h.runId !== runId).sort((a, b) => b.runId.localeCompare(a.runId));
   const ctx = {category, editorial, config, facts, captures, recentHooks: plan.recentHooks, recentAngles: plan.recentAngles, lastHookStyle: history[0]?.hookStyle ?? null};
 
-  const messages: ChatMessage[] = [
-    {role: 'system', content: systemPrompt()},
-    {
-      role: 'user',
-      content: [
-        `Écris le script de la production ${runId} en suivant ce brief à la lettre.`,
-        '',
-        brief,
-        '',
-        FORMAT,
-        '',
-        example ? `EXEMPLE d’un script déjà publié (pour le niveau attendu et le format ; ne pas le copier, ne pas reprendre son accroche) :\n${example}` : '',
-        opts.notes ? `\nCORRECTIONS DEMANDÉES par la relecture de la version précédente (à appliquer toutes) :\n${opts.notes}` : '',
-      ].join('\n'),
-    },
-  ];
+  const request = [
+    `Écris le script de la production ${runId} en suivant ce brief à la lettre.`,
+    '',
+    brief,
+    '',
+    FORMAT,
+    opts.notes ? `\nCORRECTIONS DEMANDÉES par la relecture de la version précédente (à appliquer toutes) :\n${opts.notes}` : '',
+  ].join('\n');
+  // Free tiers with small requests (GitHub Models, about 8 000 tokens): the example only when it fits.
+  const small = compact();
+  const exampleBlock = example ? `\n\nEXEMPLE d’un script déjà publié (pour le niveau attendu et le format ; ne pas le copier, ne pas reprendre son accroche) :\n${example}` : '';
+  const withExample = !small || estimateTokens(systemPrompt() + request + exampleBlock) <= 6800 ? request + exampleBlock : request;
+  const system: ChatMessage = {role: 'system', content: systemPrompt()};
+  let messages: ChatMessage[] = [system, {role: 'user', content: withExample}];
   const max = opts.maxAttempts ?? 6;
   let best: WriteResult | null = null;
   let lastProblems = '';
@@ -93,7 +91,6 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
   for (let attempt = 1; attempt <= max; attempt++) {
     const reply = await chat(messages, {temperature: attempt === 1 ? 0.8 : 0.5});
     model = reply.model;
-    messages.push({role: 'assistant', content: reply.text});
     let problems: string[] = [];
     let raw: Record<string, unknown> | null = null;
     try {
@@ -124,7 +121,13 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
     }
     lastProblems = problems.join('\n');
     log.warn(`Script (essai ${attempt}/${max}) à reprendre : ${problems.length} point(s)`);
-    messages.push({role: 'user', content: `Le contrôleur du studio refuse ou demande d’améliorer ce script :\n${lastProblems}\n\nRenvoie le script complet corrigé (objet JSON seul), sans rien inventer.`});
+    // Only the last exchange is sent back (small free quotas): the brief, the last script, what to fix.
+    messages = [
+      system,
+      {role: 'user', content: request},
+      {role: 'assistant', content: reply.text},
+      {role: 'user', content: `Le contrôleur du studio refuse ou demande d’améliorer ce script :\n${lastProblems}\n\nRenvoie le script complet corrigé (objet JSON seul), sans rien inventer.`},
+    ];
   }
   if (!best) throw new Error(`L’IA n’a pas produit de script conforme après ${max} essais. Derniers problèmes :\n${lastProblems}`);
   await writeJson(p.script, best.script);

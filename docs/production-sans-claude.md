@@ -6,6 +6,7 @@ hebdomadaire), mais par une IA gratuite, avec **le même studio et les mêmes r�
 | Étape | Qui la fait maintenant |
 |---|---|
 | Sujet, brief, faits vérifiés | le studio (code), comme avant |
+| IA utilisée | par défaut **GitHub Models**, gratuit et inclus dans GitHub (ChatGPT GPT-4.1, puis GPT-4.1 mini, GPT-4o mini si le quota du jour est atteint), sans clé ; Claude n'y est pas. Une clé Google AI Studio ou FreeLLMAPI peut le remplacer |
 | Script | l'IA gratuite (`src/auto/writer.ts`), refusé et renvoyé tant que le contrôleur (`script:check`) trouve une erreur ; checklist viralité visée : 10/12 |
 | Voix « Claire », séquences, montage, rendu, contrôles techniques | le studio (code), comme avant |
 | Relecture indépendante (images regardées) | l'IA gratuite avec images (`src/auto/reviewer.ts`), consigne `docs/relecteur.md`, relecteur noté `independent-llm` |
@@ -21,12 +22,13 @@ le temps que Metricool le copie, puis retiré automatiquement 6 h après le cré
 
 ## À faire une seule fois (sur github.com, dépôt `businebile-png/video-`)
 
-1. **Branche par défaut** : Settings → General → Default branch → choisir `claude/serene-maxwell-pdm5wr`.
-   (GitHub ne lance les tâches planifiées que depuis la branche par défaut.)
+1. **Lancement planifié** : GitHub ne lance les tâches planifiées que depuis la branche par défaut
+   (`claude/kind-euler-t08y5a`) : le fichier `.github/workflows/production-auto.yml` y a été copié le 09/11/2026 ;
+   à recopier si on le modifie (ou choisir `claude/serene-maxwell-pdm5wr` comme branche par défaut).
 2. **Secrets** : Settings → Secrets and variables → Actions → New repository secret :
-   - `STUDIO_LLM_API_KEY` : la clé de l'IA gratuite. Le plus simple : une clé Google AI Studio
-     (aistudio.google.com → Get API key), gratuite ; modèle utilisé par défaut : `gemini-2.5-flash` (lit aussi les images).
-   - `PIXABAY_API_KEY` : la clé Pixabay déjà utilisée par le studio (pixabay.com/api/docs, une fois connecté).
+   - `PIXABAY_API_KEY` (obligatoire) : la clé Pixabay déjà utilisée par le studio (pixabay.com/api/docs, une fois connecté).
+   - `STUDIO_LLM_API_KEY` (facultatif) : sans elle, l'IA est GitHub Models (gratuit, aucune clé). Avec une clé
+     Google AI Studio (aistudio.google.com → Get API key), le studio utilise `gemini-2.5-flash` (limites plus larges).
    - `STUDIO_MUSIC_URL` (facultatif) : un lien de téléchargement direct de la chanson (par exemple un lien Dropbox
      terminé par `?dl=1`). Sans lui, les vidéos partent sans musique.
 3. **Avec FreeLLMAPI au lieu de Google** (facultatif) : héberger FreeLLMAPI sur une adresse joignable depuis

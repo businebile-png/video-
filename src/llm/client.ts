@@ -8,8 +8,12 @@ import {http} from '../core/http.js';
  *
  *   STUDIO_LLM_API_KEY      required
  *   STUDIO_LLM_BASE_URL     default: Google AI Studio's OpenAI-compatible endpoint
- *   STUDIO_LLM_MODEL        default: gemini-2.5-flash (FreeLLMAPI: "auto:smartest")
- *   STUDIO_LLM_VISION_MODEL model that can read images (review of the frames); default: STUDIO_LLM_MODEL
+ *   STUDIO_LLM_MODEL        default: gemini-2.5-flash (FreeLLMAPI: "auto:smartest"); a comma-separated list
+ *                           is tried in order (next model when one hits its free quota)
+ *   STUDIO_LLM_VISION_MODEL model(s) that can read images (review of the frames); default: STUDIO_LLM_MODEL
+ *
+ * In GitHub Actions without any key, the workflow uses GitHub Models (free, ChatGPT and other AIs, with the
+ * job's own token): small requests only (about 8 000 tokens in), hence `compact()`.
  */
 export interface LlmConfig {
   baseUrl: string;
@@ -17,6 +21,14 @@ export interface LlmConfig {
   model: string;
   visionModel: string;
 }
+
+/** Free tiers with a small request size (GitHub Models): prompts are trimmed to fit. */
+export function compact(cfg: LlmConfig = llmConfig()): boolean {
+  return /models\.github\.ai|models\.inference\.ai\.azure\.com/.test(cfg.baseUrl) || process.env.STUDIO_LLM_COMPACT === '1';
+}
+
+/** Rough token count of a prompt (French text and JSON: about 3 characters per token). */
+export const estimateTokens = (text: string) => Math.ceil(text.length / 3);
 
 export function llmConfig(): LlmConfig {
   const apiKey = process.env.STUDIO_LLM_API_KEY?.trim();
@@ -30,7 +42,7 @@ export function llmConfig(): LlmConfig {
   return {baseUrl, apiKey, model, visionModel: process.env.STUDIO_LLM_VISION_MODEL?.trim() || model};
 }
 
-export type ChatPart = {type: 'text'; text: string} | {type: 'image_url'; image_url: {url: string}};
+export type ChatPart = {type: 'text'; text: string} | {type: 'image_url'; image_url: {url: string; detail?: 'low' | 'high'}};
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string | ChatPart[];
@@ -42,22 +54,43 @@ export interface ChatOptions {
   maxTokens?: number;
 }
 
-/** One chat completion; returns the text of the first choice. */
+/**
+ * One chat completion; returns the text of the first choice. Models are tried in the configured order: a model
+ * out of free quota (429), refusing the request size (413) or failing is replaced by the next one.
+ */
 export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg: LlmConfig = llmConfig()): Promise<{text: string; model: string}> {
-  const model = opts.vision ? cfg.visionModel : cfg.model;
-  const res = await http(`${cfg.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {'content-type': 'application/json', authorization: `Bearer ${cfg.apiKey}`},
-    body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? 8000}),
-    timeoutMs: 240_000,
-    retries: 4,
-  });
-  const body = (await res.json().catch(() => null)) as {choices?: Array<{message?: {content?: string | Array<{text?: string}>}}>; model?: string; error?: {message?: string}} | null;
-  if (!res.ok) throw new Error(`IA (${model}) : erreur ${res.status} ${body?.error?.message ?? ''}`.trim());
-  const content = body?.choices?.[0]?.message?.content;
-  const text = typeof content === 'string' ? content : Array.isArray(content) ? content.map((c) => c.text ?? '').join('') : '';
-  if (!text.trim()) throw new Error(`IA (${model}) : réponse vide`);
-  return {text, model: body?.model ?? model};
+  const models = (opts.vision ? cfg.visionModel : cfg.model).split(',').map((m) => m.trim()).filter(Boolean);
+  const errors: string[] = [];
+  for (const model of models) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = await http(`${cfg.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {'content-type': 'application/json', authorization: `Bearer ${cfg.apiKey}`},
+        body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
+        timeoutMs: 240_000,
+        retries: 3,
+        retryOn: [500, 502, 503, 504],
+      });
+      const body = (await res.json().catch(() => null)) as {choices?: Array<{message?: {content?: string | Array<{text?: string}>}}>; model?: string; error?: {message?: string} | string} | null;
+      if (res.ok) {
+        const content = body?.choices?.[0]?.message?.content;
+        const text = typeof content === 'string' ? content : Array.isArray(content) ? content.map((c) => c.text ?? '').join('') : '';
+        if (text.trim()) return {text, model: body?.model ?? model};
+        errors.push(`${model} : réponse vide`);
+        break;
+      }
+      const msg = typeof body?.error === 'string' ? body.error : body?.error?.message ?? '';
+      errors.push(`${model} : erreur ${res.status} ${msg}`.trim());
+      // A short wait is worth one more try on the same model; a daily quota is not.
+      const wait = Number(res.headers.get('retry-after'));
+      if (res.status === 429 && attempt === 0 && Number.isFinite(wait) && wait > 0 && wait <= 60) {
+        await new Promise((r) => setTimeout(r, wait * 1000));
+        continue;
+      }
+      break;
+    }
+  }
+  throw new Error(`IA indisponible : ${errors.join(' | ')}`);
 }
 
 /** The JSON object in a reply (models sometimes wrap it in ```json fences or a sentence). */
@@ -70,6 +103,7 @@ export function extractJson<T = unknown>(text: string): T {
   return JSON.parse(raw.slice(start, end + 1)) as T;
 }
 
-export function imagePart(file: string): ChatPart {
-  return {type: 'image_url', image_url: {url: `data:image/jpeg;base64,${fs.readFileSync(file).toString('base64')}`}};
+export function imagePart(file: string, detail?: 'low' | 'high'): ChatPart {
+  const url = `data:image/jpeg;base64,${fs.readFileSync(file).toString('base64')}`;
+  return {type: 'image_url', image_url: detail ? {url, detail} : {url}};
 }
