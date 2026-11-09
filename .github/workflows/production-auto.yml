@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 300
     env:
       STUDIO_LLM_API_KEY: ${{ secrets.STUDIO_LLM_API_KEY || github.token }}
-      STUDIO_LLM_BASE_URL: ${{ vars.STUDIO_LLM_BASE_URL || (secrets.STUDIO_LLM_API_KEY && 'https://generativelanguage.googleapis.com/v1beta/openai' || 'https://models.github.ai/inference') }}
+      STUDIO_LLM_BASE_URL: ${{ vars.STUDIO_LLM_BASE_URL || (secrets.STUDIO_LLM_API_KEY && 'https://generativelanguage.googleapis.com/v1beta/openai' || 'https://models.github.ai/inference,https://models.inference.ai.azure.com') }}
       STUDIO_LLM_MODEL: ${{ vars.STUDIO_LLM_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4.1-mini,openai/gpt-4o-mini') }}
       STUDIO_LLM_VISION_MODEL: ${{ vars.STUDIO_LLM_VISION_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini') }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
@@ -74,8 +74,13 @@ jobs:
           restore-keys: pixabay-
 
       - name: Installer le studio
+        run: npm ci
+
+      - name: Tester l'IA gratuite (arrêt immédiat si elle ne répond pas)
+        run: npm run studio -- llm:ping
+
+      - name: Installer la voix, le navigateur et le rendu
         run: |
-          npm ci
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps chromium
           npx remotion browser ensure
