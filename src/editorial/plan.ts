@@ -99,9 +99,12 @@ export function chooseArtDirection(history: HistoryRecord[], rng: Rng, allowed?:
 }
 
 export async function nextRunId(date: string): Promise<string> {
+  // A fresh clone (GitHub Actions) has no runs/ folder: the history, the queue and the hosted videos also hold ids.
+  const taken = new Set((await loadHistory()).map((h) => h.runId));
   for (const suffix of 'abcdefghijklmnopqrstuvwxyz') {
     const id = `${date}-${suffix}`;
-    if (!exists(runPaths(id).dir)) return id;
+    const used = exists(runPaths(id).dir) || taken.has(id) || exists(path.join(PATHS.root, 'queue', `${id}.json`)) || exists(path.join(PATHS.root, 'videos', `${id}.mp4`));
+    if (!used) return id;
   }
   throw new Error(`Trop de productions pour le ${date}.`);
 }
