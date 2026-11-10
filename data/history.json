@@ -124,6 +124,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-09T15:42:55.659Z"
+    },
+    {
+      "runId": "2026-11-10-a",
+      "date": "2026-11-10",
+      "category": "produits-numeriques",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-10T06:40:50.464Z"
     }
   ]
 }
