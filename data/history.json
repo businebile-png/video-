@@ -143,6 +143,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-10T06:40:50.464Z"
+    },
+    {
+      "runId": "2026-11-10-b",
+      "date": "2026-11-10",
+      "category": "formules-payantes",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "studio-nuit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-10T15:30:55.193Z"
     }
   ]
 }
