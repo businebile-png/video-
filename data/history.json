@@ -251,6 +251,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-10T15:30:55.193Z"
+    },
+    {
+      "runId": "2026-11-11-a",
+      "date": "2026-11-11",
+      "category": "tunnels-de-vente",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-11T16:56:09.553Z"
     }
   ]
 }

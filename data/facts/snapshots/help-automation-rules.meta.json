@@ -2,9 +2,9 @@
   "sourceId": "help-automation-rules",
   "url": "https://help.systeme.io/article/140-automation-rules",
   "finalUrl": "https://help.systeme.io/article/140-automation-rules",
-  "fetchedAt": "2026-11-11T08:09:47.754Z",
+  "fetchedAt": "2026-11-11T16:56:08.381Z",
   "status": 200,
-  "sha256": "052f86f93ba94d919aa6e87f7fda4a79a01ae4cd08c4676c31b2d297a6b14df9",
+  "sha256": "c93886da69ccf6f1af5fb9435c968fd8cf91f65e77a82a89b6c21d1d6d9a860c",
   "chars": 3115,
   "method": "http"
 }
