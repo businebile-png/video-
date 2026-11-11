@@ -445,6 +445,68 @@
         }
       ],
       "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-mobile-automatisations",
+      "file": "tarifs-mobile-automatisations.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Tableau officiel (mobile) : règles d'automatisation et workflows",
+      "description": "Blocs « Règles d'automatisation » (Gratuit 1, Startup 10, Webinaire 100, Illimité Illimité) et « Workflows » (Gratuit 1, Startup 5, Webinaire 20, Illimité Illimité) du tableau « Comparer les plans », l'un sous l'autre — page systeme.io/fr/pricing en affichage mobile (390 px), lue dans un navigateur le 11/11/2026",
+      "capturedAt": "2026-11-11",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 870,
+      "height": 1134,
+      "focusRegions": [
+        {
+          "id": "a-regles-gratuit",
+          "x": 0.03,
+          "y": 0.163,
+          "w": 0.9,
+          "h": 0.071,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit",
+            "une règle"
+          ]
+        },
+        {
+          "id": "a-regles-startup",
+          "x": 0.03,
+          "y": 0.2425,
+          "w": 0.9,
+          "h": 0.071,
+          "label": "Startup",
+          "cues": [
+            "Startup",
+            "dix règles"
+          ]
+        },
+        {
+          "id": "a-workflows-gratuit",
+          "x": 0.03,
+          "y": 0.666,
+          "w": 0.9,
+          "h": 0.071,
+          "label": "Gratuit",
+          "cues": [
+            "un workflow"
+          ]
+        },
+        {
+          "id": "a-workflows-startup",
+          "x": 0.03,
+          "y": 0.745,
+          "w": 0.9,
+          "h": 0.071,
+          "label": "Startup",
+          "cues": [
+            "cinq workflows"
+          ]
+        }
+      ],
+      "personalDataChecked": true
     }
   ]
 }

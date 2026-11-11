@@ -109,7 +109,8 @@ export const Captions: React.FC<{groups: CaptionGroup[]; ad: ArtDirection}> = ({
         width: 860,
         top: group.y,
         transform: `translateY(-50%) translateY(${(1 - enter) * 16}px) scale(${0.97 + 0.03 * enter})`,
-        opacity: Math.min(enter * 1.4, 1) * exit,
+        // Readable from its first frame: the group pops in by moving and scaling, never through a faint grey fade.
+        opacity: Math.min(0.88 + enter, 1) * exit,
         textAlign: 'center',
         fontFamily: fontStack(ad.fonts.caption.family),
         fontWeight: ad.fonts.caption.weight,

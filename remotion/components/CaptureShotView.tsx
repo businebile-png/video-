@@ -73,8 +73,11 @@ export const CaptureShotView: React.FC<{shot: CaptureShot; ad: ArtDirection}> = 
   const f = focusAt(shot, frame);
   // Zoom so the focus region fills ~86% of the visible window, without exposing outside the capture.
   // Settled on a zone, the camera keeps pushing in very slowly (≈ +4 % over 2 s).
-  const drift = 1 + 0.04 * holdDrift(shot, frame);
-  const zoom = Math.min(3.2, Math.max(1, 0.86 / Math.max(f.w, f.h))) * drift;
+  // A zone that already fits the whole window (a full table row, a whole card) gets no push: the view would
+  // only crop the capture's first or last line.
+  const fit = Math.min(3.2, Math.max(1, 0.86 / Math.max(f.w, f.h)));
+  const drift = fit > 1.001 ? 1 + 0.04 * holdDrift(shot, frame) : 1;
+  const zoom = fit * drift;
   const cx = (f.x + f.w / 2) * contentW;
   const cy = (f.y + f.h / 2) * contentH;
   let tx = contentW / 2 - cx * zoom;

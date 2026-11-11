@@ -5,6 +5,7 @@
     {"id": "home", "url": "https://systeme.io/fr", "kind": "features", "note": "Page d'accueil : liste des fonctionnalités."},
     {"id": "tutorial", "url": "https://systeme.io/fr/tutorial", "kind": "features", "note": "Formation officielle « Maîtriser systeme.io » : aperçu des fonctionnalités."},
     {"id": "help-affiliate-link", "url": "https://help.systeme.io/article/162", "kind": "affiliate", "note": "Aide officielle : fonctionnement du programme d'affiliation et format du lien."},
-    {"id": "terms", "url": "https://systeme.io/fr/terms-and-conditions", "kind": "legal", "note": "Conditions générales de vente officielles : article 3 « Prix » (prix affichés toutes taxes comprises)."}
+    {"id": "terms", "url": "https://systeme.io/fr/terms-and-conditions", "kind": "legal", "note": "Conditions générales de vente officielles : article 3 « Prix » (prix affichés toutes taxes comprises)."},
+    {"id": "help-auto-email", "url": "https://help.systeme.io/article/280-how-to-send-an-automatic-email-when-a-lead-subscribes", "kind": "features", "note": "Aide officielle : envoyer automatiquement un e-mail quand un contact s'inscrit (règle d'automatisation « Funnel step form subscribed » → « Send email »)."}
   ]
 }

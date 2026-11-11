@@ -136,10 +136,10 @@
       "musicTrack": null,
       "voiceId": "claire",
       "durationSec": 43.23,
-      "score": null,
-      "decision": null,
+      "score": 69,
+      "decision": "redo",
       "status": "rendered",
-      "reason": null,
+      "reason": "69/100 (note indicative) — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture ; Vidéo cohérente et de bonne qualité (verdict de la relecture).",
       "pexelsIds": [
         203252,
         82130,
@@ -155,7 +155,7 @@
         31106,
         171044
       ],
-      "updatedAt": "2026-11-11T06:47:50.825Z"
+      "updatedAt": "2026-11-11T07:13:37.287Z"
     },
     {
       "runId": "2026-11-09-a",

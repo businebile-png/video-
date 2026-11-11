@@ -1,0 +1,99 @@
+Loading
+© 2026 systeme.io Help Center · help.systeme.io
+How to automatically send an email when a lead subscribes | systeme.io Help Center
+Categories
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General ›
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+On this page
+1. Creating an automation rule
+2. Creating an email
+a. Editing the email
+3. Testing the email automation
+Categories · General
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+General
+English
+العربية
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Français
+हिन्दी
+Magyar
+Bahasa Indonesia
+Italiano
+日本語
+Nederlands
+Norsk
+Polski
+Português
+Română
+Русский
+Slovenčina
+Slovenščina
+Shqip
+Српски
+Svenska
+ไทย
+Türkçe
+Українська
+中文
+How to automatically send an email when a lead subscribes
+In this article, you will learn how to automatically send an email when a lead subscribes.
+What you'll need:
+A systeme.io account
+A sales funnel
+An opt-in page
+1. Creating an automation rule
+Select your opt-in page from the funnel list on the left, then click the Automation Rules tab (1) and Add rule (2).
+Click the + icon add a new trigger (3).
+Select Funnel step form subscribed (4).
+Click the + icon to add an action (5).
+Select Send email (6).
+Tip: You can also add the "Add a tag" action to segment these contacts. To learn more how to create a tag, check out our dedicated help article: How to create a tag .
+2. Creating an email
+Click the + icon to create a new email (7).
+Once finished, click Save rule (8).
+The new rule is now active (9).
+a. Editing the email
+Click the three-dot menu of the rule you created, then select Edit automation rule (10).
+Click the pencil icon (11) to edit the email.
+You can attach files (e.g., PDFs) to your emails (12) and insert personalization substitutes (variables) that are automatically replaced with each contact's actual information (13).
+Once you've finished editing the email, click Save (14) to save your changes.
+Click Save rule (15) again to save the updated automation rule.
+To return to the main automation rules list, click the Back (16) button.
+You can also manage existing rules by clicking the three-dots menu next to a rule, where you can edit, disable, or delete it (17).
+3. Testing the email automation
+We recommend testing your funnel by registering on your own opt-in page. If the email isn't sent or the contact isn't added, contact the systeme.io support team here .
+Notes:
+The form button's action must be set to Submit form for the automation rule to be triggered automatically after submission. To learn more, check out the following help article: How to set up a button .
+To improve email deliverability, we restrict the size of file attachments to 5 MB. If your file is larger than 5 MB, you will need to compress it before adding it.
+Did this answer your question?
+Last updated on November 10, 2026
