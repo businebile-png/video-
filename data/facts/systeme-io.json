@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-11T07:02:38.925Z",
+  "updatedAt": "2026-11-11T07:29:15.446Z",
   "facts": [
     {
       "id": "feature.funnels",
@@ -756,6 +756,33 @@
       "verifiedAt": "2026-11-11T07:00:30.607Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) ; le déclencheur « Funnel step form subscribed » et l'action « Send email » y sont décrits."
+    },
+    {
+      "id": "rule.trigger",
+      "statement": "Une règle d'automatisation de Systeme.io commence par un déclencheur, par exemple l'inscription à un formulaire d'une page de capture.",
+      "tags": [
+        "feature:automations"
+      ],
+      "sourceId": "help-auto-email",
+      "evidence": "Select Funnel step form subscribed (4).",
+      "status": "verified",
+      "verifiedAt": "2026-11-11T07:00:30.607Z",
+      "ttlDays": 30,
+      "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) : déclencheur « Funnel step form subscribed », ajouté par « Click the + icon add a new trigger »."
+    },
+    {
+      "id": "rule.action-send-email",
+      "statement": "Une règle d'automatisation de Systeme.io peut avoir pour action l'envoi d'un e-mail.",
+      "tags": [
+        "feature:automations",
+        "feature:email-marketing"
+      ],
+      "sourceId": "help-auto-email",
+      "evidence": "Select Send email (6).",
+      "status": "verified",
+      "verifiedAt": "2026-11-11T07:00:30.607Z",
+      "ttlDays": 30,
+      "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) : action « Send email », ajoutée par « Click the + icon to add an action »."
     }
   ]
 }
