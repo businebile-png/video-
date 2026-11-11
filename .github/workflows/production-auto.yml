@@ -55,7 +55,15 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Outils système (FFmpeg)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+        timeout-minutes: 12
+        run: |
+          # Le 11/11/2026, apt a bloqué une heure : 7 minutes au plus, puis une version autonome de FFmpeg.
+          if ! timeout 420 bash -c 'sudo apt-get update -qq -o Acquire::Retries=3 && sudo apt-get install -y -qq ffmpeg'; then
+            echo "::warning::apt indisponible : FFmpeg autonome"
+            curl -fsSL --retry 3 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o "$RUNNER_TEMP/ffmpeg.tar.xz"
+            mkdir -p "$HOME/ffmpeg" && tar -xf "$RUNNER_TEMP/ffmpeg.tar.xz" -C "$HOME/ffmpeg" --strip-components=1
+            echo "$HOME/ffmpeg" >> "$GITHUB_PATH"
+          fi
 
       - name: Cache de la voix « Claire » (environnements Python et modèles)
         uses: actions/cache@v4

@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import {extractJson} from '../src/llm/client.js';
 import {nextSlot, pickSlot, reliefNotNeeded} from '../src/auto/auto.js';
+import {firstComment} from '../src/publish/publish.js';
 import {viralChecklist} from '../src/script/viral.js';
 import {matchPost, metricoolDate, parseTable, postKey} from '../src/analytics/metricool.js';
 import {hookStyleIndex, videoPerformance} from '../src/analytics/analytics.js';
@@ -39,6 +40,11 @@ describe('relève par les IA gratuites', () => {
 });
 
 describe('viralité', () => {
+  it('ouvre les commentaires Instagram avec la question de la légende', () => {
+    expect(firstComment('Publicité · Lien affilié\n\nTu paies combien d’outils ? Tu automatiserais quoi en premier : les e-mails ou les ventes ? Dis-le en commentaire.')).toBe('Tu automatiserais quoi en premier : les e-mails ou les ventes ? 👇');
+    expect(firstComment('Aucune question ici.')).toBe('');
+  });
+
   it('coche ce que le script respecte et explique le reste', () => {
     const v = viralChecklist(sampleScript());
     expect(v.total).toBe(12);

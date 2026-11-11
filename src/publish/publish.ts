@@ -130,6 +130,16 @@ export function postText(script: Script, network: 'tiktok' | 'instagram', config
   return lines.join('\n').slice(0, 2150);
 }
 
+/**
+ * First comment of an Instagram post: the caption's own question to the viewer, so the comment thread opens
+ * with something easy to answer (comments are a ranking signal). Empty when the caption asks nothing.
+ */
+export function firstComment(caption: string): string {
+  const sentences = caption.split(/(?<=[?!.])\s+|\n+/).map((s) => s.trim()).filter((s) => s.endsWith('?') && s.length <= 180 && !/^publicit/i.test(s));
+  const best = sentences.find((s) => /comment|dis[- ]moi|tu pr[ée]f[èe]res|plut[ôo]t/i.test(s)) ?? sentences[sentences.length - 1];
+  return best ? `${best} 👇` : '';
+}
+
 /** The `info` object of Metricool's createScheduledPost, built exactly as its tool schema describes. */
 /** TikTok title of a post (Metricool refuses a TikTok post without one): the video's opening headline, else its working title. */
 export function tiktokTitle(script: {scenes: Array<{headline?: string}>; workingTitle: string}): string {
@@ -144,7 +154,7 @@ export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: str
     autoPublish: delivery === 'auto',
     draft: delivery === 'draft',
     descendants: [],
-    firstCommentText: '',
+    firstCommentText: network === 'instagram' ? firstComment(input.text) : '',
     hasNotReadNotes: false,
     media: [input.mediaUrl],
     mediaAltText: [],
