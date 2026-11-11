@@ -65,6 +65,27 @@ export interface ChatOptions {
 const brokenBases = new Set<string>();
 /** Keyless free tier (Pollinations): one reply every 45 seconds per address, so requests are spaced. */
 let lastKeyless = 0;
+/** Free models of the keyless address, read once from its own list (names change over time). */
+let keylessModels: {text: string[]; vision: string[]} | null = null;
+
+async function freeModels(base: string): Promise<{text: string[]; vision: string[]}> {
+  if (keylessModels) return keylessModels;
+  const fallback = {text: ['openai'], vision: ['openai']};
+  try {
+    const res = await http(base.replace(/\/openai$/, '/models'), {timeoutMs: 20_000, retries: 1});
+    const list = (await res.json()) as Array<{name?: string; id?: string; input_modalities?: string[]; vision?: boolean; tier?: string}>;
+    const names = list.filter((m) => !m.tier || /anonymous|free|seed/i.test(m.tier));
+    const pick = (ms: typeof list) => ms.map((m) => m.name ?? m.id ?? '').filter(Boolean);
+    const text = pick(names);
+    const vision = pick(names.filter((m) => m.vision || m.input_modalities?.includes('image')));
+    // « openai » first when listed (the steadiest), then the others in the service's order.
+    const order = (xs: string[]) => [...new Set([...xs.filter((x) => x === 'openai'), ...xs])].slice(0, 4);
+    keylessModels = {text: order(text).length ? order(text) : fallback.text, vision: order(vision).length ? order(vision) : fallback.vision};
+  } catch {
+    keylessModels = fallback;
+  }
+  return keylessModels;
+}
 const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /**
@@ -83,7 +104,8 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
   // Pollinations: free, no account, several AIs behind one OpenAI-compatible address. Never send it our key.
   const keyless = /pollinations\.ai/.test(base);
   const url = /pollinations\.ai\/openai$/.test(base) ? base : `${base}/chat/completions`;
-  for (const listed of keyless ? (opts.vision ? ['openai'] : ['openai', 'mistral']) : models) {
+  const candidates = keyless ? (opts.vision ? (await freeModels(base)).vision : (await freeModels(base)).text) : models;
+  for (const listed of candidates) {
     if (brokenBases.has(base)) break;
     // The Azure endpoint of GitHub Models names models without their publisher (« gpt-4.1 »).
     const model = azure ? listed.replace(/^[^/]+\//, '') : listed;
@@ -103,7 +125,8 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
             ...(github ? {'x-github-api-version': '2022-11-28'} : {}),
             ...(keyless ? {} : {authorization: `Bearer ${cfg.apiKey}`}),
           },
-          body: JSON.stringify({model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
+          // Free reasoning models spend tokens thinking before they answer: no output cap and little reasoning there.
+          body: JSON.stringify(keyless ? {model, messages, temperature: opts.temperature ?? 0.7, reasoning_effort: 'low'} : {model, messages, temperature: opts.temperature ?? 0.7, max_tokens: opts.maxTokens ?? (compact(cfg) ? 4000 : 8000)}),
           redirect: 'manual',
           timeoutMs: 240_000,
           retries: 2,
