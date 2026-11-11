@@ -13,8 +13,11 @@ panneau et on ne dépose rien de médiocre.
 
 > Depuis le 09/11/2026, la production quotidienne tourne **sans Claude** (`npm run studio -- auto`, GitHub Actions,
 > IA gratuite) : voir `docs/production-sans-claude.md`. Ce guide reste valable pour une production faite à la main.
-> Règle de publication depuis le 09/11/2026 : plus de note minimum ; la vidéo doit être jugée cohérente et de bonne
-> qualité par la relecture (bloc `verdict`), avec tous les contrôles obligatoires validés. La note sur 100 est indicative.
+> Règle de publication (choix de l'utilisateur, 09/11 puis 11/11/2026) : plus de note minimum ; la vidéo doit être
+> jugée **cohérente** par la relecture (bloc `verdict`), avec tous les contrôles obligatoires validés (mention
+> « Publicité », faits vérifiés, droits, son, aucun problème bloquant ni doute factuel relevé). La note sur 100 et
+> l'avis « bonne qualité » sont indicatifs : ils guident les corrections, ils ne bloquent plus. Partout où ce guide
+> parle de « 80/100 » ou de « seuil », lire « cohérente avec tous les contrôles obligatoires validés ».
 
 ## Constantes
 

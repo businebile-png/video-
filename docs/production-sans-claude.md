@@ -16,7 +16,7 @@ hebdomadaire), mais par une IA gratuite, avec **le même studio et les mêmes r�
 | Script | l'IA gratuite (`src/auto/writer.ts`), refusé et renvoyé tant que le contrôleur (`script:check`) trouve une erreur ; checklist viralité visée : 10/12 |
 | Voix « Claire », séquences, montage, rendu, contrôles techniques | le studio (code), comme avant |
 | Relecture indépendante (images regardées) | l'IA gratuite avec images (`src/auto/reviewer.ts`), consigne `docs/relecteur.md`, relecteur noté `independent-llm` |
-| Décision de publier | plus de note minimum (choix de l'utilisateur le 09/11/2026) : la relecture doit juger la vidéo **cohérente et de bonne qualité**, et tous les contrôles obligatoires restent exigés (mention « Publicité », faits vérifiés, droits, son, format) ; la note sur 100 reste affichée, à titre indicatif |
+| Décision de publier | plus de note minimum (choix de l'utilisateur le 09/11/2026) : la relecture doit juger la vidéo **cohérente** (depuis le 11/11/2026, la « bonne qualité » est affichée mais ne bloque plus), et tous les contrôles obligatoires restent exigés (mention « Publicité », faits vérifiés, droits, son, format) ; la note sur 100 reste affichée, à titre indicatif |
 | Corrections | jusqu'à 2 reprises automatiques à partir de la relecture |
 | Musique « All For Nothing » | ajoutée si le lien privé `STUDIO_MUSIC_URL` est fourni ; jamais copiée dans le dépôt |
 | Publication Metricool | la seule partie qui demande encore Claude (le connecteur Metricool n'existe que là) : une courte tâche à 9:35 et 19:35 |
@@ -99,7 +99,7 @@ aucun fichier. Sois bref et économe. Réponds en français.
 ## Ce qui change honnêtement
 
 - Une IA gratuite écrit et relit moins finement que Claude. Il n'y a plus de note minimum : une vidéo part dès que
-  la relecture la juge cohérente et de bonne qualité (dans le doute, elle la refuse et la vidéo est corrigée), et les
+  la relecture la juge cohérente (dans le doute, elle la refuse et la vidéo est corrigée), et les
   contrôles obligatoires (légaux et techniques) bloquent toujours.
 - Le panneau montre une vidéo dès que la tâche de publication l'y dépose (avant, la production l'y mettait).
 - L'apprentissage sur les statistiques (temps regardé, partages) reste dans le panneau ; la production GitHub ne

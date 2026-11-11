@@ -128,12 +128,19 @@ export function computeScore(input: {
   ];
   const coherenceRule = config.publish.decisionRule === 'coherence';
   if (coherenceRule) {
+    // Choice of the user (11/11/2026): no minimum score, a coherent video goes out. The reviewer's quality
+    // opinion stays visible (and feeds the corrections) but no longer blocks on its own; the legal and
+    // factual gates above still do.
     const v = review.verdict;
     gates.push({
       id: 'coherence',
-      label: 'Vidéo cohérente et de bonne qualité (verdict de la relecture)',
-      ok: Boolean(v?.coherent && v?.goodQuality),
-      detail: v ? (v.coherent && v.goodQuality ? v.justification : `${v.coherent ? '' : 'incohérente'}${!v.coherent && !v.goodQuality ? ' et ' : ''}${v.goodQuality ? '' : 'qualité insuffisante'} : ${v.justification}`) : 'verdict de cohérence absent de la relecture',
+      label: 'Vidéo cohérente (verdict de la relecture)',
+      ok: Boolean(v?.coherent),
+      detail: v
+        ? v.coherent
+          ? `${v.goodQuality ? '' : 'cohérente (qualité jugée perfectible, non bloquante) : '}${v.justification}`
+          : `incohérente${v.goodQuality ? '' : ' et qualité insuffisante'} : ${v.justification}`
+        : 'verdict de cohérence absent de la relecture',
     });
   }
   const gatesOk = gates.every((g) => g.ok);
@@ -144,7 +151,7 @@ export function computeScore(input: {
   const weakest = [...criteria].sort((a, b) => a.score / a.max - b.score / b.max).slice(0, 2).map((c) => c.label);
   const summary = coherenceRule
     ? decision === 'publishable'
-      ? `${total}/100 (note indicative) — publiable : cohérente et de bonne qualité selon la relecture, tous les contrôles obligatoires validés.`
+      ? `${total}/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.`
       : decision === 'improve'
         ? `${total}/100 (note indicative) — à corriger : ${gates.find((g) => g.id === 'coherence')!.detail}.`
         : `${total}/100 (note indicative) — bloquée : ${gates.filter((g) => !g.ok).map((g) => g.label).join(' ; ')}.`

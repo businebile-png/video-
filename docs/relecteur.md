@@ -25,8 +25,11 @@ Repères : 90 % du maximum = niveau agence ; 75 % = correct mais générique ; 6
 
 ## Verdict de publication (c'est lui qui décide, pas la note)
 
-Règle choisie par l'utilisateur le 09/11/2026 : pas de note minimum. Une vidéo part si elle est **cohérente** et de
-**bonne qualité**, avec tous les contrôles obligatoires validés (mention « Publicité », faits vérifiés, droits, son…).
+Règle choisie par l'utilisateur (09/11 puis 11/11/2026) : pas de note minimum. Une vidéo part si elle est
+**cohérente**, avec tous les contrôles obligatoires validés (mention « Publicité », faits vérifiés, droits, son…) et
+sans problème bloquant ni doute factuel dans ta relecture. Ton avis `goodQuality` reste demandé : il est affiché et
+guide les corrections, mais il ne bloque plus à lui seul. Un défaut grave (texte illisible ou coupé, plan qui fait
+croire qu'une personne filmée recommande le produit…) se signale toujours dans `blockingIssues`.
 
 - `coherent` : vrai seulement si ce qui est dit correspond à ce qui est montré, si le message se suit du début à la
   fin sans contradiction ni phrase hors sujet, si chaque chiffre à l'écran est celui que la voix dit, et si un

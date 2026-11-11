@@ -1,0 +1,177 @@
+Loading
+© 2026 systeme.io Help Center · help.systeme.io
+How to create workflows in systeme.io | systeme.io Help Center
+Categories
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General ›
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+On this page
+1. Creating a new workflow
+2. Navigating the editor
+3. Adding a trigger
+4. Adding a workflow step
+5. Sample workflow example
+6. Managing your workflows
+7. Additional information
+Categories · General
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+General
+English
+العربية
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Français
+हिन्दी
+Payments
+Sales funnels
+Magyar
+Bahasa Indonesia
+Italiano
+日本語
+Nederlands
+Norsk
+Polski
+Português
+Română
+Slovenčina
+Slovenščina
+Shqip
+Српски
+Svenska
+ไทย
+Türkçe
+Українська
+中文
+How to create workflows in systeme.io
+In this article, you will learn how to create and manage automated workflows in systeme.io .
+What you will need:
+A systeme.io account
+Existing assets to automate (e.g., a funnel with an opt-in page, tags, or a course)
+1. Creating a new workflow
+To get started, navigate to the Automations tab, and click Workflows (1).
+Click on the + Create button (2) in the top right corner.
+A popup will appear. Enter a name (3) for your workflow and click Save (4).
+2. Navigating the editor
+When you open your new workflow, you will be taken to our modern, node-based canvas editor. This interface is designed to make building and visualizing complex automations effortless.
+Canvas controls: Use the controls in the bottom-left corner to zoom in, zoom out, reset to 100%, or fit the entire workflow to your screen.
+Free movement: You can click and drag anywhere on the background to pan around your workflow freely.
+3. Adding a trigger
+A trigger is necessary, as it is the event that starts the workflow. For example, when a user purchases a product or subscribes to your campaign.
+To start your automation, click the + Add a trigger box (5).
+A panel will open where you can search or browse through the available triggers (6). You can choose from the following events:
+a. Contact:
+Tag added / Tag removed: When a tag is added or removed from a contact.
+b. Forms & Subscriptions
+Funnel form subscribed: When a contact subscribes on a funnel step.
+Blog page form subscribed: When a contact subscribes via a blog form.
+Website form subscribed: When a contact subscribes via a website form.
+Creator store form subscribed: When a contact subscribes through a creator store.
+c. Courses:
+Enrolled in course / Course completed: When a student enrolls in or completes a course.
+Module completed / Lecture completed: When a student finishes a specific module or lecture.
+Enrolled in course bundle: When a contact enrolls in a course bundle.
+d. Sales:
+New sale: When a customer purchases an offer.
+Sale canceled: When a subscription is canceled or a one-time payment is refunded.
+Subscription payment failed: When a subscription payment fails.
+e. Email:
+Email opened / Email link clicked: When a contact opens an email or clicks a link inside it.
+Email completed: When a contact has just completed a campaign.
+f. Events:
+Meeting scheduled: When a contact schedules a meeting via your booking calendar.
+Registered to webinar: When a contact registers for an evergreen webinar.
+g. Community:
+Enrolled in community: When a contact accesses a community.
+h. Tracking:
+Page visited: When a person visits a selected page.
+Once you select your trigger, choose the specific asset (e.g., the exact tag or funnel step) and click Create .
+Notes:
+No retroactive action: Workflows only trigger for events that happen after the workflow is activated. They will not apply to contacts who met the trigger criteria in the past.
+Multiple triggers: You can define multiple triggers to occur simultaneously.
+Email link clicked cooldown: For the Email link clicked trigger, the system applies a 1-minute cooldown after the first recorded click. This prevents the trigger from executing multiple times due to accidental double-clicks or automated background security checks performed by email providers (like Gmail).
+4. Adding a workflow step
+After setting your trigger, click the (+) icon (7) to add the next step.
+A menu will appear allowing you to choose between three types of steps (8): Action, Decision, or Delay.
+a. Action: An action performs a specific operation on the contact. You can choose from the following actions:
+Send an email / Send email to specific address
+Subscribe to campaign / Unsubscribe from campaign
+Send SMS
+Add a tag / Remove a tag
+Add to a pipeline stage
+Enroll in a course / Revoke access to a course
+Enroll in a course bundle / Revoke access to a course bundle
+Grant access to a community / Revoke access to a community
+Send webhook
+Add a new row to a Google Sheet
+b. Decision: A decision splits the workflow into two different paths (Yes/No) based on the contact's information.
+You can filter contacts based on Contact fields , Tags , Email activity , Registration dates , Contact state or overall Activity . You can also combine multiple rules using + Add a condition or + Add another group of conditions .
+c. Delay: A delay inserts a waiting period before the contact moves to the next step in the workflow. You can set the delay in:
+Minutes, Hours, or Days.
+Exact date: Pick a specific date and time (up to one year in advance).
+Note: When choosing an exact date, a timezone selector will appear next to the date field. Your account's default timezone is pre-selected, but you can change it to any timezone you need (this selection applies only to this specific delay step).
+5. Sample workflow example
+Let's create a simple workflow to illustrate how to use these elements together.
+a. Background scenario: You are selling two offers.
+You have two campaigns: Campaign 1 promotes Offer #1, and Campaign 2 promotes Offer #2.
+An automation rule assigns the tag "Customer 1" to every buyer of Offer #1.
+b. Workflow sequence goal:
+When a lead subscribes through the opt-in page, subscribe them to Campaign 1 to promote Offer #1.
+Wait 7 days.
+After 7 days, check if they purchased Offer #1.
+If they did (Yes): Unsubscribe them from Campaign 1, and subscribe them to Campaign 2 to promote Offer #2.
+If they didn't (No): Do nothing (they continue receiving Campaign 1).
+d. Steps to build this:
+Create a trigger: Choose Funnel form subscribed and select the opt-in page. Under the Details section, you can specify if this trigger should apply to standard input fields (Field) or the unified Form element on your page.
+Add an action: Choose Subscribe to campaign and select Campaign 1.
+Add a delay: Set a wait time of 7 days.
+Note : Editing the duration of a delay step will only affect new contacts entering that step. Contacts already waiting will complete their original 7-day delay.
+Add a decision: Use the filter Tag -> Contact tagged with -> choose the "Customer 1" tag.
+After the decision, there are two possible paths:
+No: The contact doesn't have the Customer 1 tag (they haven’t purchased yet)
+Yes: The contact has the tag (they’ve purchased)
+Under the "Yes" path: Add two actions: Unsubscribe from campaign (Campaign 1), and Subscribe to campaign (Campaign 2).
+Here is the completed workflow:
+6. Managing your workflows
+a. Activating the workflow: Workflows are inactive by default. To activate a workflow, go to the Workflows list, click the three dots menu (...) next to your workflow, and click Activate (9).
+b. Deactivating the workflow To pause a workflow, click the three dots menu (...) and select Deactivate (10).
+You will be given two options:
+Deactivate workflow: Stops new contacts from entering, but contacts currently inside the workflow will continue progressing normally.
+Deactivate workflow and cancel related scheduled tasks: Prevents any further scheduled actions from being executed for all contacts.
+c. Sharing the workflow: You can share a template of your workflow with other systeme.io accounts using a simple shareable link. Click the three dots menu (...) and select Share (11).
+A popup will appear with a URL you can copy and send.
+When the recipient clicks the link, the workflow will begin importing into their account, and they will receive a notification in their dashboard showing the sharing progress (they can cancel the import by clicking the X on the notification).
+Once the sharing is complete, a final " Workflow was imported successfully " notification will appear.
+The imported workflow can then be accessed directly from their Workflows page.
+Important: Most workflow triggers, actions, and conditions are fully shareable. However, because some elements rely on highly specific external connections or upcoming platform changes, the following elements are not included when a workflow is shared:
+Triggers: "Blog page form subscribed" and "Creator store form subscribed".
+Actions: "Add a new row to a Google Sheet" and "Send webhook".
+7. Additional information
+Execution history: Workflow execution history is stored for one month only. After this period, it is automatically removed from the system for data optimization. If you can't find a past workflow task in a contact's profile, it means the task was over one month old and was removed during cleanup.
+Timezones: The dates and times displayed throughout your workflows (including scheduled delays and execution logs) automatically follow the format and timezone configured in your main account settings .
+Did this answer your question?
+Last updated on October 12, 2026

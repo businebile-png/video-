@@ -243,7 +243,14 @@ describe('note sur 100', () => {
     const modest = computeScore({...linked, review: {...review, criteria: {visual: low(11), editing: low(8), script: low(8), explanation: low(8), conversion: low(8)}}});
     expect(modest.total).toBeLessThan(80);
     expect(modest.decision).toBe('publishable');
-    // …but not one the reviewer finds incoherent or sloppy (corrected), nor one that fails a mandatory check.
+    // Since 11/11/2026 coherence is enough: a coherent video the reviewer finds perfectible still goes out…
+    const perfectible = computeScore({...linked, review: {...review, verdict: {coherent: true, goodQuality: false, justification: 'Cohérente ; deux plans un peu génériques dans l’accroche.'}}});
+    expect(perfectible.decision).toBe('publishable');
+    expect(perfectible.gates.find((g) => g.id === 'coherence')!.detail).toContain('non bloquante');
+    // …and a blocking issue or a factual doubt still stops it.
+    const doubtful = computeScore({...linked, review: {...review, verdict: {coherent: true, goodQuality: false, justification: 'Cohérente.'}, factualConcerns: ['Affirmation non couverte par un fait vérifié.']}});
+    expect(doubtful.decision).not.toBe('publishable');
+    // …but not one the reviewer finds incoherent (corrected), nor one that fails a mandatory check.
     const incoherent = computeScore({...linked, review: {...review, verdict: {coherent: false, goodQuality: true, justification: 'Le plan de la scène 3 ne montre pas ce que dit la voix.'}}});
     expect(incoherent.decision).toBe('improve');
     expect(incoherent.gates.find((g) => g.id === 'coherence')!.ok).toBe(false);

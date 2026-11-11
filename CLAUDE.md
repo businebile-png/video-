@@ -30,8 +30,9 @@ répondre, commenter et écrire les messages de commit en français.
   échec) : voir `docs/production-sans-claude.md`.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : deux vidéos par jour,
   à 10:00 et 20:00 sur TikTok et Instagram via Metricool. Pas de note minimum (choix de l'utilisateur le
-  09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente et de bonne
-  qualité et si tous les contrôles obligatoires sont validés (mention « Publicité », faits, droits, son) ; tâche courte à 9:35 et 19:35 dans une conversation Claude qui a le connecteur Metricool ; jamais deux
+  09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente (depuis le
+  11/11/2026, la « bonne qualité » est affichée mais ne bloque plus) et si tous les contrôles obligatoires sont validés
+  (mention « Publicité », faits, droits, son, aucun problème bloquant ni doute factuel à la relecture) ; tâche courte à 9:35 et 19:35 dans une conversation Claude qui a le connecteur Metricool ; jamais deux
   vidéos au même créneau.
 - Musique : « All For Nothing » (Zachariehs), choix de l'utilisateur qui déclare en avoir le droit (licence non
   vérifiée par le studio) : un extrait différent sous chaque vidéo (`music:overlay`, après la relecture) ; le
