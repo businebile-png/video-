@@ -239,16 +239,15 @@
       "personalDataChecked": true
     },
     {
+      "id": "tarifs-contacts-a",
+      "file": "tarifs-contacts-a.png",
       "type": "image",
       "feature": "pricing",
+      "title": "Tableau officiel : contacts, Gratuit et Startup",
+      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Gratuit et Startup, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
       "capturedAt": "2026-11-06T17:23:30.218Z",
       "source": "public-page",
       "sourceUrl": "https://systeme.io/fr/pricing",
-      "personalDataChecked": true,
-      "id": "tarifs-contacts-a",
-      "file": "tarifs-contacts-a.png",
-      "title": "Tableau officiel : contacts, Gratuit et Startup",
-      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Gratuit et Startup, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
       "width": 470,
       "height": 250,
       "focusRegions": [
@@ -274,19 +273,19 @@
             "5 000"
           ]
         }
-      ]
+      ],
+      "personalDataChecked": true
     },
     {
+      "id": "tarifs-contacts-b",
+      "file": "tarifs-contacts-b.png",
       "type": "image",
       "feature": "pricing",
+      "title": "Tableau officiel : contacts, Webinaire et Illimité",
+      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Webinaire et Illimité, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
       "capturedAt": "2026-11-06T17:23:30.218Z",
       "source": "public-page",
       "sourceUrl": "https://systeme.io/fr/pricing",
-      "personalDataChecked": true,
-      "id": "tarifs-contacts-b",
-      "file": "tarifs-contacts-b.png",
-      "title": "Tableau officiel : contacts, Webinaire et Illimité",
-      "description": "Ligne « Contacts » du tableau « Comparer les plans » (colonnes Webinaire et Illimité, en-têtes compris), page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
       "width": 470,
       "height": 250,
       "focusRegions": [
@@ -312,7 +311,140 @@
             "illimités"
           ]
         }
-      ]
+      ],
+      "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-mobile-emails",
+      "file": "tarifs-mobile-emails.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Tableau officiel (mobile) : e-mails envoyés",
+      "description": "Bloc « Emails envoyés » du tableau « Comparer les plans » : Gratuit, Startup, Webinaire et Illimité, chacun « Illimité » — page systeme.io/fr/pricing en affichage mobile (390 px), lue dans un navigateur le 11/11/2026",
+      "capturedAt": "2026-11-11",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 870,
+      "height": 564,
+      "focusRegions": [
+        {
+          "id": "m-emails",
+          "x": 0.03,
+          "y": 0.31,
+          "w": 0.9,
+          "h": 0.64,
+          "label": "Les 4 formules",
+          "cues": [
+            "illimités"
+          ]
+        }
+      ],
+      "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-mobile-regles",
+      "file": "tarifs-mobile-regles.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Tableau officiel (mobile) : règles d'automatisation",
+      "description": "Bloc « Règles d'automatisation » du tableau « Comparer les plans » : Gratuit 1, Startup 10, Webinaire 100, Illimité Illimité — page systeme.io/fr/pricing en affichage mobile (390 px), lue dans un navigateur le 11/11/2026",
+      "capturedAt": "2026-11-11",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 870,
+      "height": 564,
+      "focusRegions": [
+        {
+          "id": "m-regles-gratuit",
+          "x": 0.03,
+          "y": 0.328,
+          "w": 0.9,
+          "h": 0.142,
+          "label": "Gratuit",
+          "cues": [
+            "gratuit",
+            "une règle"
+          ]
+        },
+        {
+          "id": "m-regles-startup",
+          "x": 0.03,
+          "y": 0.488,
+          "w": 0.9,
+          "h": 0.142,
+          "label": "Startup",
+          "cues": [
+            "Startup",
+            "dix règles"
+          ]
+        }
+      ],
+      "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-mobile-workflows",
+      "file": "tarifs-mobile-workflows.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Tableau officiel (mobile) : workflows",
+      "description": "Bloc « Workflows » du tableau « Comparer les plans » : Gratuit 1, Startup 5, Webinaire 20, Illimité Illimité — page systeme.io/fr/pricing en affichage mobile (390 px), lue dans un navigateur le 11/11/2026",
+      "capturedAt": "2026-11-11",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 870,
+      "height": 564,
+      "focusRegions": [
+        {
+          "id": "m-workflows-gratuit",
+          "x": 0.03,
+          "y": 0.328,
+          "w": 0.9,
+          "h": 0.142,
+          "label": "Gratuit",
+          "cues": [
+            "un workflow"
+          ]
+        },
+        {
+          "id": "m-workflows-startup",
+          "x": 0.03,
+          "y": 0.488,
+          "w": 0.9,
+          "h": 0.142,
+          "label": "Startup",
+          "cues": [
+            "cinq workflows"
+          ]
+        }
+      ],
+      "personalDataChecked": true
+    },
+    {
+      "id": "tarifs-mobile-startup",
+      "file": "tarifs-mobile-startup.png",
+      "type": "image",
+      "feature": "pricing",
+      "title": "Carte officielle (mobile) : formule Startup",
+      "description": "Carte complète de la formule Startup en facturation mensuelle (titre, description, 17 €, bouton), rien de coupé — page systeme.io/fr/pricing en affichage étroit (600 px), lue dans un navigateur le 11/11/2026",
+      "capturedAt": "2026-11-11",
+      "source": "public-page",
+      "sourceUrl": "https://systeme.io/fr/pricing",
+      "width": 1668,
+      "height": 1548,
+      "focusRegions": [
+        {
+          "id": "m-startup-prix",
+          "x": 0.05,
+          "y": 0.6,
+          "w": 0.9,
+          "h": 0.14,
+          "label": "17 € par mois",
+          "cues": [
+            "17 €"
+          ]
+        }
+      ],
+      "personalDataChecked": true
     }
   ]
 }

@@ -39,8 +39,8 @@
     "delivery": "auto",
     "minScore": 80,
     "improveFrom": 75,
-    "leadTimeMinutes": 90,
-    "decisionRule": "coherence"
+    "decisionRule": "coherence",
+    "leadTimeMinutes": 90
   },
   "media": {
     "repo": "businebile-png/video-",
@@ -179,16 +179,16 @@
       "artist": "Zachariehs",
       "credit": "🎵 Musique : « All For Nothing » — Zachariehs",
       "licence": "Choix de l'utilisateur, qui déclare avoir le droit de l'utiliser (licence non vérifiée par le studio) ; fichier fourni par l'utilisateur le 08/11/2026",
+      "panelAssetId": "c1c32f018b8f42b392f88d45b26c039d",
       "excerpts": [
         21.73,
         32.83,
         43.91,
         54.87,
-        0.0,
+        0,
         10.75
       ],
-      "targetLufs": -19,
-      "panelAssetId": "c1c32f018b8f42b392f88d45b26c039d"
+      "targetLufs": -19
     }
   },
   "render": {

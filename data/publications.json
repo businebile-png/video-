@@ -1,1 +1,40 @@
-{"records": []}
+{
+  "records": [
+    {
+      "runId": "2026-11-07-a",
+      "network": "tiktok",
+      "contentSha256": "d4289ab55d8388315289dc79071f01544969ca01bc968d4482f2fc372b36d09b",
+      "mediaUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-07-a.mp4",
+      "scheduledFor": "2026-11-08T12:22:00+01:00",
+      "delivery": "auto",
+      "approvedBy": "panel",
+      "status": "published",
+      "metricoolPostId": "420654772",
+      "metricoolUuid": "-3882067787306218873",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=-3882067787306218873",
+      "permalink": "https://www.tiktok.com/@z.zir/video/7705759537223011606",
+      "captionStart": "",
+      "confirmedAt": "2026-11-08T11:25:00Z",
+      "note": null,
+      "recordedAt": "2026-11-11T06:23:45.692Z"
+    },
+    {
+      "runId": "2026-11-07-a",
+      "network": "instagram",
+      "contentSha256": "d4289ab55d8388315289dc79071f01544969ca01bc968d4482f2fc372b36d09b",
+      "mediaUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-07-a.mp4",
+      "scheduledFor": "2026-11-08T12:22:00+01:00",
+      "delivery": "auto",
+      "approvedBy": "panel",
+      "status": "published",
+      "metricoolPostId": "420654896",
+      "metricoolUuid": "-3195816576076788702",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=-3195816576076788702",
+      "permalink": "https://www.instagram.com/reel/Dfeo5J0iXtU/",
+      "captionStart": "",
+      "confirmedAt": "2026-11-08T11:25:00Z",
+      "note": null,
+      "recordedAt": "2026-11-11T06:23:45.702Z"
+    }
+  ]
+}
