@@ -38,7 +38,7 @@
         164339,
         142641
       ],
-      "updatedAt": "2026-11-11T06:23:45.706Z"
+      "updatedAt": "2026-11-12T04:59:04.722Z"
     },
     {
       "runId": "2026-11-07-a",
@@ -66,7 +66,7 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-11T06:23:45.707Z"
+      "updatedAt": "2026-11-12T04:59:04.723Z"
     },
     {
       "runId": "2026-11-08-a",
@@ -122,7 +122,7 @@
         47743,
         130650
       ],
-      "updatedAt": "2026-11-11T06:23:45.709Z"
+      "updatedAt": "2026-11-12T04:59:04.725Z"
     },
     {
       "runId": "2026-11-08-b",
@@ -270,6 +270,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-11T16:56:09.553Z"
+    },
+    {
+      "runId": "2026-11-12-a",
+      "date": "2026-11-12",
+      "category": "pub-directe",
+      "hookStyle": "contre-intuitif",
+      "hook": "Des e-mails envoyés en illimité, même en gratuit ? Oui, dans les quatre formules. Et voici ce que chacune ajoute.",
+      "angle": "Fait vérifié qui surprend : les e-mails envoyés sont illimités dans les quatre formules, même la gratuite ; puis ce que chaque formule ajoute et son prix, montré sur la page officielle",
+      "workingTitle": "E-mails illimités, même en gratuit",
+      "artDirection": "energie",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": 38.3,
+      "score": 77,
+      "decision": "redo",
+      "status": "rendered",
+      "reason": "77/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "pexelsIds": [],
+      "updatedAt": "2026-11-12T05:43:23.500Z"
     }
   ]
 }

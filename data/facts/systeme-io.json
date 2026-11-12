@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-11T16:56:09.489Z",
+  "updatedAt": "2026-11-12T04:59:21.415Z",
   "facts": [
     {
       "id": "feature.funnels",
@@ -355,7 +355,7 @@
       ],
       "sourceId": "pricing",
       "evidence": "Facturation annuelle 2 mois gratuits",
-      "status": "verified",
+      "status": "stale",
       "verifiedAt": "2026-11-11T16:55:57.516Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
@@ -382,7 +382,7 @@
       ],
       "sourceId": "pricing",
       "evidence": "chaque plan vous permet de créer un nombre illimité de sous-comptes",
-      "status": "verified",
+      "status": "stale",
       "verifiedAt": "2026-11-11T16:55:57.516Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
