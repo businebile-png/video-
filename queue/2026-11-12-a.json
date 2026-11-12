@@ -1,0 +1,768 @@
+{
+  "runId": "2026-11-12-a",
+  "date": "2026-11-12",
+  "createdAt": "2026-11-12T13:53:17.050Z",
+  "updatedAt": "2026-11-12T13:53:17.050Z",
+  "status": "prete",
+  "title": "E-mails illimités, même en gratuit",
+  "category": {
+    "id": "pub-directe",
+    "label": "Publicité directe"
+  },
+  "angle": "Fait vérifié qui surprend : les e-mails envoyés sont illimités dans les quatre formules, même la gratuite ; puis ce que chaque formule ajoute et son prix, montré sur la page officielle",
+  "hook": "Des e-mails envoyés en illimité, même en gratuit ? Oui, dans les quatre formules. Et voici ce que chacune ajoute.",
+  "hookStyle": "contre-intuitif",
+  "artDirection": {
+    "id": "energie",
+    "label": "Énergie — rythmé, contrasté, citron vert"
+  },
+  "durationSec": 38.3,
+  "score": {
+    "total": 73,
+    "decision": "publishable",
+    "summary": "73/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 13,
+        "basis": "relecture 13/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 13,
+        "basis": "mesures : WER 0.024, 138 mots/min, pause max 0.5 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "17 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "débit limite (138 mots/min)"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "83 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message se suit sans contradiction : chaque chiffre dit (illimité, 0 €, 1 puis 10 règles, 17 €, 47 €, 97 €) apparaît sur une capture officielle au même moment, et l'appel à l'action est clair. La qualité n'est pas au niveau : le plan du CTA est presque entièrement flou et hors sujet, la carte Webinaire est rognée sur l'image 10 et trois scènes restent environ 7 s sur une image fixe."
+      }
+    ],
+    "virality": {
+      "total": 12,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 4,
+          "justification": "Titre gros et lisible dès l'image 0 avec un fait surprenant prouvé par le tableau officiel, sans logo en tête ; il manque seulement du mouvement dans la première seconde (carte statique sur fond noir)."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 2,
+          "justification": "La liste annoncée (« ce que chacune ajoute ») n'est que partiellement tenue, et trois blocs d'environ 7 s sur une capture fixe créent des temps morts ; la vidéo dure 38 s pour une idée simple."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "Le fait « e-mails illimités même en gratuit » et le récapitulatif des quatre prix sont utiles à enregistrer, mais il manque une situation concrète dans laquelle la cible se reconnaît."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une question facile (« combien d'e-mails par mois ? ») sans pression, mais rien dans la vidéo elle-même n'invite à réagir."
+        }
+      ],
+      "actions": [
+        "Ajouter un mouvement dès l'image 0 (zoom lent ou surlignage animé de la ligne « Gratuit : Illimité ») et couper s1 à 4 s environ.",
+        "Raccourcir la vidéo vers 28-30 s en resserrant s3 et s5 sur une seule phrase chacune, avec un changement d'image toutes les 2 à 3 s.",
+        "Finir sur la capture « Emails envoyés » à l'appel à l'action pour que la boucle avec l'accroche soit visuelle."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 13,
+        "justification": "Les preuves sont de vraies captures datées de la page tarifs (bloc « Emails envoyés », règles d'automatisation, carte Startup, cartes Webinaire/Illimité), lisibles sur téléphone et dans la zone sûre : c'est le point fort. En revanche le plan du CTA (image 11, Pixabay 64595) est un mur de photos quasi entièrement flou, sans rapport avec « tes e-mails illimités », et les plans de s2 (salle de classe en présentiel, assombrie et floutée) restent génériques. Sur l'image 10, la carte Webinaire est rognée contre le bord gauche et l'étiquette « Illimité · 97 €/mois » apparaît délavée ; les sous-titres alternent deux polices différentes (condensée grasse et chasse fixe), ce qui affaiblit l'identité visuelle."
+      },
+      "editing": {
+        "score": 10,
+        "justification": "Les coupes suivent bien la voix sur les captures (0 € au mot « 0 € », 17 € au mot « 17 € », cadre sur Gratuit 1 puis Startup 10) et la checklist s'affiche élément par élément au rythme de la phrase. Mais la scène d'ouverture reste environ 7,3 s sur la même carte, la scène s3 environ 6,6 s et s5 environ 7 s : seule la ligne de sous-titres change, d'où des temps morts visuels. Les mots surlignés sont mal choisis (« DES » seul, « EST » dans « tout est au même endroit », « C'EST » avec « DIX ») au lieu des mots d'emphase prévus (« au même endroit », « illimité »)."
+      },
+      "script": {
+        "score": 11,
+        "justification": "L'accroche contre-intuitive est forte, courte, sans la marque, et tout de suite prouvée à l'écran ; la fin répond à l'accroche, ce qui favorise la boucle. Mais la promesse « voici ce que chacune ajoute » n'est tenue que pour Gratuit et Startup : Webinaire et Illimité ne reçoivent qu'un prix, sans ce qu'ils ajoutent (webinaires, limites illimitées), alors que la capture le montre. « Tes e-mails illimités, teste-les gratuitement » sonne un peu artificiel, et la voix ne nomme jamais Systeme.io (seulement l'écran)."
+      },
+      "explanation": {
+        "score": 10,
+        "justification": "On comprend que l'outil réunit tunnels, formations et e-mails automatiques, que l'envoi d'e-mails est illimité partout et que Startup passe de 1 à 10 règles d'automatisation pour 17 € : chiffres exacts et prouvés. On ne comprend pas « comment » ça marche (aucun exemple concret d'usage, aucune interface du produit, seulement la page tarifs), et les formules Webinaire et Illimité restent de simples prix sans contenu expliqué à l'oral. Le spectateur peut aussi confondre la formule « Illimité » et les « e-mails illimités »."
+      },
+      "conversion": {
+        "score": 11,
+        "justification": "Bonne porte d'entrée honnête (0 €, sans carte bancaire) et vraie montée en gamme payante avec un bénéfice chiffré pour Startup ; la carte de fin récapitule les quatre prix vérifiés avec la date de vérification et « Lien en bio », sans pression. Mais la raison de passer à Webinaire ou Illimité n'est pas donnée, et le plan flou du CTA dilue le moment clé ; l'appel « teste gratuitement » oriente surtout vers le gratuit plutôt que vers l'abonnement."
+      }
+    },
+    "improvements": [
+      "Remplacer le plan flou de la scène s6 (Pixabay 64595, mur de photos hors sujet) par un plan net de téléphone ou d'ordinateur en usage réel, ou rester sur la capture « Emails envoyés » pour boucler sur l'accroche.",
+      "Tenir la promesse « ce que chacune ajoute » : dire en quelques mots ce qu'ajoutent Webinaire (webinaires automatiques, 10 000 contacts) et Illimité (tunnels, contacts et règles illimités), faits plan.webinar.limits et plan.unlimited.limits déjà vérifiés.",
+      "Découper les scènes s1, s3 et s5 (environ 7 s chacune sur une même capture) avec un recadrage ou une seconde zone toutes les 2 à 3 s, et corriger les mots surlignés (« au même endroit », « illimité » plutôt que « DES », « EST », « C'EST ») avec une seule police de sous-titres.",
+      "Vérifier à l'oreille la phrase de s3 : la transcription automatique a entendu « 100 cartes bancaires » au lieu de « sans carte bancaire » ; si un auditeur peut l'entendre ainsi, régénérer ce passage. Recadrer aussi la carte Webinaire (image 10) pour qu'elle ne soit pas coupée au bord gauche."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "4840 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.6 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "83 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.1",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 3.48 s entre deux changements d’image (coupe ou recadrage), min 1.27 s ; 9 plans montés, moy. 4.26 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "7 sources (3 séquences filmées, 4 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "2 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.2 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 2.4 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 138,
+    "wer": 0.024,
+    "score": 13,
+    "problems": [
+      "débit limite (138 mots/min)"
+    ]
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Des e-mails envoyés en illimité, même en gratuit ? Oui, dans les quatre formules. Et voici ce que chacune ajoute.",
+      "headline": "E-mails illimités, même en gratuit ?",
+      "visual": "demo",
+      "fromSec": 0,
+      "toSec": 7.3
+    },
+    {
+      "id": "s2",
+      "phase": "solution",
+      "voiceover": "Tunnels de vente, formations, e-mails automatiques : tout est au même endroit.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 7.3,
+      "toSec": 12.3
+    },
+    {
+      "id": "s3",
+      "phase": "benefits",
+      "voiceover": "Pour commencer, la formule gratuite : 0 €, sans carte bancaire, trois tunnels de vente.",
+      "headline": null,
+      "visual": "demo",
+      "fromSec": 12.3,
+      "toSec": 18.9
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "Besoin de plus ? Startup, c'est dix règles d'automatisation au lieu d'une, pour 17 € par mois.",
+      "headline": null,
+      "visual": "demo",
+      "fromSec": 18.9,
+      "toSec": 24.9
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Ensuite, Webinaire à 47 €, et Illimité à 97 € par mois, quand ton activité grandit.",
+      "headline": null,
+      "visual": "demo",
+      "fromSec": 24.9,
+      "toSec": 31.9
+    },
+    {
+      "id": "s6",
+      "phase": "cta",
+      "voiceover": "Tes e-mails illimités, teste-les gratuitement : le lien est dans ma bio.",
+      "headline": null,
+      "visual": "broll",
+      "fromSec": 31.9,
+      "toSec": 38.3
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente à partir de modèles.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "feature.automations",
+      "statement": "Systeme.io propose des règles d’automatisation et des workflows.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "feature.courses",
+      "statement": "Systeme.io permet de créer et vendre des formations en ligne.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-11T16:56:06.838Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.webinar.price",
+      "statement": "En facturation mensuelle, le plan Webinaire de Systeme.io coûte 47 € par mois.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.unlimited.price",
+      "statement": "En facturation mensuelle, le plan Illimité de Systeme.io coûte 97 € par mois.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.free.limits",
+      "statement": "Le plan gratuit de Systeme.io inclut 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.startup.limits",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.table.funnels",
+      "statement": "Tunnels de vente : 3 avec Gratuit, 10 avec Startup, 50 avec Webinaire, illimités avec Illimité.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.table.automation-rules",
+      "statement": "Règles d'automatisation : 1 avec Gratuit, 10 avec Startup, 100 avec Webinaire, illimitées avec Illimité.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.table.emails-sent",
+      "statement": "Les e-mails envoyés sont illimités dans les quatre formules, y compris la gratuite.",
+      "verifiedAt": "2026-11-11T16:55:57.516Z"
+    },
+    {
+      "id": "plan.prices.ttc",
+      "statement": "Les prix de Systeme.io sont indiqués en euros toutes taxes comprises (TVA française de 20 %).",
+      "verifiedAt": "2026-11-11T16:56:07.884Z"
+    },
+    {
+      "id": "feature.auto-email-on-subscribe",
+      "statement": "Avec une règle d'automatisation, Systeme.io peut envoyer automatiquement un e-mail quand un contact s'inscrit sur une page de capture.",
+      "verifiedAt": "2026-11-11T16:56:08.166Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 94978,
+        "author": "Kmeel_com",
+        "pageUrl": "https://pixabay.com/videos/id-94978/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 130648,
+        "author": "SYG_Anime",
+        "pageUrl": "https://pixabay.com/videos/id-130648/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 233382,
+        "author": "Yasir1120",
+        "pageUrl": "https://pixabay.com/videos/id-233382/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 233983,
+        "author": "ninosouza",
+        "pageUrl": "https://pixabay.com/videos/id-233983/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 369822,
+        "author": "Media_Hopper_Studio",
+        "pageUrl": "https://pixabay.com/videos/id-369822/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 183450,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-183450/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 233390,
+        "author": "Yasir1120",
+        "pageUrl": "https://pixabay.com/videos/id-233390/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 64594,
+        "author": "Josh_Malic",
+        "pageUrl": "https://pixabay.com/videos/id-64594/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 73847,
+        "author": "JustYøu",
+        "pageUrl": "https://pixabay.com/videos/id-73847/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 215471,
+        "author": "Vacampbe",
+        "pageUrl": "https://pixabay.com/videos/id-215471/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 215472,
+        "author": "Vacampbe",
+        "pageUrl": "https://pixabay.com/videos/id-215472/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 172350,
+        "author": "D-GM",
+        "pageUrl": "https://pixabay.com/videos/id-172350/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 369821,
+        "author": "Media_Hopper_Studio",
+        "pageUrl": "https://pixabay.com/videos/id-369821/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 224415,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-224415/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 64595,
+        "author": "Josh_Malic",
+        "pageUrl": "https://pixabay.com/videos/id-64595/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 64596,
+        "author": "Josh_Malic",
+        "pageUrl": "https://pixabay.com/videos/id-64596/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nEnvoyer des e-mails en illimité, même en gratuit ? 👇\n\nSur Systeme.io, les e-mails envoyés sont illimités dans les quatre formules (tableau officiel « Comparer les plans »).\n\n🆓 Gratuit : 0 €, sans carte bancaire, 3 tunnels de vente.\n🚀 Startup : 17 €/mois TTC, 10 tunnels et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC.\n♾️ Illimité : 97 €/mois TTC.\n\nTu envoies combien d'e-mails par mois aujourd'hui ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer les formules plus tard.\n👉 Commence gratuitement : lien en bio.\n\nPrix vérifiés sur systeme.io le 11/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #tunneldevente #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-12T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-12-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-12T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nEnvoyer des e-mails en illimité, même en gratuit ? 👇\n\nSur Systeme.io, les e-mails envoyés sont illimités dans les quatre formules (tableau officiel « Comparer les plans »).\n\n🆓 Gratuit : 0 €, sans carte bancaire, 3 tunnels de vente.\n🚀 Startup : 17 €/mois TTC, 10 tunnels et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC.\n♾️ Illimité : 97 €/mois TTC.\n\nTu envoies combien d'e-mails par mois aujourd'hui ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer les formules plus tard.\n👉 Commence gratuitement : lien en bio.\n\nPrix vérifiés sur systeme.io le 11/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #tunneldevente #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "E-mails illimités, même en gratuit ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nEnvoyer des e-mails en illimité, même en gratuit ? 👇\n\nSur Systeme.io, les e-mails envoyés sont illimités dans les quatre formules (tableau officiel « Comparer les plans »).\n\n🆓 Gratuit : 0 €, sans carte bancaire, 3 tunnels de vente.\n🚀 Startup : 17 €/mois TTC, 10 tunnels et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC.\n♾️ Illimité : 97 €/mois TTC.\n\nTu envoies combien d'e-mails par mois aujourd'hui ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer les formules plus tard, ou envoie-la à quelqu'un qui se lance.\n👉 Commence gratuitement : le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 11/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #tunneldevente #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-12T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu envoies combien d'e-mails par mois aujourd'hui ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-12-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-12T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nEnvoyer des e-mails en illimité, même en gratuit ? 👇\n\nSur Systeme.io, les e-mails envoyés sont illimités dans les quatre formules (tableau officiel « Comparer les plans »).\n\n🆓 Gratuit : 0 €, sans carte bancaire, 3 tunnels de vente.\n🚀 Startup : 17 €/mois TTC, 10 tunnels et 5 000 contacts.\n🎥 Webinaire : 47 €/mois TTC.\n♾️ Illimité : 97 €/mois TTC.\n\nTu envoies combien d'e-mails par mois aujourd'hui ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer les formules plus tard, ou envoie-la à quelqu'un qui se lance.\n👉 Commence gratuitement : le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 11/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #tunneldevente #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-12T20:00:00+01:00",
+      "local": "2026-11-12T20:00:00",
+      "label": "jeudi 12 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-13T10:00:00+01:00",
+      "local": "2026-11-13T10:00:00",
+      "label": "vendredi 13 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-13T20:00:00+01:00",
+      "local": "2026-11-13T20:00:00",
+      "label": "vendredi 13 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-14T10:00:00+01:00",
+      "local": "2026-11-14T10:00:00",
+      "label": "samedi 14 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-12T20:00:00+01:00",
+      "local": "2026-11-12T20:00:00",
+      "label": "jeudi 12 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-13T10:00:00+01:00",
+      "local": "2026-11-13T10:00:00",
+      "label": "vendredi 13 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-13T20:00:00+01:00",
+      "local": "2026-11-13T20:00:00",
+      "label": "vendredi 13 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-14T10:00:00+01:00",
+      "local": "2026-11-14T10:00:00",
+      "label": "samedi 14 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-12-a.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-12-a.jpg",
+    "coverMs": 0,
+    "sha256": "1f32aa103817fef219087f16594747a678331cc611af1831ebc92adda3dfc4a1",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-12T13:52:57.121Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "e0e1277480bb6518cb4add1b8adb9996",
+    "url": "/_blob/e0e1277480bb6518cb4add1b8adb9996"
+  },
+  "cover": {
+    "assetId": "616b7a5c7b1ff095c5829219701af27b",
+    "url": "/_blob/616b7a5c7b1ff095c5829219701af27b"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.",
+  "autoSlot": {
+    "network": "tiktok",
+    "iso": "2026-11-12T20:00:00+01:00",
+    "local": "2026-11-12T20:00:00",
+    "label": "jeudi 12 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 32.83,
+    "end": 71.14
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-12T13:53:40.569Z"
+}

@@ -280,15 +280,16 @@
       "angle": "Fait vérifié qui surprend : les e-mails envoyés sont illimités dans les quatre formules, même la gratuite ; puis ce que chaque formule ajoute et son prix, montré sur la page officielle",
       "workingTitle": "E-mails illimités, même en gratuit",
       "artDirection": "energie",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 32.83,
       "voiceId": "claire",
       "durationSec": 38.3,
-      "score": 77,
-      "decision": "redo",
+      "score": 73,
+      "decision": "publishable",
       "status": "rendered",
-      "reason": "77/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-12T05:43:23.500Z"
+      "updatedAt": "2026-11-12T13:52:49.532Z"
     }
   ]
 }
