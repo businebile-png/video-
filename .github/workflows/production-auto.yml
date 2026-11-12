@@ -32,6 +32,7 @@ jobs:
       STUDIO_LLM_MODEL: ${{ vars.STUDIO_LLM_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4.1-mini,openai/gpt-4o-mini') }}
       STUDIO_LLM_VISION_MODEL: ${{ vars.STUDIO_LLM_VISION_MODEL || (secrets.STUDIO_LLM_API_KEY && 'gemini-2.5-flash' || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini') }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      STUDIO_STRICT_SETUP: '1'
       HF_HUB_DISABLE_TELEMETRY: '1'
       HF_HUB_DISABLE_XET: '1'
     steps:
