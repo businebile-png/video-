@@ -101,6 +101,40 @@ function trimFacts(brief: string, keep: (line: string) => boolean): string {
     .join('\n');
 }
 
+/**
+ * Form slips small free models make again and again (hashtags left in the caption text, a list sent as a string,
+ * a number as text, scene ids « 1 » instead of « s1 »): fixed before the checks. Content is never touched.
+ */
+export function repairScript(raw: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {...raw};
+  const list = (v: unknown): unknown[] | undefined => (Array.isArray(v) ? v : typeof v === 'string' && v.trim() ? v.split(/[,;\n]+/).map((x) => x.trim()).filter(Boolean) : undefined);
+  if (typeof out.targetDurationSec === 'string') out.targetDurationSec = Number.parseFloat(out.targetDurationSec);
+  const captions = (out.captions && typeof out.captions === 'object' ? {...(out.captions as Record<string, unknown>)} : {}) as Record<string, unknown>;
+  if (typeof captions.instagram !== 'string' && typeof captions.tiktok === 'string') captions.instagram = captions.tiktok;
+  if (typeof captions.tiktok !== 'string' && typeof captions.instagram === 'string') captions.tiktok = captions.instagram;
+  let tags = typeof captions.hashtags === 'string' ? captions.hashtags.split(/\s+/) : Array.isArray(captions.hashtags) ? (captions.hashtags as unknown[]) : undefined;
+  if (!tags || tags.length === 0) tags = `${captions.tiktok ?? ''} ${captions.instagram ?? ''} ${out.hashtags ?? ''}`.match(/#[\p{L}\p{N}_]+/gu) ?? [];
+  const clean = [...new Set(tags.map((t) => String(t).trim()).filter(Boolean).map((t) => (t.startsWith('#') ? t : `#${t}`).replace(/[^#\p{L}\p{N}_]/gu, '')))].filter((t) => t.length > 1);
+  captions.hashtags = (clean.length >= 2 ? clean : [...clean, '#systemeio', '#entrepreneur', '#businessenligne']).filter((t, i, a) => a.indexOf(t) === i).slice(0, 5);
+  out.captions = captions;
+  if (Array.isArray(out.scenes)) {
+    out.scenes = (out.scenes as Array<Record<string, unknown>>).map((sc, i) => {
+      const s = {...sc};
+      if (typeof s.id === 'number' || (typeof s.id === 'string' && /^\d+$/.test(s.id))) s.id = `s${s.id}`;
+      if (typeof s.id !== 'string') s.id = `s${i + 1}`;
+      s.emphasis = list(s.emphasis) ?? [];
+      s.claimFactIds = list(s.claimFactIds) ?? [];
+      const v = (s.visual && typeof s.visual === 'object' ? {...(s.visual as Record<string, unknown>)} : {kind: 'broll'}) as Record<string, unknown>;
+      v.queries = list(v.queries) ?? [];
+      v.shotIdeas = list(v.shotIdeas) ?? [];
+      v.focusRegionIds = list(v.focusRegionIds) ?? [];
+      s.visual = v;
+      return s;
+    });
+  }
+  return out;
+}
+
 export interface WriteResult {
   script: Script;
   lint: LintResult;
@@ -167,6 +201,7 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
       problems = [`JSON illisible : ${(e as Error).message}`];
     }
     if (raw) {
+      raw = repairScript(raw);
       raw.runId = runId;
       raw.category = plan.category.id;
       raw.author = 'api';

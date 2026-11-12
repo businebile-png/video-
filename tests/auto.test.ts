@@ -2,6 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {extractJson} from '../src/llm/client.js';
 import {nextSlot, pickSlot, reliefNotNeeded} from '../src/auto/auto.js';
 import {firstComment} from '../src/publish/publish.js';
+import {repairScript} from '../src/auto/writer.js';
 import {viralChecklist} from '../src/script/viral.js';
 import {matchPost, metricoolDate, parseTable, postKey} from '../src/analytics/metricool.js';
 import {hookStyleIndex, videoPerformance} from '../src/analytics/analytics.js';
@@ -27,6 +28,17 @@ describe('production sans Claude', () => {
 });
 
 describe('relève par les IA gratuites', () => {
+  it('répare les oublis de forme du script sans toucher au contenu', () => {
+    const r = repairScript({targetDurationSec: '35', captions: {tiktok: 'Texte #systemeio #emailmarketing', instagram: 'Texte'}, scenes: [{id: 1, voiceover: 'Bonjour', visual: {kind: 'broll', queries: 'woman laptop, office desk'}}]});
+    expect(r.targetDurationSec).toBe(35);
+    expect((r.captions as {hashtags: string[]}).hashtags).toEqual(['#systemeio', '#emailmarketing']);
+    const scene = (r.scenes as Array<{id: string; voiceover: string; emphasis: unknown[]; visual: {queries: string[]}}>)[0]!;
+    expect(scene.id).toBe('s1');
+    expect(scene.voiceover).toBe('Bonjour');
+    expect(scene.visual.queries).toEqual(['woman laptop', 'office desk']);
+    expect(scene.emphasis).toEqual([]);
+  });
+
   it('ne produit que si ni une vidéo prête ni Claude ne tiennent le prochain créneau', () => {
     const now = new Date('2026-11-09T05:47:00Z');
     const slot = nextSlot([{iso: '2026-11-09T20:00:00+01:00', label: '20:00'}, {iso: '2026-11-09T10:00:00+01:00', label: '10:00'}], now)!;
