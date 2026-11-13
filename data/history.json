@@ -290,6 +290,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-12T13:52:49.532Z"
+    },
+    {
+      "runId": "2026-11-13-a",
+      "date": "2026-11-13",
+      "category": "produits-numeriques",
+      "hookStyle": "scenario",
+      "hook": "Tu viens de créer ton guide, mais comment le vendre sans boutique compliquée ?",
+      "angle": "Vendre un modèle ou un guide sans boutique compliquée",
+      "workingTitle": "Tu viens de lancer ton guide numérique",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-13T07:01:13.368Z"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-12T04:59:21.415Z",
+  "updatedAt": "2026-11-13T06:42:27.848Z",
   "facts": [
     {
       "id": "feature.funnels",
@@ -10,7 +10,7 @@
       "sourceId": "pricing",
       "evidence": "Créez un nombre illimité de tunnels en utilisant nos templates",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -36,7 +36,7 @@
       "sourceId": "pricing",
       "evidence": "Envoyez un nombre illimité d'emails à vos contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -49,7 +49,7 @@
       "sourceId": "pricing",
       "evidence": "Automatisations & workflows",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -62,7 +62,7 @@
       "sourceId": "pricing",
       "evidence": "Formations en ligne",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Le nombre d'élèves dépend de la formule (500 avec le plan gratuit, illimité ensuite) : voir plan.table.students."
     },
@@ -75,7 +75,7 @@
       "sourceId": "pricing",
       "evidence": "Membres de la communauté",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -101,7 +101,7 @@
       "sourceId": "pricing",
       "evidence": "Connectez votre compte systeme.io aux meilleurs processeurs de paiement",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -114,7 +114,7 @@
       "sourceId": "pricing",
       "evidence": "Langues par site web",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -127,7 +127,7 @@
       "sourceId": "pricing",
       "evidence": "Articles de blog",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -140,7 +140,7 @@
       "sourceId": "pricing",
       "evidence": "Webinaires automatiques",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -153,7 +153,7 @@
       "sourceId": "pricing",
       "evidence": "Créez, gérez et intégrez votre propre programme d'affiliation avec vos tunnels et vos sites web",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -166,7 +166,7 @@
       "sourceId": "pricing",
       "evidence": "Contacts & CRM",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -179,7 +179,7 @@
       "sourceId": "pricing",
       "evidence": "Code promo",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -192,7 +192,7 @@
       "sourceId": "pricing",
       "evidence": "Tests A/B",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -207,7 +207,7 @@
       "sourceId": "home",
       "evidence": "Gratuit à vie",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:06.838Z",
+      "verifiedAt": "2026-11-13T06:42:25.327Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -222,7 +222,7 @@
       "sourceId": "pricing",
       "evidence": "1 domaine personnalisé et jusqu'à 2 000 contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -236,7 +236,7 @@
       "sourceId": "pricing",
       "evidence": "Aucune carte de crédit requise",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -252,7 +252,7 @@
       "sourceId": "pricing",
       "evidence": "Augmentez votre capacité jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts 17 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché avec « Facturation mensuelle » sélectionnée (état par défaut de la page, contrôlé visuellement le 2026-11-06)."
     },
@@ -265,7 +265,7 @@
       "sourceId": "pricing",
       "evidence": "Aucun frais de paiement",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -278,7 +278,7 @@
       "sourceId": "help-affiliate-link",
       "evidence": "Always use the link without \"www\"",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:07.711Z",
+      "verifiedAt": "2026-11-13T06:42:26.080Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -294,7 +294,7 @@
       "sourceId": "pricing",
       "evidence": "3 domaines personnalisés et 5 000 contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -310,7 +310,7 @@
       "sourceId": "pricing",
       "evidence": "10 règles d'automatisation, 3 domaines personnalisés",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -326,7 +326,7 @@
       "sourceId": "pricing",
       "evidence": "10 domaines personnalisés et 10 000 contacts pour faire grandir votre entreprise 47 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché avec « Facturation mensuelle » sélectionnée (état par défaut de la page, contrôlé visuellement le 2026-11-06)."
     },
@@ -342,7 +342,7 @@
       "sourceId": "pricing",
       "evidence": "et accédez en avant-première aux nouvelles fonctionnalités 97 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché avec « Facturation mensuelle » sélectionnée (état par défaut de la page, contrôlé visuellement le 2026-11-06)."
     },
@@ -355,8 +355,8 @@
       ],
       "sourceId": "pricing",
       "evidence": "Facturation annuelle 2 mois gratuits",
-      "status": "stale",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "status": "verified",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -369,7 +369,7 @@
       "sourceId": "tutorial",
       "evidence": "Comment créer et vendre des produits physiques",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:07.015Z",
+      "verifiedAt": "2026-11-13T06:42:25.568Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -382,8 +382,8 @@
       ],
       "sourceId": "pricing",
       "evidence": "chaque plan vous permet de créer un nombre illimité de sous-comptes",
-      "status": "stale",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "status": "verified",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -396,7 +396,7 @@
       "sourceId": "pricing",
       "evidence": "Migration gratuite",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -409,7 +409,7 @@
       "sourceId": "pricing",
       "evidence": "Support par email 24h/24 et 7j/7",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -422,7 +422,7 @@
       "sourceId": "home",
       "evidence": "Utilisée par plus de 500 000 entrepreneurs",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:06.838Z",
+      "verifiedAt": "2026-11-13T06:42:25.327Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
     },
@@ -437,7 +437,7 @@
       "sourceId": "pricing",
       "evidence": "Idéal pour tester la plateforme 0 € Aucune carte de crédit requise",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -452,7 +452,7 @@
       "sourceId": "pricing",
       "evidence": "utilisation limitée : 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -468,7 +468,7 @@
       "sourceId": "pricing",
       "evidence": "Augmentez votre capacité jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -484,7 +484,7 @@
       "sourceId": "pricing-annual",
       "evidence": "3 domaines personnalisés et 5 000 contacts 170 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:06.288Z",
+      "verifiedAt": "2026-11-13T06:42:24.988Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché après bascule sur « Facturation annuelle » (badge « 2 mois gratuits »)."
     },
@@ -500,7 +500,7 @@
       "sourceId": "pricing",
       "evidence": "Accédez aux webinaires et profitez de jusqu'à 50 tunnels de vente, 100 automatisations, 10 domaines personnalisés et 10 000 contacts",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -516,7 +516,7 @@
       "sourceId": "pricing-annual",
       "evidence": "10 000 contacts pour faire grandir votre entreprise 470 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:06.288Z",
+      "verifiedAt": "2026-11-13T06:42:24.988Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché après bascule sur « Facturation annuelle » (badge « 2 mois gratuits »)."
     },
@@ -532,7 +532,7 @@
       "sourceId": "pricing",
       "evidence": "Bénéficiez d'un nombre illimité de tunnels, de contacts, de règles d'automatisation et de domaines personnalisés",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur."
     },
@@ -548,7 +548,7 @@
       "sourceId": "pricing-annual",
       "evidence": "et accédez en avant-première aux nouvelles fonctionnalités 970 €",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:06.288Z",
+      "verifiedAt": "2026-11-13T06:42:24.988Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Prix affiché après bascule sur « Facturation annuelle » (badge « 2 mois gratuits »)."
     },
@@ -564,7 +564,7 @@
       "sourceId": "pricing",
       "evidence": "Tunnels de vente Tunnels de vente 3 10 50 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -596,7 +596,7 @@
       "sourceId": "pricing",
       "evidence": "Formations en ligne Formations 1 5 20 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -612,7 +612,7 @@
       "sourceId": "pricing",
       "evidence": "Règles d'automatisation 1 10 100 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -628,7 +628,7 @@
       "sourceId": "pricing",
       "evidence": "Workflows 1 5 20 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -644,7 +644,7 @@
       "sourceId": "pricing",
       "evidence": "Campagnes email 1 10 100 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -660,7 +660,7 @@
       "sourceId": "pricing",
       "evidence": "Emails envoyés Illimité Illimité Illimité Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -676,7 +676,7 @@
       "sourceId": "pricing",
       "evidence": "Webinaires automatiques 0 0 10 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -692,7 +692,7 @@
       "sourceId": "pricing",
       "evidence": "Tests A/B 1 10 50 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -708,7 +708,7 @@
       "sourceId": "pricing",
       "evidence": "Code promo 1 10 50 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -724,7 +724,7 @@
       "sourceId": "pricing",
       "evidence": "Communautés Communautés 1 5 20 Illimité",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:55:57.516Z",
+      "verifiedAt": "2026-11-13T06:42:16.427Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle lue dans un navigateur. Ligne du tableau « Comparer les plans » : valeurs dans l'ordre Gratuit, Startup, Webinaire, Illimité."
     },
@@ -739,7 +739,7 @@
       "sourceId": "terms",
       "evidence": "Les prix sont indiqués en euros toutes taxes comprises (au taux de TVA française de 20 %)",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:07.884Z",
+      "verifiedAt": "2026-11-13T06:42:26.310Z",
       "ttlDays": 7,
       "notes": "Article 3 « Prix » des conditions générales de vente officielles. Permet d'écrire « TTC » à côté d'un prix de la grille tarifaire."
     },
@@ -753,7 +753,7 @@
       "sourceId": "help-auto-email",
       "evidence": "In this article, you will learn how to automatically send an email when a lead subscribes.",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:08.166Z",
+      "verifiedAt": "2026-11-13T06:42:26.546Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) ; le déclencheur « Funnel step form subscribed » et l'action « Send email » y sont décrits."
     },
@@ -766,7 +766,7 @@
       "sourceId": "help-auto-email",
       "evidence": "Select Funnel step form subscribed (4).",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:08.166Z",
+      "verifiedAt": "2026-11-13T06:42:26.546Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) : déclencheur « Funnel step form subscribed », ajouté par « Click the + icon add a new trigger »."
     },
@@ -780,7 +780,7 @@
       "sourceId": "help-auto-email",
       "evidence": "Select Send email (6).",
       "status": "verified",
-      "verifiedAt": "2026-11-11T16:56:08.166Z",
+      "verifiedAt": "2026-11-13T06:42:26.546Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis l'aide officielle (article 280) : action « Send email », ajoutée par « Click the + icon to add an action »."
     }
