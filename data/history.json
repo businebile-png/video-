@@ -443,6 +443,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-14T11:49:48.687Z"
+    },
+    {
+      "runId": "2026-11-14-f",
+      "date": "2026-11-14",
+      "category": "conseils-debutant",
+      "hookStyle": "idee-recue",
+      "hook": "Pas besoin d'avoir un produit pour commencer ta liste d'e-mails.",
+      "angle": "Pas encore de produit ? Commencer par récolter des e-mails : chaque inscrit devient un contact à qui écrire quand l'offre sera prête. Puis combien de contacts chaque formule Systeme.io permet de garder, preuve sur le tableau officiel.",
+      "workingTitle": "Combien de contacts par formule",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-14T11:53:01.973Z"
     }
   ]
 }
