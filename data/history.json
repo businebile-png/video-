@@ -433,15 +433,16 @@
       "angle": "Tu sais faire quelque chose que d'autres veulent apprendre : avec Systeme.io, tu crées ta formation, ton tunnel de vente et l'encaissement au même endroit. Puis combien de formations chaque formule permet, preuve sur le tableau officiel.",
       "workingTitle": "Combien de formations par formule",
       "artDirection": "studio-nuit",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 10.75,
       "voiceId": "claire",
       "durationSec": 36.07,
-      "score": null,
-      "decision": null,
+      "score": 73,
+      "decision": "publishable",
       "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-14T11:45:33.853Z"
+      "updatedAt": "2026-11-14T11:49:48.687Z"
     }
   ]
 }

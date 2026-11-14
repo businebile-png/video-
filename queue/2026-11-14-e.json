@@ -1,0 +1,734 @@
+{
+  "runId": "2026-11-14-e",
+  "date": "2026-11-14",
+  "createdAt": "2026-11-14T11:50:11.642Z",
+  "updatedAt": "2026-11-14T11:50:11.642Z",
+  "status": "programmee",
+  "title": "Combien de formations par formule",
+  "category": {
+    "id": "formations-en-ligne",
+    "label": "Créer et vendre une formation"
+  },
+  "angle": "Tu sais faire quelque chose que d'autres veulent apprendre : avec Systeme.io, tu crées ta formation, ton tunnel de vente et l'encaissement au même endroit. Puis combien de formations chaque formule permet, preuve sur le tableau officiel.",
+  "hook": "Tu sais faire quelque chose que d'autres veulent apprendre ?",
+  "hookStyle": "question-directe",
+  "artDirection": {
+    "id": "studio-nuit",
+    "label": "Studio nuit — cinéma chaud, contrasté"
+  },
+  "durationSec": 36.07,
+  "score": {
+    "total": 73,
+    "decision": "publishable",
+    "summary": "73/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 11,
+        "basis": "relecture 11/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0.011, 154 mots/min, pause max 0.4 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 9,
+        "basis": "relecture 9/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "11 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "87 mots synchronisés, -13.8 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message se suit du début à la fin, chaque chiffre à l'écran correspond à la voix (1, 5, 17 €, 20, illimitées) et tous sont couverts par les faits vérifiés ; le spectateur comprend ce que propose Systeme.io et qu'il peut commencer gratuitement via le lien en bio. La qualité n'est pas au niveau : la preuve Startup est un zoom sans libellé avec une ligne de chiffres coupée, plusieurs plans sont hors sujet (machine à café, coucher de soleil, photographe dans un parc) et un sous-titre manque de contraste sur fond clair."
+      }
+    ],
+    "virality": {
+      "total": 13,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Titre lisible dès l'image 0 et question directe à la cible, sans la marque. Mais la question reste générique et l'image (femme regardant un appareil photo) ne montre ni enjeu ni situation surprenante."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "La promesse « combien chaque formule en permet » est annoncée et tenue, avec un changement d'image toutes les 2 s environ. Le ping-pong de deux plans en s2 et le coucher de soleil final font retomber l'attention."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "La comparaison 1 / 5 / 20 / illimitées avec les prix est utile à enregistrer pour qui veut vendre une formation, mais elle reste une fiche technique sans situation dans laquelle on se reconnaît fortement."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 4,
+          "justification": "La légende pose une question simple et ouverte « Tu enseignerais quoi, toi ? », facile à commenter, et invite honnêtement à enregistrer la vidéo, sans pression."
+        }
+      ],
+      "actions": [
+        "Rendre la preuve Startup lisible seule (libellé « Formations » et en-tête Startup visibles) pour que l'écran confirme ce que dit la voix.",
+        "Remplacer les plans hors sujet (café, coucher de soleil) par des plans de création de cours qui illustrent la phrase dite.",
+        "Accrocher sur une situation précise de la cible (« Tu as 3 idées de formations ? Voici ce que chaque formule te laisse créer. ») plutôt qu'une question générale."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 11,
+        "justification": "L'ouverture (femme souriante, lumière chaude) est nette et soignée, et les captures officielles Gratuit et carte Startup à 17 € sont lisibles. Mais plusieurs plans sont hors sujet : une photographe avec un appareil argentique dans un parc pendant « tu crées ta formation », une machine à café derrière le schéma « Dans le même compte », un fond de fleurs et un coucher de soleil cliché pour l'appel à l'action. Le zoom « Startup : 5 formations » (vers 22,5 s) montre seulement « 1 … 5 » sans le mot « Formations » ni les en-têtes de colonnes, avec une ligne de chiffres coupée en haut (« 1 … 10 ») : la preuve ne prouve rien à elle seule. Le sous-titre « tu crées ta » sur la balustrade claire (image 06) manque de contraste."
+      },
+      "editing": {
+        "score": 9,
+        "justification": "Les coupes suivent la voix et la révélation pas à pas des schémas (étapes 1-2-3, liste par formule) est bien synchronisée avec les mots. En revanche, la scène s2 alterne cinq fois les deux mêmes plans (clavier flou / photographe) en 7 s, ce qui fait ping-pong plutôt que rythme, et la scène s3 revient deux fois sur la même machine à café pendant 4 s. Le passage capture Gratuit → capture Startup se fait par un zoom sur une zone vide (bande grise au milieu), sans repère pour l'œil."
+      },
+      "script": {
+        "score": 11,
+        "justification": "L'accroche « Tu sais faire quelque chose que d'autres veulent apprendre ? » parle à la cible et pose la question dès la première seconde, et la promesse « je te montre combien chaque formule en permet » est tenue. Le texte est court (87 mots), naturel à l'oral et sans remplissage. Mais il n'y a pas de vrai problème concret (pourquoi c'est difficile aujourd'hui de vendre une formation ?) : on passe directement de la question à la marque, et la phrase « tout part du même compte » reste abstraite."
+      },
+      "explanation": {
+        "score": 11,
+        "justification": "On comprend ce que fait Systeme.io pour cette cible (créer la formation, la vendre via un tunnel, encaisser par son processeur de paiement) et les limites par formule sont exactes et vérifiées (1 / 5 / 20 / illimitées). Le « comment » reste en surface : aucune image de l'outil lui-même, seulement un schéma texte, et rien sur l'accès donné aux élèves après paiement, qui est le vrai bénéfice concret."
+      },
+      "conversion": {
+        "score": 11,
+        "justification": "Les quatre formules sont présentées avec leurs prix vérifiés sur la carte de fin, et la progression du nombre de formations donne une raison logique de passer à Startup quand on en crée plusieurs. L'appel à l'action « Ta première formation peut commencer gratuitement : le lien est dans ma bio » est clair, honnête et sans pression. La raison de payer reste toutefois mince (seulement « plus de formations ») et la carte de fin ne dit pas pourquoi cliquer au-delà du gratuit."
+      }
+    },
+    "improvements": [
+      "Scène s5 : recadrer la capture « tarifs-formations » pour garder le libellé « Formations » et la colonne Startup (ou utiliser une capture mobile avec les en-têtes Gratuit / Startup / Webinaire / Illimité), sans ligne de chiffres coupée en haut, pour que la preuve « 5 formations » se lise seule.",
+      "Scène s2 : remplacer l'alternance clavier / photographe par 2 ou 3 plans différents d'une personne qui enregistre ou prépare un cours (caméra sur pied, micro, notes), cohérents avec « tu crées ta formation ».",
+      "Scène s7 : remplacer le coucher de soleil par une personne à son ordinateur (comme prévu dans le script), et s3 : remplacer la machine à café par un fond de bureau ou de tournage.",
+      "Ajouter une phrase de problème concret après l'accroche (par exemple la formation, la page de vente et le paiement éparpillés) et, si possible, montrer l'accès automatique à la formation après paiement, à condition d'avoir le fait vérifié."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "7413 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.8 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.6 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "87 mots synchronisés, -13.8 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.11",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.16 s entre deux changements d’image (coupe ou recadrage), min 0.5 s ; 16 plans montés, moy. 2.29 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "9 sources (7 séquences filmées, 2 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.4 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 0.0 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 154,
+    "wer": 0.011,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Tu sais faire quelque chose que d'autres veulent apprendre ?",
+      "headline": "Ton savoir-faire, en formation ?",
+      "visual": "broll",
+      "fromSec": 0,
+      "toSec": 2.4
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Avec Systeme.io, tu crées ta formation en ligne et tu la vends. Je te montre combien chaque formule en permet.",
+      "headline": "Créer et vendre ta formation",
+      "visual": "broll",
+      "fromSec": 2.4,
+      "toSec": 10.1
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Ta formation, ton tunnel de vente, et l'encaissement par ton processeur de paiement : tout part du même compte.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 10.1,
+      "toSec": 16.9
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "En Gratuit, tu as une formation, sans carte bancaire.",
+      "headline": "Gratuit : 1 formation",
+      "visual": "demo",
+      "fromSec": 16.9,
+      "toSec": 20.9
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Startup passe à cinq formations, pour 17 € par mois.",
+      "headline": "Startup : 5 formations",
+      "visual": "demo",
+      "fromSec": 20.9,
+      "toSec": 25.2
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Webinaire en permet vingt, et Illimité n'a plus de limite.",
+      "headline": "20 formations, ou sans limite",
+      "visual": "graphic",
+      "fromSec": 25.2,
+      "toSec": 29.2
+    },
+    {
+      "id": "s7",
+      "phase": "cta",
+      "voiceover": "Ta première formation peut commencer gratuitement : le lien est dans ma bio.",
+      "headline": "Ta première formation",
+      "visual": "broll",
+      "fromSec": 29.2,
+      "toSec": 36.1
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente à partir de modèles.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "feature.courses",
+      "statement": "Systeme.io permet de créer et vendre des formations en ligne.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "feature.payments",
+      "statement": "Systeme.io se connecte à des processeurs de paiement pour encaisser des ventes.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-14T06:51:50.925Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.webinar.price",
+      "statement": "En facturation mensuelle, le plan Webinaire de Systeme.io coûte 47 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.unlimited.price",
+      "statement": "En facturation mensuelle, le plan Illimité de Systeme.io coûte 97 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.table.courses",
+      "statement": "Formations : 1 avec Gratuit, 5 avec Startup, 20 avec Webinaire, illimitées avec Illimité.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.prices.ttc",
+      "statement": "Les prix de Systeme.io sont indiqués en euros toutes taxes comprises (TVA française de 20 %).",
+      "verifiedAt": "2026-11-14T06:51:51.774Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 251587,
+        "author": "xBriantcx",
+        "pageUrl": "https://pixabay.com/videos/id-251587/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 234920,
+        "author": "xBriantcx",
+        "pageUrl": "https://pixabay.com/videos/id-234920/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 137258,
+        "author": "blackmarketmusic",
+        "pageUrl": "https://pixabay.com/videos/id-137258/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 51326,
+        "author": "Omnix",
+        "pageUrl": "https://pixabay.com/videos/id-51326/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 46989,
+        "author": "NickyPe",
+        "pageUrl": "https://pixabay.com/videos/id-46989/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250461,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250461/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 371211,
+        "author": "5omar",
+        "pageUrl": "https://pixabay.com/videos/id-371211/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 263668,
+        "author": "semantic_h-ram",
+        "pageUrl": "https://pixabay.com/videos/id-263668/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 263669,
+        "author": "semantic_h-ram",
+        "pageUrl": "https://pixabay.com/videos/id-263669/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 331030,
+        "author": "adege",
+        "pageUrl": "https://pixabay.com/videos/id-331030/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 230248,
+        "author": "Matthias_Groeneveld",
+        "pageUrl": "https://pixabay.com/videos/id-230248/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 137249,
+        "author": "blackmarketmusic",
+        "pageUrl": "https://pixabay.com/videos/id-137249/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nCréer et vendre une formation en ligne : combien de formations par formule Systeme.io ? 👇\n\nTa formation, ton tunnel de vente et l'encaissement (via ton processeur de paiement) dans le même compte.\n\n🆓 Gratuit : 1 formation, 0 €, sans carte bancaire.\n🚀 Startup : 5 formations, 17 €/mois TTC.\n🎥 Webinaire : 20 formations, 47 €/mois TTC.\n♾️ Illimité : formations illimitées, 97 €/mois TTC.\n\nTu enseignerais quoi, toi ? Dis-le en commentaire.\nEnregistre la vidéo pour le jour où tu te lances.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#formationenligne #systemeio #entrepreneur #businessenligne #infopreneur",
+      "blogId": "7791839",
+      "date": "2026-11-15T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-15T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nCréer et vendre une formation en ligne : combien de formations par formule Systeme.io ? 👇\n\nTa formation, ton tunnel de vente et l'encaissement (via ton processeur de paiement) dans le même compte.\n\n🆓 Gratuit : 1 formation, 0 €, sans carte bancaire.\n🚀 Startup : 5 formations, 17 €/mois TTC.\n🎥 Webinaire : 20 formations, 47 €/mois TTC.\n♾️ Illimité : formations illimitées, 97 €/mois TTC.\n\nTu enseignerais quoi, toi ? Dis-le en commentaire.\nEnregistre la vidéo pour le jour où tu te lances.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#formationenligne #systemeio #entrepreneur #businessenligne #infopreneur",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Ton savoir-faire, en formation ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nCréer et vendre une formation en ligne : combien de formations par formule Systeme.io ? 👇\n\nTa formation, ton tunnel de vente et l'encaissement (via ton processeur de paiement) dans le même compte.\n\n🆓 Gratuit : 1 formation, 0 €, sans carte bancaire.\n🚀 Startup : 5 formations, 17 €/mois TTC.\n🎥 Webinaire : 20 formations, 47 €/mois TTC.\n♾️ Illimité : formations illimitées, 97 €/mois TTC.\n\nTu enseignerais quoi, toi ? Dis-le en commentaire.\nEnregistre ce reel pour le jour où tu te lances, ou envoie-le à quelqu'un qui a un savoir-faire à partager.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#formationenligne #systemeio #entrepreneur #businessenligne #infopreneur",
+      "blogId": "7791839",
+      "date": "2026-11-15T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu enseignerais quoi, toi ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-15T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nCréer et vendre une formation en ligne : combien de formations par formule Systeme.io ? 👇\n\nTa formation, ton tunnel de vente et l'encaissement (via ton processeur de paiement) dans le même compte.\n\n🆓 Gratuit : 1 formation, 0 €, sans carte bancaire.\n🚀 Startup : 5 formations, 17 €/mois TTC.\n🎥 Webinaire : 20 formations, 47 €/mois TTC.\n♾️ Illimité : formations illimitées, 97 €/mois TTC.\n\nTu enseignerais quoi, toi ? Dis-le en commentaire.\nEnregistre ce reel pour le jour où tu te lances, ou envoie-le à quelqu'un qui a un savoir-faire à partager.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#formationenligne #systemeio #entrepreneur #businessenligne #infopreneur",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-e.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-e.jpg",
+    "coverMs": 0,
+    "sha256": "ee1e07c04d871e5dccd32114115f2e107ac15f49fdb2cee9692d798621376b06",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-14T11:49:54.740Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "d2c4c1874c2d0f3505d5fad3bcf9f05a",
+    "url": "/_blob/d2c4c1874c2d0f3505d5fad3bcf9f05a"
+  },
+  "cover": {
+    "assetId": "c5484a410918ada51b865fde556b2e3b",
+    "url": "/_blob/c5484a410918ada51b865fde556b2e3b"
+  },
+  "decision": {
+    "action": "programmer",
+    "at": "2026-11-14T11:51:00Z",
+    "notes": "Programmée à la demande de l'utilisateur (production et programmation en continu)."
+  },
+  "publications": {
+    "tiktok": {
+      "status": "scheduled",
+      "metricoolId": 427937910,
+      "scheduledFor": "2026-11-15T20:00:00+01:00"
+    },
+    "instagram": {
+      "status": "scheduled",
+      "metricoolId": 427938633,
+      "scheduledFor": "2026-11-15T20:00:00+01:00"
+    }
+  },
+  "metrics": null,
+  "disclosure": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.",
+  "autoSlot": {
+    "iso": "2026-11-15T20:00:00+01:00",
+    "label": "dimanche 15 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 10.75,
+    "end": 46.82
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-14T11:51:52.667Z"
+}
