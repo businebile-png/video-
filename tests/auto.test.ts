@@ -1,8 +1,8 @@
 import {describe, expect, it} from 'vitest';
-import {extractJson} from '../src/llm/client.js';
-import {nextSlot, pickSlot, reliefNotNeeded} from '../src/auto/auto.js';
+import {extractJson, jsonDepth, repairJsonText} from '../src/llm/client.js';
+import {claimedSlots, nextSlot, pickSlot, reliefNotNeeded} from '../src/auto/auto.js';
 import {firstComment} from '../src/publish/publish.js';
-import {repairScript} from '../src/auto/writer.js';
+import {joinContinuation, normalizeGraphic, repairScript, replyIsCut} from '../src/auto/writer.js';
 import {viralChecklist} from '../src/script/viral.js';
 import {matchPost, metricoolDate, parseTable, postKey} from '../src/analytics/metricool.js';
 import {hookStyleIndex, videoPerformance} from '../src/analytics/analytics.js';
@@ -48,6 +48,45 @@ describe('relève par les IA gratuites', () => {
     expect(reliefNotNeeded(slot, [], {slot: {iso: '2026-11-09T10:00:00+01:00'}, startedAt: '2026-11-09T04:47:00Z'}, now)).toMatch(/Claude/);
     // A claim older than 4 hours (Claude stopped mid-way) no longer blocks the relief.
     expect(reliefNotNeeded(slot, [], {slot: {iso: '2026-11-09T10:00:00+01:00'}, startedAt: '2026-11-09T00:30:00Z'}, now)).toBeNull();
+  });
+});
+
+describe('réponses imparfaites des IA gratuites', () => {
+  it('répare la forme du JSON (guillemets droits, retours à la ligne, virgules) sans changer les mots', () => {
+    const reply = '{"voiceover": "Clique sur "Comparer les plans" en bas",\n "caption": "Ligne 1\nLigne 2",\n "tags": ["#a", "#b",],\n "x": "fin"\n "y": 2}';
+    expect(() => JSON.parse(reply)).toThrow();
+    expect(extractJson(reply)).toEqual({voiceover: 'Clique sur "Comparer les plans" en bas', caption: 'Ligne 1\nLigne 2', tags: ['#a', '#b'], x: 'fin', y: 2});
+    expect(repairJsonText('{"a": "b"}')).toBe('{"a": "b"}');
+  });
+
+  it('repère une réponse coupée sans jamais la compléter elle-même', () => {
+    const cut = '```json\n{"runId": "r", "scenes": [{"id": "s1", "voiceover": "Sur Systeme.io, tu';
+    expect(jsonDepth(cut)).toBeGreaterThan(0);
+    expect(replyIsCut(cut, 'stop')).toBe(true);
+    expect(() => extractJson(cut)).toThrow();
+    expect(replyIsCut('{"a": {"b": 1}}', 'length')).toBe(false);
+    const joined = joinContinuation(cut, '```json\n peux le faire."}]}\n```');
+    expect(extractJson(joined)).toEqual({runId: 'r', scenes: [{id: 's1', voiceover: 'Sur Systeme.io, tu peux le faire.'}]});
+    // Un modèle qui recommence depuis le début : sa nouvelle réponse remplace la réponse coupée.
+    expect(joinContinuation(cut, '{"runId": "r2"}')).toBe('{"runId": "r2"}');
+  });
+
+  it('ramène les graphiques inventés aux six types du studio', () => {
+    expect(normalizeGraphic({type: 'comparison', left: {title: 'a', items: []}, right: {title: 'b', items: []}}).type).toBe('compare');
+    expect(normalizeGraphic({type: 'Timeline', steps: ['Créer', 'Envoyer']})).toEqual({type: 'steps', steps: [{title: 'Créer'}, {title: 'Envoyer'}]});
+    expect(normalizeGraphic({type: 'pricing', plan: 'Startup', price: 17, period: '/mois', factId: 'f'}).price).toBe('17');
+    expect(normalizeGraphic({type: 'icons', items: ['a', 'b']}).type).toBe('checklist');
+    expect(normalizeGraphic({type: '???', value: '3', label: 'tunnels', factId: 'f'}).type).toBe('stat');
+    expect(normalizeGraphic({type: 'checklist', items: ['x', 'y']})).toEqual({type: 'checklist', items: ['x', 'y']});
+    const fixed = repairScript({scenes: [{id: 's1', visual: {kind: 'chart', graphic: {type: 'list', items: ['a', 'b']}}}]});
+    expect((fixed.scenes as Array<{visual: {kind: string; graphic: {type: string}}}>)[0]!.visual).toMatchObject({kind: 'graphic', graphic: {type: 'checklist'}});
+  });
+
+  it('ne prend jamais le créneau que Claude vient de réserver', () => {
+    const now = new Date('2026-11-14T07:00:00Z');
+    expect(claimedSlots({slot: {iso: '2026-11-14T20:00:00+01:00'}, startedAt: '2026-11-14T06:45:00Z'}, now)).toEqual(['2026-11-14T20:00:00+01:00']);
+    expect(claimedSlots({slot: {iso: '2026-11-14T20:00:00+01:00'}, startedAt: '2026-11-14T01:00:00Z'}, now)).toEqual([]);
+    expect(claimedSlots(null, now)).toEqual([]);
   });
 });
 

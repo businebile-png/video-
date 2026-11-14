@@ -92,7 +92,7 @@ const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
  * One chat completion; returns the text of the first choice. Models are tried in the configured order: a model
  * out of free quota (429), refusing the request size (413) or failing is replaced by the next one.
  */
-export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg: LlmConfig = llmConfig()): Promise<{text: string; model: string}> {
+export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg: LlmConfig = llmConfig()): Promise<{text: string; model: string; finish?: string | null}> {
   const models = (opts.vision ? cfg.visionModel : cfg.model).split(',').map((m) => m.trim()).filter(Boolean);
   // Several endpoints may be listed (comma-separated): the next one is tried when one does not answer properly.
   const bases = cfg.baseUrl.split(',').map((b) => b.trim().replace(/\/+$/, '')).filter(Boolean);
@@ -147,7 +147,8 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
         const choice = body?.choices?.[0];
         const content = choice?.message?.content;
         const text = typeof content === 'string' ? content : Array.isArray(content) ? content.map((c) => c.text ?? '').join('') : '';
-        if (text.trim()) return {text, model: body?.model ?? model};
+        // « length » : the reply was cut by the service's output limit (the caller asks for the rest).
+        if (text.trim()) return {text, model: body?.model ?? model, finish: choice?.finish_reason ?? null};
         // Say exactly what came back, so a broken endpoint or a filter is visible in the job log.
         const why = choice?.finish_reason ? `fin : ${choice.finish_reason}` : choice?.message?.refusal ? `refus : ${choice.message.refusal}` : `corps : ${raw.replace(/\s+/g, ' ').slice(0, 240) || '(vide)'}`;
         errors.push(`${base} ${model} : réponse sans texte (HTTP ${res.status}, ${res.headers.get('content-type') ?? 'type inconnu'}, ${why})`);
@@ -177,14 +178,83 @@ export async function chat(messages: ChatMessage[], opts: ChatOptions = {}, cfg:
   throw new Error(`IA indisponible : ${errors.join(' | ')}`);
 }
 
-/** The JSON object in a reply (models sometimes wrap it in ```json fences or a sentence). */
+/**
+ * The JSON object in a reply (models sometimes wrap it in ```json fences or a sentence). Typing slips that small
+ * free models make (a line break or straight quotes inside a sentence, a trailing comma) are repaired; a reply cut
+ * before its end is not completed here (see `jsonDepth`), so nothing missing is ever invented.
+ */
 export function extractJson<T = unknown>(text: string): T {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   const raw = fenced ? fenced[1]! : text;
   const start = raw.indexOf('{');
   const end = raw.lastIndexOf('}');
   if (start < 0 || end <= start) throw new Error('Réponse de l’IA sans objet JSON.');
-  return JSON.parse(raw.slice(start, end + 1)) as T;
+  const body = raw.slice(start, end + 1);
+  try {
+    return JSON.parse(body) as T;
+  } catch (e) {
+    try {
+      return JSON.parse(repairJsonText(body)) as T;
+    } catch {
+      throw e;
+    }
+  }
+}
+
+/**
+ * Fixes the form of almost-JSON without touching its words: raw line breaks and tabs inside strings are escaped,
+ * a straight quote inside a sentence (« clique sur "Comparer" ») is escaped, trailing commas are dropped and a
+ * comma missing between two lines is added. Brackets left open are not closed.
+ */
+export function repairJsonText(raw: string): string {
+  let out = '';
+  let inStr = false;
+  for (let i = 0; i < raw.length; i++) {
+    const c = raw[i]!;
+    if (inStr) {
+      if (c === '\\') {
+        out += c + (raw[i + 1] ?? '');
+        i++;
+      } else if (c === '"') {
+        const after = /^(\s*)(.?)/s.exec(raw.slice(i + 1))!;
+        const next = after[2];
+        if (!next || ',}]:'.includes(next)) {
+          inStr = false;
+          out += c;
+        } else if (next === '"' && after[1]!.includes('\n')) {
+          // `"…"` then a new line starting with `"`: the comma between two properties was forgotten.
+          inStr = false;
+          out += '",';
+        } else out += '\\"';
+      } else if (c === '\n') out += '\\n';
+      else if (c === '\r') out += '\\r';
+      else if (c === '\t') out += '\\t';
+      else out += c;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    if (c === '}' || c === ']') out = out.replace(/,\s*$/, '');
+    out += c;
+  }
+  return out;
+}
+
+/** How many brackets are still open at the end of a reply (0 when its JSON is complete; > 0 when it was cut). */
+export function jsonDepth(text: string): number {
+  const start = text.indexOf('{');
+  if (start < 0) return 0;
+  let depth = 0;
+  let inStr = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i]!;
+    if (inStr) {
+      if (c === '\\') i++;
+      else if (c === '"') inStr = false;
+    } else if (c === '"') inStr = true;
+    else if (c === '{' || c === '[') depth++;
+    else if (c === '}' || c === ']') depth--;
+  }
+  return depth + (inStr ? 1 : 0);
 }
 
 export function imagePart(file: string, detail?: 'low' | 'high'): ChatPart {

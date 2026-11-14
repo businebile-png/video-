@@ -8,7 +8,7 @@ import {loadFacts} from '../facts/facts.js';
 import {lintScript, type LintResult} from '../script/lint.js';
 import {viralChecklist, VIRAL_MIN_PASSED, type ViralChecklist} from '../script/viral.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
-import {chat, compact, estimateTokens, extractJson, promptBudget, type ChatMessage} from '../llm/client.js';
+import {chat, compact, estimateTokens, extractJson, jsonDepth, promptBudget, repairJsonText, type ChatMessage} from '../llm/client.js';
 import {log} from '../core/log.js';
 import type {Plan} from '../editorial/plan.js';
 
@@ -26,18 +26,60 @@ const FORMAT = `FORMAT (objet JSON unique, sans texte autour) :
       "voiceover": "texte dit (3 à 320 caractères)", "headline": "titre à l'écran, 42 caractères max (facultatif)",
       "emphasis": ["mots de la voix à surligner, 4 max"],
       "visual": { "kind": "broll|demo|graphic", "queries": ["2 à 4 recherches de séquences en anglais, 2-3 mots filmables"],
-                  "shotIdeas": ["ce que montrent les plans"], "mood": "…",
+                  "shotIdeas": ["ce que montrent les plans (facultatif)"], "mood": "… (facultatif)",
                   "captureId": "<id de capture du brief, scène demo>", "focusRegionIds": ["zones de la capture, 4 max"],
                   "graphic": { "type": "checklist", "title": "…", "items": ["2 à 4 éléments de 34 caractères max"] } },
       "claimFactIds": ["identifiants des faits vérifiés du brief qui prouvent la scène"] } ],
   "cta": { "onScreen": "48 caractères max", "subline": "90 caractères max", "reason": "la vraie raison de cliquer" },
-  "captions": { "tiktok": "…", "instagram": "…", "hashtags": ["#mot", "3 à 5"] },
+  "captions": { "tiktok": "…", "instagram": "… (facultatif : sinon la légende TikTok est reprise)", "hashtags": ["#mot", "3 à 5"] },
   "author": "api"
 }
 - 4 à 14 scènes ; la première est « hook », la dernière « cta » et dit « lien en bio ».
 - Graphiques possibles : checklist {title?, items}, steps {title?, steps:[{title, detail?}]}, compare {left:{title, items}, right:{title, items}, leftStyle?},
   stat {value, label, factId}, price {plan, price, period, note?, factId}, stack-merge {items (3-6 catégories génériques), result}.
+- Aucun autre type de graphique. Dans les textes, guillemets français « » uniquement (jamais de guillemets droits).
 - Ne pas écrire la mention « Publicité » dans les légendes : elle est ajoutée automatiquement.`;
+
+const GRAPHIC_TYPES = ['checklist', 'steps', 'stack-merge', 'compare', 'stat', 'price'];
+/** Names small models give the studio's graphics (« comparison », « timeline », « pricing »…), most specific first. */
+const GRAPHIC_SYNONYMS: Array<[RegExp, string]> = [
+  [/compar|versus|^vs$|table|avant|before|split/, 'compare'],
+  [/step|etape|étape|process|timeline|flow|sequence|séquence|tuto/, 'steps'],
+  [/pric|prix|tarif|offre|offer/, 'price'],
+  [/stat|chiffre|number|nombre|count|metric|kpi/, 'stat'],
+  [/merge|stack|tout-en-un|all-in-one|fusion/, 'stack-merge'],
+  [/list|check|bullet|feature|point|icon|grid/, 'checklist'],
+];
+
+/** A graphic under another name, or with its items in the other expected shape: same words, studio's form. */
+export function normalizeGraphic(g: Record<string, unknown>): Record<string, unknown> {
+  const out = {...g};
+  const name = String(out.type ?? '').toLowerCase().trim().replace(/[\s_]+/g, '-');
+  let type = GRAPHIC_TYPES.includes(name) ? name : GRAPHIC_SYNONYMS.find(([re]) => re.test(name))?.[1];
+  // No usable name: its shape says which graphic it is.
+  type ??= Array.isArray(out.steps) ? 'steps' : out.left && out.right ? 'compare' : out.price !== undefined ? 'price' : out.value !== undefined ? 'stat' : Array.isArray(out.items) && out.result ? 'stack-merge' : Array.isArray(out.items) ? 'checklist' : name;
+  out.type = type;
+  const asStep = (s: unknown) => (typeof s === 'string' ? {title: s} : s);
+  if (type === 'steps') {
+    if (Array.isArray(out.steps)) out.steps = (out.steps as unknown[]).map(asStep);
+    else if (Array.isArray(out.items)) out.steps = (out.items as unknown[]).map(asStep);
+  }
+  if (type === 'checklist' && !Array.isArray(out.items) && Array.isArray(out.steps)) {
+    out.items = (out.steps as unknown[]).map((s) => (typeof s === 'string' ? s : String((s as {title?: unknown})?.title ?? '')));
+  }
+  for (const k of ['value', 'price']) if (typeof out[k] === 'number') out[k] = String(out[k]);
+  return out;
+}
+
+/** Kinds of visual under another name (« video », « screenshot », « chart »…). */
+function normalizeKind(kind: unknown, hasGraphic: boolean): unknown {
+  const k = String(kind ?? '').toLowerCase().trim();
+  if (['broll', 'demo', 'graphic'].includes(k)) return k;
+  if (/capture|screen|écran|ecran|interface/.test(k)) return 'demo';
+  if (/graph|chart|infog|schema|schéma/.test(k) || (!k && hasGraphic)) return 'graphic';
+  if (/b-?roll|video|vidéo|footage|stock|plan|image|photo/.test(k) || !k) return 'broll';
+  return kind;
+}
 
 function systemPrompt(): string {
   return [
@@ -128,11 +170,43 @@ export function repairScript(raw: Record<string, unknown>): Record<string, unkno
       v.queries = list(v.queries) ?? [];
       v.shotIdeas = list(v.shotIdeas) ?? [];
       v.focusRegionIds = list(v.focusRegionIds) ?? [];
+      if (v.graphic && typeof v.graphic === 'object' && !Array.isArray(v.graphic)) v.graphic = normalizeGraphic(v.graphic as Record<string, unknown>);
+      v.kind = normalizeKind(v.kind, Boolean(v.graphic));
       s.visual = v;
       return s;
     });
   }
   return out;
+}
+
+const withoutFences = (t: string) => t.replace(/```(?:json)?/g, '');
+
+/** True when the reply stops before the end of its JSON (the service's output limit). */
+export function replyIsCut(text: string, finish?: string | null): boolean {
+  try {
+    extractJson(text);
+    return false;
+  } catch {
+    return finish === 'length' || jsonDepth(repairJsonText(withoutFences(text))) > 0;
+  }
+}
+
+/** Joins the rest of a cut reply to it; a model that starts over sends a whole object, which then replaces it. */
+export function joinContinuation(text: string, next: string): string {
+  // Only the fence and its line break go: a space that starts the rest is part of the sentence.
+  const rest = next.replace(/^\s*```(?:json)?[ \t]*\r?\n?/, '');
+  return /^\s*\{\s*"runId"/.test(rest) ? rest : text + rest;
+}
+
+/** Asks (twice at most) for the end of a reply the service cut. Nothing is ever completed by the studio itself. */
+async function completeReply(messages: ChatMessage[], first: {text: string; finish?: string | null}): Promise<{text: string; cut: boolean}> {
+  let {text, finish} = first;
+  for (let k = 0; k < 2 && replyIsCut(text, finish); k++) {
+    const more = await chat([...messages, {role: 'assistant', content: text}, {role: 'user', content: 'Ta réponse a été coupée. Écris uniquement la suite, exactement à partir du dernier caractère envoyé, sans rien répéter.'}], {temperature: 0.2});
+    text = joinContinuation(text, more.text);
+    finish = more.finish;
+  }
+  return {text, cut: replyIsCut(text, finish)};
 }
 
 export interface WriteResult {
@@ -190,15 +264,21 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
   let best: WriteResult | null = null;
   let lastProblems = '';
   let model = '';
+  // Every reply and what was wrong with it, for the run's report (GitHub artifact « compte-rendu »).
+  const attempts: Array<Record<string, unknown>> = [];
   for (let attempt = 1; attempt <= max; attempt++) {
-    const reply = await chat(messages, {temperature: attempt === 1 ? 0.8 : 0.5});
-    model = reply.model;
+    const first = await chat(messages, {temperature: attempt === 1 ? 0.8 : 0.5});
+    model = first.model;
+    const reply = {...first, ...(await completeReply(messages, first))};
     let problems: string[] = [];
     let raw: Record<string, unknown> | null = null;
     try {
       raw = extractJson<Record<string, unknown>>(reply.text);
     } catch (e) {
       problems = [`JSON illisible : ${(e as Error).message}`];
+    }
+    if (!raw && reply.cut) {
+      problems = ['Réponse coupée avant la fin du JSON (limite de longueur du service) : renvoie un script plus court (phrases courtes, sans « shotIdeas » ni « mood », légende Instagram omise).'];
     }
     if (raw) {
       raw = repairScript(raw);
@@ -223,7 +303,9 @@ export async function writeScript(runId: string, opts: {notes?: string; maxAttem
       }
     }
     lastProblems = problems.join('\n');
-    log.warn(`Script (essai ${attempt}/${max}) à reprendre : ${problems.length} point(s)`);
+    attempts.push({attempt, model, finish: reply.finish ?? null, cut: reply.cut, chars: reply.text.length, problems, reply: reply.text.slice(0, 20_000)});
+    await writeJson(path.join(p.dir, 'writer-attempts.json'), attempts);
+    log.warn(`Script (essai ${attempt}/${max}) à reprendre : ${problems.length} point(s) — ${problems.slice(0, 2).map((x) => x.slice(0, 180)).join(' | ')}`);
     // Only the last exchange is sent back (small free quotas): the brief, the last script, what to fix.
     messages = [
       system,

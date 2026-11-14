@@ -119,6 +119,12 @@ export function reliefNotNeeded(slot: {iso: string} | null, queued: string[], cl
   return null;
 }
 
+/** The slot a fresh Claude claim holds (less than 4 hours old): no free-AI video may take it, even launched by hand. */
+export function claimedSlots(claim: {slot?: {iso?: string}; startedAt?: string} | null, now = new Date()): string[] {
+  const fresh = claim?.startedAt && now.getTime() - Date.parse(claim.startedAt) < 4 * 3_600_000;
+  return fresh && claim?.slot?.iso ? [claim.slot.iso] : [];
+}
+
 /** Puts a finished video in the queue (both pipelines), for the publication task. */
 export async function enqueue(runId: string, slot: {iso: string; label: string}, producedBy: Record<string, unknown>): Promise<string> {
   const p = runPaths(runId);
@@ -163,7 +169,8 @@ export async function autoProduce(opts: {maxCorrections?: number; musicFile?: st
     log.warn(`Faits non rafraîchis (${(e as Error).message}) : seuls les faits encore valides seront cités.`);
   }
 
-  const taken = queueEntries().map((e) => e.autoSlot.iso);
+  const claimNow = fs.existsSync(CLAIM_FILE) ? await readJson<{slot?: {iso?: string}; startedAt?: string}>(CLAIM_FILE) : null;
+  const taken = [...queueEntries().map((e) => e.autoSlot.iso), ...claimedSlots(claimNow)];
   const slot = pickSlot(nextSlots(config, new Date(), 3).filter((s) => s.network === 'tiktok'), taken);
   const plan = await createPlan(config, editorial);
   const runId = plan.runId;

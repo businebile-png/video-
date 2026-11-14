@@ -675,7 +675,15 @@ async function main(): Promise<void> {
     }
     case 'auto': {
       // Whole production without Claude: free AI for the script and the review (see docs/production-sans-claude.md).
-      const res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null, ifNeeded: values['if-needed'] === true});
+      let res;
+      try {
+        res = await autoProduce({maxCorrections: num('max-corrections') ?? 2, musicFile: str('file') ?? process.env.STUDIO_MUSIC_FILE ?? null, ifNeeded: values['if-needed'] === true});
+      } catch (e) {
+        // The reason of a failed run, for the commit message and the run's report.
+        const reason = String((e as Error).message).split('\n').filter(Boolean).slice(0, 3).join(' ').slice(0, 300);
+        await writeJson(path.join(PATHS.cache, 'auto-result.json'), {runId: '', status: 'echec', score: null, slot: null, message: `Échec : ${reason}`});
+        throw e;
+      }
       await writeJson(path.join(PATHS.cache, 'auto-result.json'), res);
       (res.status === 'prete' ? log.ok : log.warn)(res.message);
       return;
