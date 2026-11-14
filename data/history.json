@@ -463,6 +463,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-14T12:12:43.138Z"
+    },
+    {
+      "runId": "2026-11-14-g",
+      "date": "2026-11-14",
+      "category": "formules-payantes",
+      "hookStyle": "pov",
+      "hook": "POV : tu refais la même présentation en direct, pour la dixième fois.",
+      "angle": "Refaire la même présentation en direct encore et encore : Systeme.io propose des webinaires automatiques, mais seulement à partir de la formule Webinaire. Montrer honnêtement ce que chaque formule inclut, puis les prix sur les cartes officielles.",
+      "workingTitle": "Webinaires automatiques : quelle formule",
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-14T12:17:29.530Z"
     }
   ]
 }
