@@ -163,6 +163,8 @@ async function finishRender(p: ReturnType<typeof runPaths>, config: StudioConfig
   ]);
   const previewBytes = (await fsp.stat(preview)).size;
   const renderSeconds = Math.round((Date.now() - started) / 1000);
+  // A new render makes any earlier music-free copy stale: music:overlay must mix from this render, not a previous version.
+  await fsp.rm(path.join(path.dirname(p.final), 'final-sans-musique.mp4'), {force: true});
   log.ok(`Vidéo rendue en ${renderSeconds} s → ${path.relative(PATHS.root, p.final)} (aperçu ${(previewBytes / 1e6).toFixed(1)} Mo)`);
   return {final: p.final, cover: p.cover, preview, previewBytes, renderSeconds};
 }

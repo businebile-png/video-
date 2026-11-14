@@ -38,7 +38,7 @@
         164339,
         142641
       ],
-      "updatedAt": "2026-11-12T04:59:04.722Z"
+      "updatedAt": "2026-11-14T06:43:26.948Z"
     },
     {
       "runId": "2026-11-07-a",
@@ -66,7 +66,7 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-12T04:59:04.723Z"
+      "updatedAt": "2026-11-14T06:43:26.949Z"
     },
     {
       "runId": "2026-11-08-a",
@@ -122,7 +122,7 @@
         47743,
         130650
       ],
-      "updatedAt": "2026-11-12T04:59:04.725Z"
+      "updatedAt": "2026-11-14T06:43:26.951Z"
     },
     {
       "runId": "2026-11-08-b",
@@ -280,16 +280,33 @@
       "angle": "Fait vérifié qui surprend : les e-mails envoyés sont illimités dans les quatre formules, même la gratuite ; puis ce que chaque formule ajoute et son prix, montré sur la page officielle",
       "workingTitle": "E-mails illimités, même en gratuit",
       "artDirection": "energie",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 32.83,
       "voiceId": "claire",
       "durationSec": 38.3,
       "score": 73,
       "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
-      "pexelsIds": [],
-      "updatedAt": "2026-11-12T13:52:49.532Z"
+      "status": "scheduled",
+      "reason": "Publication automatique demandée (« publie automatiquement ») : le créneau prévu (jeudi 12/11 à 20:00) a été manqué, la vidéo est reprogrammée au prochain créneau libre, samedi 14/11 à 10:00, sur TikTok et Instagram (Reel, premier commentaire = la question de la légende).",
+      "pexelsIds": [
+        94978,
+        130648,
+        233382,
+        233983,
+        369822,
+        183450,
+        233390,
+        64594,
+        73847,
+        215471,
+        215472,
+        172350,
+        369821,
+        224415,
+        64595,
+        64596
+      ],
+      "updatedAt": "2026-11-14T06:43:26.952Z"
     },
     {
       "runId": "2026-11-13-a",
@@ -352,20 +369,21 @@
       "runId": "2026-11-14-b",
       "date": "2026-11-14",
       "category": "erreurs-debutants",
-      "hookStyle": null,
-      "hook": null,
-      "angle": null,
-      "workingTitle": null,
+      "hookStyle": "erreur",
+      "hook": "Tu choisis ta formule au hasard ? C'est l'erreur du débutant.",
+      "angle": "Erreur de débutant : choisir sa formule Systeme.io au hasard. Compter plutôt ses tunnels de vente, puis lire sur chaque carte officielle combien de tunnels elle permet et à quel prix.",
+      "workingTitle": "Combien de tunnels de vente par formule",
       "artDirection": "studio-nuit",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 43.91,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 40.83,
+      "score": 79,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-14T06:51:53.048Z"
+      "updatedAt": "2026-11-14T08:09:41.814Z"
     }
   ]
 }
