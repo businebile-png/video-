@@ -423,6 +423,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-14T08:32:48.595Z"
+    },
+    {
+      "runId": "2026-11-14-e",
+      "date": "2026-11-14",
+      "category": "formations-en-ligne",
+      "hookStyle": "question-directe",
+      "hook": "Tu sais faire quelque chose que d'autres veulent apprendre ?",
+      "angle": "Tu sais faire quelque chose que d'autres veulent apprendre : avec Systeme.io, tu crées ta formation, ton tunnel de vente et l'encaissement au même endroit. Puis combien de formations chaque formule permet, preuve sur le tableau officiel.",
+      "workingTitle": "Combien de formations par formule",
+      "artDirection": "studio-nuit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-14T11:17:59.750Z"
     }
   ]
 }
