@@ -143,6 +143,7 @@ jobs:
             .cache/auto-result.json
             runs/*/script.json
             runs/*/script-lint.json
+            runs/*/writer-attempts.json
             runs/*/qc/review.json
             runs/*/qc/score.json
             runs/*/qc/contact-sheet.jpg
