@@ -328,6 +328,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-13T15:31:50.461Z"
+    },
+    {
+      "runId": "2026-11-14-a",
+      "date": "2026-11-14",
+      "category": "formules-payantes",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-14T06:32:51.769Z"
     }
   ]
 }
