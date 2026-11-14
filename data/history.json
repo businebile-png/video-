@@ -413,15 +413,16 @@
       "angle": "Quelqu'un s'inscrit sur ta page en pleine nuit : une règle d'automatisation de Systeme.io lui envoie ton e-mail toute seule. Le principe (déclencheur, action), puis combien de règles et de workflows chaque formule donne, preuve sur le tableau officiel.",
       "workingTitle": "Règles d'automatisation par formule",
       "artDirection": "nuit-edit",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 54.87,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 37.93,
+      "score": 77,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-14T08:14:48.549Z"
+      "updatedAt": "2026-11-14T08:32:48.595Z"
     }
   ]
 }

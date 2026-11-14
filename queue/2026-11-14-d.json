@@ -1,0 +1,757 @@
+{
+  "runId": "2026-11-14-d",
+  "date": "2026-11-14",
+  "createdAt": "2026-11-14T08:33:13.798Z",
+  "updatedAt": "2026-11-14T08:33:13.798Z",
+  "status": "programmee",
+  "title": "Règles d'automatisation par formule",
+  "category": {
+    "id": "automatisation",
+    "label": "Automatisation du marketing"
+  },
+  "angle": "Quelqu'un s'inscrit sur ta page en pleine nuit : une règle d'automatisation de Systeme.io lui envoie ton e-mail toute seule. Le principe (déclencheur, action), puis combien de règles et de workflows chaque formule donne, preuve sur le tableau officiel.",
+  "hook": "Quelqu'un s'inscrit sur ta page à trois heures du matin. Qui lui répond ?",
+  "hookStyle": "scenario",
+  "artDirection": {
+    "id": "nuit-edit",
+    "label": "Edit nuit — noir cinéma, gros texte central, coupes rapides"
+  },
+  "durationSec": 37.93,
+  "score": {
+    "total": 77,
+    "decision": "publishable",
+    "summary": "77/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 13,
+        "basis": "relecture 13/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 13,
+        "basis": "mesures : WER 0.023, 144 mots/min, pause max 0.5 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 12,
+        "basis": "relecture 12/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 12,
+        "basis": "relecture 12/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "16 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "débit limite (144 mots/min)"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "86 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Ce qui est dit correspond à ce qui est montré pour toute la partie chiffrée : chaque nombre à l'écran (1, 10, 100, Illimité, 17 €) est celui que dit la voix, sur des captures officielles fidèles, et le message se suit de l'accroche à l'appel à l'action. En revanche la scène s2 utilise des plans hors sujet (graphiques papier en anglais, tache de lumière floue sur fond quasi noir) et le chat de l'accroche n'illustre rien, ce qui empêche de parler de bonne qualité soignée. Aucun problème bloquant ni doute factuel."
+      }
+    ],
+    "virality": {
+      "total": 12,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Titre « Inscrit en pleine nuit ? » lisible dès l'image 0 et scène que la cible reconnaît, sans marque ni logo ; mais l'image (une femme qui dort) est calme, sans mouvement fort, et le titre ne dit pas encore l'enjeu pour le spectateur."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "La question « qui lui répond ? » crée une petite boucle vite refermée en 3 s ; ensuite l'énumération des formules tient par les changements d'image fréquents, mais rien n'annonce ce qui vient et s6 ressemble à une liste de chiffres."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "Comparatif utile et vérifié des règles et workflows par formule, que l'on peut enregistrer ; mais l'information reste assez technique et peu de spectateurs l'enverraient à quelqu'un."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une question simple (« Tu réponds encore à la main à tes nouveaux inscrits ? »), sans pression ; la vidéo elle-même n'invite pas à répondre et la question appelle surtout oui/non."
+        }
+      ],
+      "actions": [
+        "Remplacer le premier plan par un téléphone qui s'allume dans le noir avec une notification (écran non lisible), pour un mouvement immédiat dès l'image 0.",
+        "Annoncer la suite dans l'accroche (« et combien de règles chaque formule te donne ») pour donner une raison de rester jusqu'au tableau.",
+        "Poser en légende une question à choix (« Ta première règle : e-mail de bienvenue ou envoi d'un cadeau ? ») plutôt qu'un oui/non."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 13,
+        "justification": "L'accroche (femme endormie, lumière tamisée) et les captures officielles du tableau et de la carte Startup sont nettes, lisibles et fidèles aux fichiers sources ; la mention « Publicité » est visible partout et les textes restent dans la zone sûre. En revanche, la scène s2 (« l'e-mail part tout seul ») est illustrée par des feuilles de graphiques en camembert avec une légende anglaise sur des catégories de métiers et par une tache de lumière floue sur fond presque noir : hors sujet, et le plan sombre derrière « D'AUTOMATISATION » paraît vide sur téléphone. Le chat endormi sous « s'inscrit sur ta page » et la cafetière/les bougies de s3 sont des plans d'ambiance sans lien avec le propos."
+      },
+      "editing": {
+        "score": 11,
+        "justification": "Le rythme est bon (2,4 s en moyenne entre deux changements d'image), les sous-titres mot à mot suivent la voix et le schéma déclencheur → action s'allume étape par étape au bon moment. Les encadrés rouges sur Gratuit puis Startup tombent au mot qui les nomme, ce qui rend la preuve claire. L'alternance femme / chat / femme / chat dans les 4 premières secondes fait un peu ping-pong, et le titre « L'e-mail part tout seul » apparaît avec un effet de révélation où « SEUL » est un instant tronqué (vers l'image 126) : bref mais visible au ralenti."
+      },
+      "script": {
+        "score": 12,
+        "justification": "La mise en situation « quelqu'un s'inscrit à trois heures du matin, qui lui répond ? » est concrète et parle à la cible, puis la réponse arrive dès la phrase 2. La progression (principe, puis Gratuit, Startup, Webinaire/Illimité) est logique et les phrases sont courtes et naturelles à l'oral. La partie chiffrée s6 (« Webinaire monte à cent règles, et Illimité n'a plus de limite ») est une énumération un peu sèche qui rallonge sans apporter d'exemple d'usage, et la vidéo finit à 38 s avec un débit déjà limite (144 mots/min)."
+      },
+      "explanation": {
+        "score": 12,
+        "justification": "On comprend ce que fait une règle d'automatisation (un déclencheur, une action, exemple de l'e-mail envoyé à l'inscription) et ce que chaque formule permet, preuves officielles à l'appui. Toutes les affirmations correspondent aux faits vérifiés (1/10/100/illimité règles, 1/5 workflows, 17 €, sans carte bancaire). Il manque la différence concrète entre une règle et un workflow, citée trois fois mais jamais expliquée, et un exemple de ce qu'on ferait avec 10 règles plutôt qu'une."
+      },
+      "conversion": {
+        "score": 11,
+        "justification": "L'appel à l'action « Ta première règle est gratuite : le lien est dans ma bio » est clair, honnête et répond à l'accroche ; la carte de fin affiche les quatre prix vérifiés et « Publicité · lien affilié ». La vidéo montre ce que débloquent les formules payantes (10, 100, illimité), ce qui sert l'objectif d'abonnement sans pression. Mais elle ne dit pas à quel moment une seule règle devient trop juste pour le spectateur, donc la raison de passer à Startup reste abstraite."
+      }
+    },
+    "improvements": [
+      "Remplacer les plans de s2 (feuilles de camembert avec légendes anglaises, tache de lumière floue sur fond noir) par une personne au travail sur son ordinateur ou un téléphone qui reçoit une notification, écran non lisible.",
+      "Remplacer le plan du chat endormi dans l'accroche par un téléphone qui s'allume dans le noir, plus en phase avec « s'inscrit sur ta page ».",
+      "Ajouter une demi-phrase qui distingue règle et workflow, ou un exemple d'usage de Startup (« une règle par formulaire, une par produit… » seulement si un fait vérifié le couvre), à la place de l'énumération de s6.",
+      "Vérifier l'animation d'entrée du titre de s2 : « SEUL » est un instant tronqué pendant la révélation."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "4969 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.7 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "86 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×0.99",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.41 s entre deux changements d’image (coupe ou recadrage), min 0.9 s ; 16 plans montés, moy. 2.41 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "9 sources (7 séquences filmées, 2 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.2 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 1.2 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 144,
+    "wer": 0.023,
+    "score": 13,
+    "problems": [
+      "débit limite (144 mots/min)"
+    ]
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Quelqu'un s'inscrit sur ta page à trois heures du matin. Qui lui répond ?",
+      "headline": "Inscrit en pleine nuit ?",
+      "visual": "broll",
+      "fromSec": 0,
+      "toSec": 4
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Avec une règle d'automatisation, Systeme.io lui envoie ton e-mail tout seul.",
+      "headline": "L'e-mail part tout seul",
+      "visual": "broll",
+      "fromSec": 4,
+      "toSec": 9.8
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Le principe : un déclencheur, comme l'inscription à ton formulaire, puis une action, comme l'envoi d'un e-mail.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 9.8,
+      "toSec": 17.4
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "En Gratuit, tu as une règle et un workflow, sans carte bancaire.",
+      "headline": "Gratuit : 1 règle",
+      "visual": "demo",
+      "fromSec": 17.4,
+      "toSec": 22.5
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Startup passe à dix règles et cinq workflows, pour 17 € par mois.",
+      "headline": "Startup : 10 règles",
+      "visual": "demo",
+      "fromSec": 22.5,
+      "toSec": 27.9
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Webinaire monte à cent règles, et Illimité n'a plus de limite.",
+      "headline": "100 règles, ou sans limite",
+      "visual": "demo",
+      "fromSec": 27.9,
+      "toSec": 32.4
+    },
+    {
+      "id": "s7",
+      "phase": "cta",
+      "voiceover": "Ta première règle est gratuite : le lien est dans ma bio.",
+      "headline": "Ta première règle, gratuite",
+      "visual": "broll",
+      "fromSec": 32.4,
+      "toSec": 37.9
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.automations",
+      "statement": "Systeme.io propose des règles d’automatisation et des workflows.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-14T06:51:50.925Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.webinar.price",
+      "statement": "En facturation mensuelle, le plan Webinaire de Systeme.io coûte 47 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.unlimited.price",
+      "statement": "En facturation mensuelle, le plan Illimité de Systeme.io coûte 97 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.limits",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.webinar.limits",
+      "statement": "Le plan Webinaire de Systeme.io donne accès aux webinaires et inclut jusqu'à 50 tunnels de vente, 100 automatisations, 10 domaines personnalisés et 10 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.unlimited.limits",
+      "statement": "Le plan Illimité de Systeme.io offre un nombre illimité de tunnels, de contacts, de règles d'automatisation et de domaines personnalisés.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.table.automation-rules",
+      "statement": "Règles d'automatisation : 1 avec Gratuit, 10 avec Startup, 100 avec Webinaire, illimitées avec Illimité.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.table.workflows",
+      "statement": "Workflows : 1 avec Gratuit, 5 avec Startup, 20 avec Webinaire, illimités avec Illimité.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.prices.ttc",
+      "statement": "Les prix de Systeme.io sont indiqués en euros toutes taxes comprises (TVA française de 20 %).",
+      "verifiedAt": "2026-11-14T06:51:51.774Z"
+    },
+    {
+      "id": "feature.auto-email-on-subscribe",
+      "statement": "Avec une règle d'automatisation, Systeme.io peut envoyer automatiquement un e-mail quand un contact s'inscrit sur une page de capture.",
+      "verifiedAt": "2026-11-14T06:51:51.946Z"
+    },
+    {
+      "id": "rule.trigger",
+      "statement": "Une règle d'automatisation de Systeme.io commence par un déclencheur, par exemple l'inscription à un formulaire d'une page de capture.",
+      "verifiedAt": "2026-11-14T06:51:51.946Z"
+    },
+    {
+      "id": "rule.action-send-email",
+      "statement": "Une règle d'automatisation de Systeme.io peut avoir pour action l'envoi d'un e-mail.",
+      "verifiedAt": "2026-11-14T06:51:51.946Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 151295,
+        "author": "ghasoub",
+        "pageUrl": "https://pixabay.com/videos/id-151295/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 127621,
+        "author": "Bernard_Townsend",
+        "pageUrl": "https://pixabay.com/videos/id-127621/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 349093,
+        "author": "MuhammadAhmad10",
+        "pageUrl": "https://pixabay.com/videos/id-349093/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 200941,
+        "author": "conte_public",
+        "pageUrl": "https://pixabay.com/videos/id-200941/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 209424,
+        "author": "NGUYENTHONG7997",
+        "pageUrl": "https://pixabay.com/videos/id-209424/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 42814,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-42814/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 27794,
+        "author": "FreeCreativeStuff",
+        "pageUrl": "https://pixabay.com/videos/id-27794/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250448,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250448/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 39446,
+        "author": "padrinan",
+        "pageUrl": "https://pixabay.com/videos/id-39446/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 243908,
+        "author": "Oliverstar",
+        "pageUrl": "https://pixabay.com/videos/id-243908/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 54288,
+        "author": "etotmark",
+        "pageUrl": "https://pixabay.com/videos/id-54288/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nAutomatiser ses e-mails : combien de règles par formule Systeme.io ? 👇\n\nQuelqu'un s'inscrit à 3 h du matin : une règle d'automatisation lui envoie ton e-mail toute seule (déclencheur → action).\n\n🆓 Gratuit : 1 règle et 1 workflow, 0 €, sans carte bancaire.\n🚀 Startup : 10 règles et 5 workflows, 17 €/mois TTC.\n🎥 Webinaire : 100 règles et 20 workflows, 47 €/mois TTC.\n♾️ Illimité : règles et workflows illimités, 97 €/mois TTC.\n\nTu réponds encore à la main à tes nouveaux inscrits ? Dis-le en commentaire.\nEnregistre la vidéo pour la retrouver le jour où tu t'y mets.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#automatisation #emailmarketing #systemeio #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-15T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-d.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-15T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nAutomatiser ses e-mails : combien de règles par formule Systeme.io ? 👇\n\nQuelqu'un s'inscrit à 3 h du matin : une règle d'automatisation lui envoie ton e-mail toute seule (déclencheur → action).\n\n🆓 Gratuit : 1 règle et 1 workflow, 0 €, sans carte bancaire.\n🚀 Startup : 10 règles et 5 workflows, 17 €/mois TTC.\n🎥 Webinaire : 100 règles et 20 workflows, 47 €/mois TTC.\n♾️ Illimité : règles et workflows illimités, 97 €/mois TTC.\n\nTu réponds encore à la main à tes nouveaux inscrits ? Dis-le en commentaire.\nEnregistre la vidéo pour la retrouver le jour où tu t'y mets.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#automatisation #emailmarketing #systemeio #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Inscrit en pleine nuit ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nAutomatiser ses e-mails : combien de règles par formule Systeme.io ? 👇\n\nQuelqu'un s'inscrit à 3 h du matin : une règle d'automatisation lui envoie ton e-mail toute seule (déclencheur → action).\n\n🆓 Gratuit : 1 règle et 1 workflow, 0 €, sans carte bancaire.\n🚀 Startup : 10 règles et 5 workflows, 17 €/mois TTC.\n🎥 Webinaire : 100 règles et 20 workflows, 47 €/mois TTC.\n♾️ Illimité : règles et workflows illimités, 97 €/mois TTC.\n\nTu réponds encore à la main à tes nouveaux inscrits ? Dis-le en commentaire.\nEnregistre ce reel pour le jour où tu t'y mets, ou envoie-le à quelqu'un qui croule sous les e-mails.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#automatisation #emailmarketing #systemeio #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-15T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu réponds encore à la main à tes nouveaux inscrits ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-d.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-15T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nAutomatiser ses e-mails : combien de règles par formule Systeme.io ? 👇\n\nQuelqu'un s'inscrit à 3 h du matin : une règle d'automatisation lui envoie ton e-mail toute seule (déclencheur → action).\n\n🆓 Gratuit : 1 règle et 1 workflow, 0 €, sans carte bancaire.\n🚀 Startup : 10 règles et 5 workflows, 17 €/mois TTC.\n🎥 Webinaire : 100 règles et 20 workflows, 47 €/mois TTC.\n♾️ Illimité : règles et workflows illimités, 97 €/mois TTC.\n\nTu réponds encore à la main à tes nouveaux inscrits ? Dis-le en commentaire.\nEnregistre ce reel pour le jour où tu t'y mets, ou envoie-le à quelqu'un qui croule sous les e-mails.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#automatisation #emailmarketing #systemeio #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-d.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-d.jpg",
+    "coverMs": 0,
+    "sha256": "81120aabcc97f5b168a920f2495e61921444121332e5c2694c7f09ef477ae897",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-14T08:32:57.325Z"
+  },
+  "publishable": true,
+  "overrideAllowed": true,
+  "preview": {
+    "assetId": "173db8c3a63f35ca9415defd9660bcdb",
+    "url": "/_blob/173db8c3a63f35ca9415defd9660bcdb"
+  },
+  "cover": {
+    "assetId": "7fa615316a1f6dcc31e45691a8c6a4a2",
+    "url": "/_blob/7fa615316a1f6dcc31e45691a8c6a4a2"
+  },
+  "decision": {
+    "action": "programmer",
+    "at": "2026-11-14T11:16:00Z",
+    "notes": "Programmée à la demande de l'utilisateur (production et programmation en continu)."
+  },
+  "publications": {
+    "tiktok": {
+      "status": "scheduled",
+      "metricoolId": 427917454,
+      "scheduledFor": "2026-11-15T10:00:00+01:00",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=5311429539221685496"
+    },
+    "instagram": {
+      "status": "scheduled",
+      "metricoolId": 427917642,
+      "scheduledFor": "2026-11-15T10:00:00+01:00",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=-1356172749645526776"
+    }
+  },
+  "metrics": null,
+  "disclosure": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.",
+  "autoSlot": {
+    "iso": "2026-11-15T10:00:00+01:00",
+    "label": "dimanche 15 novembre à 10:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 54.87,
+    "end": 92.82
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-14T11:16:38.569Z"
+}
