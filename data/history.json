@@ -453,15 +453,16 @@
       "angle": "Pas encore de produit ? Commencer par récolter des e-mails : chaque inscrit devient un contact à qui écrire quand l'offre sera prête. Puis combien de contacts chaque formule Systeme.io permet de garder, preuve sur le tableau officiel.",
       "workingTitle": "Combien de contacts par formule",
       "artDirection": "clarte",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 21.73,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 36.47,
+      "score": 74,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-14T11:53:01.973Z"
+      "updatedAt": "2026-11-14T12:12:43.138Z"
     }
   ]
 }

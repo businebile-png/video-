@@ -1,0 +1,748 @@
+{
+  "runId": "2026-11-14-f",
+  "date": "2026-11-14",
+  "createdAt": "2026-11-14T12:13:03.870Z",
+  "updatedAt": "2026-11-14T12:13:03.870Z",
+  "status": "programmee",
+  "title": "Combien de contacts par formule",
+  "category": {
+    "id": "conseils-debutant",
+    "label": "Conseils pour débuter"
+  },
+  "angle": "Pas encore de produit ? Commencer par récolter des e-mails : chaque inscrit devient un contact à qui écrire quand l'offre sera prête. Puis combien de contacts chaque formule Systeme.io permet de garder, preuve sur le tableau officiel.",
+  "hook": "Pas besoin d'avoir un produit pour commencer ta liste d'e-mails.",
+  "hookStyle": "idee-recue",
+  "artDirection": {
+    "id": "clarte",
+    "label": "Clarté SaaS — lumineux, net, bleu électrique"
+  },
+  "durationSec": 36.47,
+  "score": {
+    "total": 74,
+    "decision": "publishable",
+    "summary": "74/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 13,
+        "basis": "relecture 13/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0.012, 150 mots/min, pause max 0.56 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 9,
+        "basis": "relecture 9/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "15 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "86 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message se suit du début à la fin. Chaque chiffre à l'écran correspond à la voix (2 000, 5 000, 17 €, 10 000, illimités), tous couverts par les faits vérifiés et prouvés par des captures officielles datées, et le spectateur comprend qu'il peut commencer sa liste gratuitement via le lien en bio. La finition n'est pas au niveau : le surlignage coupe les nombres dans trois titres, un plan (livre devant des lilas) est hors sujet, et les recadrages du tableau ne montrent pas le libellé « Contacts »."
+      }
+    ],
+    "virality": {
+      "total": 12,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Le titre « Pas encore de produit ? » est lisible dès l'image 0 et parle d'une situation de débutant, sans marque. Pourtant, le gros plan sombre d'un homme immobile et grave n'apporte ni mouvement ni promesse visuelle, et le titre reste assez petit."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "L'annonce « Je te montre combien chaque formule en garde » tient jusqu'au bout et le rythme reste soutenu. Pourtant, il faut attendre 11 s avant le premier chiffre, à cause de 4 s de plans de mains sans information en s2, et la fin répète les prix."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "La comparaison des quatre paliers de contacts est utile à enregistrer, et la légende la reprend en liste. Pourtant, le sujet est étroit (une seule limite) et ne donne pas d'astuce concrète pour démarrer sa liste."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une question simple (« Ta liste, elle en est à combien d'inscrits ? »), mais la cible visée (sans produit) n'a souvent aucun inscrit, ce qui freine la réponse. La vidéo elle-même ne pose aucune question."
+        }
+      ],
+      "actions": [
+        "Montrer le premier chiffre (Gratuit : 2 000 contacts) avant 6 s en raccourcissant la s2 à une phrase et deux plans.",
+        "Grossir le titre d'accroche dès l'image 0 et ouvrir sur un plan en mouvement (quelqu'un qui écrit son idée) plutôt que sur un visage figé.",
+        "Changer la question de la légende pour une question à laquelle un débutant peut répondre : « Tu commencerais ta liste avec quoi : un guide gratuit ou une liste d'attente ? »"
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 13,
+        "justification": "Les plans filmés sont nets (gros plan d'homme, mains au clavier, femme au téléphone) et les captures officielles restent lisibles sur téléphone, avec l'adresse et la date de capture. En revanche, le plan du livre ouvert devant des lilas (pendant « pour commencer ta liste d'e-mails ») est hors sujet. Les recadrages du tableau « Contacts » montrent une bande grise vide là où devrait figurer le libellé « Contacts » : on ne voit que « Gratuit 2,000 / Startup 5,000 », au format anglais. Dans les titres « Gratuit : 2 000 contacts », « Startup : 5 000 contacts » et « 10 000, ou illimités », le surlignage ne couvre que « 000 » (et la virgule), ce qui coupe visuellement le nombre et fait négligé."
+      },
+      "editing": {
+        "score": 11,
+        "justification": "Le rythme est bon : 14 plans, un changement d'image toutes les 2,6 s en moyenne, avec des coupes calées sur la voix et des zooms sur la bonne colonne au mot qui la nomme (Gratuit, Startup, puis la carte à 17 €). L'enchaînement tableau puis carte de prix pour Startup est bien motivé. Pourtant, la scène s2 alterne quatre plans de mains (clavier, plume, clavier, plume) qui n'apportent aucune information. Le plan de la page tarifs complète dure 6 s pour une seule phrase générale, et la carte de fin reprend des prix qui n'ont pas été expliqués."
+      },
+      "script": {
+        "score": 11,
+        "justification": "L'accroche « Pas besoin d'avoir un produit pour commencer ta liste d'e-mails » corrige une idée reçue claire, en 10 mots et à la deuxième personne. La progression (une liste, puis combien de contacts par formule) est logique et l'annonce « Je te montre combien chaque formule en garde » est bien tenue. Pourtant, la phrase de la s3 (« une des limites qui changent selon la formule, c'est le nombre de contacts ») est lourde à l'oral et redit ce qui vient d'être annoncé. Enfin, la série de chiffres en s6 (« Webinaire, 10 000. Et Illimité, contacts illimités. ») est sèche."
+      },
+      "explanation": {
+        "score": 9,
+        "justification": "Les quatre limites de contacts sont exactes et prouvées à l'écran. Pourtant, la vidéo n'explique jamais comment on récolte ces inscrits avec Systeme.io : rien sur une page de capture, un formulaire ou l'envoi des e-mails. Un débutant comprend qu'il existe des paliers de contacts, mais pas ce que l'outil fait pour lui ni à quoi correspond « un contact ». Enfin, l'absence du libellé « Contacts » sur les recadrages affaiblit la preuve."
+      },
+      "conversion": {
+        "score": 10,
+        "justification": "L'appel à l'action est clair et honnête (« commencer aujourd'hui, gratuitement, lien en bio »), et la carte de fin affiche les quatre prix vérifiés avec la date. La montée en gamme est suggérée par les paliers (5 000 pour 17 €), mais la vidéo ne dit jamais quand on a besoin de passer au palier suivant, ni pourquoi cela vaut le prix. Enfin, la raison de cliquer reste générique : rien sur ce qu'on peut faire dès l'inscription pour commencer sa liste."
+      }
+    },
+    "improvements": [
+      "Titres s4, s5 et s6 : surligner le nombre entier (« 2 000 », « 5 000 », « 10 000 ») et non « 000 » seul ; le découpage de l'emphase sur l'espace insécable coupe le chiffre et embarque la virgule dans « 000, ».",
+      "Remplacer le plan du livre ouvert devant des lilas (s1, shot-2) par une personne qui note une idée ou travaille sur son ordinateur, en lien avec « commencer ta liste d'e-mails ».",
+      "Recadrer tarifs-contacts-a et tarifs-contacts-b pour inclure le libellé « Contacts » de la ligne (ou ajouter une étiquette « Contacts » sur la bande grise), afin que la preuve se lise sans le titre.",
+      "Remplacer la phrase de la s3 par une phrase concrète sur la façon de récolter les inscrits (page de capture et e-mail automatique, faits feature.auto-email-on-subscribe et rule.trigger), puis enchaîner sur les paliers."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "5945 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.7 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "86 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×0.99",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.6 s entre deux changements d’image (coupe ou recadrage), min 0.77 s ; 14 plans montés, moy. 2.6 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "9 sources (5 séquences filmées, 4 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.3 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 0.0 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 150,
+    "wer": 0.012,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Pas besoin d'avoir un produit pour commencer ta liste d'e-mails.",
+      "headline": "Pas encore de produit ?",
+      "visual": "broll",
+      "fromSec": 0,
+      "toSec": 3.6
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Chaque inscrit devient un contact, à qui tu écriras le jour où ton offre est prête. Je te montre combien chaque formule en garde.",
+      "headline": "Chaque inscrit, un contact",
+      "visual": "broll",
+      "fromSec": 3.6,
+      "toSec": 11.3
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Sur Systeme.io, une des limites qui changent selon la formule, c'est le nombre de contacts.",
+      "headline": "Combien de contacts ?",
+      "visual": "demo",
+      "fromSec": 11.3,
+      "toSec": 17.2
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "En Gratuit, jusqu'à 2 000 contacts, sans carte bancaire.",
+      "headline": "Gratuit : 2 000 contacts",
+      "visual": "demo",
+      "fromSec": 17.2,
+      "toSec": 21.5
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Startup monte à 5 000, pour 17 € par mois.",
+      "headline": "Startup : 5 000 contacts",
+      "visual": "demo",
+      "fromSec": 21.5,
+      "toSec": 25
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Webinaire, 10 000. Et Illimité, contacts illimités.",
+      "headline": "10 000, ou illimités",
+      "visual": "demo",
+      "fromSec": 25,
+      "toSec": 30
+    },
+    {
+      "id": "s7",
+      "phase": "cta",
+      "voiceover": "Ta liste peut commencer aujourd'hui, gratuitement : le lien est dans ma bio.",
+      "headline": "Commence ta liste",
+      "visual": "broll",
+      "fromSec": 30,
+      "toSec": 36.5
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "feature.contacts",
+      "statement": "Systeme.io inclut la gestion des contacts (CRM).",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-14T06:51:50.925Z"
+    },
+    {
+      "id": "plan.free.contacts",
+      "statement": "Le plan gratuit de Systeme.io inclut jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.contacts",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 5 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.webinar.price",
+      "statement": "En facturation mensuelle, le plan Webinaire de Systeme.io coûte 47 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.unlimited.price",
+      "statement": "En facturation mensuelle, le plan Illimité de Systeme.io coûte 97 € par mois.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.free.limits",
+      "statement": "Le plan gratuit de Systeme.io inclut 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.startup.limits",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.webinar.limits",
+      "statement": "Le plan Webinaire de Systeme.io donne accès aux webinaires et inclut jusqu'à 50 tunnels de vente, 100 automatisations, 10 domaines personnalisés et 10 000 contacts.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.unlimited.limits",
+      "statement": "Le plan Illimité de Systeme.io offre un nombre illimité de tunnels, de contacts, de règles d'automatisation et de domaines personnalisés.",
+      "verifiedAt": "2026-11-14T06:51:42.322Z"
+    },
+    {
+      "id": "plan.prices.ttc",
+      "statement": "Les prix de Systeme.io sont indiqués en euros toutes taxes comprises (TVA française de 20 %).",
+      "verifiedAt": "2026-11-14T06:51:51.774Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 44639,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-44639/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 277042,
+        "author": "stefaniejockschat",
+        "pageUrl": "https://pixabay.com/videos/id-277042/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 227133,
+        "author": "kurt_BID",
+        "pageUrl": "https://pixabay.com/videos/id-227133/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 107240,
+        "author": "mootlak",
+        "pageUrl": "https://pixabay.com/videos/id-107240/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250460,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250460/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250458,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250458/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250446,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250446/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250417,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250417/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 154835,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-154835/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 154833,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-154833/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 61298,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-61298/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nListe e-mail : combien de contacts par formule Systeme.io ? 👇\n\nPas encore de produit ? Commence par ta liste : chaque inscrit devient un contact à qui écrire le jour où ton offre est prête.\n\n🆓 Gratuit : 2 000 contacts, 0 €, sans carte bancaire.\n🚀 Startup : 5 000 contacts, 17 €/mois TTC.\n🎥 Webinaire : 10 000 contacts, 47 €/mois TTC.\n♾️ Illimité : contacts illimités, 97 €/mois TTC.\n\nTa liste, elle en est à combien d'inscrits ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer plus tard.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#listeemail #emailmarketing #systemeio #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-16T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-f.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-16T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nListe e-mail : combien de contacts par formule Systeme.io ? 👇\n\nPas encore de produit ? Commence par ta liste : chaque inscrit devient un contact à qui écrire le jour où ton offre est prête.\n\n🆓 Gratuit : 2 000 contacts, 0 €, sans carte bancaire.\n🚀 Startup : 5 000 contacts, 17 €/mois TTC.\n🎥 Webinaire : 10 000 contacts, 47 €/mois TTC.\n♾️ Illimité : contacts illimités, 97 €/mois TTC.\n\nTa liste, elle en est à combien d'inscrits ? Dis-le en commentaire.\nEnregistre la vidéo pour comparer plus tard.\n👉 Lien en bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#listeemail #emailmarketing #systemeio #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Pas encore de produit ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nListe e-mail : combien de contacts par formule Systeme.io ? 👇\n\nPas encore de produit ? Commence par ta liste : chaque inscrit devient un contact à qui écrire le jour où ton offre est prête.\n\n🆓 Gratuit : 2 000 contacts, 0 €, sans carte bancaire.\n🚀 Startup : 5 000 contacts, 17 €/mois TTC.\n🎥 Webinaire : 10 000 contacts, 47 €/mois TTC.\n♾️ Illimité : contacts illimités, 97 €/mois TTC.\n\nTa liste, elle en est à combien d'inscrits ? Dis-le en commentaire.\nEnregistre ce reel pour comparer plus tard, ou envoie-le à quelqu'un qui prépare son projet.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#listeemail #emailmarketing #systemeio #entrepreneur #businessenligne",
+      "blogId": "7791839",
+      "date": "2026-11-16T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Ta liste, elle en est à combien d'inscrits ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-f.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-16T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nListe e-mail : combien de contacts par formule Systeme.io ? 👇\n\nPas encore de produit ? Commence par ta liste : chaque inscrit devient un contact à qui écrire le jour où ton offre est prête.\n\n🆓 Gratuit : 2 000 contacts, 0 €, sans carte bancaire.\n🚀 Startup : 5 000 contacts, 17 €/mois TTC.\n🎥 Webinaire : 10 000 contacts, 47 €/mois TTC.\n♾️ Illimité : contacts illimités, 97 €/mois TTC.\n\nTa liste, elle en est à combien d'inscrits ? Dis-le en commentaire.\nEnregistre ce reel pour comparer plus tard, ou envoie-le à quelqu'un qui prépare son projet.\n👉 Le lien est dans ma bio.\n\nPrix vérifiés sur systeme.io le 14/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#listeemail #emailmarketing #systemeio #entrepreneur #businessenligne",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-14T20:00:00+01:00",
+      "local": "2026-11-14T20:00:00",
+      "label": "samedi 14 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T10:00:00+01:00",
+      "local": "2026-11-15T10:00:00",
+      "label": "dimanche 15 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-15T20:00:00+01:00",
+      "local": "2026-11-15T20:00:00",
+      "label": "dimanche 15 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T10:00:00+01:00",
+      "local": "2026-11-16T10:00:00",
+      "label": "lundi 16 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-16T20:00:00+01:00",
+      "local": "2026-11-16T20:00:00",
+      "label": "lundi 16 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-f.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-14-f.jpg",
+    "coverMs": 0,
+    "sha256": "da719386452691ece7fe1609c6e88a2e4577e5d35756e958d8b8de36fb2beac3",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-14T12:12:44.160Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "25555c0c09dd7e6da572803320682b0f",
+    "url": "/_blob/25555c0c09dd7e6da572803320682b0f"
+  },
+  "cover": {
+    "assetId": "9dec673d632f4c59c0548f247d7a0d65",
+    "url": "/_blob/9dec673d632f4c59c0548f247d7a0d65"
+  },
+  "decision": {
+    "action": "programmer",
+    "at": "2026-11-14T12:16:00Z",
+    "notes": "Programmée à la demande de l'utilisateur (production et programmation en continu)."
+  },
+  "publications": {
+    "tiktok": {
+      "status": "scheduled",
+      "metricoolId": 427953766,
+      "scheduledFor": "2026-11-16T10:00:00+01:00"
+    },
+    "instagram": {
+      "status": "scheduled",
+      "metricoolId": 427954673,
+      "scheduledFor": "2026-11-16T10:00:00+01:00"
+    }
+  },
+  "metrics": null,
+  "disclosure": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.",
+  "autoSlot": {
+    "iso": "2026-11-16T10:00:00+01:00",
+    "label": "lundi 16 novembre à 10:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 21.73,
+    "end": 58.21
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-14T12:16:44.404Z"
+}
