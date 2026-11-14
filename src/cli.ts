@@ -190,6 +190,7 @@ async function main(): Promise<void> {
     strict: false,
     options: {
       date: {type: 'string'},
+      slot: {type: 'string'},
       category: {type: 'string'},
       'correction-of': {type: 'string'},
       notes: {type: 'string'},
@@ -689,7 +690,7 @@ async function main(): Promise<void> {
       // Claude production: holds the next slot so the free-AI relief does not produce it too.
       const config = await loadConfig();
       const iso = str('slot');
-      const slot = iso ? {iso, label: iso} : nextSlot(nextSlots(config, new Date(), 2).filter((s) => s.network === 'tiktok'));
+      const slot = iso ? {iso, label: new Intl.DateTimeFormat('fr-FR', {timeZone: config.metricool.timezone, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}).format(new Date(iso))} : nextSlot(nextSlots(config, new Date(), 2).filter((s) => s.network === 'tiktok'));
       if (!slot) throw new Error('Aucun créneau à réserver.');
       await claimSlot(slot);
       log.ok(`Créneau réservé par Claude : ${slot.label} (queue/claude-en-cours.json, à pousser sur la branche)`);
