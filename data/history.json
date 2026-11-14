@@ -475,13 +475,13 @@
       "artDirection": "editorial",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": null,
+      "durationSec": 30.43,
       "score": null,
       "decision": null,
-      "status": "created",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-14T12:17:29.530Z"
+      "updatedAt": "2026-11-14T12:32:20.291Z"
     }
   ]
 }
