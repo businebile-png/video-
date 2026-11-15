@@ -114,8 +114,14 @@ export function freeSlots(slots: Slot[], publications: Publication[], runId: str
   return slots.filter((s) => (!networks || networks.includes(s.network)) && !taken.has(`${s.network}@${Date.parse(s.iso)}`));
 }
 
+/** The credit line of the voice that really spoke a video (a Google voice has its own; Claire keeps the SIWIS credit). */
+export function creditLineFor(voiceId: string | null | undefined, config: StudioConfig): string {
+  const v = config.voice.approvedVoices.find((x) => x.id === voiceId);
+  return v?.creditLine ?? config.voice.creditLine;
+}
+
 /** Caption with the legal disclosure first (visible before "more"), the CTA and the hashtags. */
-export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string; musicCredit?: string} = {}): string {
+export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string; musicCredit?: string; voiceCredit?: string} = {}): string {
   const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
   const lines = [config.affiliate.disclosureCaption, '', body.trim()];
   if (!/\bbio\b/i.test(body)) lines.push('', `Lien en bio pour découvrir ${config.brand.name}.`);
@@ -124,7 +130,8 @@ export function postText(script: Script, network: 'tiktok' | 'instagram', config
     const [y, m, d] = opts.priceVerifiedOn.slice(0, 10).split('-');
     lines.push('', `Prix vérifiés sur systeme.io le ${d}/${m}/${y}.`);
   }
-  if (config.voice.creditLine) lines.push('', config.voice.creditLine);
+  const voiceCredit = opts.voiceCredit ?? config.voice.creditLine;
+  if (voiceCredit) lines.push('', voiceCredit);
   if (opts.musicCredit) lines.push(opts.musicCredit);
   lines.push('', script.captions.hashtags.join(' '));
   return lines.join('\n').slice(0, 2150);
@@ -246,6 +253,8 @@ export async function preparePublication(
   // The user's chosen song, when one was laid under this video, is credited in the caption.
   const overlay = path.join(p.dir, 'music', 'overlay.json');
   const musicCredit = exists(overlay) ? (await readJson<{credit?: string}>(overlay)).credit : undefined;
+  // The voice that really spoke this video (a Google voice, or Claire as backup) is the one credited.
+  const voiceCredit = creditLineFor(exists(p.voiceReport) ? (await readJson<{voiceId?: string}>(p.voiceReport)).voiceId : null, config);
   const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
   for (const network of ['tiktok', 'instagram'] as const) {
@@ -256,7 +265,7 @@ export async function preparePublication(
     }
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
-    const text = postText(script, network, config, {priceVerifiedOn, musicCredit});
+    const text = postText(script, network, config, {priceVerifiedOn, musicCredit, voiceCredit});
     posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config, title: tiktokTitle(script)})});
   }
   const gatesOk = score.gates.every((g) => g.ok);

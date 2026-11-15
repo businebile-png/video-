@@ -13,6 +13,7 @@ import {azureSynthesize, azureTranscribe, buildSsml} from './azure.js';
 import {alignmentToWords, mapToDisplay, prepareSpeech, pronunciationCheck, type TimedWord} from './speech.js';
 import {localSynthesize, localTranscribe, localVoiceProblems} from './local.js';
 import {chatterboxProblems, chatterboxSynthesize} from './chatterbox.js';
+import {googleReady, googleSynthesize} from './google.js';
 import type {ApprovedVoice} from '../schemas/config.js';
 
 type Provider = StudioConfig['voice']['provider'];
@@ -33,11 +34,10 @@ export function voiceEngine(v: ApprovedVoice, config: StudioConfig): {provider: 
   return {provider, ready: missing.length === 0, missing};
 }
 
-/** Pronunciation table for an engine: Chatterbox reads plain text, so it gets its own spellings. */
+/** Pronunciation table for an engine: Chatterbox and Google read plain French text, so they get plain spellings. */
 export function pronunciationsFor(provider: Provider, config: StudioConfig): Record<string, string> {
-  return provider === 'chatterbox' ? {...config.voice.pronunciations, ...config.voice.chatterbox.pronunciations} : config.voice.pronunciations;
+  return provider === 'chatterbox' || provider === 'google' ? {...config.voice.pronunciations, ...config.voice.chatterbox.pronunciations} : config.voice.pronunciations;
 }
-
 /** Speech to text with word timings, through the configured (free by default) provider. */
 export async function transcribeWords(file: string, config: StudioConfig): Promise<{text: string; words: TimedWord[]}> {
   if (config.voice.sttProvider === 'local') return localTranscribe(file, config.voice.local);
@@ -131,7 +131,7 @@ export function scoreVoice(m: VoiceMetrics, wer: number | null, approved: boolea
  * Generate the voice-over: TTS with character timings, mastering, then a speech-to-text
  * round trip to catch mispronunciations. Retries with varied settings before giving up.
  */
-export async function runVoice(runId: string, config: StudioConfig): Promise<VoiceReport> {
+export async function runVoice(runId: string, config: StudioConfig, opts: {skipGoogle?: boolean} = {}): Promise<VoiceReport> {
   const p = runPaths(runId);
   const script: Script = await readValidated(p.script, ScriptSchema);
   const plan = await readJson<Plan>(p.plan);
@@ -142,8 +142,13 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
   }
   // The chosen voice cannot run here (not installed): use the next approved voice rather than produce nothing.
   let engine = voiceEngine(approved, config);
+  // A Google voice needs the user's key and the studio's monthly allowance: checked first, for free (voice list).
+  if (engine.ready && engine.provider === 'google') {
+    const why = opts.skipGoogle ? 'échec pendant la génération' : await googleReady(approved.id, config.voice.google);
+    if (why) engine = {...engine, ready: false, missing: [why]};
+  }
   if (!engine.ready) {
-    const backup = config.voice.approvedVoices.find((v) => v.id !== approved!.id && voiceEngine(v, config).ready);
+    const backup = config.voice.approvedVoices.find((v) => v.id !== approved!.id && voiceEngine(v, config).provider !== 'google' && voiceEngine(v, config).ready);
     if (!backup) throw new Error(`Voix ${approved.name} indisponible (${engine.missing.join(', ')}) : lancez « bash scripts/setup-voice.sh ».`);
     log.warn(`Voix ${approved.name} indisponible (${engine.missing.join(', ')}) : voix de secours ${backup.name}.`);
     approved = backup;
@@ -193,6 +198,24 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
       const synth = await localSynthesize(parts, rawFile, {voice: voiceId, speed: settings.speed}, config.voice.local);
       await writeJson(path.join(p.voiceDir, `phonemes-${attempt}.json`), synth);
       if (synth.languageSwitches.length) log.info(`Mots anglais prononcés à l’anglaise : ${synth.languageSwitches.length} phrase(s)`);
+      const stt = await transcribeWords(rawFile, config);
+      if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
+      sttText = stt.text;
+      rawWords = mapToDisplay(speech.tokens, stt.words);
+    } else if (provider === 'google') {
+      // Google voice (user's account): synthesis, then word timings from the transcription of that exact audio.
+      log.info(`Voix : essai ${attempt}/${config.voice.maxAttempts} (${approved.name}, Google, vitesse ${settings.speed.toFixed(2)})`);
+      const parts = script.scenes.map((sc) => speech.tokens.filter((t) => t.sceneId === sc.id).flatMap((t) => t.spoken).join(' '));
+      rawFile = path.join(p.voiceDir, `attempt-${attempt}.wav`);
+      try {
+        const g = await googleSynthesize(parts, voiceId, {...config.voice.google, speakingRate: settings.speed});
+        await fsp.writeFile(rawFile, g.audio);
+        log.info(`Google : ${g.characters} caractères envoyés`);
+      } catch (err) {
+        if (best) break;
+        log.warn(`Voix ${approved.name} indisponible (${(err as Error).message.slice(0, 200)}) : voix de secours.`);
+        return runVoice(runId, config, {skipGoogle: true});
+      }
       const stt = await transcribeWords(rawFile, config);
       if (stt.words.length < Math.min(5, speech.tokens.length)) throw new Error('Transcription sans minutage exploitable : impossible de synchroniser les sous-titres.');
       sttText = stt.text;
@@ -248,7 +271,7 @@ export async function runVoice(runId: string, config: StudioConfig): Promise<Voi
     const report: VoiceReport = {
       voiceId,
       voiceName: approved.name,
-      modelId: provider === 'chatterbox' ? `chatterbox-multilingual:${voiceId}` : provider === 'local' ? `kokoro-82m:${voiceId}` : provider === 'azure' ? `azure:${config.voice.azure.region}` : modelId,
+      modelId: provider === 'chatterbox' ? `chatterbox-multilingual:${voiceId}` : provider === 'local' ? `kokoro-82m:${voiceId}` : provider === 'azure' ? `azure:${config.voice.azure.region}` : provider === 'google' ? `google-tts:${voiceId}` : modelId,
       attempt,
       ...metrics,
       wer,

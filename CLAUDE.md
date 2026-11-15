@@ -23,6 +23,9 @@ répondre, commenter et écrire les messages de commit en français.
   dans une copie datée de la page officielle.
 - Voix off : « Claire » (Chatterbox Multilingual + faster-whisper), locale et gratuite, « Siwis » (Kokoro)
   en secours ; installée par `bash scripts/setup-voice.sh` ; ne jamais imiter la voix d'une personne réelle.
+  Choix de l'utilisateur le 15/11/2026 : une voix Google (Cloud Text-to-Speech, compte et clé de l'utilisateur,
+  licence et quota gratuit vérifiés dans `docs/voix-google.md`) remplace Claire dès qu'il l'approuve dans le panneau ;
+  Claire reste en secours si Google ne répond pas ou si le plafond mensuel du studio est atteint.
 - Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47 et 14:47,
   la session principale lance une production Claude, qui réserve son créneau (`queue:claim`) et met sa vidéo dans
   `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :

@@ -12,7 +12,7 @@ import {loadState, step, type StepName} from './core/run.js';
 import {CORRECTION_STEPS, journalProgress, startCorrection, type CorrectionStep} from './core/progress.js';
 import {loadCaptures, loadHistory, loadTracks, upsertAffiliate, upsertHistory, upsertPublication} from './core/stores.js';
 import {ScriptSchema} from './schemas/script.js';
-import {FEATURES, type Feature} from './schemas/config.js';
+import {FEATURES, type ApprovedVoice, type Feature} from './schemas/config.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
@@ -27,6 +27,7 @@ import {listMyVoices, textToSpeechWithTimestamps} from './voice/elevenlabs.js';
 import {azureListVoices, azureSynthesize, buildSsml} from './voice/azure.js';
 import {localListVoices, localSynthesize, localVoiceProblems} from './voice/local.js';
 import {chatterboxProblems, chatterboxSynthesize} from './voice/chatterbox.js';
+import {googleListVoices, googleSynthesize, googleUsage} from './voice/google.js';
 import {spokenForm} from './voice/speech.js';
 import {autoSelection, fetchFootage, searchFootage} from './footage/footage-step.js';
 import {chooseMusic} from './music/music-step.js';
@@ -176,6 +177,11 @@ async function doctor(online = false): Promise<boolean> {
     line(missing.length === 0, 'voix locale gratuite installée (Kokoro + transcription)', `manque : ${missing.join(', ')} — lancer « bash scripts/setup-voice.sh »`);
   } else if (config.voice.provider === 'azure') line(true, `voix : Azure Speech gratuit (région ${config.voice.azure.region}) — clé ${process.env.AZURE_SPEECH_KEY ? 'AZURE_SPEECH_KEY' : 'attendue via le proxy de l’environnement'}`);
   else line(true, `voix : ElevenLabs — clé ${process.env.ELEVENLABS_API_KEY ? 'ELEVENLABS_API_KEY' : 'attendue via le proxy de l’environnement'}`);
+  const first = config.voice.approvedVoices[0];
+  if (first?.provider === 'google') {
+    // Checked for real at each production (free voice list); here only the key's origin and the month's use.
+    line(true, `voix principale : ${first.name} (Google) — clé ${process.env.GOOGLE_TTS_API_KEY ? 'GOOGLE_TTS_API_KEY' : 'attendue via le proxy de l’environnement'}, ${googleUsage().characters} caractères ce mois-ci sur ${config.voice.google.monthlyCharacterLimit} ; Claire en secours`);
+  }
   line(config.platforms.tiktok.enabled || config.platforms.instagram.enabled, 'au moins un réseau activé');
   log.info(`Validation : ${config.publish.approval === 'panel' ? 'par vous dans le panneau' : 'automatique si tout est conforme'} · Metricool : ${config.publish.delivery}`);
   return ok;
@@ -228,6 +234,8 @@ async function main(): Promise<void> {
       commission: {type: 'string'},
       'skip-link-check': {type: 'boolean'},
       'trigger-id': {type: 'string'},
+      provider: {type: 'string'},
+      credit: {type: 'string'},
       online: {type: 'boolean'},
       force: {type: 'boolean'},
       only: {type: 'string'},
@@ -299,12 +307,20 @@ async function main(): Promise<void> {
         .join(' ');
       const dir = path.join(PATHS.runs, '_audition');
       await fsp.mkdir(dir, {recursive: true});
-      const azure = config.voice.provider === 'azure';
-      const local = config.voice.provider === 'local';
-      const chatterbox = config.voice.provider === 'chatterbox';
+      const engine = str('provider') ?? config.voice.provider;
+      const google = engine === 'google';
+      const azure = engine === 'azure';
+      const local = engine === 'local';
+      const chatterbox = engine === 'chatterbox';
       const ids =
         str('voices')?.split(',').map((x) => x.trim()).filter(Boolean) ??
-        (chatterbox
+        (google
+          ? // Google's most natural French voices first (Chirp 3 HD), then Neural2 and Studio.
+            (await googleListVoices(config.voice.google.languageCode))
+              .map((v) => v.name)
+              .filter((n) => n.startsWith(config.voice.google.languageCode) && /Chirp3-HD|Neural2|Studio/.test(n))
+              .sort((a, b) => Number(/Chirp3/.test(b)) - Number(/Chirp3/.test(a)) || a.localeCompare(b))
+          : chatterbox
           ? ['claire']
           : local
           ? (await localListVoices(config.voice.local)).filter((x) => x.startsWith('f'))
@@ -315,7 +331,16 @@ async function main(): Promise<void> {
         try {
           // Audio-only MP4 (AAC): the panel's file store accepts mp4/webm, not mp3.
           const out = path.join(dir, `${id}.mp4`);
-          if (chatterbox) {
+          if (google) {
+            const wav = path.join(dir, `${id}.wav`);
+            const plain = sample
+              .split(/\s+/)
+              .map((w) => spokenForm(w, {...config.voice.pronunciations, ...config.voice.chatterbox.pronunciations}).join(' '))
+              .join(' ');
+            const g = await googleSynthesize([plain], id, {...config.voice.google, speakingRate: config.voice.defaultSettings.speed});
+            await fsp.writeFile(wav, g.audio);
+            await run('ffmpeg', ['-hide_banner', '-y', '-i', wav, '-af', 'loudnorm=I=-16:TP=-1.5', '-ar', '44100', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out]);
+          } else if (chatterbox) {
             const wav = path.join(dir, `${id}.wav`);
             const cbSpoken = sample
               .split(/\s+/)
@@ -350,7 +375,18 @@ async function main(): Promise<void> {
       const config = await loadConfig();
       const id = need(positionals[0], 'Identifiant de voix manquant.');
       config.voice.approvedVoices = config.voice.approvedVoices.filter((v) => v.id !== id);
-      config.voice.approvedVoices.unshift({id, name: need(str('name'), '--name requis'), approvedOn: new Date().toISOString().slice(0, 10), approvedBy: 'utilisateur', settings: {}, ...(str('model') ? {modelId: str('model')} : {})});
+      const provider = str('provider') as ApprovedVoice['provider'] | undefined;
+      config.voice.approvedVoices.unshift({
+        id,
+        name: need(str('name'), '--name requis'),
+        approvedOn: new Date().toISOString().slice(0, 10),
+        approvedBy: 'utilisateur',
+        settings: {},
+        ...(str('model') ? {modelId: str('model')} : {}),
+        ...(provider ? {provider} : {}),
+        ...(str('credit') ? {creditLine: str('credit')} : {}),
+        ...(str('notes') ? {notes: str('notes')} : {}),
+      });
       await saveConfig(config);
       log.ok(`Voix approuvée : ${str('name')} (${id})`);
       return;

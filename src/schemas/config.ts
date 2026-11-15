@@ -19,7 +19,9 @@ export const ApprovedVoiceSchema = z.object({
   approvedBy: z.string().default('utilisateur'),
   modelId: z.string().optional(),
   /** Engine that speaks this voice (defaults to voice.provider). */
-  provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs']).optional(),
+  provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs', 'google']).optional(),
+  /** Credit line of this voice in the captions (replaces voice.creditLine when the video is spoken by it). */
+  creditLine: z.string().max(140).optional(),
   settings: VoiceSettingsSchema.partial().default({}),
   notes: z.string().optional(),
 });
@@ -92,7 +94,7 @@ export const StudioConfigSchema = z.object({
      * local = free voice on this machine, no account (default: Kokoro-82M, Apache-2.0);
      * azure = free F0 tier (account required); elevenlabs = paid plans only.
      */
-    provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs']),
+    provider: z.enum(['local', 'chatterbox', 'azure', 'elevenlabs', 'google']),
     /** Credit line added to every post caption (licence of the voice's source recordings), empty for none. */
     creditLine: z.string().max(140).default(''),
     /** Speech-to-text used to time captions and verify pronunciation (local = faster-whisper). */
@@ -146,6 +148,15 @@ export const StudioConfigSchema = z.object({
         maxSpeedup: 1.25,
         pronunciations: {},
       }),
+    /** Google Cloud Text-to-Speech (user's account): 1 million characters free per month, the studio stops well before. */
+    google: z
+      .object({
+        languageCode: z.string().min(4),
+        sceneBreakMs: z.number().int().min(0).max(1500),
+        sampleRateHertz: z.number().int().min(16000).max(48000),
+        monthlyCharacterLimit: z.number().int().min(1000).max(1_000_000),
+      })
+      .default({languageCode: 'fr-FR', sceneBreakMs: 260, sampleRateHertz: 48000, monthlyCharacterLimit: 500_000}),
     azure: z.object({
       region: z.string().regex(/^[a-z0-9]+$/),
       locale: z.string().min(4),

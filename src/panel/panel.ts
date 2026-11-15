@@ -8,7 +8,7 @@ import {loadCaptures, loadHistory, upsertAffiliate, upsertHistory, upsertPublica
 import {ScriptSchema} from '../schemas/script.js';
 import {ReviewSchema, type HistoryRecord, type VoiceReport, type VoiceWord} from '../schemas/records.js';
 import {FactsDbSchema} from '../schemas/facts.js';
-import type {StudioConfig} from '../schemas/config.js';
+import type {ApprovedVoice, StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
 import type {ScoreReport} from '../qc/score.js';
 import type {TechnicalReport} from '../qc/technical.js';
@@ -274,14 +274,21 @@ export async function importPanelDump(file: string): Promise<ImportSummary> {
     if (v.data.status !== 'approved') continue;
     const id = String(v.data.voiceId ?? v.id);
     if (!config.voice.approvedVoices.some((a) => a.id === id)) {
-      config.voice.approvedVoices.push({
+      const provider = ['local', 'chatterbox', 'azure', 'elevenlabs', 'google'].includes(String(v.data.provider)) ? (v.data.provider as ApprovedVoice['provider']) : undefined;
+      const voice: ApprovedVoice = {
         id,
         name: String(v.data.name ?? id),
         approvedOn: new Date().toISOString().slice(0, 10),
         approvedBy: 'panneau',
         settings: {},
         ...(typeof v.data.model === 'string' ? {modelId: v.data.model} : {}),
-      });
+        ...(provider ? {provider} : {}),
+        ...(typeof v.data.creditLine === 'string' ? {creditLine: v.data.creditLine.slice(0, 140)} : {}),
+        ...(typeof v.data.notes === 'string' ? {notes: v.data.notes} : {}),
+      };
+      // « primary »: the user asked for this voice instead of the current one (Google, 15/11/2026): it goes first.
+      if (v.data.primary === true) config.voice.approvedVoices.unshift(voice);
+      else config.voice.approvedVoices.push(voice);
       summary.approvedVoices.push(String(v.data.name ?? id));
     }
   }
