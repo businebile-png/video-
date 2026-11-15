@@ -223,7 +223,7 @@ export async function autoProduce(opts: {maxCorrections?: number; musicFile?: st
     return {runId, status: 'bloquee', score: report.total, slot: null, message};
   }
 
-  await studio(['publish:prepare', runId, '--networks', 'tiktok,instagram']);
+  await studio(['publish:prepare', runId, '--networks', 'tiktok,instagram,youtube']);
   await studio(['media:push', runId]);
   const media = await readJson<{publicUrl: string; coverUrl: string; verified: boolean | null}>(path.join(p.publishDir, 'media.json'));
   if (media.verified === false) throw new Error(`Vidéo en ligne injoignable : ${media.publicUrl}`);

@@ -201,7 +201,7 @@ Metricool `getBrandSettings` (marque `7791839`) d'abord : `networksData` liste l
 (`tiktokData`, `instagramData`). Ne préparer que ceux-là :
 
 ```bash
-npm run studio -- publish:prepare <runId> --networks tiktok,instagram   # seulement les réseaux connectés
+npm run studio -- publish:prepare <runId> --networks tiktok,instagram,youtube   # seulement les réseaux connectés (YouTube Shorts depuis le 15/11/2026)
 npm run studio -- media:push <runId>
 ```
 

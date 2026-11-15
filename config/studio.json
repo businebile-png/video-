@@ -28,6 +28,16 @@
       ],
       "aiLabel": true,
       "showReelOnFeed": true
+    },
+    "youtube": {
+      "enabled": true,
+      "postTimes": [
+        "10:00",
+        "20:00"
+      ],
+      "privacy": "public",
+      "category": "HOWTO_STYLE",
+      "aiLabel": true
     }
   },
   "metricool": {

@@ -112,9 +112,13 @@ export const HistoryRecordSchema = z.object({
 });
 export type HistoryRecord = z.infer<typeof HistoryRecordSchema>;
 
+/** Networks the studio publishes on (YouTube Shorts since 15/11/2026). */
+export const NETWORKS = ['tiktok', 'instagram', 'youtube'] as const;
+export type Network = (typeof NETWORKS)[number];
+
 export const PublicationSchema = z.object({
   runId: z.string(),
-  network: z.enum(['tiktok', 'instagram']),
+  network: z.enum(NETWORKS),
   contentSha256: z.string(),
   mediaUrl: z.string(),
   scheduledFor: z.string(),

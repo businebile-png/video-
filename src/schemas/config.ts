@@ -60,6 +60,18 @@ export const StudioConfigSchema = z.object({
       aiLabel: z.boolean(),
       showReelOnFeed: z.boolean(),
     }),
+    /** YouTube Shorts (user's choice, 15/11/2026: every video also on YouTube), through the channel connected to Metricool. */
+    youtube: z
+      .object({
+        enabled: z.boolean(),
+        postTimes: z.array(hhmm).min(1),
+        privacy: z.enum(['public', 'unlisted', 'private']),
+        /** Metricool's YouTube category (HOWTO_STYLE, EDUCATION, SCIENCE_TECHNOLOGY…). */
+        category: z.string().min(3),
+        /** « Altered or synthetic content »: the voice is synthetic, declared as on TikTok and Instagram. */
+        aiLabel: z.boolean(),
+      })
+      .default({enabled: false, postTimes: ['10:00', '20:00'], privacy: 'public', category: 'HOWTO_STYLE', aiLabel: true}),
   }),
   metricool: z.object({
     brandId: z.string().min(1),

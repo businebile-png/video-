@@ -6,7 +6,7 @@ import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from '../c
 import {log} from '../core/log.js';
 import {loadCaptures, loadHistory, upsertAffiliate, upsertHistory, upsertPublication} from '../core/stores.js';
 import {ScriptSchema} from '../schemas/script.js';
-import {ReviewSchema, type HistoryRecord, type VoiceReport, type VoiceWord} from '../schemas/records.js';
+import {NETWORKS, ReviewSchema, type HistoryRecord, type VoiceReport, type VoiceWord} from '../schemas/records.js';
 import {FactsDbSchema} from '../schemas/facts.js';
 import type {ApprovedVoice, StudioConfig} from '../schemas/config.js';
 import type {Timeline} from '../schemas/timeline.js';
@@ -312,7 +312,7 @@ export async function importPanelDump(file: string): Promise<ImportSummary> {
     }
     if (decision?.action === 'corriger' && v.data.status === 'correction') summary.corrections.push({runId, notes: String(decision.notes ?? '')});
     const pubs = (v.data.publications ?? {}) as Record<string, Raw>;
-    for (const network of ['tiktok', 'instagram'] as const) {
+    for (const network of NETWORKS) {
       const pub = pubs[network];
       if (!pub || typeof pub.scheduledFor !== 'string') continue;
       const status = (['draft', 'scheduled', 'published', 'failed', 'cancelled'] as const).find((x) => x === pub.status) ?? 'scheduled';

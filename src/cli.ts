@@ -13,6 +13,7 @@ import {CORRECTION_STEPS, journalProgress, startCorrection, type CorrectionStep}
 import {loadCaptures, loadHistory, loadTracks, upsertAffiliate, upsertHistory, upsertPublication} from './core/stores.js';
 import {ScriptSchema} from './schemas/script.js';
 import {FEATURES, type ApprovedVoice, type Feature} from './schemas/config.js';
+import {NETWORKS, type Network} from './schemas/records.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {lintScript} from './script/lint.js';
@@ -648,7 +649,7 @@ async function main(): Promise<void> {
       const networks = str('networks')
         ?.split(',')
         .map((x) => x.trim())
-        .filter((x): x is 'tiktok' | 'instagram' => x === 'tiktok' || x === 'instagram');
+        .filter((x): x is Network => (NETWORKS as readonly string[]).includes(x));
       await step(id, 'publish-prepare', () => preparePublication(id, config, {skipLinkCheck: values['skip-link-check'] === true, networks}));
       return;
     }
@@ -660,7 +661,7 @@ async function main(): Promise<void> {
     }
     case 'publish:record': {
       const id = runId();
-      const network = need(str('network'), '--network requis') as 'tiktok' | 'instagram';
+      const network = need(str('network'), '--network requis') as Network;
       const response = await readJson<Record<string, unknown>>(need(str('response'), '--response requis'));
       const pkg = await readJson<{media: {sha256: string; publicUrl: string}; posts: Array<{network: string; date: string; text: string}>}>(path.join(runPaths(id).publishDir, 'package.json'));
       const post = pkg.posts.find((x) => x.network === network);

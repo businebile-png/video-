@@ -12,7 +12,7 @@ import {loadFacts} from '../facts/facts.js';
 import {ScriptSchema, type Script} from '../schemas/script.js';
 import type {StudioConfig} from '../schemas/config.js';
 import type {ScoreReport} from '../qc/score.js';
-import type {Publication} from '../schemas/records.js';
+import {NETWORKS, type Network, type Publication} from '../schemas/records.js';
 import type {Timeline} from '../schemas/timeline.js';
 import {coverTimeSec} from '../render/cover.js';
 
@@ -75,7 +75,7 @@ export async function checkAffiliateLink(url: string): Promise<LinkCheck> {
 }
 
 export interface Slot {
-  network: 'tiktok' | 'instagram';
+  network: Network;
   iso: string;
   local: string;
   label: string;
@@ -87,7 +87,7 @@ export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slo
   const out: Slot[] = [];
   const today = isoDateInZone(now, tz);
   const fmt = new Intl.DateTimeFormat('fr-FR', {timeZone: tz, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'});
-  for (const network of ['tiktok', 'instagram'] as const) {
+  for (const network of NETWORKS) {
     const pf = config.platforms[network];
     if (!pf.enabled) continue;
     for (let d = 0; d < days; d++) {
@@ -105,7 +105,7 @@ export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slo
  * Slots still free for a run: only the networks connected to Metricool (when known), and never a slot that
  * already holds another video (scheduled or published), so two videos never go out at the same time.
  */
-export function freeSlots(slots: Slot[], publications: Publication[], runId: string, networks?: Array<'tiktok' | 'instagram'>): Slot[] {
+export function freeSlots(slots: Slot[], publications: Publication[], runId: string, networks?: Network[]): Slot[] {
   const taken = new Set(
     publications
       .filter((x) => x.runId !== runId && (x.status === 'scheduled' || x.status === 'published'))
@@ -121,8 +121,9 @@ export function creditLineFor(voiceId: string | null | undefined, config: Studio
 }
 
 /** Caption with the legal disclosure first (visible before "more"), the CTA and the hashtags. */
-export function postText(script: Script, network: 'tiktok' | 'instagram', config: StudioConfig, opts: {priceVerifiedOn?: string; musicCredit?: string; voiceCredit?: string} = {}): string {
-  const body = network === 'tiktok' ? script.captions.tiktok : script.captions.instagram;
+export function postText(script: Script, network: Network, config: StudioConfig, opts: {priceVerifiedOn?: string; musicCredit?: string; voiceCredit?: string} = {}): string {
+  // YouTube takes the TikTok caption (« enregistre la vidéo », not « ce reel »).
+  const body = network === 'instagram' ? script.captions.instagram : script.captions.tiktok;
   const lines = [config.affiliate.disclosureCaption, '', body.trim()];
   if (!/\bbio\b/i.test(body)) lines.push('', `Lien en bio pour découvrir ${config.brand.name}.`);
   // A quoted price carries its verification date, as on screen.
@@ -154,7 +155,23 @@ export function tiktokTitle(script: {scenes: Array<{headline?: string}>; working
   return raw.replace(/\s+/g, ' ').trim().slice(0, 90);
 }
 
-export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: string; mediaUrl: string; slot: Slot; coverMs: number; config: StudioConfig; title?: string}): Record<string, unknown> {
+/**
+ * YouTube title of a Short (100 characters at most): « Publicité · » then the caption's opening question, so the
+ * disclosure is in the first thing a viewer reads on YouTube too (the description starts with it as well).
+ */
+export function youtubeTitle(script: {captions: {tiktok: string}; workingTitle: string}): string {
+  const first = script.captions.tiktok.split('\n').map((l) => l.trim()).find((l) => l && !l.startsWith('#')) ?? script.workingTitle;
+  const headline = first.replace(/\s*👇\s*$/u, '').replace(/\s+/g, ' ').trim();
+  const full = `Publicité · ${headline}`;
+  if (full.length <= 100) return full;
+  const cut = full.slice(0, 99);
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), 60))}…`;
+}
+
+export function metricoolInfo(
+  network: Network,
+  input: {text: string; mediaUrl: string; slot: Slot; coverMs: number; config: StudioConfig; title?: string; youtubeTitle?: string; tags?: string[]},
+): Record<string, unknown> {
   const {config} = input;
   const delivery = config.publish.delivery;
   const info: Record<string, unknown> = {
@@ -170,9 +187,20 @@ export function metricoolInfo(network: 'tiktok' | 'instagram', input: {text: str
     shortener: false,
     smartLinkData: {ids: []},
     text: input.text,
-    videoCoverMilliseconds: input.coverMs,
+    // A cover frame is refused for a YouTube channel that YouTube has not enabled for custom Shorts covers.
+    ...(network === 'youtube' ? {} : {videoCoverMilliseconds: input.coverMs}),
   };
-  if (network === 'tiktok') {
+  if (network === 'youtube') {
+    info.youtubeData = {
+      title: input.youtubeTitle ?? (input.title ?? '').slice(0, 100),
+      type: 'short',
+      privacy: config.platforms.youtube.privacy,
+      tags: (input.tags ?? []).map((t) => t.replace(/^#/, '')).filter(Boolean).slice(0, 15),
+      category: config.platforms.youtube.category,
+      madeForKids: false,
+      isAiGeneratedContent: config.platforms.youtube.aiLabel,
+    };
+  } else if (network === 'tiktok') {
     info.tiktokData = {
       disableComment: false,
       disableDuet: false,
@@ -213,7 +241,7 @@ export interface PublishPackage {
   media: {fileName: string; sha256: string; publicUrl: string; coverUrl: string; coverMs: number};
   linkCheck: LinkCheck;
   duplicateOf: string | null;
-  posts: Array<{network: 'tiktok' | 'instagram'; text: string; blogId: string; date: string; info: Record<string, unknown>}>;
+  posts: Array<{network: Network; text: string; blogId: string; date: string; info: Record<string, unknown>}>;
   slots: Slot[];
 }
 
@@ -224,7 +252,7 @@ export interface PublishPackage {
 export async function preparePublication(
   runId: string,
   config: StudioConfig,
-  opts: {skipLinkCheck?: boolean; networks?: Array<'tiktok' | 'instagram'>} = {},
+  opts: {skipLinkCheck?: boolean; networks?: Network[]} = {},
 ): Promise<PublishPackage> {
   const p = runPaths(runId);
   const score = await readJson<ScoreReport>(p.score);
@@ -244,7 +272,7 @@ export async function preparePublication(
     coverUrl: `${base}/videos/${runId}.jpg`,
     coverMs: exists(p.timeline) ? Math.round(coverTimeSec(await readJson<Timeline>(p.timeline)) * 1000) : 1200,
   };
-  const connected = (n: 'tiktok' | 'instagram') => !opts.networks || opts.networks.includes(n);
+  const connected = (n: Network) => !opts.networks || opts.networks.includes(n);
   const priceIds = new Set(script.scenes.flatMap((s) => s.claimFactIds).filter((id) => id.includes('price')));
   const priceVerifiedOn = (await loadFacts()).facts
     .filter((f) => priceIds.has(f.id) && f.verifiedAt)
@@ -257,16 +285,22 @@ export async function preparePublication(
   const voiceCredit = creditLineFor(exists(p.voiceReport) ? (await readJson<{voiceId?: string}>(p.voiceReport)).voiceId : null, config);
   const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
-  for (const network of ['tiktok', 'instagram'] as const) {
+  for (const network of NETWORKS) {
     if (!config.platforms[network].enabled) continue;
     if (!connected(network)) {
-      log.warn(`${network === 'tiktok' ? 'TikTok' : 'Instagram'} activé mais non connecté à Metricool : aucune publication préparée pour ce réseau.`);
+      log.warn(`${network === 'tiktok' ? 'TikTok' : network === 'instagram' ? 'Instagram' : 'YouTube'} activé mais non connecté à Metricool : aucune publication préparée pour ce réseau.`);
       continue;
     }
     const slot = slots.find((s) => s.network === network);
     if (!slot) continue;
     const text = postText(script, network, config, {priceVerifiedOn, musicCredit, voiceCredit});
-    posts.push({network, text, blogId: config.metricool.brandId, date: slot.iso, info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config, title: tiktokTitle(script)})});
+    posts.push({
+      network,
+      text,
+      blogId: config.metricool.brandId,
+      date: slot.iso,
+      info: metricoolInfo(network, {text, mediaUrl: media.publicUrl, slot, coverMs: media.coverMs, config, title: tiktokTitle(script), youtubeTitle: youtubeTitle(script), tags: script.captions.hashtags}),
+    });
   }
   const gatesOk = score.gates.every((g) => g.ok);
   const pkg: PublishPackage = {
