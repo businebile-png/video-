@@ -571,15 +571,16 @@
       "angle": "Les webinaires automatiques de Systeme.io : ni Gratuit ni Startup ne les incluent ; la formule Webinaire (47 € par mois) en donne dix, Illimité (97 € par mois) sans limite. Montrer sur la page officielle quelle formule choisir quand on veut vendre en webinaire.",
       "workingTitle": "Webinaires : quelle formule Systeme.io ?",
       "artDirection": "energie",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 32.83,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 34.2,
+      "score": 82,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-15T04:53:29.933Z"
+      "updatedAt": "2026-11-15T05:15:57.995Z"
     }
   ]
 }
