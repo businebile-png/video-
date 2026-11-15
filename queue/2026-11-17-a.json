@@ -1,0 +1,686 @@
+{
+  "runId": "2026-11-17-a",
+  "date": "2026-11-17",
+  "createdAt": "2026-11-15T18:15:54.732Z",
+  "updatedAt": "2026-11-15T18:15:54.733Z",
+  "status": "prete",
+  "title": "Mensuel ou annuel : 2 mois offerts",
+  "category": {
+    "id": "formules-payantes",
+    "label": "Ce que débloquent les formules payantes"
+  },
+  "angle": "Mensuel ou annuel : la facturation annuelle de Systeme.io offre deux mois. Prix annuels lus sur la page officielle, ce que Startup débloque par rapport au gratuit, ce qu'ajoute Webinaire, et conseil honnête : commencer en gratuit.",
+  "hook": "Tu vas payer ton abonnement au mois ? Ce bouton t'offre deux mois.",
+  "hookStyle": "contre-intuitif",
+  "artDirection": {
+    "id": "studio-nuit",
+    "label": "Studio nuit — cinéma chaud, contrasté"
+  },
+  "durationSec": 38.27,
+  "score": {
+    "total": 73,
+    "decision": "publishable",
+    "summary": "73/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 13,
+        "basis": "relecture 13/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 13,
+        "basis": "mesures : WER 0.011, 144 mots/min, pause max 0.42 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond rythme 12"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 9,
+        "basis": "relecture 9/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 12,
+        "basis": "relecture 12/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "13 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "débit limite (144 mots/min)"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "87 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Cohérente : à chaque scène, ce que dit la voix est à l'écran (17 €, 170 €, 5 000 contre 2 000 contacts, 10 contre 3 tunnels, 470 €, 970 €, gratuit sans carte), sur une capture officielle ou dans la liste, sans contradiction, et la carte de fin dit clairement quoi faire. Pas de bonne qualité : l'accroche coupe le titre de la page (« oisissez votre pla »), le titre « Ce que Startup débloque » ne s'affiche que 0,8 s et disparaît en pleine animation, et le plan final coupe le visage de la jeune femme au bord du cadre. Aucun problème bloquant ni doute factuel : tous les faits cités sont vérifiés et les captures sont fidèles aux sources."
+      }
+    ],
+    "virality": {
+      "total": 13,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Le texte est gros et lisible dès l'image 0, le zoom vers l'interrupteur démarre aussitôt, et la voix parle d'argent au spectateur (« Tu vas payer ton abonnement au mois ? »). Mais le titre écrit commence par « Startup », un nom de formule qui ne dit rien à qui ne connaît pas Systeme.io, la première image est une page tarifs en petits caractères, et le moule question-réponse reprend celui d'une accroche récente."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "Un changement d'image toutes les 2,8 s, aucun temps mort, et une dernière phrase qui reboucle sur la question de départ. Mais l'énigme du « bouton » est résolue en moins de 4 s, puis la vidéo déroule une liste de prix sur la même capture répétée cinq fois, sans nouvelle raison de rester ; la carte de fin reste encore environ 2 s après la voix."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "Information utile à enregistrer : les prix officiels des quatre formules en annuel et les deux mois gratuits, avec une légende qui invite à garder la vidéo pour le moment du choix. Mais la cible est étroite (quelqu'un qui va déjà payer Systeme.io) et aucune image récapitulative des quatre prix ne reste assez longtemps à l'écran pour être capturée."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 4,
+          "justification": "La même question, à laquelle on répond en un mot, est posée à la voix en fin de vidéo (« Alors, au mois ou à l'année ? ») et dans la légende (« Tu paies plutôt au mois ou à l'année ? Dis-le en commentaire. »), sans « like et abonne-toi » ni promesse. Il manque seulement un enjeu qui pousse à argumenter ou à raconter son cas."
+        }
+      ],
+      "actions": [
+        "Ouvrir sur un vrai geste avec deux captures officielles déjà disponibles : la grille mensuelle (tarifs-page) puis, en coupe franche au même cadrage, la grille annuelle (tarifs-annuel), avec « Au mois ou à l'année ? » en gros dès l'image 0, sans animer l'interface.",
+        "Juste avant la carte de fin, tenir 1,5 s la grille annuelle entière, cadrée pour que les quatre prix soient lisibles, comme image récapitulative à enregistrer.",
+        "Casser la répétition : sur « tunnels et contacts sans limite » (s6), couper vers la capture officielle tarifs-contacts-b (ligne Contacts, Webinaire et Illimité), ce qui ajoute la sixième source attendue par le contrôle de variété."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 13,
+        "justification": "Les captures officielles datées de systeme.io/fr/pricing sont nettes et fidèles aux sources, chaque prix cité est lisible dans un cadre orange, et titres, sous-titres et carte de fin sont gros, dans la zone sûre, avec « Publicité » visible en permanence. Mais 5 plans sur 10 reprennent la même capture annuelle, dans le même cadre et sur le même fond bleu nuit (contrôle de variété échoué : 5 sources sur 6). L'accroche zoome en coupant le titre de la page (« oisissez votre pla ») et le libellé « Facturation mensuelle », et le titre « Ce que Startup débloque » est encore rogné par son animation à 12,1 s. Les plans filmés sont faibles : bureau flou et assombri avec un socle de chargeur au premier plan (s4), jeune femme au visage à moitié hors champ, en plein jour sous un ciel verdâtre, loin de la direction « studio-nuit » (s8)."
+      },
+      "editing": {
+        "score": 10,
+        "justification": "Les recadrages suivent la voix : le zoom atteint l'interrupteur annuel en moins d'une seconde, la caméra passe de la carte Startup au badge « 2 mois gratuits » à 10,5 s, juste avant que la voix le dise, et la liste de s4 s'enrichit élément par élément ; un changement d'image toutes les 2,8 s en moyenne, deux transitions stylisées seulement. En revanche, le titre « Ce que Startup débloque » ne tient que 0,8 s et disparaît avant la fin de son animation, et le cadre orange reste sur Illimité pendant « Pas sûr de ta formule ? » (27,6 à 29,9 s) avant de rejoindre la carte Gratuit. Le retour cinq fois au même plan de capture rend le montage prévisible."
+      },
+      "script": {
+        "score": 11,
+        "justification": "L'accroche « Tu vas payer ton abonnement au mois ? Ce bouton t'offre deux mois. » tutoie, parle d'argent concret et se prouve à l'écran en une seconde ; la fin « Alors, au mois ou à l'année ? » reboucle dessus, et les phrases sont courtes et naturelles à l'oral. Mais elle reprend le moule d'une accroche récente (« Tu prends Startup pour tes webinaires ? Il n'en inclut aucun. ») : une question directe suivie d'une réponse-choc, style que le brief marquait « à éviter ». Après la scène 3, la vidéo devient un catalogue de prix et change trois fois d'axe de comparaison (mois ou année, gratuit ou Startup, puis les paliers), ce qui dilue l'angle annoncé ; « Webinaire ajoute les webinaires » sonne répétitif."
+      },
+      "explanation": {
+        "score": 9,
+        "justification": "Tout ce qui est dit sur les formules est vérifié et concret : 17 € par mois ou 170 € par an, 5 000 contacts au lieu de 2 000, 10 tunnels au lieu de 3, webinaires automatiques avec Webinaire, 970 € par an pour Illimité, gratuit sans carte bancaire. En revanche, la vidéo ne dit jamais ce que fait Systeme.io ni pour qui : un spectateur qui ne connaît pas l'outil apprend le prix de « tunnels » et de « contacts » sans savoir à quoi ils servent. On ne voit que la page tarifs, jamais l'outil."
+      },
+      "conversion": {
+        "score": 12,
+        "justification": "La raison de cliquer est réelle et chiffrée (deux mois gratuits en annuel), les trois formules payantes sont présentées avec leur prix officiel, et l'entrée gratuite sans carte est proposée honnêtement, sans pression ni promesse. La carte de fin est nette (« Compare les formules : lien en bio », bouton, « Publicité · lien affilié ») et tient 3,2 s. Limite : « compare les formules » arrive alors que tous les prix viennent d'être montrés ; dire ce que le lien apporte de plus (le détail de chaque formule, l'ouverture d'un compte gratuit) rendrait le clic plus utile."
+      }
+    },
+    "improvements": [
+      "Accroche (0,7 à 4 s) : cadrer le zoom sur toute la ligne « Facturation mensuelle / Facturation annuelle · 2 mois gratuits » au lieu de couper le titre de la page (« oisissez votre pla ») et le mot « mensuelle », pour que « ce bouton » se lise comme l'interrupteur mois ou année.",
+      "Scène s4 : supprimer le titre éclair « Ce que Startup débloque » (0,8 s, rogné par son animation) ou le tenir au moins 1,5 s, et prouver « 5 000 contacts au lieu de 2 000 » avec la capture officielle tarifs-contacts-a (ligne Contacts, Gratuit et Startup) à la place du bureau flou et sombre.",
+      "Scène s2 : dire en une proposition ce que fait l'outil, avec des faits vérifiés (feature.funnels, feature.email-marketing), par exemple « Sur Systeme.io, l'outil pour créer tes tunnels de vente et tes e-mails, Startup coûte 17 € par mois », en retirant autant de mots ailleurs (par exemple « tunnels et contacts sans limite » en s6) pour ne pas allonger une voix déjà rapide.",
+      "Scène s8 : recadrer la jeune femme, dont le visage est à moitié hors champ sur le bord droit, ou prendre un plan du soir cohérent avec la direction « studio-nuit »."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "5251 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.9 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "87 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.1",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.76 s entre deux changements d’image (coupe ou recadrage), min 0.5 s ; 10 plans montés, moy. 3.87 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": false,
+      "value": "5 sources (3 séquences filmées, 2 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "2 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.2 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 1.1 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 144,
+    "wer": 0.011,
+    "score": 13,
+    "problems": [
+      "débit limite (144 mots/min)"
+    ]
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Tu vas payer ton abonnement au mois ? Ce bouton t'offre deux mois.",
+      "headline": "Startup : 17 €/mois ou 170 €/an ?",
+      "visual": "demo",
+      "fromSec": 0,
+      "toSec": 4.3
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Sur Systeme.io, Startup coûte 17 € par mois.",
+      "headline": "Startup en mensuel",
+      "visual": "demo",
+      "fromSec": 4.3,
+      "toSec": 7.7
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "En annuel, c'est 170 € pour l'année : deux mois gratuits.",
+      "headline": "Startup en annuel",
+      "visual": "demo",
+      "fromSec": 7.7,
+      "toSec": 11.7
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "Comparé au gratuit : 5 000 contacts au lieu de 2 000, et dix tunnels au lieu de trois.",
+      "headline": "Ce que Startup débloque",
+      "visual": "graphic",
+      "fromSec": 11.7,
+      "toSec": 17.3
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Webinaire ajoute les webinaires automatiques, pour 470 € par an.",
+      "headline": "Webinaire en annuel",
+      "visual": "demo",
+      "fromSec": 17.3,
+      "toSec": 22.5
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Illimité : 970 € par an, tunnels et contacts sans limite.",
+      "headline": "Illimité en annuel",
+      "visual": "demo",
+      "fromSec": 22.5,
+      "toSec": 27.6
+    },
+    {
+      "id": "s7",
+      "phase": "benefits",
+      "voiceover": "Pas sûr de ta formule ? Commence en gratuit, sans carte bancaire.",
+      "headline": "Pas encore sûr ?",
+      "visual": "demo",
+      "fromSec": 27.6,
+      "toSec": 32
+    },
+    {
+      "id": "s8",
+      "phase": "cta",
+      "voiceover": "Alors, au mois ou à l'année ? Compare les formules : lien en bio.",
+      "headline": null,
+      "visual": "broll",
+      "fromSec": 32,
+      "toSec": 38.3
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.webinars",
+      "statement": "Systeme.io propose des webinaires automatiques.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-15T04:52:02.288Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.annual-discount",
+      "statement": "En facturation annuelle, Systeme.io offre 2 mois.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.free.limits",
+      "statement": "Le plan gratuit de Systeme.io inclut 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.startup.limits",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.startup.price-annual",
+      "statement": "En facturation annuelle, le plan Startup de Systeme.io coûte 170 € par an.",
+      "verifiedAt": "2026-11-15T04:52:01.736Z"
+    },
+    {
+      "id": "plan.webinar.price-annual",
+      "statement": "En facturation annuelle, le plan Webinaire de Systeme.io coûte 470 € par an.",
+      "verifiedAt": "2026-11-15T04:52:01.736Z"
+    },
+    {
+      "id": "plan.unlimited.limits",
+      "statement": "Le plan Illimité de Systeme.io offre un nombre illimité de tunnels, de contacts, de règles d'automatisation et de domaines personnalisés.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    },
+    {
+      "id": "plan.unlimited.price-annual",
+      "statement": "En facturation annuelle, le plan Illimité de Systeme.io coûte 970 € par an.",
+      "verifiedAt": "2026-11-15T04:52:01.736Z"
+    },
+    {
+      "id": "plan.table.webinars",
+      "statement": "Webinaires automatiques : aucun avec Gratuit et Startup, 10 avec Webinaire, illimités avec Illimité.",
+      "verifiedAt": "2026-11-15T04:51:53.113Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 40797,
+        "author": "yogobunny",
+        "pageUrl": "https://pixabay.com/videos/id-40797/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 295383,
+        "author": "Natures_Embrace",
+        "pageUrl": "https://pixabay.com/videos/id-295383/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 61704,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-61704/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 61702,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-61702/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 387100,
+        "author": "MrWashingt0n",
+        "pageUrl": "https://pixabay.com/videos/id-387100/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 198901,
+        "author": "Roque_dg",
+        "pageUrl": "https://pixabay.com/videos/id-198901/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 273931,
+        "author": "DespiertaYa",
+        "pageUrl": "https://pixabay.com/videos/id-273931/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 61289,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-61289/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 85812,
+        "author": "Pezibear",
+        "pageUrl": "https://pixabay.com/videos/id-85812/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nSysteme.io : formule mensuelle ou annuelle ? En annuel, 2 mois sont gratuits.\nStartup : 17 € par mois, ou 170 € par an. Webinaire : 470 € par an. Illimité : 970 € par an (prix TTC lus sur la page officielle).\nPas sûr ? Le plan gratuit est à 0 €, sans carte bancaire.\nTu paies plutôt au mois ou à l'année ? Dis-le en commentaire.\nEnregistre-la pour comparer au moment de choisir. Lien en bio.\n\nPrix vérifiés sur systeme.io le 15/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #entrepreneur #abonnement #marketingdigital",
+      "blogId": "7791839",
+      "date": "2026-11-17T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-17-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-17T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nSysteme.io : formule mensuelle ou annuelle ? En annuel, 2 mois sont gratuits.\nStartup : 17 € par mois, ou 170 € par an. Webinaire : 470 € par an. Illimité : 970 € par an (prix TTC lus sur la page officielle).\nPas sûr ? Le plan gratuit est à 0 €, sans carte bancaire.\nTu paies plutôt au mois ou à l'année ? Dis-le en commentaire.\nEnregistre-la pour comparer au moment de choisir. Lien en bio.\n\nPrix vérifiés sur systeme.io le 15/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #entrepreneur #abonnement #marketingdigital",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Startup : 17 €/mois ou 170 €/an ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nSysteme.io : formule mensuelle ou annuelle ? En annuel, 2 mois sont gratuits.\nStartup : 17 € par mois, ou 170 € par an. Webinaire : 470 € par an. Illimité : 970 € par an (prix TTC lus sur la page officielle).\nPas sûr ? Le plan gratuit est à 0 €, sans carte bancaire.\nTu paies plutôt au mois ou à l'année ? Dis-le en commentaire.\nEnregistre-la pour comparer au moment de choisir. Lien en bio.\n\nPrix vérifiés sur systeme.io le 15/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #entrepreneur #abonnement #marketingdigital",
+      "blogId": "7791839",
+      "date": "2026-11-17T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu paies plutôt au mois ou à l'année ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-17-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-17T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.\n\nSysteme.io : formule mensuelle ou annuelle ? En annuel, 2 mois sont gratuits.\nStartup : 17 € par mois, ou 170 € par an. Webinaire : 470 € par an. Illimité : 970 € par an (prix TTC lus sur la page officielle).\nPas sûr ? Le plan gratuit est à 0 €, sans carte bancaire.\nTu paies plutôt au mois ou à l'année ? Dis-le en commentaire.\nEnregistre-la pour comparer au moment de choisir. Lien en bio.\n\nPrix vérifiés sur systeme.io le 15/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #entrepreneur #abonnement #marketingdigital",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-17T10:00:00+01:00",
+      "local": "2026-11-17T10:00:00",
+      "label": "mardi 17 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-17T20:00:00+01:00",
+      "local": "2026-11-17T20:00:00",
+      "label": "mardi 17 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-17T10:00:00+01:00",
+      "local": "2026-11-17T10:00:00",
+      "label": "mardi 17 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-17T20:00:00+01:00",
+      "local": "2026-11-17T20:00:00",
+      "label": "mardi 17 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-17-a.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-17-a.jpg",
+    "coverMs": 0,
+    "sha256": "e5bb13192befee800453b6c4e9200a9ef1cfff3cd963decfbe7b08578ef05590",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-15T18:15:26.823Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "025a4ad559a625661e6f225a12b4498e",
+    "url": "/_blob/025a4ad559a625661e6f225a12b4498e"
+  },
+  "cover": {
+    "assetId": "69249633bac41153e2eb1f97a5a7c7ae",
+    "url": "/_blob/69249633bac41153e2eb1f97a5a7c7ae"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io.",
+  "autoSlot": {
+    "iso": "2026-11-17T10:00:00+01:00",
+    "label": "mardi 17 novembre à 10:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 43.91,
+    "end": 82.18
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-15T18:16:14.695Z"
+}

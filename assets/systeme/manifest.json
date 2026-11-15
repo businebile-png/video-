@@ -234,6 +234,80 @@
             "annuel",
             "deux mois"
           ]
+        },
+        {
+          "id": "annuel-gratuit",
+          "x": 0.037,
+          "y": 0.355,
+          "w": 0.217,
+          "h": 0.46,
+          "label": "Gratuit · 0 €",
+          "cues": [
+            "gratuit",
+            "0 €"
+          ]
+        },
+        {
+          "id": "annuel-startup",
+          "x": 0.274,
+          "y": 0.355,
+          "w": 0.217,
+          "h": 0.43,
+          "label": "Startup · 170 € par an",
+          "cues": [
+            "Startup",
+            "170"
+          ]
+        },
+        {
+          "id": "annuel-webinaire",
+          "x": 0.51,
+          "y": 0.355,
+          "w": 0.217,
+          "h": 0.43,
+          "label": "Webinaire · 470 € par an",
+          "cues": [
+            "Webinaire",
+            "470"
+          ]
+        },
+        {
+          "id": "annuel-illimite",
+          "x": 0.746,
+          "y": 0.355,
+          "w": 0.217,
+          "h": 0.43,
+          "label": "Illimité · 970 € par an",
+          "cues": [
+            "Illimité",
+            "970"
+          ]
+        },
+        {
+          "id": "annuel-toutes",
+          "x": 0.035,
+          "y": 0.26,
+          "w": 0.93,
+          "h": 0.53,
+          "label": "Facturation annuelle",
+          "cues": [
+            "annuel",
+            "formules"
+          ]
+        },
+        {
+          "id": "badge-2-mois",
+          "x": 0.332,
+          "y": 0.268,
+          "w": 0.379,
+          "h": 0.055,
+          "label": "Annuel · 2 mois gratuits",
+          "cues": [
+            "abonnement",
+            "bouton",
+            "deux mois",
+            "annuel"
+          ]
         }
       ],
       "personalDataChecked": true

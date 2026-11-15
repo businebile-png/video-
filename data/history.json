@@ -38,7 +38,7 @@
         164339,
         142641
       ],
-      "updatedAt": "2026-11-15T04:51:27.746Z"
+      "updatedAt": "2026-11-15T16:31:50.116Z"
     },
     {
       "runId": "2026-11-07-a",
@@ -66,7 +66,7 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-15T04:51:27.749Z"
+      "updatedAt": "2026-11-15T16:31:50.118Z"
     },
     {
       "runId": "2026-11-08-a",
@@ -122,7 +122,7 @@
         47743,
         130650
       ],
-      "updatedAt": "2026-11-15T04:51:27.751Z"
+      "updatedAt": "2026-11-15T16:31:50.122Z"
     },
     {
       "runId": "2026-11-08-b",
@@ -306,7 +306,7 @@
         64595,
         64596
       ],
-      "updatedAt": "2026-11-15T04:51:27.801Z"
+      "updatedAt": "2026-11-15T16:31:50.123Z"
     },
     {
       "runId": "2026-11-13-a",
@@ -406,7 +406,7 @@
         250409,
         99243
       ],
-      "updatedAt": "2026-11-15T04:51:27.843Z"
+      "updatedAt": "2026-11-15T16:31:50.127Z"
     },
     {
       "runId": "2026-11-14-c",
@@ -442,7 +442,7 @@
       "durationSec": 37.93,
       "score": 77,
       "decision": "publishable",
-      "status": "scheduled",
+      "status": "published",
       "reason": "Programmée à la demande de l'utilisateur (production et programmation en continu).",
       "pexelsIds": [
         151295,
@@ -457,7 +457,7 @@
         243908,
         54288
       ],
-      "updatedAt": "2026-11-15T04:51:27.880Z"
+      "updatedAt": "2026-11-15T16:31:50.128Z"
     },
     {
       "runId": "2026-11-14-e",
@@ -490,7 +490,7 @@
         230248,
         137249
       ],
-      "updatedAt": "2026-11-15T04:51:27.882Z"
+      "updatedAt": "2026-11-15T16:31:50.129Z"
     },
     {
       "runId": "2026-11-14-f",
@@ -522,7 +522,7 @@
         154833,
         61298
       ],
-      "updatedAt": "2026-11-15T04:51:27.884Z"
+      "updatedAt": "2026-11-15T16:31:50.130Z"
     },
     {
       "runId": "2026-11-14-g",
@@ -571,16 +571,50 @@
       "angle": "Les webinaires automatiques de Systeme.io : ni Gratuit ni Startup ne les incluent ; la formule Webinaire (47 € par mois) en donne dix, Illimité (97 € par mois) sans limite. Montrer sur la page officielle quelle formule choisir quand on veut vendre en webinaire.",
       "workingTitle": "Webinaires : quelle formule Systeme.io ?",
       "artDirection": "energie",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 32.83,
       "voiceId": "claire",
       "durationSec": 34.2,
       "score": 82,
       "decision": "publishable",
+      "status": "scheduled",
+      "reason": "Publication automatique (programmée dès qu’elle était prête, comme demandé : « programme-les au fur et à mesure »).",
+      "pexelsIds": [
+        130649,
+        133318,
+        61621,
+        336755,
+        215189,
+        215188,
+        220942,
+        190482,
+        366164,
+        366163,
+        227185,
+        371021,
+        371023
+      ],
+      "updatedAt": "2026-11-15T16:31:50.131Z"
+    },
+    {
+      "runId": "2026-11-17-a",
+      "date": "2026-11-17",
+      "category": "formules-payantes",
+      "hookStyle": "contre-intuitif",
+      "hook": "Tu vas payer ton abonnement au mois ? Ce bouton t'offre deux mois.",
+      "angle": "Mensuel ou annuel : la facturation annuelle de Systeme.io offre deux mois. Prix annuels lus sur la page officielle, ce que Startup débloque par rapport au gratuit, ce qu'ajoute Webinaire, et conseil honnête : commencer en gratuit.",
+      "workingTitle": "Mensuel ou annuel : 2 mois offerts",
+      "artDirection": "studio-nuit",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 43.91,
+      "voiceId": "claire",
+      "durationSec": 38.27,
+      "score": 73,
+      "decision": "publishable",
       "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-15T05:15:57.995Z"
+      "updatedAt": "2026-11-15T18:15:13.824Z"
     }
   ]
 }
