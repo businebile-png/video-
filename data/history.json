@@ -38,7 +38,7 @@
         164339,
         142641
       ],
-      "updatedAt": "2026-11-14T06:43:26.948Z"
+      "updatedAt": "2026-11-15T04:51:27.746Z"
     },
     {
       "runId": "2026-11-07-a",
@@ -66,7 +66,7 @@
         203260,
         130645
       ],
-      "updatedAt": "2026-11-14T06:43:26.949Z"
+      "updatedAt": "2026-11-15T04:51:27.749Z"
     },
     {
       "runId": "2026-11-08-a",
@@ -122,7 +122,7 @@
         47743,
         130650
       ],
-      "updatedAt": "2026-11-14T06:43:26.951Z"
+      "updatedAt": "2026-11-15T04:51:27.751Z"
     },
     {
       "runId": "2026-11-08-b",
@@ -286,7 +286,7 @@
       "durationSec": 38.3,
       "score": 73,
       "decision": "publishable",
-      "status": "scheduled",
+      "status": "published",
       "reason": "Publication automatique demandée (« publie automatiquement ») : le créneau prévu (jeudi 12/11 à 20:00) a été manqué, la vidéo est reprogrammée au prochain créneau libre, samedi 14/11 à 10:00, sur TikTok et Instagram (Reel, premier commentaire = la question de la légende).",
       "pexelsIds": [
         94978,
@@ -306,7 +306,7 @@
         64595,
         64596
       ],
-      "updatedAt": "2026-11-14T06:43:26.952Z"
+      "updatedAt": "2026-11-15T04:51:27.801Z"
     },
     {
       "runId": "2026-11-13-a",
@@ -374,16 +374,39 @@
       "angle": "Erreur de débutant : choisir sa formule Systeme.io au hasard. Compter plutôt ses tunnels de vente, puis lire sur chaque carte officielle combien de tunnels elle permet et à quel prix.",
       "workingTitle": "Combien de tunnels de vente par formule",
       "artDirection": "studio-nuit",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 43.91,
       "voiceId": "claire",
       "durationSec": 40.83,
       "score": 79,
       "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
-      "pexelsIds": [],
-      "updatedAt": "2026-11-14T08:09:41.814Z"
+      "status": "published",
+      "reason": "Programmée à la demande de l'utilisateur (« Fais des vidéos et programme-les au fur et à mesure »).",
+      "pexelsIds": [
+        272238,
+        36702,
+        284347,
+        16224,
+        46688,
+        125431,
+        27797,
+        27051,
+        283841,
+        204528,
+        61298,
+        145566,
+        207436,
+        65404,
+        35936,
+        65401,
+        250463,
+        141824,
+        61699,
+        122232,
+        250409,
+        99243
+      ],
+      "updatedAt": "2026-11-15T04:51:27.843Z"
     },
     {
       "runId": "2026-11-14-c",
@@ -413,16 +436,28 @@
       "angle": "Quelqu'un s'inscrit sur ta page en pleine nuit : une règle d'automatisation de Systeme.io lui envoie ton e-mail toute seule. Le principe (déclencheur, action), puis combien de règles et de workflows chaque formule donne, preuve sur le tableau officiel.",
       "workingTitle": "Règles d'automatisation par formule",
       "artDirection": "nuit-edit",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 54.87,
       "voiceId": "claire",
       "durationSec": 37.93,
       "score": 77,
       "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
-      "pexelsIds": [],
-      "updatedAt": "2026-11-14T08:32:48.595Z"
+      "status": "scheduled",
+      "reason": "Programmée à la demande de l'utilisateur (production et programmation en continu).",
+      "pexelsIds": [
+        151295,
+        127621,
+        349093,
+        200941,
+        209424,
+        42814,
+        27794,
+        250448,
+        39446,
+        243908,
+        54288
+      ],
+      "updatedAt": "2026-11-15T04:51:27.880Z"
     },
     {
       "runId": "2026-11-14-e",
@@ -433,16 +468,29 @@
       "angle": "Tu sais faire quelque chose que d'autres veulent apprendre : avec Systeme.io, tu crées ta formation, ton tunnel de vente et l'encaissement au même endroit. Puis combien de formations chaque formule permet, preuve sur le tableau officiel.",
       "workingTitle": "Combien de formations par formule",
       "artDirection": "studio-nuit",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 10.75,
       "voiceId": "claire",
       "durationSec": 36.07,
       "score": 73,
       "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
-      "pexelsIds": [],
-      "updatedAt": "2026-11-14T11:49:48.687Z"
+      "status": "scheduled",
+      "reason": "Programmée à la demande de l'utilisateur (production et programmation en continu).",
+      "pexelsIds": [
+        251587,
+        234920,
+        137258,
+        51326,
+        46989,
+        250461,
+        371211,
+        263668,
+        263669,
+        331030,
+        230248,
+        137249
+      ],
+      "updatedAt": "2026-11-15T04:51:27.882Z"
     },
     {
       "runId": "2026-11-14-f",
@@ -453,16 +501,28 @@
       "angle": "Pas encore de produit ? Commencer par récolter des e-mails : chaque inscrit devient un contact à qui écrire quand l'offre sera prête. Puis combien de contacts chaque formule Systeme.io permet de garder, preuve sur le tableau officiel.",
       "workingTitle": "Combien de contacts par formule",
       "artDirection": "clarte",
-      "musicTrack": "all-for-nothing",
+      "musicTrack": null,
       "musicStart": 21.73,
       "voiceId": "claire",
       "durationSec": 36.47,
       "score": 74,
       "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
-      "pexelsIds": [],
-      "updatedAt": "2026-11-14T12:12:43.138Z"
+      "status": "scheduled",
+      "reason": "Programmée à la demande de l'utilisateur (production et programmation en continu).",
+      "pexelsIds": [
+        44639,
+        277042,
+        227133,
+        107240,
+        250460,
+        250458,
+        250446,
+        250417,
+        154835,
+        154833,
+        61298
+      ],
+      "updatedAt": "2026-11-15T04:51:27.884Z"
     },
     {
       "runId": "2026-11-14-g",
@@ -501,6 +561,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-14T15:33:27.595Z"
+    },
+    {
+      "runId": "2026-11-15-a",
+      "date": "2026-11-15",
+      "category": "formules-payantes",
+      "hookStyle": "erreur",
+      "hook": "Tu prends Startup pour tes webinaires ? Il n'en inclut aucun.",
+      "angle": "Les webinaires automatiques de Systeme.io : ni Gratuit ni Startup ne les incluent ; la formule Webinaire (47 € par mois) en donne dix, Illimité (97 € par mois) sans limite. Montrer sur la page officielle quelle formule choisir quand on veut vendre en webinaire.",
+      "workingTitle": "Webinaires : quelle formule Systeme.io ?",
+      "artDirection": "energie",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-15T04:53:29.933Z"
     }
   ]
 }
