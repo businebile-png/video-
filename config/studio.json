@@ -91,6 +91,12 @@
         "bumps": "bumps"
       }
     },
+    "google": {
+      "languageCode": "fr-FR",
+      "sceneBreakMs": 260,
+      "sampleRateHertz": 48000,
+      "monthlyCharacterLimit": 500000
+    },
     "azure": {
       "region": "francecentral",
       "locale": "fr-FR",

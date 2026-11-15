@@ -16,7 +16,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-08T11:25:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:26.639Z"
+      "recordedAt": "2026-11-15T16:31:49.848Z"
     },
     {
       "runId": "2026-11-07-a",
@@ -34,7 +34,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-08T11:25:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:26.778Z"
+      "recordedAt": "2026-11-15T16:31:50.082Z"
     },
     {
       "runId": "2026-11-12-a",
@@ -52,7 +52,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-14T09:23:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:26.783Z"
+      "recordedAt": "2026-11-15T16:31:50.085Z"
     },
     {
       "runId": "2026-11-12-a",
@@ -70,7 +70,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-14T09:23:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:26.840Z"
+      "recordedAt": "2026-11-15T16:31:50.088Z"
     },
     {
       "runId": "2026-11-14-b",
@@ -88,7 +88,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-15T04:49:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:26.895Z"
+      "recordedAt": "2026-11-15T16:31:50.090Z"
     },
     {
       "runId": "2026-11-14-b",
@@ -106,7 +106,7 @@
       "captionStart": "",
       "confirmedAt": "2026-11-15T04:49:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.040Z"
+      "recordedAt": "2026-11-15T16:31:50.093Z"
     },
     {
       "runId": "2026-11-14-d",
@@ -116,15 +116,15 @@
       "scheduledFor": "2026-11-15T10:00:00+01:00",
       "delivery": "auto",
       "approvedBy": "panel",
-      "status": "scheduled",
-      "metricoolPostId": null,
+      "status": "published",
+      "metricoolPostId": "427917454",
       "metricoolUuid": null,
       "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=5311429539221685496",
-      "permalink": null,
+      "permalink": "https://www.tiktok.com/@12eure21/video/7708321768678673686",
       "captionStart": "",
-      "confirmedAt": null,
+      "confirmedAt": "2026-11-15T09:50:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.362Z"
+      "recordedAt": "2026-11-15T16:31:50.096Z"
     },
     {
       "runId": "2026-11-14-d",
@@ -134,15 +134,15 @@
       "scheduledFor": "2026-11-15T10:00:00+01:00",
       "delivery": "auto",
       "approvedBy": "panel",
-      "status": "scheduled",
-      "metricoolPostId": null,
+      "status": "published",
+      "metricoolPostId": "427917642",
       "metricoolUuid": null,
       "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=-1356172749645526776",
-      "permalink": null,
+      "permalink": "https://www.instagram.com/reel/Dfwau30Fb0b/",
       "captionStart": "",
-      "confirmedAt": null,
+      "confirmedAt": "2026-11-15T09:50:00Z",
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.429Z"
+      "recordedAt": "2026-11-15T16:31:50.098Z"
     },
     {
       "runId": "2026-11-14-e",
@@ -160,7 +160,7 @@
       "captionStart": "",
       "confirmedAt": null,
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.568Z"
+      "recordedAt": "2026-11-15T16:31:50.100Z"
     },
     {
       "runId": "2026-11-14-e",
@@ -178,7 +178,7 @@
       "captionStart": "",
       "confirmedAt": null,
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.634Z"
+      "recordedAt": "2026-11-15T16:31:50.102Z"
     },
     {
       "runId": "2026-11-14-f",
@@ -196,7 +196,7 @@
       "captionStart": "",
       "confirmedAt": null,
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.679Z"
+      "recordedAt": "2026-11-15T16:31:50.104Z"
     },
     {
       "runId": "2026-11-14-f",
@@ -214,7 +214,43 @@
       "captionStart": "",
       "confirmedAt": null,
       "note": null,
-      "recordedAt": "2026-11-15T04:51:27.682Z"
+      "recordedAt": "2026-11-15T16:31:50.106Z"
+    },
+    {
+      "runId": "2026-11-15-a",
+      "network": "tiktok",
+      "contentSha256": "d872452db3d11d7918c2c38b89b4f77d69fb1dbd117ce01419e428a65382a1bd",
+      "mediaUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-15-a.mp4",
+      "scheduledFor": "2026-11-16T20:00:00+01:00",
+      "delivery": "auto",
+      "approvedBy": "panel",
+      "status": "scheduled",
+      "metricoolPostId": "428732581",
+      "metricoolUuid": "-7745010754559721382",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=-7745010754559721382",
+      "permalink": null,
+      "captionStart": "",
+      "confirmedAt": null,
+      "note": null,
+      "recordedAt": "2026-11-15T16:31:50.109Z"
+    },
+    {
+      "runId": "2026-11-15-a",
+      "network": "instagram",
+      "contentSha256": "d872452db3d11d7918c2c38b89b4f77d69fb1dbd117ce01419e428a65382a1bd",
+      "mediaUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-15-a.mp4",
+      "scheduledFor": "2026-11-16T20:00:00+01:00",
+      "delivery": "auto",
+      "approvedBy": "panel",
+      "status": "scheduled",
+      "metricoolPostId": "428732815",
+      "metricoolUuid": "9185331420635873606",
+      "plannerUrl": "https://app.metricool.com/planner/calendar?blogId=7791839&openWithPostUuid=9185331420635873606",
+      "permalink": null,
+      "captionStart": "",
+      "confirmedAt": null,
+      "note": null,
+      "recordedAt": "2026-11-15T16:31:50.112Z"
     }
   ]
 }
