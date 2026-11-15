@@ -1,6 +1,10 @@
 # Voix Google (à la place de Claire)
 
-Choix de l'utilisateur le 15/11/2026 : remplacer la voix « Claire » par la voix « Google français 5 (Natural) »
+> **État (15/11/2026, choix final de l'utilisateur) : on garde Claire.** Google exige d'activer la facturation avec une
+> carte bancaire, et l'utilisateur veut une voix 100 % gratuite. Le branchement ci-dessous reste dans le code, inutilisé
+> (aucune voix Google n'est approuvée) : ne pas le réactiver sans nouvelle demande.
+
+Demande de l'utilisateur le 15/11/2026 : remplacer la voix « Claire » par la voix « Google français 5 (Natural) »
 entendue dans son navigateur, pour toutes les nouvelles vidéos (« fais tout, je t'autorise »).
 
 ## Pourquoi pas la voix du navigateur elle-même
