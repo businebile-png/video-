@@ -615,6 +615,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-15T18:15:13.824Z"
+    },
+    {
+      "runId": "2026-11-17-b",
+      "date": "2026-11-17",
+      "category": "organisation",
+      "hookStyle": "question-directe",
+      "hook": "À quoi ressemble ton tableau de bord en ce moment ?",
+      "angle": "un-seul-tableau-de-bord",
+      "workingTitle": "Un seul tableau de bord pour tout gérer",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-17T06:25:26.756Z"
     }
   ]
 }
