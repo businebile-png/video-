@@ -672,6 +672,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-17T11:55:59.304Z"
+    },
+    {
+      "runId": "2026-11-17-e",
+      "date": "2026-11-17",
+      "category": "edit-court",
+      "hookStyle": "question-directe",
+      "hook": "Tu veux gérer tout en un seul onglet ?",
+      "angle": "Ton business en un seul onglet",
+      "workingTitle": "Un seul onglet pour tout gérer",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-17T12:20:18.148Z"
     }
   ]
 }
