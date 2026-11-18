@@ -1,5 +1,6 @@
 Loading
 © 2026 systeme.io Help Center · help.systeme.io
+How the systeme.io affiliate program works | systeme.io Help Center
 Categories
 Affiliation ›
 Blog
@@ -15,7 +16,8 @@ Migrating to systeme.io
 Model Context Protocol (MCP)
 Payments
 Sales funnels
-Categories · Affiliation
+Categories
+· Affiliation
 Affiliation
 Blog
 Booking calendar
@@ -135,4 +137,3 @@ Question: What is the systeme.io affiliate program's cookie duration?
 Answer: The cookie expires after 1 year; however, we include your affiliate ID each time we send a new email to your referral.
 Did this answer your question?
 Last updated on August 5, 2026
-How the systeme.io affiliate program works | systeme.io Help Center
