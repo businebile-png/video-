@@ -710,6 +710,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-17T15:39:38.288Z"
+    },
+    {
+      "runId": "2026-11-18-a",
+      "date": "2026-11-18",
+      "category": "erreurs-debutants",
+      "hookStyle": "erreur",
+      "hook": "Tu attends toujours un site parfait avant de lancer ?",
+      "angle": "Une erreur courante quand on lance une activité en ligne et comment l'éviter.",
+      "workingTitle": "Arrête d'attendre le site parfait",
+      "artDirection": "energie",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-18T06:53:24.490Z"
     }
   ]
 }

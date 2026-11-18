@@ -2,9 +2,9 @@
   "sourceId": "pricing",
   "url": "https://systeme.io/fr/pricing",
   "finalUrl": "https://systeme.io/fr/pricing",
-  "fetchedAt": "2026-11-17T15:39:26.610Z",
+  "fetchedAt": "2026-11-18T06:43:46.730Z",
   "status": 200,
-  "sha256": "bc172df6cf1273b745301da3acd1c83fdab1f7bf61378c8681e5c0f392ada717",
+  "sha256": "61d362d06dc31a6891693e06c0d4950cb027c7ef915a880ece3762f6b9911f3f",
   "chars": 5123,
   "method": "browser"
 }
