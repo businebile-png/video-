@@ -767,6 +767,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-19T06:42:07.534Z"
+    },
+    {
+      "runId": "2026-11-19-b",
+      "date": "2026-11-19",
+      "category": "conseils-debutant",
+      "hookStyle": "question-directe",
+      "hook": "Tu veux tester une idée sans toucher à ton porte‑feuille ?",
+      "angle": "Suis un test de concept rapide",
+      "workingTitle": "Test ton idée sans dépenser",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-19T16:06:02.031Z"
     }
   ]
 }

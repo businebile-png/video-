@@ -37,8 +37,6 @@ Emails
 General
 Migrating to systeme.io
 Model Context Protocol (MCP)
-Payments
-Sales funnels
 General
 English
 العربية
@@ -49,6 +47,8 @@ Deutsch
 Español
 Français
 हिन्दी
+Payments
+Sales funnels
 Magyar
 Bahasa Indonesia
 Italiano
