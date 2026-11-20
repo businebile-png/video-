@@ -786,6 +786,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-19T16:06:02.031Z"
+    },
+    {
+      "runId": "2026-11-20-a",
+      "date": "2026-11-20",
+      "category": "probleme-entrepreneur",
+      "hookStyle": "erreur",
+      "hook": "Tu loses des ventes à cause du copier‑coller des emails ?",
+      "angle": "Ventes perdues entre outils",
+      "workingTitle": "Ne perds plus tes ventes",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-20T06:55:28.911Z"
     }
   ]
 }
