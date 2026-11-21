@@ -1026,20 +1026,21 @@
       "runId": "2026-11-21-k",
       "date": "2026-11-21",
       "category": "formules-payantes",
-      "hookStyle": "pov",
-      "hook": "Tu fais enfin le calcul de ton abonnement, sur un an.",
-      "angle": "Une seule idée : mensuel ou annuel pour Startup (17 €/mois ou 170 €/an, deux mois offerts), et quand choisir l'un ou l'autre selon l'avancement du projet ; récapitulatif à enregistrer.",
+      "hookStyle": "avant-apres",
+      "hook": "Tu préfères 17 euros par mois, ou 170 euros par an ?",
+      "angle": "Mensuel ou annuel pour Startup, la formule de Systeme.io (17 €/mois ou 170 €/an, 10 mois payés au lieu de 12) : quand choisir l'un ou l'autre selon l'avancement du projet, et ce que Startup débloque (10 tunnels, 10 règles d'automatisation, 5 000 contacts).",
       "workingTitle": "Mensuel ou annuel : le calcul sur un an",
       "artDirection": "studio-nuit",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 21.73,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 29.83,
+      "score": 73,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
-      "updatedAt": "2026-11-21T13:33:15.779Z"
+      "updatedAt": "2026-11-21T15:43:26.766Z"
     }
   ]
 }
