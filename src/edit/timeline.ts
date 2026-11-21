@@ -51,7 +51,7 @@ export interface BuildInput {
 }
 
 const FPS = 30;
-const END_HOLD_SEC = 2.1;
+const END_HOLD_SEC = 1.2;
 const DISSOLVE_FRAMES = 8;
 const WHIP_FRAMES = 6;
 const MAX_STYLIZED_TRANSITIONS = 3;
