@@ -260,6 +260,18 @@
           ]
         },
         {
+          "id": "annuel-startup-prix",
+          "x": 0.274,
+          "y": 0.6,
+          "w": 0.217,
+          "h": 0.19,
+          "label": "Startup · 170 € par an",
+          "cues": [
+            "170",
+            "cent soixante-dix"
+          ]
+        },
+        {
           "id": "annuel-webinaire",
           "x": 0.51,
           "y": 0.355,
@@ -515,6 +527,19 @@
           "label": "17 € par mois",
           "cues": [
             "17 €"
+          ]
+        },
+        {
+          "id": "m-startup-capacite",
+          "x": 0.05,
+          "y": 0.055,
+          "w": 0.9,
+          "h": 0.275,
+          "label": "Startup · 10 tunnels",
+          "cues": [
+            "dix tunnels",
+            "10 tunnels",
+            "Startup"
           ]
         }
       ],
