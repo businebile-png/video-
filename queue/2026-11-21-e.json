@@ -1,0 +1,846 @@
+{
+  "runId": "2026-11-21-e",
+  "date": "2026-11-21",
+  "createdAt": "2026-11-21T04:57:45.635Z",
+  "updatedAt": "2026-11-21T04:57:45.636Z",
+  "status": "prete",
+  "title": "C'est quoi Systeme.io ?",
+  "category": {
+    "id": "pub-directe",
+    "label": "Publicité directe"
+  },
+  "angle": "Quatre domaines réunis dans un compte Systeme.io : vendre, enseigner, publier et écrire à ses contacts",
+  "hook": "Tu crois qu'envoyer des e-mails suffit pour vendre en ligne ?",
+  "hookStyle": "contre-intuitif",
+  "artDirection": {
+    "id": "clarte",
+    "label": "Clarté SaaS — lumineux, net, bleu électrique"
+  },
+  "durationSec": 38.7,
+  "score": {
+    "total": 69,
+    "decision": "publishable",
+    "summary": "69/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 11,
+        "basis": "relecture 11/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0.022, 151 mots/min, pause max 0.48 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 8,
+        "basis": "relecture 8/15, plafond rythme 9"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "15 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "92 mots synchronisés, -13.8 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message se suit sans contradiction : chaque chiffre à l'écran (0 €, 17 €, 10 tunnels, 5 000 contacts) est celui que la voix dit et correspond aux faits vérifiés du plan, la mention Publicité est permanente. La qualité n'est pas assez soignée : fonds génériques flous sans rapport avec la voix, ouverture vide, rythme et variété des images en échec au contrôle technique. Rien de bloquant, mais je ne la qualifie pas de bonne qualité."
+      }
+    ],
+    "virality": {
+      "total": 9,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 2,
+          "justification": "Première image : ordinateur fermé, moitié haute vide, seul le sous-titre « Tu crois qu'envoyer » apparaît ; le titre d'accroche n'est pas lisible dès l'image 0. Les bulles Tunnels/E-mails apparaissent après 1 s seulement et le problème posé est générique, pas surprenant."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 2,
+          "justification": "Une liste est annoncée (« quatre points ») mais le contenu dérive vers des e-mails, des règles puis des prix, sans fil tenu ni démonstration. Plans de 4,8 s en moyenne sur des fonds quasi statiques, et le contrôle de rythme échoue."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 2,
+          "justification": "L'information est utile (prix Startup, plan gratuit sans carte, déclencheur et action) mais présentée comme une fiche produit ; aucune situation où la cible se reconnaît, ni comparaison claire à enregistrer."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une vraie question facile à commenter (« tu veux vendre quoi en ligne ? ») et invite sans pression à enregistrer ou envoyer la vidéo. La question dite à la fin de la vidéo reprend le même thème, ce qui aide ; aucune promesse ni fausse urgence."
+        }
+      ],
+      "actions": [
+        "Titre d'accroche en gros dès l'image 0 (« Les e-mails suffisent ? ») et plan d'ouverture avec une personne et du mouvement, pas un ordinateur fermé.",
+        "Couper les plans à 3 s maximum et varier les sources, avec la capture réelle de la page tarifs pour les prix.",
+        "Ouvrir sur une situation concrète de débutant (« Tu as un produit mais pas de site ? ») puis tenir une vraie liste annoncée avec un nombre exact de points."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 11,
+        "justification": "Les fiches graphiques (liste, règle en deux temps, 0 €, Startup 17 €) sont nettes, lisibles et cohérentes avec l'identité claire, et restent dans la zone sûre. En revanche les fonds sont des plans génériques très floutés (ordinateur fermé, mains qui tapent, une personne avec un téléphone) sans lien avec la phrase dite, et seulement 3 sources pour toute la vidéo. L'image d'ouverture est une moitié haute vide avec un ordinateur fermé : rien ne montre le sujet."
+      },
+      "editing": {
+        "score": 8,
+        "justification": "Le contrôle technique échoue sur le rythme (4,84 s en moyenne entre deux changements, attendu 0,9 à 3,8 s) et sur la variété (3 sources au lieu de 6, aucune capture réelle). Le même plan d'ordinateur revient en ouverture et en fin, et le fond reste quasi statique sous les fiches. Les fiches apparaissent bien au rythme de la voix (cases cochées au mot), ce qui est le point fort ; transitions sobres."
+      },
+      "script": {
+        "score": 10,
+        "justification": "L'accroche « Tu crois qu'envoyer des e-mails suffit pour vendre en ligne ? » parle au spectateur et tient en 10 mots, mais elle est molle et le titre « Les e-mails suffisent ? » n'est pas visible dans l'image 0. La suite enchaîne une liste de fonctions (quatre points, e-mails, règle, gratuit, Startup) sans situation concrète ni progression forte ; « Voilà en quatre points » annonce une liste qui mélange ensuite des e-mails et des codes promo. La fin répond bien à la question d'accroche."
+      },
+      "explanation": {
+        "score": 10,
+        "justification": "On comprend que Systeme.io regroupe tunnels, formations, blog, site, e-mails, contacts et codes promo, et le schéma déclencheur puis action est clair. Mais la cible (débutant qui vend un produit) n'est pas nommée, aucun exemple concret (que vend-on, que fait l'e-mail envoyé à l'inscription), et la phrase « Startup passe à dix tunnels et cinq mille contacts » ne dit pas par rapport à quoi (limites du gratuit non citées)."
+      },
+      "conversion": {
+        "score": 10,
+        "justification": "Le plan gratuit sans carte puis le prix Startup avec sa source datée orientent honnêtement vers les formules payantes, et la carte de fin « Compare les formules / Lien en bio / Publicité · lien affilié » est claire, sans pression. La raison de cliquer reste faible (comparer sans montrer ce que chaque formule débloque), et la question finale « Tu veux vendre quoi en ligne ? » n'est pas liée à la carte de fin."
+      }
+    },
+    "improvements": [
+      "Scène s1 : mettre le titre « Les e-mails suffisent ? » en gros dès l'image 0 dans la moitié haute vide, et remplacer le plan d'ordinateur fermé par un plan de personne au travail.",
+      "Réduire la durée moyenne des plans (3 s maximum) : couper chaque scène en deux plans différents et ajouter au moins 3 sources de plus (idéalement une capture officielle de la page tarifs avec la scène demo tarifs-page pour les prix).",
+      "Scène s6 : dire ce que Startup ajoute par rapport au gratuit (3 tunnels puis 10, 2 000 contacts puis 5 000, faits plan.free.limits) pour donner une vraie raison de comparer.",
+      "Remplacer les plans flous sans rapport (personne avec téléphone en chemise bleue) par des plans de création de contenu ou de vente en ligne cohérents avec la phrase."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "6589 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.8 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.6 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "92 mots synchronisés, -13.8 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×0.98",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": false,
+      "value": "moy. 4.84 s entre deux changements d’image (coupe ou recadrage), min 3.03 s ; 8 plans montés, moy. 4.84 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": false,
+      "value": "3 sources (3 séquences filmées, 0 captures réelles)",
+      "expected": "≥ 6"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.0 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 2.2 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 151,
+    "wer": 0.022,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Tu crois qu'envoyer des e-mails suffit pour vendre en ligne ?",
+      "headline": "Les e-mails suffisent ?",
+      "visual": "graphic",
+      "fromSec": 0,
+      "toSec": 3.3
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Voilà en quatre points ce que fait Systeme.io : tunnels de vente, formations, blog et site web.",
+      "headline": "Un seul compte",
+      "visual": "graphic",
+      "fromSec": 3.3,
+      "toSec": 10.2
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Tu envoies tes e-mails, tu gères tes contacts et tu crées des codes promo.",
+      "headline": "Contacts et e-mails",
+      "visual": "graphic",
+      "fromSec": 10.2,
+      "toSec": 15.2
+    },
+    {
+      "id": "s4",
+      "phase": "solution",
+      "voiceover": "Une règle d'automatisation part d'un déclencheur, comme une inscription, et envoie un e-mail.",
+      "headline": "Automatise tes e-mails",
+      "visual": "graphic",
+      "fromSec": 15.2,
+      "toSec": 21.2
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Pour commencer, le plan gratuit existe : zéro euro, sans carte bancaire.",
+      "headline": "Gratuit, sans carte",
+      "visual": "graphic",
+      "fromSec": 21.2,
+      "toSec": 26.8
+    },
+    {
+      "id": "s6",
+      "phase": "benefits",
+      "voiceover": "Startup, à 17 euros par mois, passe à dix tunnels et cinq mille contacts.",
+      "headline": "Startup : 17 € par mois",
+      "visual": "graphic",
+      "fromSec": 26.8,
+      "toSec": 32
+    },
+    {
+      "id": "s7",
+      "phase": "cta",
+      "voiceover": "Tu veux vendre quoi en ligne ? Compare les formules avec le lien en bio.",
+      "headline": "Compare les formules",
+      "visual": "broll",
+      "fromSec": 32,
+      "toSec": 38.7
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente à partir de modèles.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.courses",
+      "statement": "Systeme.io permet de créer et vendre des formations en ligne.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.website",
+      "statement": "Systeme.io permet de créer des sites web.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.blog",
+      "statement": "Systeme.io permet de créer un blog et d’y publier des articles.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.contacts",
+      "statement": "Systeme.io inclut la gestion des contacts (CRM).",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.coupons",
+      "statement": "Systeme.io permet de créer des codes promo.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.free.no-card",
+      "statement": "L’inscription gratuite à Systeme.io ne demande pas de carte bancaire.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.free.price",
+      "statement": "Le plan gratuit de Systeme.io est à 0 €, sans carte de crédit.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.free.limits",
+      "statement": "Le plan gratuit de Systeme.io inclut 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.startup.limits",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 10 tunnels de vente, 10 règles d'automatisation, 3 domaines personnalisés et 5 000 contacts.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.auto-email-on-subscribe",
+      "statement": "Avec une règle d'automatisation, Systeme.io peut envoyer automatiquement un e-mail quand un contact s'inscrit sur une page de capture.",
+      "verifiedAt": "2026-11-20T22:01:28.189Z"
+    },
+    {
+      "id": "rule.trigger",
+      "statement": "Une règle d'automatisation de Systeme.io commence par un déclencheur, par exemple l'inscription à un formulaire d'une page de capture.",
+      "verifiedAt": "2026-11-20T22:01:28.189Z"
+    },
+    {
+      "id": "rule.action-send-email",
+      "statement": "Une règle d'automatisation de Systeme.io peut avoir pour action l'envoi d'un e-mail.",
+      "verifiedAt": "2026-11-20T22:01:28.189Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 158966,
+        "author": "Juanpablodia",
+        "pageUrl": "https://pixabay.com/videos/id-158966/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 86255,
+        "author": "lumosajans",
+        "pageUrl": "https://pixabay.com/videos/id-86255/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 79338,
+        "author": "AlexKopeykin",
+        "pageUrl": "https://pixabay.com/videos/id-79338/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+      "blogId": "7791839",
+      "date": "2026-11-21T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-21T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+        "videoCoverMilliseconds": 7270,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Les e-mails suffisent ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Envoie la vidéo à quelqu'un qui se lance. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+      "blogId": "7791839",
+      "date": "2026-11-21T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Et toi, tu veux vendre quoi en ligne ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-21T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Envoie la vidéo à quelqu'un qui se lance. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+        "videoCoverMilliseconds": 7270,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    },
+    {
+      "network": "youtube",
+      "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+      "blogId": "7791839",
+      "date": "2026-11-21T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "youtube"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-21T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #vendreenligne #formationenligne #entrepreneur",
+        "youtubeData": {
+          "title": "Publicité · C'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes…",
+          "type": "short",
+          "privacy": "public",
+          "tags": [
+            "systemeio",
+            "vendreenligne",
+            "formationenligne",
+            "entrepreneur"
+          ],
+          "category": "HOWTO_STYLE",
+          "madeForKids": false,
+          "isAiGeneratedContent": true
+        }
+      }
+    },
+    {
+      "network": "threads",
+      "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+      "blogId": "7791839",
+      "date": "2026-11-21T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "threads"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-21T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nC'est quoi Systeme.io ? Un seul compte pour créer tes tunnels de vente, tes formations, ton blog et tes e-mails. Et toi, tu veux vendre quoi en ligne ? Dis-le en commentaire. Enregistre la vidéo pour comparer les formules. Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+        "threadsData": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-21T10:00:00+01:00",
+      "local": "2026-11-21T10:00:00",
+      "label": "samedi 21 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-21T20:00:00+01:00",
+      "local": "2026-11-21T20:00:00",
+      "label": "samedi 21 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-22T10:00:00+01:00",
+      "local": "2026-11-22T10:00:00",
+      "label": "dimanche 22 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-22T20:00:00+01:00",
+      "local": "2026-11-22T20:00:00",
+      "label": "dimanche 22 novembre à 20:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "tiktok",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-21T10:00:00+01:00",
+      "local": "2026-11-21T10:00:00",
+      "label": "samedi 21 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-21T20:00:00+01:00",
+      "local": "2026-11-21T20:00:00",
+      "label": "samedi 21 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-22T10:00:00+01:00",
+      "local": "2026-11-22T10:00:00",
+      "label": "dimanche 22 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-22T20:00:00+01:00",
+      "local": "2026-11-22T20:00:00",
+      "label": "dimanche 22 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-21T10:00:00+01:00",
+      "local": "2026-11-21T10:00:00",
+      "label": "samedi 21 novembre à 10:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-21T20:00:00+01:00",
+      "local": "2026-11-21T20:00:00",
+      "label": "samedi 21 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-22T10:00:00+01:00",
+      "local": "2026-11-22T10:00:00",
+      "label": "dimanche 22 novembre à 10:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-22T20:00:00+01:00",
+      "local": "2026-11-22T20:00:00",
+      "label": "dimanche 22 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-21T10:00:00+01:00",
+      "local": "2026-11-21T10:00:00",
+      "label": "samedi 21 novembre à 10:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-21T20:00:00+01:00",
+      "local": "2026-11-21T20:00:00",
+      "label": "samedi 21 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-22T10:00:00+01:00",
+      "local": "2026-11-22T10:00:00",
+      "label": "dimanche 22 novembre à 10:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-22T20:00:00+01:00",
+      "local": "2026-11-22T20:00:00",
+      "label": "dimanche 22 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-21-e.jpg",
+    "coverMs": 7270,
+    "sha256": "618b91d75a0956242c3488cdef3e0fbdd0cadc784e1651d584a991baad174ac4",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-21T04:57:23.938Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "fb01ddb98f6c46ee76e2560f62f0c974",
+    "url": "/_blob/fb01ddb98f6c46ee76e2560f62f0c974"
+  },
+  "cover": {
+    "assetId": "6e0fe09698b1aa5e89220a0ac8886138",
+    "url": "/_blob/6e0fe09698b1aa5e89220a0ac8886138"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Systeme.io",
+  "autoSlot": {
+    "iso": "2026-11-21T20:00:00+01:00",
+    "label": "samedi 21 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 10.75,
+    "end": 49.47
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-21T04:57:51.413Z"
+}
