@@ -26,19 +26,21 @@ répondre, commenter et écrire les messages de commit en français.
   Choix final de l'utilisateur le 15/11/2026 : **garder Claire** (100 % gratuite, sans compte ni carte). Le
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
-- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47 et 14:47,
-  la session principale lance une production Claude, qui réserve son créneau (`queue:claim`) et met sa vidéo dans
-  `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
+- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la session
+  principale lance une production Claude de 4 vidéos (modèle économe), une par créneau, qui suit le programme du mois
+  (`data/programme.json`, `npm run studio -- programme`), réserve chaque créneau (`queue:claim`) et met chaque vidéo
+  dans `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
   échec) : voir `docs/production-sans-claude.md`.
-- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : deux vidéos par jour,
-  à 10:00 et 20:00 sur TikTok et Instagram via Metricool, et aussi en Short sur YouTube et sur Threads depuis le 15/11/2026 (comptes
+- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : quatre vidéos par jour
+  depuis le 21/11/2026, à 00:00, 10:00, 15:00 et 20:00, sur TikTok et Instagram via Metricool, et aussi en Short sur YouTube et sur Threads depuis le 15/11/2026 (comptes
   connectés à Metricool ; YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
   Threads : légende raccourcie à 500 caractères par `condenseForThreads`). Légendes : « Publicité · Systeme.io » en tête,
   sans phrase sur la commission (demande de l'utilisateur du 21/11/2026 ; « Publicité » reste obligatoire). Pas de note minimum (choix de l'utilisateur le
   09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente (depuis le
   11/11/2026, la « bonne qualité » est affichée mais ne bloque plus) et si tous les contrôles obligatoires sont validés
-  (mention « Publicité », faits, droits, son, aucun problème bloquant ni doute factuel à la relecture) ; tâche courte à 9:35 et 19:35 dans une conversation Claude qui a le connecteur Metricool ; jamais deux
+  (mention « Publicité », faits, droits, son, aucun problème bloquant ni doute factuel à la relecture) ; tâche courte à 13:35 dans une conversation Claude qui a le connecteur Metricool (la formule gratuite de Metricool
+  plafonne à 20 publications par mois) ; jamais deux
   vidéos au même créneau.
 - Musique : « All For Nothing » (Zachariehs), choix de l'utilisateur qui déclare en avoir le droit (licence non
   vérifiée par le studio) : un extrait différent sous chaque vidéo (`music:overlay`, après la relecture) ; le

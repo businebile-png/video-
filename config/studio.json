@@ -13,7 +13,9 @@
     "tiktok": {
       "enabled": true,
       "postTimes": [
+        "00:00",
         "10:00",
+        "15:00",
         "20:00"
       ],
       "privacy": "PUBLIC_TO_EVERYONE",
@@ -23,7 +25,9 @@
     "instagram": {
       "enabled": true,
       "postTimes": [
+        "00:00",
         "10:00",
+        "15:00",
         "20:00"
       ],
       "aiLabel": true,
@@ -32,7 +36,9 @@
     "youtube": {
       "enabled": true,
       "postTimes": [
+        "00:00",
         "10:00",
+        "15:00",
         "20:00"
       ],
       "privacy": "public",
@@ -42,7 +48,9 @@
     "threads": {
       "enabled": true,
       "postTimes": [
+        "00:00",
         "10:00",
+        "15:00",
         "20:00"
       ],
       "maxChars": 500
