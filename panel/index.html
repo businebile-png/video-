@@ -875,7 +875,7 @@ function renderPending() {
   const box = document.getElementById('pending');
   const intro = document.getElementById('pending-intro');
   if (intro) intro.textContent = S.settings && S.settings.approval === 'auto'
-    ? `Publication 100 % automatique : chaque matin, une production de Claude prépare les 3 vidéos suivantes et les fait relire. Si une vidéo est cohérente, avec tous les contrôles validés, elle part toute seule sur TikTok, Instagram, YouTube et Threads${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est corrigée et rien n’est publié tant qu’elle n’y arrive pas. Vous suivez tout ici et pouvez arrêter une vidéo avant son heure.`
+    ? `Publication 100 % automatique : chaque matin, une production de Claude prépare les ${autoTimes().length} vidéos suivantes et les fait relire. Si une vidéo est cohérente, avec tous les contrôles validés, elle part toute seule sur TikTok, Instagram, YouTube et Threads${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est corrigée et rien n’est publié tant qu’elle n’y arrive pas. Vous suivez tout ici et pouvez arrêter une vidéo avant son heure.`
     : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
@@ -1345,9 +1345,9 @@ function dayKey(offset) {
 }
 function slotInstant(day, hhmm) { const sl = localToSlot(`${day}T${hhmm}`, tz()); return sl ? sl.instant.getTime() : NaN; }
 const nearSlot = (iso, t) => Math.abs(Date.parse(iso || '') - t) < 20 * 60000;
-function autoTimes() { const st = S.settings || {}; return (st.autoSchedule && st.autoSchedule.times) || ['00:00', '10:00', '20:00']; }
-// Since 21/11/2026: 3 videos a day (00:00, 10:00, 20:00); one Claude production at 5:47 makes the next three
-// (20:00 the same day, 00:00 and 10:00 the next day) and one scheduling a day (13:35) sends them to the 4 networks.
+function autoTimes() { const st = S.settings || {}; return (st.autoSchedule && st.autoSchedule.times) || ['10:00', '20:00']; }
+// Since 21/11/2026 (evening): 2 videos a day (10:00, 20:00) from the 60-video series; one Claude production at 5:47
+// makes the next two (20:00 the same day, 10:00 the next day) and one scheduling a day (13:35) sends them out.
 const PROD_AT = {'00:00': '5:47 la veille', '10:00': '5:47 la veille', '20:00': '5:47'};
 const SCHED_AT = {'00:00': '13:35 la veille', '10:00': '13:35 la veille', '20:00': '13:35'};
 function listFr(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' et ' + a[a.length - 1]; }
