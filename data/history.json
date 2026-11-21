@@ -881,6 +881,26 @@
       "reason": "77/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
       "updatedAt": "2026-11-21T04:06:49.831Z"
+    },
+    {
+      "runId": "2026-11-21-d",
+      "date": "2026-11-21",
+      "category": "tunnels-de-vente",
+      "hookStyle": "question-directe",
+      "hook": "Tu veux un tunnel de vente ? Voilà comment on fait.",
+      "angle": "Créer un tunnel de vente de A à Z, et la formule qu'il faut selon le nombre de projets",
+      "workingTitle": "Un tunnel de vente, comment ?",
+      "artDirection": "energie",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 54.87,
+      "voiceId": "claire",
+      "durationSec": 38.4,
+      "score": 72,
+      "decision": "publishable",
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-21T04:35:28.759Z"
     }
   ]
 }
