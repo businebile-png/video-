@@ -7,6 +7,7 @@ import {exists, readJson, readValidated, writeJson} from './core/fsx.js';
 import {http} from './core/http.js';
 import {affiliateLinkProblems, loadConfig, loadEditorial, saveConfig} from './core/config.js';
 import {log} from './core/log.js';
+import {addDays, isoDateInZone} from './core/time.js';
 import {run} from './core/exec.js';
 import {loadState, step, type StepName} from './core/run.js';
 import {CORRECTION_STEPS, journalProgress, startCorrection, type CorrectionStep} from './core/progress.js';
@@ -16,6 +17,7 @@ import {FEATURES, type ApprovedVoice, type Feature} from './schemas/config.js';
 import {NETWORKS, type Network} from './schemas/records.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
+import {PROGRAMME_CONFIG, PROGRAMME_FILE, ProgrammeConfigSchema, buildProgramme, programmeProblems} from './editorial/programme.js';
 import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
 import {autoProduce, claimSlot, cleanQueue, enqueue, nextSlot, releaseClaim} from './auto/auto.js';
@@ -59,6 +61,7 @@ Préparation
   sfx:build                    Régénère l'habillage sonore
 
 Production (dans l'ordre)
+  programme [--days 30] [--from AAAA-MM-JJ]   Programme du mois : sujet, format et formule de chaque créneau (data/programme.json)
   new [--date AAAA-MM-JJ] [--category <id>] [--correction-of <runId> --notes <texte>]
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
@@ -197,6 +200,8 @@ async function main(): Promise<void> {
     strict: false,
     options: {
       date: {type: 'string'},
+      days: {type: 'string'},
+      from: {type: 'string'},
       slot: {type: 'string'},
       category: {type: 'string'},
       'correction-of': {type: 'string'},
@@ -450,6 +455,21 @@ async function main(): Promise<void> {
     case 'sfx:build': {
       const files = await buildSfx();
       log.ok(`${files.length} sons générés dans assets/sfx`);
+      return;
+    }
+    case 'programme': {
+      const config = await loadConfig();
+      const editorial = await loadEditorial();
+      const cfg = await readValidated(PROGRAMME_CONFIG, ProgrammeConfigSchema);
+      const problems = programmeProblems(cfg, editorial, new Set((await loadFacts()).facts.map((f) => f.id)));
+      if (problems.length) throw new Error(`Programme invalide :\n- ${problems.join('\n- ')}`);
+      const timezone = config.metricool.timezone;
+      const from = str('from') ?? isoDateInZone(new Date(), timezone);
+      const days = Math.max(1, Math.min(62, num('days') ?? 30));
+      const slots = buildProgramme(cfg, editorial, {from, days, timezone, times: config.platforms.tiktok.postTimes});
+      const to = addDays(from, days - 1);
+      await writeJson(PROGRAMME_FILE, {generatedAt: new Date().toISOString(), from, to, timezone, slots});
+      log.ok(`Programme du ${from} au ${to} : ${slots.length} créneaux (${path.relative(PATHS.root, PROGRAMME_FILE)})`);
       return;
     }
     case 'new': {

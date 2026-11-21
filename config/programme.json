@@ -1,0 +1,711 @@
+{
+  "about": "Programme du mois (demande de l'utilisateur du 21/11/2026) : un format par heure, un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente.",
+  "epoch": "2026-11-21",
+  "families": [
+    {
+      "time": "10:00",
+      "id": "tuto",
+      "label": "Tuto de A à Z",
+      "targetSec": [
+        45,
+        60
+      ],
+      "offset": 0
+    },
+    {
+      "time": "15:00",
+      "id": "conseil",
+      "label": "Erreur à éviter ou conseil",
+      "targetSec": [
+        25,
+        35
+      ],
+      "offset": 3
+    },
+    {
+      "time": "20:00",
+      "id": "formule",
+      "label": "Quelle formule prendre",
+      "targetSec": [
+        30,
+        45
+      ],
+      "offset": 6
+    },
+    {
+      "time": "00:00",
+      "id": "court",
+      "label": "Format court « lien en bio »",
+      "targetSec": [
+        15,
+        25
+      ],
+      "offset": 9
+    }
+  ],
+  "themes": [
+    {
+      "id": "tunnel",
+      "label": "Tunnel de vente",
+      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
+      "facts": [
+        "feature.funnels",
+        "feature.landing-pages",
+        "plan.table.funnels",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Ton premier tunnel de vente de A à Z : la page de capture, la page de vente, le paiement, puis l'e-mail de confirmation."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Partir d'un modèle de tunnel : ce que contient chaque étape et à quoi elle sert pour vendre ton offre."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur qui fait fuir les visiteurs : une page sans étape suivante. Chaque page de ton tunnel mène à la prochaine."
+          },
+          {
+            "category": "tunnels-de-vente",
+            "angle": "Un tunnel, c'est un chemin : une page, une action, puis la suivante. Commence par une seule offre."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Combien de tunnels de vente par formule : 3, 10, 50 ou illimités, et laquelle prendre selon ton nombre d'offres."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Une offre ou plusieurs ? Le moment où le plan gratuit ne suffit plus pour tes tunnels, et pourquoi Startup."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ta page de vente, ton paiement et ton e-mail de confirmation : un seul tunnel. Lien en bio."
+          },
+          {
+            "category": "edit-court",
+            "angle": "Trois tunnels de vente inclus dans le plan gratuit. Monte le premier ce soir."
+          }
+        ]
+      }
+    },
+    {
+      "id": "liste",
+      "label": "Liste e-mail",
+      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
+      "facts": [
+        "feature.landing-pages",
+        "feature.email-marketing",
+        "plan.free.contacts",
+        "plan.free.no-card",
+        "plan.startup.contacts",
+        "plan.table.emails-sent",
+        "plan.startup.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Construire ta liste e-mail de A à Z : une page de capture, un formulaire, un premier e-mail à chaque inscrit."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "La page de capture expliquée : ce qu'elle demande au visiteur, où arrive son contact, comment lui écrire ensuite."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "conseils-debutant",
+            "angle": "Commence ta liste avant ton produit : chaque inscrit est une personne à prévenir le jour du lancement."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : ne compter que sur l'algorithme pour joindre ton audience. Une liste e-mail, c'est un contact direct en plus."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "2 000 contacts en gratuit, 5 000 avec Startup : à partir de quand ta liste justifie la formule payante."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "E-mails envoyés illimités dans toutes les formules : entre Gratuit et Startup, ce qui change, c'est le nombre de contacts."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ta liste e-mail commence par une seule page. Lien en bio."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "2 000 contacts et des e-mails envoyés illimités, sans payer ni carte bancaire."
+          }
+        ]
+      }
+    },
+    {
+      "id": "decouverte",
+      "label": "C'est quoi Systeme.io",
+      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
+      "facts": [
+        "plan.free.price",
+        "plan.free.no-card",
+        "plan.free.limits",
+        "plan.free.contacts",
+        "plan.startup.price",
+        "feature.funnels",
+        "feature.email-marketing",
+        "feature.courses",
+        "feature.website"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "C'est quoi Systeme.io, mot pour mot : un seul outil pour tes pages, tes tunnels, tes e-mails et tes formations, et par où commencer."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Une minute pour voir tout ce qu'un compte Systeme.io regroupe : vendre, enseigner, publier, écrire à tes contacts."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "conseils-debutant",
+            "angle": "Avant d'empiler un outil pour tes pages, un pour tes e-mails et un pour ta formation, regarde ce qu'un seul compte fait déjà."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : attendre d'avoir un produit fini pour ouvrir ton compte. Le plan gratuit ne demande pas de carte bancaire."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Gratuit, Startup, Webinaire ou Illimité : la formule qu'il te faut selon où tu en es aujourd'hui."
+          },
+          {
+            "category": "comparaison-outils",
+            "angle": "Outils séparés ou plateforme unique : ce que Systeme.io réunit dans un compte, et ce que ça coûte."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Pages, e-mails, formations, paiements : un seul onglet. Lien en bio."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "0 €, sans carte bancaire : ton compte Systeme.io peut être ouvert ce soir."
+          }
+        ]
+      }
+    },
+    {
+      "id": "automatisation",
+      "label": "Automatisations",
+      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
+      "facts": [
+        "feature.automations",
+        "feature.auto-email-on-subscribe",
+        "rule.trigger",
+        "rule.action-send-email",
+        "plan.table.automation-rules",
+        "plan.table.workflows",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Ta première règle d'automatisation de A à Z : choisir le déclencheur, choisir l'action, puis vérifier qu'elle tourne."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Règle d'automatisation ou workflow : à quoi sert chacun, avec un exemple simple pour tes inscrits."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "automatisation",
+            "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : répondre à la main à chaque nouvel inscrit. Une règle d'automatisation le fait à ta place."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "1 règle d'automatisation en gratuit, 10 avec Startup : le moment où passer à la formule payante."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Règles et workflows formule par formule : 1, 10, 100 ou illimités, et ce que ça change concrètement."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Quelqu'un s'inscrit, l'e-mail part. Sans toi."
+          },
+          {
+            "category": "edit-court",
+            "angle": "Ton premier e-mail automatique tient en une seule règle. Lien en bio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "site",
+      "label": "Site, blog et nom de domaine",
+      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
+      "facts": [
+        "feature.website",
+        "feature.blog",
+        "plan.free.limits",
+        "plan.startup.custom-domain",
+        "plan.startup.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Ton site et ton blog de A à Z : les pages, les articles, puis ton propre nom de domaine."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Site, blog et tunnels dans le même compte : à quoi sert chacun et comment ils se complètent."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "organisation",
+            "angle": "Ton site, ton blog et tes tunnels au même endroit : un seul outil à tenir à jour au lieu de trois."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : un site sans aucun moyen de récupérer l'e-mail de tes visiteurs."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "1 domaine personnalisé en gratuit, 3 avec Startup : quand passer à Startup pour ton site."
+          },
+          {
+            "category": "comparaison-outils",
+            "angle": "Un site, un blog et des tunnels sans multiplier les abonnements : ce que contient un seul compte Systeme.io."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ton site et ton blog, au même endroit que tes ventes."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "Ton site avec ton propre nom de domaine, dès le plan gratuit."
+          }
+        ]
+      }
+    },
+    {
+      "id": "produits",
+      "label": "Produits numériques",
+      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
+      "facts": [
+        "feature.digital-products",
+        "feature.physical-products",
+        "feature.payments",
+        "plan.transaction-fees",
+        "plan.table.funnels",
+        "plan.startup.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Vendre un produit numérique de A à Z : le produit, la page de vente, le paiement relié."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Produits numériques et produits physiques : ce que tu peux vendre avec Systeme.io, et comment le paiement s'y relie."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "produits-numeriques",
+            "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là."
+          },
+          {
+            "category": "probleme-entrepreneur",
+            "angle": "Ta page, ton paiement et ton e-mail dans trois outils qui ne se parlent pas ? Tout relier au même endroit."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Plusieurs produits à vendre : 3 tunnels en gratuit, 10 avec Startup, et comment choisir."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Aucun frais ajouté par Systeme.io sur tes ventes : ce que tu paies vraiment, formule par formule."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ton guide, ta page de vente, ton paiement. Lien en bio."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "Systeme.io n'ajoute aucun frais sur tes paiements : seuls ceux du processeur restent dus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "communaute",
+      "label": "Communauté",
+      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
+      "facts": [
+        "feature.community",
+        "plan.table.communities",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Créer une communauté pour tes membres de A à Z : à quoi elle sert, qui y entre, comment la faire vivre."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Une communauté à côté de ta formation : ce qu'elle apporte à tes élèves entre deux leçons."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "conseils-debutant",
+            "angle": "Une communauté peut garder tes élèves actifs entre deux leçons : comment la lancer sans y passer tes journées."
+          },
+          {
+            "category": "organisation",
+            "angle": "Ta communauté au même endroit que tes formations et tes e-mails, plutôt qu'un groupe de plus à gérer."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Une seule communauté suffit pour commencer ; dès ta deuxième formation, Startup en permet 5. Le bon moment pour passer."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Une communauté par formation : ce que Startup change quand tu en lances plusieurs."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Tes membres au même endroit que tes cours."
+          },
+          {
+            "category": "edit-court",
+            "angle": "Ta communauté, sans un outil de plus. Lien en bio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "campagnes",
+      "label": "Campagnes e-mail et newsletter",
+      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
+      "facts": [
+        "feature.email-marketing",
+        "plan.table.email-campaigns",
+        "plan.table.emails-sent",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Ta première campagne e-mail de A à Z : à qui l'envoyer, quoi écrire dans chaque e-mail, dans quel ordre."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Écrire à tous tes contacts depuis l'outil de tes pages : ce qu'une campagne e-mail te permet."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles."
+          },
+          {
+            "category": "organisation",
+            "angle": "Une newsletter régulière sans y passer tes soirées : prépare-la et envoie-la depuis l'outil de tes pages."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Ta première campagne e-mail est incluse gratuitement ; à partir de la deuxième, il faut Startup (10 campagnes)."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Quand une seule campagne ne suffit plus : ce que Startup débloque pour tes e-mails."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Tes e-mails partent du même outil que tes pages."
+          },
+          {
+            "category": "edit-court",
+            "angle": "E-mails envoyés illimités, même en gratuit. Lien en bio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "choisir",
+      "label": "Choisir sa formule",
+      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
+      "facts": [
+        "plan.free.price",
+        "plan.startup.price",
+        "plan.webinar.price",
+        "plan.unlimited.price",
+        "plan.annual-discount",
+        "plan.startup.price-annual",
+        "plan.prices.ttc",
+        "service.migration",
+        "service.support"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Choisir ta formule Systeme.io de A à Z : compte tes contacts, tes tunnels et tes formations, puis lis la bonne colonne."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Lire le tableau officiel des formules en une minute : où regarder et quoi comparer."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : prendre la plus grosse formule dès le départ. Paie pour ce dont tu as besoin aujourd'hui."
+          },
+          {
+            "category": "conseils-debutant",
+            "angle": "Mensuel d'abord, annuel quand tu es sûr : l'annuel offre 2 mois, mais engage-toi au bon moment."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Mensuel ou annuel : Startup à 17 €/mois ou 170 €/an, soit 2 mois offerts."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Gratuit, Startup, Webinaire, Illimité : une phrase pour savoir laquelle te correspond."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Gratuit pour commencer, Startup quand tu grandis."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "Migration gratuite et support par e-mail 24 h/24 : passer à Systeme.io sans tout refaire seul."
+          }
+        ]
+      }
+    },
+    {
+      "id": "promo",
+      "label": "Codes promo et tests A/B",
+      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
+      "facts": [
+        "feature.coupons",
+        "feature.ab-testing",
+        "plan.table.coupons",
+        "plan.table.ab-tests",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Lancer une promotion de A à Z : le code promo, la page de vente, l'e-mail qui l'annonce."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Le test A/B expliqué : deux versions d'une page, et tu gardes celle qui fonctionne le mieux."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "conseils-debutant",
+            "angle": "Avant de refaire toute ta page, teste un seul élément avec un test A/B."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : deviner quel titre marche. Un test A/B te montre lequel."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "1 code promo et 1 test A/B en gratuit, 10 de chaque avec Startup : quand ça vaut le coup."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Codes promo et tests A/B : 1, 10, 50 ou illimités selon la formule."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Un code promo pour ton lancement, depuis le même outil."
+          },
+          {
+            "category": "edit-court",
+            "angle": "Deux versions de ta page. Tu gardes la meilleure."
+          }
+        ]
+      }
+    },
+    {
+      "id": "formation",
+      "label": "Formation en ligne",
+      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
+      "facts": [
+        "feature.courses",
+        "plan.table.courses",
+        "plan.table.students",
+        "feature.payments",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Vendre ta formation en ligne de A à Z : le contenu, la page de vente, le paiement, l'accès de tes élèves."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Ta formation et ta page de vente au même endroit : ce que Systeme.io regroupe pour vendre un cours."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "formations-en-ligne",
+            "angle": "Teste ton idée de formation avec une première version courte avant de tout enregistrer."
+          },
+          {
+            "category": "erreurs-debutants",
+            "angle": "L'erreur : tourner dix heures de vidéo avant d'avoir un seul élève."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "1 formation et 500 élèves en gratuit ; élèves illimités dès Startup : la formule pour ta formation."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Une formation ou plusieurs ? 1, 5, 20 ou illimitées selon la formule, et laquelle prendre."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ta formation, tes élèves et le paiement au même endroit."
+          },
+          {
+            "category": "pub-directe",
+            "angle": "Ta première formation en ligne sans payer d'outil : 1 formation et 500 élèves inclus."
+          }
+        ]
+      }
+    },
+    {
+      "id": "webinaire",
+      "label": "Webinaires automatiques",
+      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
+      "facts": [
+        "feature.webinars",
+        "plan.table.webinars",
+        "plan.webinar.price",
+        "plan.unlimited.price",
+        "plan.webinar.limits"
+      ],
+      "angles": {
+        "tuto": [
+          {
+            "category": "tutoriel",
+            "angle": "Le webinaire automatique de A à Z : à quoi il sert et comment l'enchaîner avec ton tunnel de vente."
+          },
+          {
+            "category": "demo-fonctionnalite",
+            "angle": "Le webinaire automatique expliqué : la même présentation, diffusée sans que tu la refasses en direct."
+          }
+        ],
+        "conseil": [
+          {
+            "category": "conseils-debutant",
+            "angle": "Avant de payer pour les webinaires, vends d'abord avec un tunnel simple."
+          },
+          {
+            "category": "probleme-entrepreneur",
+            "angle": "Tu refais la même présentation chaque semaine ? Le webinaire automatique la diffuse à ta place."
+          }
+        ],
+        "formule": [
+          {
+            "category": "formules-payantes",
+            "angle": "Webinaires automatiques : aucun en Gratuit et Startup, 10 avec Webinaire, illimités avec Illimité."
+          },
+          {
+            "category": "formules-payantes",
+            "angle": "Startup ou Webinaire : la vraie question, c'est si tu vends par webinaire."
+          }
+        ],
+        "court": [
+          {
+            "category": "edit-court",
+            "angle": "Ta présentation, diffusée automatiquement."
+          },
+          {
+            "category": "edit-court",
+            "angle": "10 webinaires automatiques avec la formule Webinaire. Lien en bio."
+          }
+        ]
+      }
+    }
+  ]
+}
