@@ -681,7 +681,7 @@ async function main(): Promise<void> {
         ?.split(',')
         .map((x) => x.trim())
         .filter((x): x is Network => (NETWORKS as readonly string[]).includes(x));
-      await step(id, 'publish-prepare', () => preparePublication(id, config, {skipLinkCheck: values['skip-link-check'] === true, networks}));
+      await step(id, 'publish-prepare', () => preparePublication(id, config, {skipLinkCheck: values['skip-link-check'] === true, networks, slot: str('slot')}));
       return;
     }
     case 'media:push': {

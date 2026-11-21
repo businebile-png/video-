@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {loadConfig} from '../src/core/config.js';
-import {condenseForThreads, metricoolInfo, nextSlots, postText} from '../src/publish/publish.js';
+import {condenseForThreads, metricoolInfo, nextSlots, postText, slotsAt} from '../src/publish/publish.js';
 import {sampleScript} from './fixtures.js';
 
 const caption = [
@@ -56,5 +56,15 @@ describe('Threads', () => {
     expect(info.providers).toEqual([{network: 'threads'}]);
     expect(info.threadsData).toEqual({});
     expect(info).not.toHaveProperty('videoCoverMilliseconds');
+  });
+
+  it('date chaque publication au créneau réservé pour la vidéo, pas au prochain créneau libre', async () => {
+    const config = await loadConfig();
+    const slots = slotsAt(config, '2026-11-22T00:00:00+01:00');
+    expect(slots.map((s) => s.network)).toEqual(['tiktok', 'instagram', 'youtube', 'threads']);
+    for (const s of slots) expect([s.iso, s.local]).toEqual(['2026-11-22T00:00:00+01:00', '2026-11-22T00:00:00']);
+    const info = metricoolInfo('tiktok', {text: 'Publicité · test', mediaUrl: 'https://exemple.test/v.mp4', slot: slots[0]!, coverMs: 0, config, title: 'Titre'}) as {publicationDate: {dateTime: string}};
+    expect(info.publicationDate.dateTime).toBe('2026-11-22T00:00:00');
+    expect(() => slotsAt(config, 'pas une date')).toThrow(/Créneau invalide/);
   });
 });

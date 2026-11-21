@@ -101,6 +101,15 @@ export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slo
   return out;
 }
 
+/** One given instant as a slot on every enabled network (the slot a production reserved for its video). */
+export function slotsAt(config: StudioConfig, iso: string): Slot[] {
+  const tz = config.metricool.timezone;
+  const instant = new Date(iso);
+  if (Number.isNaN(instant.getTime())) throw new Error(`Créneau invalide : ${iso}`);
+  const fmt = new Intl.DateTimeFormat('fr-FR', {timeZone: tz, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'});
+  return NETWORKS.filter((n) => config.platforms[n].enabled).map((network) => ({network, iso: formatWithOffset(instant, tz), local: formatLocal(instant, tz), label: fmt.format(instant)}));
+}
+
 /**
  * Slots still free for a run: only the networks connected to Metricool (when known), and never a slot that
  * already holds another video (scheduled or published), so two videos never go out at the same time.
@@ -288,7 +297,7 @@ export interface PublishPackage {
 export async function preparePublication(
   runId: string,
   config: StudioConfig,
-  opts: {skipLinkCheck?: boolean; networks?: Network[]} = {},
+  opts: {skipLinkCheck?: boolean; networks?: Network[]; slot?: string} = {},
 ): Promise<PublishPackage> {
   const p = runPaths(runId);
   const score = await readJson<ScoreReport>(p.score);
@@ -319,7 +328,9 @@ export async function preparePublication(
   const musicCredit = exists(overlay) ? (await readJson<{credit?: string}>(overlay)).credit : undefined;
   // The voice that really spoke this video (a Google voice, or Claire as backup) is the one credited.
   const voiceCredit = creditLineFor(exists(p.voiceReport) ? (await readJson<{voiceId?: string}>(p.voiceReport)).voiceId : null, config);
-  const slots = freeSlots(nextSlots(config), publications, runId, opts.networks);
+  // The slot reserved for this video (queue:claim / queue:add --slot) when given, so every post carries that date;
+  // otherwise the next free slot, as before.
+  const slots = opts.slot ? slotsAt(config, opts.slot) : freeSlots(nextSlots(config), publications, runId, opts.networks);
   const posts: PublishPackage['posts'] = [];
   for (const network of NETWORKS) {
     if (!config.platforms[network].enabled) continue;

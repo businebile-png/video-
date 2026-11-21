@@ -269,17 +269,19 @@ nouveau créneau (l'ancien est libéré) et, pour un besoin choisi, la session l
   <fichier>` (extrait différent à chaque vidéo, choisi d'après `data/history.json`), puis `qc` et `score`.
   Licence déclarée par l'utilisateur, non vérifiée par le studio ; la chanson n'entre jamais dans le dépôt
   public, et la tâche de programmation retire le MP4 du dépôt une fois copié par Metricool.
-- **La production ne programme pas elle-même** (les sessions de production n'ont pas le connecteur Metricool). Si la vidéo
-  atteint 80/100 avec tous les contrôles validés et que `media:push` a réussi (adresse publique vérifiée), après le
-  dépôt de l'étape 8 : `ArtifactData update` de `videos/<runId>` avec `status: "prete"` et
-  `autoSlot: {iso: "AAAA-MM-JJTHH:MM:00+01:00", label: "dimanche 9 novembre à 10:00"}` et `music: {title, start, end}`. Sinon : `a_ameliorer` ou
-  `bloquee`, rien n'est publié pour ce créneau, et la raison va dans le journal.
-- **Programmation** : la tâche « Programmation automatique » tourne à 9:35 et 19:35 dans la session principale
-  (celle qui a le connecteur Metricool). Elle prend la fiche `prete` du créneau qui arrive (à défaut la plus ancienne fiche `prete` ; une seule vidéo par créneau), vérifie avec Metricool
-  `getBrandSettings` (réseaux connectés) et `getScheduledPosts` (aucun autre post à la même heure), puis crée un
-  post par réseau avec `createScheduledPost` (`posts[].info` de la fiche, `autoPublish: true`, `draft: false`,
-  date du créneau, titre TikTok obligatoire). Elle passe la fiche en `programmee` avec `publications`, et confirme
-  au passage les publications précédentes (statut `PUBLISHED` de Metricool → fiche `publiee` avec les liens).
+- **La production ne programme jamais elle-même**, même si le connecteur Metricool est disponible dans la session :
+  ni `createScheduledPost` ni `updateScheduledPost`. Le 21/11/2026, une session de production a programmé une vidéo à
+  10:00 au lieu de 00:00, en même temps qu'une autre vidéo. Elle prépare sa vidéo pour le créneau réservé
+  (`publish:prepare <runId> --networks tiktok,instagram,youtube,threads --slot <iso>` : chaque publication porte la date de
+  ce créneau), la met dans la file (`queue:add <runId> --slot <iso>`) et dépose sa fiche dans le panneau. Si la
+  vidéo n'est pas « publishable », la fiche passe en `a_ameliorer` ou `bloquee` et la raison va dans le journal.
+- **Programmation** : la tâche « Publication Metricool » tourne à 13:35 dans la session principale. Elle prend
+  chaque vidéo de la file (`queue/`) à son créneau (`requestedSlot` choisi dans le panneau, sinon `autoSlot`), vérifie
+  avec `getScheduledPosts` qu'aucun autre post n'est prévu à la même heure sur le même réseau, puis crée un post par
+  réseau avec `createScheduledPost` (`posts[].info` de la fiche, `autoPublish: true`, `draft: false`, date du
+  créneau). Elle passe la fiche en `programmee` avec `publications`, et confirme les publications passées (statut
+  `PUBLISHED` de Metricool → fiche `publiee` avec les liens ; `ERROR` → `failed`, et « à poster soi-même » si c'est la
+  limite de la formule gratuite de Metricool).
 - L'utilisateur peut toujours arrêter une vidéo avant son heure depuis le panneau (refus ou correction).
 
 En mode `approval: "panel"`, la fiche reste « À valider » et l'utilisateur programme d'un clic depuis le panneau.
