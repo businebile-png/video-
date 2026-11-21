@@ -961,6 +961,26 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-21T05:22:31.611Z"
+    },
+    {
+      "runId": "2026-11-21-h",
+      "date": "2026-11-21",
+      "category": "automatisation",
+      "hookStyle": "question-directe",
+      "hook": "Tu envoies encore ton e-mail de bienvenue à la main ?",
+      "angle": "L'e-mail de bienvenue part tout seul : un déclencheur, une action ; la règle gratuite suffit pour commencer, Startup pour en avoir plusieurs.",
+      "workingTitle": "L'e-mail de bienvenue automatique",
+      "artDirection": "clarte",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 43.91,
+      "voiceId": "claire",
+      "durationSec": 37.43,
+      "score": 78,
+      "decision": "publishable",
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-21T08:03:48.359Z"
     }
   ]
 }
