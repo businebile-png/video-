@@ -72,6 +72,10 @@ export const StudioConfigSchema = z.object({
         aiLabel: z.boolean(),
       })
       .default({enabled: false, postTimes: ['10:00', '20:00'], privacy: 'public', category: 'HOWTO_STYLE', aiLabel: true}),
+    /** Threads (user's choice, 15/11/2026), the account linked to Instagram in Metricool: 500 characters per post. */
+    threads: z
+      .object({enabled: z.boolean(), postTimes: z.array(hhmm).min(1), maxChars: z.number().int().min(200).max(500)})
+      .default({enabled: false, postTimes: ['10:00', '20:00'], maxChars: 500}),
   }),
   metricool: z.object({
     brandId: z.string().min(1),

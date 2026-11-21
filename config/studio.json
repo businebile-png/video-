@@ -7,7 +7,7 @@
     "url": "https://systeme.io/fr?sa=sa0284377331559446b0fd317c047c9b41281fb597",
     "bioLinkCheckedOn": "2026-11-07",
     "disclosureBadge": "Publicité",
-    "disclosureCaption": "Publicité · Lien affilié : si tu t'abonnes via mon lien, je touche une commission. Le prix reste celui affiché sur systeme.io."
+    "disclosureCaption": "Publicité · Systeme.io"
   },
   "platforms": {
     "tiktok": {
@@ -38,6 +38,14 @@
       "privacy": "public",
       "category": "HOWTO_STYLE",
       "aiLabel": true
+    },
+    "threads": {
+      "enabled": true,
+      "postTimes": [
+        "10:00",
+        "20:00"
+      ],
+      "maxChars": 500
     }
   },
   "metricool": {
