@@ -135,7 +135,41 @@ export function postText(script: Script, network: Network, config: StudioConfig,
   if (voiceCredit) lines.push('', voiceCredit);
   if (opts.musicCredit) lines.push(opts.musicCredit);
   lines.push('', script.captions.hashtags.join(' '));
-  return lines.join('\n').slice(0, 2150);
+  const full = lines.join('\n').slice(0, 2150);
+  return network === 'threads' ? condenseForThreads(full, config.platforms.threads.maxChars) : full;
+}
+
+/**
+ * Threads allows 500 characters: the same caption, shortened without changing its words. Kept in this order of
+ * priority: the « Publicité » line, the hook, the question for the comments, « lien en bio », the price check date,
+ * the credits (the voice's CC BY attribution is mandatory), then as many lines of the body as fit, and one hashtag.
+ */
+export function condenseForThreads(full: string, limit = 500): string {
+  const lines = full.split('\n').map((l) => l.trim()).filter(Boolean);
+  const disclosure = lines.find((l) => /^publicit/i.test(l)) ?? 'Publicité';
+  const tags = lines.filter((l) => l.startsWith('#')).join(' ').split(/\s+/).filter((t) => t.startsWith('#'));
+  const price = lines.find((l) => /^Prix vérifiés/.test(l));
+  const voice = lines.find((l) => /^Voix de synthèse/i.test(l));
+  const music = lines.find((l) => l.startsWith('🎵'));
+  const body = lines.filter((l) => l !== disclosure && !l.startsWith('#') && l !== price && l !== voice && l !== music);
+  const hook = body[0] ?? '';
+  const question = body.find((l, i) => i > 0 && /\?/.test(l) && /commentaire/i.test(l));
+  const cta = body.find((l, i) => i > 0 && /\bbio\b/i.test(l));
+  const middle = body.filter((l) => l !== hook && l !== question && l !== cta);
+  const voiceShort = voice && /SIWIS/.test(voice) ? 'Voix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée.' : voice;
+  const credits = [voiceShort, music?.replace(/^🎵\s*Musique\s*:\s*/, '🎵 ')].filter(Boolean).join(' ');
+  const build = (extra: string[], withTag: boolean, withMusic = true) => {
+    const head = [disclosure, '', hook, ...extra, ...(question ? [question] : []), ...(cta ? [cta] : [])];
+    const tail = [...(price && /€/.test([hook, ...extra].join(' ')) ? ['', price] : []), '', withMusic ? credits : voiceShort ?? '', ...(withTag && tags[0] ? ['', tags[0]] : [])];
+    return [...head, ...tail].join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  };
+  // As many body lines as fit, in their order.
+  const kept: string[] = [];
+  for (const line of middle) if (build([...kept, line], true).length <= limit) kept.push(line);
+  for (const variant of [build(kept, true), build(kept, false), build(kept, false, false), build([], false, false)]) {
+    if (variant.length <= limit) return variant;
+  }
+  return build([], false, false).slice(0, limit);
 }
 
 /**
@@ -188,9 +222,11 @@ export function metricoolInfo(
     smartLinkData: {ids: []},
     text: input.text,
     // A cover frame is refused for a YouTube channel that YouTube has not enabled for custom Shorts covers.
-    ...(network === 'youtube' ? {} : {videoCoverMilliseconds: input.coverMs}),
+    ...(network === 'youtube' || network === 'threads' ? {} : {videoCoverMilliseconds: input.coverMs}),
   };
-  if (network === 'youtube') {
+  if (network === 'threads') {
+    info.threadsData = {};
+  } else if (network === 'youtube') {
     info.youtubeData = {
       title: input.youtubeTitle ?? (input.title ?? '').slice(0, 100),
       type: 'short',
@@ -288,7 +324,7 @@ export async function preparePublication(
   for (const network of NETWORKS) {
     if (!config.platforms[network].enabled) continue;
     if (!connected(network)) {
-      log.warn(`${network === 'tiktok' ? 'TikTok' : network === 'instagram' ? 'Instagram' : 'YouTube'} activé mais non connecté à Metricool : aucune publication préparée pour ce réseau.`);
+      log.warn(`${({tiktok: 'TikTok', instagram: 'Instagram', youtube: 'YouTube', threads: 'Threads'} as const)[network]} activé mais non connecté à Metricool : aucune publication préparée pour ce réseau.`);
       continue;
     }
     const slot = slots.find((s) => s.network === network);

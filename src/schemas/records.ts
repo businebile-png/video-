@@ -112,8 +112,8 @@ export const HistoryRecordSchema = z.object({
 });
 export type HistoryRecord = z.infer<typeof HistoryRecordSchema>;
 
-/** Networks the studio publishes on (YouTube Shorts since 15/11/2026). */
-export const NETWORKS = ['tiktok', 'instagram', 'youtube'] as const;
+/** Networks the studio publishes on (YouTube Shorts and Threads since 15/11/2026). */
+export const NETWORKS = ['tiktok', 'instagram', 'youtube', 'threads'] as const;
 export type Network = (typeof NETWORKS)[number];
 
 export const PublicationSchema = z.object({
