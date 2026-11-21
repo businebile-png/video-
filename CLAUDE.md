@@ -27,8 +27,8 @@ répondre, commenter et écrire les messages de commit en français.
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
 - Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la tâche
-  « Production Systeme.io — série, 2 vidéos par jour » (`trig_01GskusqEsAv8LUY5KiC3bk1`, une session neuve à chaque fois)
-  lance une session de production Claude (modèle économe) de **deux** vidéos, faites une par une, pour les deux premiers
+  « Production Systeme.io — série, 2 vidéos par jour » (`trig_01RNBHFDf7LNerv47ffZzS7Z`, qui réveille la session de la
+  régie `session_01N7BpMrqV24PNBWQH4tAsxv` ; une tâche « session neuve » n'aurait ni le dépôt ni `create_session`) lance une session de production Claude (modèle économe) de **deux** vidéos, faites une par une, pour les deux premiers
   créneaux libres à plus de 6 h (demande de l'utilisateur du 21/11/2026). Du 23/11 au 22/12/2026, chaque créneau suit son
   script de la **série de 60 vidéos** (`data/serie.json`, copie du doc https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj :
   `npm run studio -- serie:slot --slot <iso>`, puis `new --category <catégorie> --serie <n>`) ; une démo sans
