@@ -19,20 +19,19 @@ describe('programme du mois', () => {
     expect(programmeProblems(cfg, editorial, facts)).toEqual([]);
   });
 
-  it('donne 3 créneaux par jour, 3 besoins différents chaque jour, dans la durée de chaque catégorie', async () => {
+  it('donne une vidéo par jour à 20:00, les quatre formats tour à tour, dans la durée de chaque catégorie', async () => {
     const {config, editorial, cfg} = await setup();
     const slots = buildProgramme(cfg, editorial, {from: '2026-11-21', days: 30, timezone: 'Europe/Paris', times: config.platforms.tiktok.postTimes});
-    expect(slots).toHaveLength(90);
-    const byDay = new Map<string, typeof slots>();
-    for (const s of slots) byDay.set(s.date, [...(byDay.get(s.date) ?? []), s]);
-    expect(byDay.size).toBe(30);
-    for (const day of byDay.values()) {
-      expect(day.map((s) => s.time)).toEqual(['00:00', '10:00', '20:00']);
-      expect(new Set(day.map((s) => s.theme)).size).toBe(3);
+    expect(slots).toHaveLength(30);
+    expect(new Set(slots.map((s) => s.date)).size).toBe(30);
+    for (const s of slots) expect(s.time).toBe('20:00');
+    // Une vidéo par jour (demande du 21/11/2026) : les quatre formats tournent, jamais le même deux jours de suite.
+    expect(slots.slice(0, 4).map((s) => s.family)).toEqual(['conseil', 'court', 'formule', 'tuto']);
+    expect(new Set(slots.slice(0, 4).map((s) => s.family)).size).toBe(4);
+    for (let i = 1; i < slots.length; i++) {
+      expect(slots[i]!.family).not.toBe(slots[i - 1]!.family);
+      expect(slots[i]!.theme, slots[i]!.label).not.toBe(slots[i - 1]!.theme);
     }
-    // 00:00 alternates the short format and the « erreur ou conseil » format, day after day.
-    const midnights = slots.filter((s) => s.time === '00:00').map((s) => s.family);
-    expect(midnights.slice(0, 4)).toEqual(['conseil', 'court', 'conseil', 'court']);
     for (const s of slots) {
       const cat = editorial.categories.find((c) => c.id === s.category)!;
       expect(s.durationSec[0]).toBeGreaterThanOrEqual(cat.durationSec[0]);
@@ -40,36 +39,44 @@ describe('programme du mois', () => {
     }
   });
 
-  it('place minuit en tête de sa journée et garde les mêmes sujets quand on régénère plus tard', async () => {
+  it('date chaque créneau à l\'heure de Paris et garde les mêmes sujets quand on régénère plus tard', async () => {
     const {editorial, cfg} = await setup();
     const a = buildProgramme(cfg, editorial, {from: '2026-11-21', days: 10, timezone: 'Europe/Paris'});
     const b = buildProgramme(cfg, editorial, {from: '2026-11-25', days: 3, timezone: 'Europe/Paris'});
-    const midnight = programmeEntry({slots: a}, '2026-11-21T23:00:00Z')!;
-    expect(midnight.iso).toBe('2026-11-22T00:00:00+01:00');
-    expect(midnight.label).toBe('dimanche 22 novembre à 00:00');
+    const evening = programmeEntry({slots: a}, '2026-11-22T19:00:00Z')!;
+    expect(evening.iso).toBe('2026-11-22T20:00:00+01:00');
+    expect(evening.label).toBe('dimanche 22 novembre à 20:00');
     for (const s of b) expect(programmeEntry({slots: a}, s.iso)).toEqual(s);
   });
 
-  it('ne propose pas deux pistes trop proches à moins de 8 jours, ni de promesse de revenus ou de commission', async () => {
+  it('ne propose pas deux pistes trop proches à moins de 10 jours, ni de promesse de revenus ou de commission', async () => {
     const {editorial, cfg} = await setup();
     const slots = buildProgramme(cfg, editorial, {from: '2026-11-21', days: 30, timezone: 'Europe/Paris'});
     const max = editorial.rules.angleSimilarityMax;
+    const dayMs = 86_400_000;
     for (let i = 0; i < slots.length; i++) {
-      for (let j = i + 1; j < Math.min(slots.length, i + 32); j++) expect(similarity(slots[i]!.angle, slots[j]!.angle), `${slots[i]!.label} / ${slots[j]!.label}`).toBeLessThanOrEqual(max);
+      for (let j = i + 1; j < slots.length && Date.parse(slots[j]!.iso) - Date.parse(slots[i]!.iso) < 10 * dayMs; j++) expect(similarity(slots[i]!.angle, slots[j]!.angle), `${slots[i]!.label} / ${slots[j]!.label}`).toBeLessThanOrEqual(max);
     }
     for (const s of slots) expect(`${s.angle} ${s.formule}`).not.toMatch(/commission|revenu|gagner de l.argent|passif|pendant que tu dors|riche|fortune/i);
   });
 
   it('donne le sujet d\'un créneau, avec le besoin choisi dans le tableau du panneau', async () => {
     const {editorial, cfg} = await setup();
-    const times = ['00:00', '10:00', '20:00'];
+    const times = ['20:00'];
     const tz = 'Europe/Paris';
-    const listed = buildProgramme(cfg, editorial, {from: '2026-11-23', days: 1, timezone: tz, times}).find((s) => s.time === '10:00');
-    expect(programmeSlot(cfg, editorial, {iso: '2026-11-23T10:00:00+01:00', timezone: tz, times})).toEqual(listed);
-    const chosen = programmeSlot(cfg, editorial, {iso: '2026-11-23T09:00:00Z', timezone: tz, theme: 'webinaire', times})!;
-    expect([chosen.theme, chosen.family, chosen.time]).toEqual(['webinaire', 'tuto', '10:00']);
+    const listed = buildProgramme(cfg, editorial, {from: '2026-11-24', days: 1, timezone: tz, times})[0];
+    expect(programmeSlot(cfg, editorial, {iso: '2026-11-24T20:00:00+01:00', timezone: tz, times})).toEqual(listed);
+    const chosen = programmeSlot(cfg, editorial, {iso: '2026-11-24T19:00:00Z', timezone: tz, theme: 'webinaire', times})!;
+    expect([chosen.theme, chosen.family, chosen.time]).toEqual(['webinaire', 'tuto', '20:00']);
     expect(chosen.angle).toMatch(/webinaire/i);
-    expect(() => programmeSlot(cfg, editorial, {iso: '2026-11-23T10:00:00+01:00', timezone: tz, theme: 'inconnu', times})).toThrow(/besoin inconnu/);
-    expect(programmeSlot(cfg, editorial, {iso: '2026-11-23T15:00:00+01:00', timezone: tz, times})).toBeNull();
+    expect(() => programmeSlot(cfg, editorial, {iso: '2026-11-24T20:00:00+01:00', timezone: tz, theme: 'inconnu', times})).toThrow(/besoin inconnu/);
+    expect(programmeSlot(cfg, editorial, {iso: '2026-11-24T10:00:00+01:00', timezone: tz, times})).toBeNull();
+  });
+
+  it('refuse une rotation dont la phase sort du cycle', async () => {
+    const {editorial, cfg} = await setup();
+    const facts = new Set((await loadFacts()).facts.map((f) => f.id));
+    const broken = {...cfg, families: cfg.families.map((f, i) => (i === 0 ? {...f, phase: 7} : f))};
+    expect(programmeProblems(broken, editorial, facts).join(' ')).toMatch(/hors du cycle/);
   });
 });

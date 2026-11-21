@@ -1021,6 +1021,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-21T09:59:12.650Z"
+    },
+    {
+      "runId": "2026-11-21-k",
+      "date": "2026-11-21",
+      "category": "formules-payantes",
+      "hookStyle": "pov",
+      "hook": "Tu fais enfin le calcul de ton abonnement, sur un an.",
+      "angle": "Une seule idée : mensuel ou annuel pour Startup (17 €/mois ou 170 €/an, deux mois offerts), et quand choisir l'un ou l'autre selon l'avancement du projet ; récapitulatif à enregistrer.",
+      "workingTitle": "Mensuel ou annuel : le calcul sur un an",
+      "artDirection": "studio-nuit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-21T13:33:15.779Z"
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
-  "about": "Programme du mois (demandes de l'utilisateur du 21/11/2026 : 3 vidéos par jour, à 00:00, 10:00 et 20:00) : un format par heure (00:00 format court un jour sur deux, erreur ou conseil l'autre jour), un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente.",
+  "about": "Programme du mois (demandes de l'utilisateur du 21/11/2026 : 3 vidéos par jour, à 00:00, 10:00 et 20:00) : un format par heure (00:00 format court un jour sur deux, erreur ou conseil l'autre jour), un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente. Depuis le 21/11/2026 (demande de l'utilisateur : une vidéo par jour), les quatre formats tournent à 20:00, un par jour (cycle de 4 jours).",
   "epoch": "2026-11-21",
   "families": [
     {
-      "time": "00:00",
+      "time": "20:00",
       "id": "court",
       "label": "Format court « lien en bio »",
       "targetSec": [
@@ -11,10 +11,11 @@
         25
       ],
       "offset": 9,
-      "parity": 1
+      "cycle": 4,
+      "phase": 1
     },
     {
-      "time": "00:00",
+      "time": "20:00",
       "id": "conseil",
       "label": "Erreur à éviter ou conseil",
       "targetSec": [
@@ -22,17 +23,20 @@
         35
       ],
       "offset": 3,
-      "parity": 0
+      "cycle": 4,
+      "phase": 0
     },
     {
-      "time": "10:00",
+      "time": "20:00",
       "id": "tuto",
       "label": "Tuto de A à Z",
       "targetSec": [
         45,
         60
       ],
-      "offset": 0
+      "offset": 0,
+      "cycle": 4,
+      "phase": 3
     },
     {
       "time": "20:00",
@@ -42,7 +46,9 @@
         30,
         45
       ],
-      "offset": 6
+      "offset": 6,
+      "cycle": 4,
+      "phase": 2
     }
   ],
   "themes": [

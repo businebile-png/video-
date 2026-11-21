@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-21T07:03:56.224Z",
+  "generatedAt": "2026-11-21T13:35:46.907Z",
   "from": "2026-11-21",
   "to": "2026-12-20",
   "timezone": "Europe/Paris",
   "slots": [
     {
-      "iso": "2026-11-21T00:00:00+01:00",
+      "iso": "2026-11-21T20:00:00+01:00",
       "date": "2026-11-21",
-      "time": "00:00",
-      "label": "samedi 21 novembre à 00:00",
+      "time": "20:00",
+      "label": "samedi 21 novembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "automatisation",
@@ -33,59 +33,10 @@
       ]
     },
     {
-      "iso": "2026-11-21T10:00:00+01:00",
-      "date": "2026-11-21",
-      "time": "10:00",
-      "label": "samedi 21 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Ton premier tunnel de vente de A à Z : la page de capture, la page de vente, le paiement, puis l'e-mail de confirmation.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-21T20:00:00+01:00",
-      "date": "2026-11-21",
-      "time": "20:00",
-      "label": "samedi 21 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une seule communauté suffit pour commencer ; dès ta deuxième formation, Startup en permet 5. Le bon moment pour passer.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-22T00:00:00+01:00",
+      "iso": "2026-11-22T20:00:00+01:00",
       "date": "2026-11-22",
-      "time": "00:00",
-      "label": "dimanche 22 novembre à 00:00",
+      "time": "20:00",
+      "label": "dimanche 22 novembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "edit-court",
@@ -105,113 +56,6 @@
         "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-22T10:00:00+01:00",
-      "date": "2026-11-22",
-      "time": "10:00",
-      "label": "dimanche 22 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "Construire ta liste e-mail de A à Z : une page de capture, un formulaire, un premier e-mail à chaque inscrit.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-22T20:00:00+01:00",
-      "date": "2026-11-22",
-      "time": "20:00",
-      "label": "dimanche 22 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Ta première campagne e-mail est incluse gratuitement ; à partir de la deuxième, il faut Startup (10 campagnes).",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-23T00:00:00+01:00",
-      "date": "2026-11-23",
-      "time": "00:00",
-      "label": "lundi 23 novembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "produits-numeriques",
-      "categoryLabel": "Vendre des produits numériques",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-23T10:00:00+01:00",
-      "date": "2026-11-23",
-      "time": "10:00",
-      "label": "lundi 23 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "C'est quoi Systeme.io, mot pour mot : un seul outil pour tes pages, tes tunnels, tes e-mails et tes formations, et par où commencer.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
       ]
     },
     {
@@ -244,35 +88,10 @@
       ]
     },
     {
-      "iso": "2026-11-24T00:00:00+01:00",
+      "iso": "2026-11-24T20:00:00+01:00",
       "date": "2026-11-24",
-      "time": "00:00",
-      "label": "mardi 24 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Trois tunnels de vente inclus dans le plan gratuit. Monte le premier ce soir.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-24T10:00:00+01:00",
-      "date": "2026-11-24",
-      "time": "10:00",
-      "label": "mardi 24 novembre à 10:00",
+      "time": "20:00",
+      "label": "mardi 24 novembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "tutoriel",
@@ -297,36 +116,10 @@
       ]
     },
     {
-      "iso": "2026-11-24T20:00:00+01:00",
-      "date": "2026-11-24",
-      "time": "20:00",
-      "label": "mardi 24 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "1 code promo et 1 test A/B en gratuit, 10 de chaque avec Startup : quand ça vaut le coup.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-25T00:00:00+01:00",
+      "iso": "2026-11-25T20:00:00+01:00",
       "date": "2026-11-25",
-      "time": "00:00",
-      "label": "mercredi 25 novembre à 00:00",
+      "time": "20:00",
+      "label": "mercredi 25 novembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "erreurs-debutants",
@@ -348,61 +141,10 @@
       ]
     },
     {
-      "iso": "2026-11-25T10:00:00+01:00",
-      "date": "2026-11-25",
-      "time": "10:00",
-      "label": "mercredi 25 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site et ton blog de A à Z : les pages, les articles, puis ton propre nom de domaine.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-25T20:00:00+01:00",
-      "date": "2026-11-25",
-      "time": "20:00",
-      "label": "mercredi 25 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "1 formation et 500 élèves en gratuit ; élèves illimités dès Startup : la formule pour ta formation.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-26T00:00:00+01:00",
+      "iso": "2026-11-26T20:00:00+01:00",
       "date": "2026-11-26",
-      "time": "00:00",
-      "label": "jeudi 26 novembre à 00:00",
+      "time": "20:00",
+      "label": "jeudi 26 novembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "pub-directe",
@@ -425,107 +167,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-11-26T10:00:00+01:00",
-      "date": "2026-11-26",
-      "time": "10:00",
-      "label": "jeudi 26 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Vendre un produit numérique de A à Z : le produit, la page de vente, le paiement relié.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-26T20:00:00+01:00",
-      "date": "2026-11-26",
-      "time": "20:00",
-      "label": "jeudi 26 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Webinaires automatiques : aucun en Gratuit et Startup, 10 avec Webinaire, illimités avec Illimité.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
-      ]
-    },
-    {
-      "iso": "2026-11-27T00:00:00+01:00",
-      "date": "2026-11-27",
-      "time": "00:00",
-      "label": "vendredi 27 novembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Avant de refaire toute ta page, teste un seul élément avec un test A/B.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-27T10:00:00+01:00",
-      "date": "2026-11-27",
-      "time": "10:00",
-      "label": "vendredi 27 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Créer une communauté pour tes membres de A à Z : à quoi elle sert, qui y entre, comment la faire vivre.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
       ]
     },
     {
@@ -554,35 +195,10 @@
       ]
     },
     {
-      "iso": "2026-11-28T00:00:00+01:00",
+      "iso": "2026-11-28T20:00:00+01:00",
       "date": "2026-11-28",
-      "time": "00:00",
-      "label": "samedi 28 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
-      "durationSec": [
-        20,
-        25
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site avec ton propre nom de domaine, dès le plan gratuit.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-28T10:00:00+01:00",
-      "date": "2026-11-28",
-      "time": "10:00",
-      "label": "samedi 28 novembre à 10:00",
+      "time": "20:00",
+      "label": "samedi 28 novembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "tutoriel",
@@ -604,37 +220,10 @@
       ]
     },
     {
-      "iso": "2026-11-28T20:00:00+01:00",
-      "date": "2026-11-28",
-      "time": "20:00",
-      "label": "samedi 28 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "E-mails envoyés illimités dans toutes les formules : entre Gratuit et Startup, ce qui change, c'est le nombre de contacts.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-29T00:00:00+01:00",
+      "iso": "2026-11-29T20:00:00+01:00",
       "date": "2026-11-29",
-      "time": "00:00",
-      "label": "dimanche 29 novembre à 00:00",
+      "time": "20:00",
+      "label": "dimanche 29 novembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "conseils-debutant",
@@ -656,68 +245,10 @@
       ]
     },
     {
-      "iso": "2026-11-29T10:00:00+01:00",
-      "date": "2026-11-29",
-      "time": "10:00",
-      "label": "dimanche 29 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Choisir ta formule Systeme.io de A à Z : compte tes contacts, tes tunnels et tes formations, puis lis la bonne colonne.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-11-29T20:00:00+01:00",
-      "date": "2026-11-29",
-      "time": "20:00",
-      "label": "dimanche 29 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "comparaison-outils",
-      "categoryLabel": "Outils séparés ou plateforme unique",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "Outils séparés ou plateforme unique : ce que Systeme.io réunit dans un compte, et ce que ça coûte.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-11-30T00:00:00+01:00",
+      "iso": "2026-11-30T20:00:00+01:00",
       "date": "2026-11-30",
-      "time": "00:00",
-      "label": "lundi 30 novembre à 00:00",
+      "time": "20:00",
+      "label": "lundi 30 novembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "edit-court",
@@ -733,113 +264,6 @@
       "facts": [
         "feature.community",
         "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-30T10:00:00+01:00",
-      "date": "2026-11-30",
-      "time": "10:00",
-      "label": "lundi 30 novembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Lancer une promotion de A à Z : le code promo, la page de vente, l'e-mail qui l'annonce.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-30T20:00:00+01:00",
-      "date": "2026-11-30",
-      "time": "20:00",
-      "label": "lundi 30 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Règles et workflows formule par formule : 1, 10, 100 ou illimités, et ce que ça change concrètement.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-01T00:00:00+01:00",
-      "date": "2026-12-01",
-      "time": "00:00",
-      "label": "mardi 1 décembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "L'erreur : ne compter que sur l'algorithme pour joindre ton audience. Une liste e-mail, c'est un contact direct en plus.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-01T10:00:00+01:00",
-      "date": "2026-12-01",
-      "time": "10:00",
-      "label": "mardi 1 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Vendre ta formation en ligne de A à Z : le contenu, la page de vente, le paiement, l'accès de tes élèves.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -870,39 +294,10 @@
       ]
     },
     {
-      "iso": "2026-12-02T00:00:00+01:00",
+      "iso": "2026-12-02T20:00:00+01:00",
       "date": "2026-12-02",
-      "time": "00:00",
-      "label": "mercredi 2 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
-      "durationSec": [
-        20,
-        25
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Migration gratuite et support par e-mail 24 h/24 : passer à Systeme.io sans tout refaire seul.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-02T10:00:00+01:00",
-      "date": "2026-12-02",
-      "time": "10:00",
-      "label": "mercredi 2 décembre à 10:00",
+      "time": "20:00",
+      "label": "mercredi 2 décembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "tutoriel",
@@ -924,36 +319,10 @@
       ]
     },
     {
-      "iso": "2026-12-02T20:00:00+01:00",
-      "date": "2026-12-02",
-      "time": "20:00",
-      "label": "mercredi 2 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Aucun frais ajouté par Systeme.io sur tes ventes : ce que tu paies vraiment, formule par formule.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-03T00:00:00+01:00",
+      "iso": "2026-12-03T20:00:00+01:00",
       "date": "2026-12-03",
-      "time": "00:00",
-      "label": "jeudi 3 décembre à 00:00",
+      "time": "20:00",
+      "label": "jeudi 3 décembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "erreurs-debutants",
@@ -978,59 +347,10 @@
       ]
     },
     {
-      "iso": "2026-12-03T10:00:00+01:00",
-      "date": "2026-12-03",
-      "time": "10:00",
-      "label": "jeudi 3 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Partir d'un modèle de tunnel : ce que contient chaque étape et à quoi elle sert pour vendre ton offre.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-03T20:00:00+01:00",
-      "date": "2026-12-03",
-      "time": "20:00",
-      "label": "jeudi 3 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une communauté par formation : ce que Startup change quand tu en lances plusieurs.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-04T00:00:00+01:00",
+      "iso": "2026-12-04T20:00:00+01:00",
       "date": "2026-12-04",
-      "time": "00:00",
-      "label": "vendredi 4 décembre à 00:00",
+      "time": "20:00",
+      "label": "vendredi 4 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "pub-directe",
@@ -1050,113 +370,6 @@
         "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-04T10:00:00+01:00",
-      "date": "2026-12-04",
-      "time": "10:00",
-      "label": "vendredi 4 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "La page de capture expliquée : ce qu'elle demande au visiteur, où arrive son contact, comment lui écrire ensuite.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-04T20:00:00+01:00",
-      "date": "2026-12-04",
-      "time": "20:00",
-      "label": "vendredi 4 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Quand une seule campagne ne suffit plus : ce que Startup débloque pour tes e-mails.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-05T00:00:00+01:00",
-      "date": "2026-12-05",
-      "time": "00:00",
-      "label": "samedi 5 décembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "probleme-entrepreneur",
-      "categoryLabel": "Problème d'entrepreneur",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ta page, ton paiement et ton e-mail dans trois outils qui ne se parlent pas ? Tout relier au même endroit.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-05T10:00:00+01:00",
-      "date": "2026-12-05",
-      "time": "10:00",
-      "label": "samedi 5 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "Une minute pour voir tout ce qu'un compte Systeme.io regroupe : vendre, enseigner, publier, écrire à tes contacts.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
       ]
     },
     {
@@ -1189,35 +402,10 @@
       ]
     },
     {
-      "iso": "2026-12-06T00:00:00+01:00",
+      "iso": "2026-12-06T20:00:00+01:00",
       "date": "2026-12-06",
-      "time": "00:00",
-      "label": "dimanche 6 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Ta page de vente, ton paiement et ton e-mail de confirmation : un seul tunnel. Lien en bio.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-06T10:00:00+01:00",
-      "date": "2026-12-06",
-      "time": "10:00",
-      "label": "dimanche 6 décembre à 10:00",
+      "time": "20:00",
+      "label": "dimanche 6 décembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "demo-fonctionnalite",
@@ -1242,36 +430,10 @@
       ]
     },
     {
-      "iso": "2026-12-06T20:00:00+01:00",
-      "date": "2026-12-06",
-      "time": "20:00",
-      "label": "dimanche 6 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Codes promo et tests A/B : 1, 10, 50 ou illimités selon la formule.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-07T00:00:00+01:00",
+      "iso": "2026-12-07T20:00:00+01:00",
       "date": "2026-12-07",
-      "time": "00:00",
-      "label": "lundi 7 décembre à 00:00",
+      "time": "20:00",
+      "label": "lundi 7 décembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "organisation",
@@ -1293,61 +455,10 @@
       ]
     },
     {
-      "iso": "2026-12-07T10:00:00+01:00",
-      "date": "2026-12-07",
-      "time": "10:00",
-      "label": "lundi 7 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Site, blog et tunnels dans le même compte : à quoi sert chacun et comment ils se complètent.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-07T20:00:00+01:00",
-      "date": "2026-12-07",
-      "time": "20:00",
-      "label": "lundi 7 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Une formation ou plusieurs ? 1, 5, 20 ou illimitées selon la formule, et laquelle prendre.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-08T00:00:00+01:00",
+      "iso": "2026-12-08T20:00:00+01:00",
       "date": "2026-12-08",
-      "time": "00:00",
-      "label": "mardi 8 décembre à 00:00",
+      "time": "20:00",
+      "label": "mardi 8 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "edit-court",
@@ -1370,107 +481,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-08T10:00:00+01:00",
-      "date": "2026-12-08",
-      "time": "10:00",
-      "label": "mardi 8 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Produits numériques et produits physiques : ce que tu peux vendre avec Systeme.io, et comment le paiement s'y relie.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-08T20:00:00+01:00",
-      "date": "2026-12-08",
-      "time": "20:00",
-      "label": "mardi 8 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Startup ou Webinaire : la vraie question, c'est si tu vends par webinaire.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
-      ]
-    },
-    {
-      "iso": "2026-12-09T00:00:00+01:00",
-      "date": "2026-12-09",
-      "time": "00:00",
-      "label": "mercredi 9 décembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "L'erreur : deviner quel titre marche. Un test A/B te montre lequel.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-09T10:00:00+01:00",
-      "date": "2026-12-09",
-      "time": "10:00",
-      "label": "mercredi 9 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une communauté à côté de ta formation : ce qu'elle apporte à tes élèves entre deux leçons.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
       ]
     },
     {
@@ -1499,35 +509,10 @@
       ]
     },
     {
-      "iso": "2026-12-10T00:00:00+01:00",
+      "iso": "2026-12-10T20:00:00+01:00",
       "date": "2026-12-10",
-      "time": "00:00",
-      "label": "jeudi 10 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site et ton blog, au même endroit que tes ventes.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-10T10:00:00+01:00",
-      "date": "2026-12-10",
-      "time": "10:00",
-      "label": "jeudi 10 décembre à 10:00",
+      "time": "20:00",
+      "label": "jeudi 10 décembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "demo-fonctionnalite",
@@ -1549,37 +534,10 @@
       ]
     },
     {
-      "iso": "2026-12-10T20:00:00+01:00",
-      "date": "2026-12-10",
-      "time": "20:00",
-      "label": "jeudi 10 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "2 000 contacts en gratuit, 5 000 avec Startup : à partir de quand ta liste justifie la formule payante.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-11T00:00:00+01:00",
+      "iso": "2026-12-11T20:00:00+01:00",
       "date": "2026-12-11",
-      "time": "00:00",
-      "label": "vendredi 11 décembre à 00:00",
+      "time": "20:00",
+      "label": "vendredi 11 décembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "probleme-entrepreneur",
@@ -1601,68 +559,10 @@
       ]
     },
     {
-      "iso": "2026-12-11T10:00:00+01:00",
-      "date": "2026-12-11",
-      "time": "10:00",
-      "label": "vendredi 11 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Lire le tableau officiel des formules en une minute : où regarder et quoi comparer.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-11T20:00:00+01:00",
-      "date": "2026-12-11",
-      "time": "20:00",
-      "label": "vendredi 11 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "Gratuit, Startup, Webinaire ou Illimité : la formule qu'il te faut selon où tu en es aujourd'hui.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-12T00:00:00+01:00",
+      "iso": "2026-12-12T20:00:00+01:00",
       "date": "2026-12-12",
-      "time": "00:00",
-      "label": "samedi 12 décembre à 00:00",
+      "time": "20:00",
+      "label": "samedi 12 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "edit-court",
@@ -1678,113 +578,6 @@
       "facts": [
         "feature.community",
         "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-12T10:00:00+01:00",
-      "date": "2026-12-12",
-      "time": "10:00",
-      "label": "samedi 12 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Le test A/B expliqué : deux versions d'une page, et tu gardes celle qui fonctionne le mieux.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-12T20:00:00+01:00",
-      "date": "2026-12-12",
-      "time": "20:00",
-      "label": "samedi 12 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "1 règle d'automatisation en gratuit, 10 avec Startup : le moment où passer à la formule payante.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-13T00:00:00+01:00",
-      "date": "2026-12-13",
-      "time": "00:00",
-      "label": "dimanche 13 décembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "Commence ta liste avant ton produit : chaque inscrit est une personne à prévenir le jour du lancement.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-13T10:00:00+01:00",
-      "date": "2026-12-13",
-      "time": "10:00",
-      "label": "dimanche 13 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Ta formation et ta page de vente au même endroit : ce que Systeme.io regroupe pour vendre un cours.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -1815,39 +608,10 @@
       ]
     },
     {
-      "iso": "2026-12-14T00:00:00+01:00",
+      "iso": "2026-12-14T20:00:00+01:00",
       "date": "2026-12-14",
-      "time": "00:00",
-      "label": "lundi 14 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Gratuit pour commencer, Startup quand tu grandis.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-14T10:00:00+01:00",
-      "date": "2026-12-14",
-      "time": "10:00",
-      "label": "lundi 14 décembre à 10:00",
+      "time": "20:00",
+      "label": "lundi 14 décembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "demo-fonctionnalite",
@@ -1869,36 +633,10 @@
       ]
     },
     {
-      "iso": "2026-12-14T20:00:00+01:00",
-      "date": "2026-12-14",
-      "time": "20:00",
-      "label": "lundi 14 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Plusieurs produits à vendre : 3 tunnels en gratuit, 10 avec Startup, et comment choisir.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-15T00:00:00+01:00",
+      "iso": "2026-12-15T20:00:00+01:00",
       "date": "2026-12-15",
-      "time": "00:00",
-      "label": "mardi 15 décembre à 00:00",
+      "time": "20:00",
+      "label": "mardi 15 décembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "automatisation",
@@ -1923,59 +661,10 @@
       ]
     },
     {
-      "iso": "2026-12-15T10:00:00+01:00",
-      "date": "2026-12-15",
-      "time": "10:00",
-      "label": "mardi 15 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Ton premier tunnel de vente de A à Z : la page de capture, la page de vente, le paiement, puis l'e-mail de confirmation.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-15T20:00:00+01:00",
-      "date": "2026-12-15",
-      "time": "20:00",
-      "label": "mardi 15 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une seule communauté suffit pour commencer ; dès ta deuxième formation, Startup en permet 5. Le bon moment pour passer.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-16T00:00:00+01:00",
+      "iso": "2026-12-16T20:00:00+01:00",
       "date": "2026-12-16",
-      "time": "00:00",
-      "label": "mercredi 16 décembre à 00:00",
+      "time": "20:00",
+      "label": "mercredi 16 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "edit-court",
@@ -1995,113 +684,6 @@
         "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-16T10:00:00+01:00",
-      "date": "2026-12-16",
-      "time": "10:00",
-      "label": "mercredi 16 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "Construire ta liste e-mail de A à Z : une page de capture, un formulaire, un premier e-mail à chaque inscrit.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-16T20:00:00+01:00",
-      "date": "2026-12-16",
-      "time": "20:00",
-      "label": "mercredi 16 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Ta première campagne e-mail est incluse gratuitement ; à partir de la deuxième, il faut Startup (10 campagnes).",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-17T00:00:00+01:00",
-      "date": "2026-12-17",
-      "time": "00:00",
-      "label": "jeudi 17 décembre à 00:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "produits-numeriques",
-      "categoryLabel": "Vendre des produits numériques",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-17T10:00:00+01:00",
-      "date": "2026-12-17",
-      "time": "10:00",
-      "label": "jeudi 17 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "C'est quoi Systeme.io, mot pour mot : un seul outil pour tes pages, tes tunnels, tes e-mails et tes formations, et par où commencer.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
       ]
     },
     {
@@ -2134,35 +716,10 @@
       ]
     },
     {
-      "iso": "2026-12-18T00:00:00+01:00",
+      "iso": "2026-12-18T20:00:00+01:00",
       "date": "2026-12-18",
-      "time": "00:00",
-      "label": "vendredi 18 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Trois tunnels de vente inclus dans le plan gratuit. Monte le premier ce soir.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-18T10:00:00+01:00",
-      "date": "2026-12-18",
-      "time": "10:00",
-      "label": "vendredi 18 décembre à 10:00",
+      "time": "20:00",
+      "label": "vendredi 18 décembre à 20:00",
       "family": "tuto",
       "familyLabel": "Tuto de A à Z",
       "category": "tutoriel",
@@ -2187,36 +744,10 @@
       ]
     },
     {
-      "iso": "2026-12-18T20:00:00+01:00",
-      "date": "2026-12-18",
-      "time": "20:00",
-      "label": "vendredi 18 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "1 code promo et 1 test A/B en gratuit, 10 de chaque avec Startup : quand ça vaut le coup.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-19T00:00:00+01:00",
+      "iso": "2026-12-19T20:00:00+01:00",
       "date": "2026-12-19",
-      "time": "00:00",
-      "label": "samedi 19 décembre à 00:00",
+      "time": "20:00",
+      "label": "samedi 19 décembre à 20:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "erreurs-debutants",
@@ -2238,61 +769,10 @@
       ]
     },
     {
-      "iso": "2026-12-19T10:00:00+01:00",
-      "date": "2026-12-19",
-      "time": "10:00",
-      "label": "samedi 19 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site et ton blog de A à Z : les pages, les articles, puis ton propre nom de domaine.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-19T20:00:00+01:00",
-      "date": "2026-12-19",
-      "time": "20:00",
-      "label": "samedi 19 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "1 formation et 500 élèves en gratuit ; élèves illimités dès Startup : la formule pour ta formation.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-20T00:00:00+01:00",
+      "iso": "2026-12-20T20:00:00+01:00",
       "date": "2026-12-20",
-      "time": "00:00",
-      "label": "dimanche 20 décembre à 00:00",
+      "time": "20:00",
+      "label": "dimanche 20 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "pub-directe",
@@ -2315,57 +795,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-20T10:00:00+01:00",
-      "date": "2026-12-20",
-      "time": "10:00",
-      "label": "dimanche 20 décembre à 10:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Vendre un produit numérique de A à Z : le produit, la page de vente, le paiement relié.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-20T20:00:00+01:00",
-      "date": "2026-12-20",
-      "time": "20:00",
-      "label": "dimanche 20 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Webinaires automatiques : aucun en Gratuit et Startup, 10 avec Webinaire, illimités avec Illimité.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
       ]
     }
   ]

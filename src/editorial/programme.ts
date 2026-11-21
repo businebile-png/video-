@@ -5,11 +5,11 @@ import {addDays, daysBetween, formatLocal, formatWithOffset, zonedInstant} from 
 import type {Editorial} from '../schemas/config.js';
 
 /**
- * Programme du mois (demandes de l'utilisateur du 21/11/2026) : chaque heure de publication a sa famille de format
- * (10:00 tutoriel de A à Z, 20:00 quelle formule prendre, 00:00 format court un jour sur deux et erreur ou conseil
- * l'autre jour, `parity`) et chaque créneau reçoit un besoin (tunnel, liste e-mail, formation…). Le besoin d'une famille avance d'un cran par jour et
- * les familles sont décalées entre elles : les quatre vidéos d'une journée traitent quatre besoins différents, et
- * un besoin revient tous les 3 jours dans un autre format. Le calcul part de `epoch` : régénérer le programme plus
+ * Programme du mois (demandes de l'utilisateur du 21/11/2026) : chaque famille de format a son heure et ses jours
+ * (`parity` un jour sur deux, ou `cycle`/`phase` pour une rotation sur plusieurs jours). Depuis la demande « une vidéo
+ * par jour » du 21/11/2026, les quatre formats (tutoriel de A à Z, quelle formule prendre, erreur ou conseil, format
+ * court) tournent à 20:00, un par jour. Chaque créneau reçoit un besoin (tunnel, liste e-mail, formation…) : le besoin
+ * d'une famille avance d'un cran par jour et les familles sont décalées entre elles. Le calcul part de `epoch` : régénérer le programme plus
  * tard redonne les mêmes sujets aux mêmes dates.
  */
 
@@ -29,6 +29,12 @@ export const ProgrammeConfigSchema = z.object({
         offset: z.number().int().min(0),
         /** 0: even days only, 1: odd days only (days counted from `epoch`); absent: every day. */
         parity: z.union([z.literal(0), z.literal(1)]).optional(),
+        /**
+         * Rotation over several days (one video a day, demande de l'utilisateur du 21/11/2026) : the family only runs on
+         * the days whose index since `epoch`, modulo `cycle`, equals `phase`. Takes precedence over `parity`.
+         */
+        cycle: z.number().int().min(2).max(14).optional(),
+        phase: z.number().int().min(0).max(13).optional(),
       }),
     )
     .min(1),
@@ -75,15 +81,36 @@ export const PROGRAMME_CONFIG = path.join(PATHS.root, 'config', 'programme.json'
 export const PROGRAMME_FILE = path.join(PATHS.data, 'programme.json');
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
+const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+
+type Family = ProgrammeConfig['families'][number];
+
+/** Whether a family runs on the day `day` (index since `epoch`): its rotation (`cycle`/`phase`), else its `parity`. */
+function runsOn(f: Family, day: number): boolean {
+  if (f.cycle !== undefined) return mod(day, f.cycle) === (f.phase ?? 0);
+  return f.parity === undefined || f.parity === mod(day, 2);
+}
+
+/** Length of the pattern of active families: every family's rotation repeats within it. */
+function patternDays(cfg: ProgrammeConfig): number {
+  return cfg.families.reduce((acc, f) => {
+    const c = f.cycle ?? 2;
+    return (acc * c) / gcd(acc, c);
+  }, 2);
+}
 
 /** Everything that would make a planned slot unusable: unknown category, unknown fact, a family without angles. */
 export function programmeProblems(cfg: ProgrammeConfig, editorial: Editorial, factIds: Set<string>): string[] {
   const problems: string[] = [];
   const categories = new Set(editorial.categories.map((c) => c.id));
-  for (const parity of [0, 1]) {
+  for (const f of cfg.families) {
+    if (f.cycle !== undefined && (f.phase ?? 0) >= f.cycle) problems.push(`familles ${f.id} : phase ${f.phase} hors du cycle de ${f.cycle} jours`);
+  }
+  const days = patternDays(cfg);
+  for (let day = 0; day < days; day++) {
     const offsets = new Set<number>();
     const times = new Set<string>();
-    for (const f of cfg.families.filter((x) => x.parity === undefined || x.parity === parity)) {
+    for (const f of cfg.families.filter((x) => runsOn(x, day))) {
       if (offsets.has(mod(f.offset, cfg.themes.length))) problems.push(`familles ${f.id} : même décalage qu'une autre famille du même jour (deux vidéos auraient le même besoin)`);
       if (times.has(f.time)) problems.push(`familles ${f.id} : deux familles à ${f.time} le même jour`);
       offsets.add(mod(f.offset, cfg.themes.length));
@@ -141,9 +168,9 @@ function makeEntry(
 }
 
 function familiesOn(cfg: ProgrammeConfig, date: string, times?: string[]) {
-  const parity = mod(daysBetween(cfg.epoch, date), 2);
+  const day = daysBetween(cfg.epoch, date);
   return cfg.families
-    .filter((f) => (!times || times.includes(f.time)) && (f.parity === undefined || f.parity === parity))
+    .filter((f) => (!times || times.includes(f.time)) && runsOn(f, day))
     .sort((a, b) => a.time.localeCompare(b.time));
 }
 

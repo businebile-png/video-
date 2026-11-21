@@ -18,7 +18,7 @@ describe('YouTube Shorts', () => {
     const config = await loadConfig();
     const script = sampleScript();
     const slot = nextSlots(config, new Date('2026-11-16T05:00:00Z')).find((s) => s.network === 'youtube')!;
-    expect(slot.local).toBe('2026-11-16T10:00:00');
+    expect(slot.local).toBe('2026-11-16T20:00:00');
     const text = postText(script, 'youtube', config);
     expect(text.startsWith('Publicité')).toBe(true);
     const info = metricoolInfo('youtube', {text, mediaUrl: 'https://exemple.test/v.mp4', slot, coverMs: 1200, config, youtubeTitle: youtubeTitle(script), tags: ['#systemeio', '#entrepreneur']});

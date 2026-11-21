@@ -27,13 +27,16 @@ répondre, commenter et écrire les messages de commit en français.
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
 - Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la session
-  principale lance une production Claude de 3 vidéos (modèle économe), une par créneau, qui suit le programme du mois
-  (`data/programme.json`, `npm run studio -- programme`), réserve chaque créneau (`queue:claim`) et met chaque vidéo
+  principale lance une production Claude d'**une** vidéo (modèle économe ; une vidéo par jour, la meilleure possible,
+  demande de l'utilisateur du 21/11/2026), pour le premier créneau libre, qui suit le programme du mois
+  (`data/programme.json`, `npm run studio -- programme`), réserve son créneau (`queue:claim`) et met sa vidéo
   dans `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
   échec) : voir `docs/production-sans-claude.md`.
-- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : trois vidéos par jour
-  depuis le 21/11/2026, à 00:00, 10:00 et 20:00, sur TikTok, Instagram, YouTube (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
+- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **une vidéo par jour, à
+  20:00** (demande de l'utilisateur du 21/11/2026, qui remplace les trois vidéos par jour ; `postTimes` de
+  `config/studio.json`, les quatre formats du programme tournent d'un jour à l'autre), sur TikTok, Instagram, YouTube
+  (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
   (connecteur « zernio », gratuit pour ces 2 comptes, sans limite de publications ; déclarations « contenu de marque » et
   « IA » cochées) et Instagram et Threads par Metricool (formule gratuite : 20 publications par mois ; au-delà, « à
   poster soi-même » depuis le panneau). L'utilisateur ne peut pas payer de formule. (YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
