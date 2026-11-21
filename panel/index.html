@@ -1436,13 +1436,29 @@ async function moveToSlot(v, iso) {
   } catch (e) { S.ui.weekMsg = {tone: 'bad', text: 'Enregistrement impossible : ' + ((e && e.message) || e)}; }
   renderWeek();
 }
+// Posting by hand (Metricool's free plan allows 20 posts a month): the video file and each network's caption.
+function copyText(text, btn) {
+  const label = btn.textContent;
+  const done = () => { btn.textContent = 'Copié ✓'; setTimeout(() => { btn.textContent = label; }, 1500); };
+  const fallback = () => { const ta = h('textarea', {style: 'position:fixed;top:0;left:0;opacity:0'}); ta.value = text; document.body.append(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'Sélectionnez et copiez'; } ta.remove(); };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+}
+function manualKit(v) {
+  const url = v.media && v.media.publicUrl;
+  const posts = Array.isArray(v.posts) ? v.posts : [];
+  if (!url && !posts.length) return null;
+  return h('div', {class: 'actions'},
+    url ? h('a', {class: 'btn', href: url, target: '_blank', rel: 'noopener', text: 'Télécharger la vidéo'}) : null,
+    ...posts.filter((x) => x && x.text && NETS[x.network]).map((x) => h('button', {class: 'btn', type: 'button', onclick: (e) => copyText(x.text, e.currentTarget), text: 'Légende ' + NETS[x.network]})));
+}
 function weekSlotCard(day, hhmm) {
   const t = slotInstant(day, hhmm);
   const v = weekSlotVideo(t);
   const card = h('div', {class: 'card slot'}, h('div', {class: 'slothead'}, h('strong', {class: 'slottime', text: hhmm}), v ? pill(v.status === 'prete' && v.requestedSlot ? 'prete' : v.status) : null));
   if (v) {
     card.append(h('div', {class: 'slottitle', text: v.title || v.runId}), netChips(v));
-    if (v.status === 'prete') card.append(h('div', {class: 'small muted', text: 'Prête : programmée toute seule au passage de 13:35.'}));
+    if (v.status === 'prete') card.append(h('div', {class: 'small muted', text: v.manualOnly ? 'À poster vous-même : la limite de publications Metricool du mois est atteinte.' : 'Prête : programmée toute seule au passage de 13:35.'}));
+    if (v.status !== 'publiee' && t > Date.now() - 12 * 3600e3) { const kit = manualKit(v); if (kit) card.append(h('details', null, h('summary', {class: 'small', text: 'La poster moi-même'}), kit)); }
     return card;
   }
   const run = activeRun();
