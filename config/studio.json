@@ -186,7 +186,7 @@
   },
   "footage": {
     "provider": "pixabay",
-    "reuseCooldownDays": 45,
+    "reuseCooldownDays": 21,
     "perQuery": 20,
     "candidatesPerScene": 8,
     "minShortSide": 1080,
