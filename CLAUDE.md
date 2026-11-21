@@ -33,8 +33,10 @@ répondre, commenter et écrire les messages de commit en français.
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
   échec) : voir `docs/production-sans-claude.md`.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : trois vidéos par jour
-  depuis le 21/11/2026, à 00:00, 10:00 et 20:00, sur TikTok et Instagram via Metricool, et aussi en Short sur YouTube et sur Threads depuis le 15/11/2026 (comptes
-  connectés à Metricool ; YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
+  depuis le 21/11/2026, à 00:00, 10:00 et 20:00, sur TikTok, Instagram, YouTube (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
+  (connecteur « zernio », gratuit pour ces 2 comptes, sans limite de publications ; déclarations « contenu de marque » et
+  « IA » cochées) et Instagram et Threads par Metricool (formule gratuite : 20 publications par mois ; au-delà, « à
+  poster soi-même » depuis le panneau). L'utilisateur ne peut pas payer de formule. (Comptes YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
   Threads : légende raccourcie à 500 caractères par `condenseForThreads`). Légendes : « Publicité · Systeme.io » en tête,
   sans phrase sur la commission (demande de l'utilisateur du 21/11/2026 ; « Publicité » reste obligatoire). Pas de note minimum (choix de l'utilisateur le
   09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente (depuis le

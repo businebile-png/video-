@@ -275,7 +275,10 @@ nouveau créneau (l'ancien est libéré) et, pour un besoin choisi, la session l
   (`publish:prepare <runId> --networks tiktok,instagram,youtube,threads --slot <iso>` : chaque publication porte la date de
   ce créneau), la met dans la file (`queue:add <runId> --slot <iso>`) et dépose sa fiche dans le panneau. Si la
   vidéo n'est pas « publishable », la fiche passe en `a_ameliorer` ou `bloquee` et la raison va dans le journal.
-- **Programmation** : la tâche « Publication Metricool » tourne à 13:35 dans la session principale. Elle prend
+- **Programmation** : la tâche « Publication automatique » tourne à 13:35 dans la session principale. Depuis le
+  21/11/2026, TikTok et YouTube passent par Zernio (connecteur « zernio », `posts_create_post` avec `tiktok_settings`
+  : contenu de marque `brand_content`, `videoMadeWithAi` ; YouTube : `containsSyntheticMedia`), Instagram et Threads
+  par Metricool tant que sa formule gratuite le permet (20 publications par mois), sinon « à poster soi-même ». Elle prend
   chaque vidéo de la file (`queue/`) à son créneau (`requestedSlot` choisi dans le panneau, sinon `autoSlot`), vérifie
   avec `getScheduledPosts` qu'aucun autre post n'est prévu à la même heure sur le même réseau, puis crée un post par
   réseau avec `createScheduledPost` (`posts[].info` de la fiche, `autoPublish: true`, `draft: false`, date du

@@ -1456,7 +1456,8 @@ function netChips(v) {
     const p = pubs[n];
     if (p && p.status === 'published' && p.permalink) return h('a', {class: 'ok', href: p.permalink, target: '_blank', rel: 'noopener', text: `${NETS[n]} ✓ publiée`});
     if (p && p.status === 'published') return h('span', {class: 'ok', text: `${NETS[n]} ✓ publiée`});
-    if (p && p.status === 'scheduled') return h('span', {class: 'info', text: `${NETS[n]} · programmée`});
+    if (p && p.status === 'scheduled') return h('span', {class: 'info', text: `${NETS[n]} · programmée` + (p.via === 'zernio' ? ' (Zernio)' : '')});
+    if (p && (p.status === 'manual' || p.status === 'failed')) return h('span', {text: `${NETS[n]} · à poster vous-même`});
     return h('span', {text: `${NETS[n]} · ${v.status !== 'prete' ? '—' : v.manualOnly ? 'à poster vous-même' : 'à 13:35'}`});
   }));
 }
@@ -1510,6 +1511,8 @@ function weekSlotCard(day, hhmm) {
   if (v) {
     card.append(h('div', {class: 'slottitle', text: v.title || v.runId}), netChips(v));
     if (v.status === 'prete') card.append(h('div', {class: 'small muted', text: v.manualOnly ? 'À poster vous-même : la limite de publications Metricool du mois est atteinte.' : 'Prête : programmée toute seule au passage de 13:35.'}));
+    const manualNets = Object.entries(v.publications || {}).filter(([, p]) => p && (p.status === 'manual' || p.status === 'failed')).map(([n]) => NETS[n] || n);
+    if (v.status !== 'prete' && v.status !== 'publiee' && manualNets.length) card.append(h('div', {class: 'small muted', text: `${manualNets.join(' et ')} : à poster vous-même (limite gratuite de Metricool) ; les autres réseaux partent tout seuls.`}));
     if (v.status !== 'publiee' && t > Date.now() - 12 * 3600e3) { const kit = manualKit(v); if (kit) card.append(h('details', null, h('summary', {class: 'small', text: 'La poster moi-même'}), kit)); }
     return card;
   }
