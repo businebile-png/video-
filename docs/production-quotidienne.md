@@ -234,11 +234,13 @@ postes 2 par jour ») partent toutes seules sur TikTok, Instagram, YouTube et Th
 (Europe/Paris), si la relecture les juge cohérentes et si tous les contrôles obligatoires sont validés. Chaque vidéo
 reste soignée : prendre le temps de la relecture et des reprises, une vidéo après l'autre.
 
-- **Productions** : la tâche « Production Systeme.io — série, 2 vidéos par jour » (5:47, elle réveille la session de
-  la régie) crée **une** session de production (`create_session`, modèle économe) pour **les deux premiers créneaux libres**
-  à plus de 6 h (en régime normal, 10:00 et 20:00 du lendemain), jamais avant `publish.notBefore`. Chaque créneau suit
-  son script de la série (section 9 ter), sinon le **programme du mois** (`data/programme.json`, section 9 bis). Un
-  créneau déjà occupé par une vidéo de la file passe au suivant. Le journal porte `slot` (créneau) pour le tableau de bord.
+- **Productions** : jusqu'au 22/12/2026, la tâche « Production du mois en continu » (toutes les 6 h, relancée par
+  chaque session de production à sa fin ; elle réveille la session de la régie) crée **une** session de production
+  (`create_session`, modèle économe) pour **les 4 premiers créneaux libres** à plus de 6 h, jamais avant
+  `publish.notBefore` ni après le 22/12 à 20:00. Chaque créneau suit son script de la série (section 9 ter), sinon le
+  **programme du mois** (`data/programme.json`, section 9 bis). Un créneau déjà occupé par une vidéo de la file passe au
+  suivant. Si la limite d'utilisation de Claude est atteinte, la session de production reprend après la remise à zéro.
+  Série complète : retour à 2 vidéos par jour (5:47). Le journal porte `slot` (créneau) pour le tableau de bord.
 - **Programmation** : la tâche « Publication Metricool » (13:35) programme toutes les vidéos prêtes de la file
   sur les 4 réseaux. TikTok et YouTube passent par Zernio (sans limite) ;
   Instagram et Threads par Metricool, dont la formule gratuite ne permet que 20 publications par mois : une vidéo

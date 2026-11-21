@@ -26,10 +26,14 @@ répondre, commenter et écrire les messages de commit en français.
   Choix final de l'utilisateur le 15/11/2026 : **garder Claire** (100 % gratuite, sans compte ni carte). Le
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
-- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la tâche
-  « Production Systeme.io — série, 2 vidéos par jour » (`trig_01RNBHFDf7LNerv47ffZzS7Z`, qui réveille la session de la
-  régie `session_01N7BpMrqV24PNBWQH4tAsxv` ; une tâche « session neuve » n'aurait ni le dépôt ni `create_session`) lance une session de production Claude (modèle économe) de **deux** vidéos, faites une par une, pour les deux premiers
-  créneaux libres à plus de 6 h (demande de l'utilisateur du 21/11/2026). Du 23/11 au 22/12/2026, chaque créneau suit son
+- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). Jusqu'au 22/12/2026,
+  production **en continu** (demande de l'utilisateur du 21/11/2026 au soir : « continue les vidéos jusqu'à ce que tu
+  finisses le mois et programme-les tous automatiquement ») : la tâche « Production du mois en continu »
+  (`trig_01RNBHFDf7LNerv47ffZzS7Z`, toutes les 6 h et relancée par chaque session de production à sa fin, rattachée à la
+  session de la régie `session_01N7BpMrqV24PNBWQH4tAsxv` ; une tâche « session neuve » n'aurait ni le dépôt ni
+  `create_session`) lance des lots de 4 vidéos (modèle économe), faites une par une, pour les premiers créneaux libres à
+  plus de 6 h ; limite d'utilisation atteinte : la session reprend après la remise à zéro. Série complète : la tâche
+  repasse à 2 vidéos par jour à 5:47. Du 23/11 au 22/12/2026, chaque créneau suit son
   script de la **série de 60 vidéos** (`data/serie.json`, copie du doc https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj :
   `npm run studio -- serie:slot --slot <iso>`, puis `new --category <catégorie> --serie <n>`) ; une démo sans
   enregistrement d'écran de l'utilisateur laisse son créneau à sa vidéo de relève. Hors série, le programme du mois
@@ -40,7 +44,9 @@ répondre, commenter et écrire les messages de commit en français.
   principale (`trig_011uUZC54x62D6LBd5XAGJWq`, `trig_01CK4GpGHEs6z5W7xKf2Lo8C`) restent désactivées.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **deux vidéos par jour, à
   10:00 et 20:00** (demande de l'utilisateur du 21/11/2026, qui remplace la vidéo unique de 20:00 ; `postTimes` de
-  `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série), sur TikTok, Instagram, YouTube
+  `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série ; la tâche de 13:35 programme les
+  vidéos prêtes de la file et la tâche de production programme elle-même, en filet de sécurité, une vidéo dont le
+  créneau est dans moins de 30 h et qui n'est pas encore programmée, jamais entre 13:00 et 15:00), sur TikTok, Instagram, YouTube
   (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
   (connecteur « zernio », gratuit pour ces 2 comptes, sans limite de publications ; déclarations « contenu de marque » et
   « IA » cochées) et Instagram et Threads par Metricool (formule gratuite : 20 publications par mois ; au-delà, « à
