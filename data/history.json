@@ -901,6 +901,26 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-21T04:35:28.759Z"
+    },
+    {
+      "runId": "2026-11-21-e",
+      "date": "2026-11-21",
+      "category": "pub-directe",
+      "hookStyle": "contre-intuitif",
+      "hook": "Tu crois qu'envoyer des e-mails suffit pour vendre en ligne ?",
+      "angle": "Quatre domaines réunis dans un compte Systeme.io : vendre, enseigner, publier et écrire à ses contacts",
+      "workingTitle": "C'est quoi Systeme.io ?",
+      "artDirection": "clarte",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 10.75,
+      "voiceId": "claire",
+      "durationSec": 38.7,
+      "score": 69,
+      "decision": "publishable",
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-21T04:57:22.586Z"
     }
   ]
 }
