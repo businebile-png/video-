@@ -26,16 +26,21 @@ répondre, commenter et écrire les messages de commit en français.
   Choix final de l'utilisateur le 15/11/2026 : **garder Claire** (100 % gratuite, sans compte ni carte). Le
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
-- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la session
-  principale lance une production Claude d'**une** vidéo (modèle économe ; une vidéo par jour, la meilleure possible,
-  demande de l'utilisateur du 21/11/2026), pour le premier créneau libre, qui suit le programme du mois
-  (`data/programme.json`, `npm run studio -- programme`), réserve son créneau (`queue:claim`) et met sa vidéo
-  dans `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
+- Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la tâche
+  « Production Systeme.io — série, 2 vidéos par jour » (`trig_01GskusqEsAv8LUY5KiC3bk1`, une session neuve à chaque fois)
+  lance une session de production Claude (modèle économe) de **deux** vidéos, faites une par une, pour les deux premiers
+  créneaux libres à plus de 6 h (demande de l'utilisateur du 21/11/2026). Du 23/11 au 22/12/2026, chaque créneau suit son
+  script de la **série de 60 vidéos** (`data/serie.json`, copie du doc https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj :
+  `npm run studio -- serie:slot --slot <iso>`, puis `new --category <catégorie> --serie <n>`) ; une démo sans
+  enregistrement d'écran de l'utilisateur laisse son créneau à sa vidéo de relève. Hors série, le programme du mois
+  (`data/programme.json`, `npm run studio -- programme`). La production réserve son créneau (`queue:claim`) et met sa
+  vidéo dans `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
-  échec) : voir `docs/production-sans-claude.md`.
-- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **une vidéo par jour, à
-  20:00** (demande de l'utilisateur du 21/11/2026, qui remplace les trois vidéos par jour ; `postTimes` de
-  `config/studio.json`, les quatre formats du programme tournent d'un jour à l'autre), sur TikTok, Instagram, YouTube
+  échec), sans suivre la série : voir `docs/production-sans-claude.md`. Les anciennes tâches de production de la session
+  principale (`trig_011uUZC54x62D6LBd5XAGJWq`, `trig_01CK4GpGHEs6z5W7xKf2Lo8C`) restent désactivées.
+- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **deux vidéos par jour, à
+  10:00 et 20:00** (demande de l'utilisateur du 21/11/2026, qui remplace la vidéo unique de 20:00 ; `postTimes` de
+  `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série), sur TikTok, Instagram, YouTube
   (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
   (connecteur « zernio », gratuit pour ces 2 comptes, sans limite de publications ; déclarations « contenu de marque » et
   « IA » cochées) et Instagram et Threads par Metricool (formule gratuite : 20 publications par mois ; au-delà, « à

@@ -81,10 +81,11 @@ export interface Slot {
   label: string;
 }
 
-/** Next publication slots per network, at least `leadTimeMinutes` from now (Paris time by default). */
+/** Next publication slots per network, at least `leadTimeMinutes` from now and not before `publish.notBefore` (Paris time by default). */
 export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slot[] {
   const tz = config.metricool.timezone;
   const out: Slot[] = [];
+  const notBefore = config.publish.notBefore ? Date.parse(config.publish.notBefore) : -Infinity;
   const today = isoDateInZone(now, tz);
   const fmt = new Intl.DateTimeFormat('fr-FR', {timeZone: tz, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'});
   for (const network of NETWORKS) {
@@ -94,6 +95,7 @@ export function nextSlots(config: StudioConfig, now = new Date(), days = 3): Slo
       for (const t of pf.postTimes) {
         const instant = zonedInstant(addDays(today, d), t, tz);
         if (instant.getTime() - now.getTime() < config.publish.leadTimeMinutes * 60_000) continue;
+        if (instant.getTime() < notBefore) continue;
         out.push({network, iso: formatWithOffset(instant, tz), local: formatLocal(instant, tz), label: fmt.format(instant)});
       }
     }

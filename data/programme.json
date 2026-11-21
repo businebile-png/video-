@@ -1,61 +1,30 @@
 {
-  "generatedAt": "2026-11-21T13:35:46.907Z",
-  "from": "2026-11-21",
-  "to": "2026-12-20",
+  "generatedAt": "2026-11-21T19:12:16.204Z",
+  "from": "2026-11-23",
+  "to": "2026-12-23",
   "timezone": "Europe/Paris",
   "slots": [
     {
-      "iso": "2026-11-21T20:00:00+01:00",
-      "date": "2026-11-21",
-      "time": "20:00",
-      "label": "samedi 21 novembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "automatisation",
-      "categoryLabel": "Automatisation du marketing",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "date": "2026-11-23",
+      "time": "10:00",
+      "label": "lundi 23 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
       "durationSec": [
-        25,
+        20,
         35
       ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
+      "theme": "serie-1",
+      "themeLabel": "Vidéo 1/60 : Et si d'autres vendaient ta formation ?",
+      "angle": "Et si d'autres vendaient ta formation ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-23T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-22T20:00:00+01:00",
-      "date": "2026-11-22",
-      "time": "20:00",
-      "label": "dimanche 22 novembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Ta formation, tes élèves et le paiement au même endroit.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
+        "feature.affiliate-program",
         "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "feature.funnels"
       ]
     },
     {
@@ -63,28 +32,48 @@
       "date": "2026-11-23",
       "time": "20:00",
       "label": "lundi 23 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
       "durationSec": [
-        30,
-        45
+        25,
+        40
       ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Mensuel ou annuel : Startup à 17 €/mois ou 170 €/an, soit 2 mois offerts.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
+      "theme": "serie-2",
+      "themeLabel": "Vidéo 2/60 : Tu postes, mais personne ne s'inscrit",
+      "angle": "Tu postes, mais personne ne s'inscrit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-23T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels",
+        "feature.auto-email-on-subscribe",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-11-24T10:00:00+01:00",
+      "date": "2026-11-24",
+      "time": "10:00",
+      "label": "mardi 24 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Classement",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-3",
+      "themeLabel": "Vidéo 3/60 : Tier list des 4 formules Systeme.io",
+      "angle": "Tier list des 4 formules Systeme.io — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-24T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
         "plan.free.price",
+        "plan.free.no-card",
         "plan.startup.price",
         "plan.webinar.price",
         "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
+        "plan.prices.ttc"
       ]
     },
     {
@@ -92,27 +81,44 @@
       "date": "2026-11-24",
       "time": "20:00",
       "label": "mardi 24 novembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
       "durationSec": [
-        45,
-        60
+        20,
+        35
       ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ta première règle d'automatisation de A à Z : choisir le déclencheur, choisir l'action, puis vérifier qu'elle tourne.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
+      "theme": "serie-4",
+      "themeLabel": "Vidéo 4/60 : Tes e-mails sont illimités, même en gratuit",
+      "angle": "Tes e-mails sont illimités, même en gratuit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-24T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "plan.table.emails-sent",
+        "plan.table.email-campaigns"
+      ]
+    },
+    {
+      "iso": "2026-11-25T10:00:00+01:00",
+      "date": "2026-11-25",
+      "time": "10:00",
+      "label": "mercredi 25 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-5",
+      "themeLabel": "Vidéo 5/60 : Un tunnel de vente, c'est 3 étapes",
+      "angle": "Un tunnel de vente, c'est 3 étapes — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-25T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels",
+        "feature.payments",
+        "plan.free.limits"
       ]
     },
     {
@@ -120,24 +126,45 @@
       "date": "2026-11-25",
       "time": "20:00",
       "label": "mercredi 25 novembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-6",
+      "themeLabel": "Vidéo 6/60 : Je monte mon premier tunnel, chrono en main",
+      "angle": "Je monte mon premier tunnel, chrono en main — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-25T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-11-26T10:00:00+01:00",
+      "date": "2026-11-26",
+      "time": "10:00",
+      "label": "jeudi 26 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
       "category": "erreurs-debutants",
       "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
         25,
-        35
+        40
       ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
+      "theme": "serie-7",
+      "themeLabel": "Vidéo 7/60 : Compte tes contacts avant de choisir",
+      "angle": "Compte tes contacts avant de choisir — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-26T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "plan.free.contacts",
+        "plan.startup.contacts",
+        "plan.webinar.limits",
+        "plan.unlimited.limits"
       ]
     },
     {
@@ -145,28 +172,47 @@
       "date": "2026-11-26",
       "time": "20:00",
       "label": "jeudi 26 novembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
       "durationSec": [
-        20,
-        25
+        25,
+        45
       ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "0 €, sans carte bancaire : ton compte Systeme.io peut être ouvert ce soir.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
+      "theme": "serie-8",
+      "themeLabel": "Vidéo 8/60 : « C'est vraiment gratuit ? »",
+      "angle": "« C'est vraiment gratuit ? » — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-26T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
         "plan.free.price",
+        "plan.free.exists",
         "plan.free.no-card",
         "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
+        "plan.startup.price"
+      ]
+    },
+    {
+      "iso": "2026-11-27T10:00:00+01:00",
+      "date": "2026-11-27",
+      "time": "10:00",
+      "label": "vendredi 27 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Comparatif",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
+      "durationSec": [
+        25,
+        45
+      ],
+      "theme": "serie-9",
+      "themeLabel": "Vidéo 9/60 : Gratuit ou Startup : ce qui change",
+      "angle": "Gratuit ou Startup : ce qui change — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-27T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.limits",
+        "plan.startup.limits",
+        "plan.startup.price"
       ]
     },
     {
@@ -174,24 +220,44 @@
       "date": "2026-11-27",
       "time": "20:00",
       "label": "vendredi 27 novembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
       "durationSec": [
-        30,
-        45
+        20,
+        35
       ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Une offre ou plusieurs ? Le moment où le plan gratuit ne suffit plus pour tes tunnels, et pourquoi Startup.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
+      "theme": "serie-10",
+      "themeLabel": "Vidéo 10/60 : Et si tes élèves avaient leur communauté ?",
+      "angle": "Et si tes élèves avaient leur communauté ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-27T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "feature.community",
+        "plan.table.communities",
+        "feature.courses"
+      ]
+    },
+    {
+      "iso": "2026-11-28T10:00:00+01:00",
+      "date": "2026-11-28",
+      "time": "10:00",
+      "label": "samedi 28 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-11",
+      "themeLabel": "Vidéo 11/60 : Systeme.io ne prend rien sur tes ventes",
+      "angle": "Systeme.io ne prend rien sur tes ventes — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-28T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.transaction-fees",
+        "feature.payments"
       ]
     },
     {
@@ -199,24 +265,45 @@
       "date": "2026-11-28",
       "time": "20:00",
       "label": "samedi 28 novembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
       "durationSec": [
-        45,
-        60
+        25,
+        40
       ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Ta première campagne e-mail de A à Z : à qui l'envoyer, quoi écrire dans chaque e-mail, dans quel ordre.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
+      "theme": "serie-12",
+      "themeLabel": "Vidéo 12/60 : 3 choses que le plan gratuit fait déjà",
+      "angle": "3 choses que le plan gratuit fait déjà — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-28T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
       "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
+        "plan.free.no-card",
         "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "plan.table.funnels",
+        "plan.table.communities"
+      ]
+    },
+    {
+      "iso": "2026-11-29T10:00:00+01:00",
+      "date": "2026-11-29",
+      "time": "10:00",
+      "label": "dimanche 29 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-13",
+      "themeLabel": "Vidéo 13/60 : Je crée le premier module de ma formation",
+      "angle": "Je crée le premier module de ma formation — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-29T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.courses",
+        "plan.table.courses"
       ]
     },
     {
@@ -224,6 +311,1105 @@
       "date": "2026-11-29",
       "time": "20:00",
       "label": "dimanche 29 novembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-14",
+      "themeLabel": "Vidéo 14/60 : Ta liste e-mail dort ?",
+      "angle": "Ta liste e-mail dort ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-29T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.email-marketing",
+        "plan.table.emails-sent",
+        "plan.table.email-campaigns"
+      ]
+    },
+    {
+      "iso": "2026-11-30T10:00:00+01:00",
+      "date": "2026-11-30",
+      "time": "10:00",
+      "label": "lundi 30 novembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Saison",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-15",
+      "themeLabel": "Vidéo 15/60 : Tes codes promo pour Noël",
+      "angle": "Tes codes promo pour Noël — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-30T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.coupons",
+        "plan.table.coupons"
+      ]
+    },
+    {
+      "iso": "2026-11-30T20:00:00+01:00",
+      "date": "2026-11-30",
+      "time": "20:00",
+      "label": "lundi 30 novembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-16",
+      "themeLabel": "Vidéo 16/60 : Ta page mérite ton nom de domaine",
+      "angle": "Ta page mérite ton nom de domaine — script écrit à suivre : npm run studio -- serie:slot --slot 2026-11-30T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.limits",
+        "plan.startup.custom-domain",
+        "plan.webinar.limits",
+        "plan.unlimited.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-01T10:00:00+01:00",
+      "date": "2026-12-01",
+      "time": "10:00",
+      "label": "mardi 1 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Classement",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-17",
+      "themeLabel": "Vidéo 17/60 : Tier list : par quoi commencer",
+      "angle": "Tier list : par quoi commencer — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-01T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels",
+        "feature.auto-email-on-subscribe",
+        "feature.courses",
+        "feature.blog"
+      ]
+    },
+    {
+      "iso": "2026-12-01T20:00:00+01:00",
+      "date": "2026-12-01",
+      "time": "20:00",
+      "label": "mardi 1 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-18",
+      "themeLabel": "Vidéo 18/60 : Un test A/B, même en gratuit",
+      "angle": "Un test A/B, même en gratuit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-01T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.ab-testing",
+        "plan.table.ab-tests"
+      ]
+    },
+    {
+      "iso": "2026-12-02T10:00:00+01:00",
+      "date": "2026-12-02",
+      "time": "10:00",
+      "label": "mercredi 2 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-19",
+      "themeLabel": "Vidéo 19/60 : « Je viens d'un autre outil »",
+      "angle": "« Je viens d'un autre outil » — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-02T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "service.migration",
+        "service.support",
+        "plan.free.no-card"
+      ]
+    },
+    {
+      "iso": "2026-12-02T20:00:00+01:00",
+      "date": "2026-12-02",
+      "time": "20:00",
+      "label": "mercredi 2 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-20",
+      "themeLabel": "Vidéo 20/60 : L'IA écrit ma page, je la monte sur Systeme.io",
+      "angle": "L'IA écrit ma page, je la monte sur Systeme.io — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-02T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels"
+      ]
+    },
+    {
+      "iso": "2026-12-03T10:00:00+01:00",
+      "date": "2026-12-03",
+      "time": "10:00",
+      "label": "jeudi 3 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Comparatif",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
+      "durationSec": [
+        25,
+        45
+      ],
+      "theme": "serie-21",
+      "themeLabel": "Vidéo 21/60 : Webinaire ou Illimité ?",
+      "angle": "Webinaire ou Illimité ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-03T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.webinar.price",
+        "plan.webinar.limits",
+        "plan.table.webinars",
+        "plan.unlimited.price",
+        "plan.unlimited.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-03T20:00:00+01:00",
+      "date": "2026-12-03",
+      "time": "20:00",
+      "label": "jeudi 3 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-22",
+      "themeLabel": "Vidéo 22/60 : Tu vends encore en messages privés ?",
+      "angle": "Tu vends encore en messages privés ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-03T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.funnels",
+        "feature.payments",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-04T10:00:00+01:00",
+      "date": "2026-12-04",
+      "time": "10:00",
+      "label": "vendredi 4 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-23",
+      "themeLabel": "Vidéo 23/60 : Des sous-comptes illimités, dans chaque formule",
+      "angle": "Des sous-comptes illimités, dans chaque formule — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-04T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.sub-accounts"
+      ]
+    },
+    {
+      "iso": "2026-12-04T20:00:00+01:00",
+      "date": "2026-12-04",
+      "time": "20:00",
+      "label": "vendredi 4 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-24",
+      "themeLabel": "Vidéo 24/60 : Règles et workflows : ce que tu as vraiment",
+      "angle": "Règles et workflows : ce que tu as vraiment — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-04T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "rule.trigger",
+        "rule.action-send-email",
+        "plan.table.automation-rules",
+        "plan.table.workflows"
+      ]
+    },
+    {
+      "iso": "2026-12-05T10:00:00+01:00",
+      "date": "2026-12-05",
+      "time": "10:00",
+      "label": "samedi 5 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Saison",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-25",
+      "themeLabel": "Vidéo 25/60 : Tu vends aussi des cadeaux ?",
+      "angle": "Tu vends aussi des cadeaux ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-05T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.physical-products",
+        "feature.courses",
+        "plan.transaction-fees"
+      ]
+    },
+    {
+      "iso": "2026-12-05T20:00:00+01:00",
+      "date": "2026-12-05",
+      "time": "20:00",
+      "label": "samedi 5 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-26",
+      "themeLabel": "Vidéo 26/60 : 500 000 entrepreneurs, et un plan à 0 €",
+      "angle": "500 000 entrepreneurs, et un plan à 0 € — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-05T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "proof.users",
+        "plan.free.price",
+        "plan.free.no-card"
+      ]
+    },
+    {
+      "iso": "2026-12-06T10:00:00+01:00",
+      "date": "2026-12-06",
+      "time": "10:00",
+      "label": "dimanche 6 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-27",
+      "themeLabel": "Vidéo 27/60 : Je relie ma page à un e-mail automatique",
+      "angle": "Je relie ma page à un e-mail automatique — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-06T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "rule.trigger",
+        "rule.action-send-email",
+        "feature.auto-email-on-subscribe",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-06T20:00:00+01:00",
+      "date": "2026-12-06",
+      "time": "20:00",
+      "label": "dimanche 6 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-28",
+      "themeLabel": "Vidéo 28/60 : Pas de webinaire ? Pas besoin de Webinaire",
+      "angle": "Pas de webinaire ? Pas besoin de Webinaire — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-06T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.webinar.price",
+        "plan.table.webinars",
+        "plan.startup.limits",
+        "plan.startup.price"
+      ]
+    },
+    {
+      "iso": "2026-12-07T10:00:00+01:00",
+      "date": "2026-12-07",
+      "time": "10:00",
+      "label": "lundi 7 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Classement",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-29",
+      "themeLabel": "Vidéo 29/60 : Tier list : 4 fonctions pour vendre ta formation",
+      "angle": "Tier list : 4 fonctions pour vendre ta formation — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-07T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.affiliate-program",
+        "feature.community",
+        "feature.coupons",
+        "feature.ab-testing"
+      ]
+    },
+    {
+      "iso": "2026-12-07T20:00:00+01:00",
+      "date": "2026-12-07",
+      "time": "20:00",
+      "label": "lundi 7 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-30",
+      "themeLabel": "Vidéo 30/60 : Ton blog et ta boutique au même endroit",
+      "angle": "Ton blog et ta boutique au même endroit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-07T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.website",
+        "feature.blog",
+        "feature.payments"
+      ]
+    },
+    {
+      "iso": "2026-12-08T10:00:00+01:00",
+      "date": "2026-12-08",
+      "time": "10:00",
+      "label": "mardi 8 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-31",
+      "themeLabel": "Vidéo 31/60 : « Gratuit à vie » : ce que ça veut dire",
+      "angle": "« Gratuit à vie » : ce que ça veut dire — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-08T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.exists",
+        "plan.free.price",
+        "plan.free.no-card",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-08T20:00:00+01:00",
+      "date": "2026-12-08",
+      "time": "20:00",
+      "label": "mardi 8 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-32",
+      "themeLabel": "Vidéo 32/60 : Les 4 limites du plan gratuit",
+      "angle": "Les 4 limites du plan gratuit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-08T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.limits",
+        "plan.startup.price"
+      ]
+    },
+    {
+      "iso": "2026-12-09T10:00:00+01:00",
+      "date": "2026-12-09",
+      "time": "10:00",
+      "label": "mercredi 9 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-33",
+      "themeLabel": "Vidéo 33/60 : Ta formation est prête, mais personne ne la voit",
+      "angle": "Ta formation est prête, mais personne ne la voit — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-09T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.courses",
+        "feature.funnels",
+        "feature.email-marketing"
+      ]
+    },
+    {
+      "iso": "2026-12-09T20:00:00+01:00",
+      "date": "2026-12-09",
+      "time": "20:00",
+      "label": "mercredi 9 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-34",
+      "themeLabel": "Vidéo 34/60 : Je prépare ma newsletter de fin d'année",
+      "angle": "Je prépare ma newsletter de fin d'année — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-09T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.email-marketing",
+        "plan.table.emails-sent"
+      ]
+    },
+    {
+      "iso": "2026-12-10T10:00:00+01:00",
+      "date": "2026-12-10",
+      "time": "10:00",
+      "label": "jeudi 10 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Comparatif",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
+      "durationSec": [
+        25,
+        45
+      ],
+      "theme": "serie-35",
+      "themeLabel": "Vidéo 35/60 : Startup ou Webinaire pour vendre une formation",
+      "angle": "Startup ou Webinaire pour vendre une formation — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-10T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.table.courses",
+        "plan.startup.price",
+        "plan.webinar.price"
+      ]
+    },
+    {
+      "iso": "2026-12-10T20:00:00+01:00",
+      "date": "2026-12-10",
+      "time": "20:00",
+      "label": "jeudi 10 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Saison",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-36",
+      "themeLabel": "Vidéo 36/60 : Ton projet 2027 : une formation ?",
+      "angle": "Ton projet 2027 : une formation ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-10T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.table.courses",
+        "plan.free.limits",
+        "plan.free.price",
+        "plan.free.no-card"
+      ]
+    },
+    {
+      "iso": "2026-12-11T10:00:00+01:00",
+      "date": "2026-12-11",
+      "time": "10:00",
+      "label": "vendredi 11 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-37",
+      "themeLabel": "Vidéo 37/60 : Teste avant de payer",
+      "angle": "Teste avant de payer — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-11T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.price",
+        "plan.free.no-card",
+        "plan.free.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-11T20:00:00+01:00",
+      "date": "2026-12-11",
+      "time": "20:00",
+      "label": "vendredi 11 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-38",
+      "themeLabel": "Vidéo 38/60 : « Je commence par quoi ? »",
+      "angle": "« Je commence par quoi ? » — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-11T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.limits",
+        "feature.funnels",
+        "feature.auto-email-on-subscribe"
+      ]
+    },
+    {
+      "iso": "2026-12-12T10:00:00+01:00",
+      "date": "2026-12-12",
+      "time": "10:00",
+      "label": "samedi 12 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-39",
+      "themeLabel": "Vidéo 39/60 : 17 €, TVA comprise",
+      "angle": "17 €, TVA comprise — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-12T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.prices.ttc",
+        "plan.startup.price"
+      ]
+    },
+    {
+      "iso": "2026-12-12T20:00:00+01:00",
+      "date": "2026-12-12",
+      "time": "20:00",
+      "label": "samedi 12 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Classement",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-40",
+      "themeLabel": "Vidéo 40/60 : Tier list : quoi vendre en premier",
+      "angle": "Tier list : quoi vendre en premier — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-12T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.table.courses",
+        "plan.table.communities",
+        "feature.physical-products",
+        "plan.table.webinars",
+        "plan.webinar.price"
+      ]
+    },
+    {
+      "iso": "2026-12-13T10:00:00+01:00",
+      "date": "2026-12-13",
+      "time": "10:00",
+      "label": "dimanche 13 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-41",
+      "themeLabel": "Vidéo 41/60 : Je crée mon code promo de fin d'année",
+      "angle": "Je crée mon code promo de fin d'année — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-13T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.coupons",
+        "plan.table.coupons"
+      ]
+    },
+    {
+      "iso": "2026-12-13T20:00:00+01:00",
+      "date": "2026-12-13",
+      "time": "20:00",
+      "label": "dimanche 13 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-42",
+      "themeLabel": "Vidéo 42/60 : Et si ton webinaire tournait tout seul ?",
+      "angle": "Et si ton webinaire tournait tout seul ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-13T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.webinars",
+        "plan.table.webinars",
+        "plan.webinar.price"
+      ]
+    },
+    {
+      "iso": "2026-12-14T10:00:00+01:00",
+      "date": "2026-12-14",
+      "time": "10:00",
+      "label": "lundi 14 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-43",
+      "themeLabel": "Vidéo 43/60 : Ta liste grandit : quand le gratuit ne suffit plus",
+      "angle": "Ta liste grandit : quand le gratuit ne suffit plus — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-14T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.contacts",
+        "plan.startup.contacts",
+        "plan.startup.price",
+        "plan.webinar.limits",
+        "plan.unlimited.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-14T20:00:00+01:00",
+      "date": "2026-12-14",
+      "time": "20:00",
+      "label": "lundi 14 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Comparatif",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
+      "durationSec": [
+        25,
+        45
+      ],
+      "theme": "serie-44",
+      "themeLabel": "Vidéo 44/60 : Startup ou Illimité : 17 € contre 97 €",
+      "angle": "Startup ou Illimité : 17 € contre 97 € — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-14T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.startup.price",
+        "plan.startup.limits",
+        "plan.unlimited.price",
+        "plan.unlimited.limits"
+      ]
+    },
+    {
+      "iso": "2026-12-15T10:00:00+01:00",
+      "date": "2026-12-15",
+      "time": "10:00",
+      "label": "mardi 15 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-45",
+      "themeLabel": "Vidéo 45/60 : 5 choses que Startup débloque",
+      "angle": "5 choses que Startup débloque — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-15T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.startup.limits",
+        "plan.table.courses",
+        "plan.startup.price"
+      ]
+    },
+    {
+      "iso": "2026-12-15T20:00:00+01:00",
+      "date": "2026-12-15",
+      "time": "20:00",
+      "label": "mardi 15 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-46",
+      "themeLabel": "Vidéo 46/60 : Un support 24 h/24, même le week-end",
+      "angle": "Un support 24 h/24, même le week-end — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-15T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "service.support",
+        "service.migration"
+      ]
+    },
+    {
+      "iso": "2026-12-16T10:00:00+01:00",
+      "date": "2026-12-16",
+      "time": "10:00",
+      "label": "mercredi 16 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-47",
+      "themeLabel": "Vidéo 47/60 : « Et Startup à l'année ? »",
+      "angle": "« Et Startup à l'année ? » — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-16T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.startup.price",
+        "plan.startup.price-annual",
+        "plan.annual-discount"
+      ]
+    },
+    {
+      "iso": "2026-12-16T20:00:00+01:00",
+      "date": "2026-12-16",
+      "time": "20:00",
+      "label": "mercredi 16 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-48",
+      "themeLabel": "Vidéo 48/60 : Je crée la communauté de mes élèves",
+      "angle": "Je crée la communauté de mes élèves — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-16T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.community",
+        "plan.table.communities"
+      ]
+    },
+    {
+      "iso": "2026-12-17T10:00:00+01:00",
+      "date": "2026-12-17",
+      "time": "10:00",
+      "label": "jeudi 17 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-49",
+      "themeLabel": "Vidéo 49/60 : Ne prends pas Startup juste pour les e-mails",
+      "angle": "Ne prends pas Startup juste pour les e-mails — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-17T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.table.emails-sent",
+        "plan.startup.limits",
+        "plan.table.email-campaigns"
+      ]
+    },
+    {
+      "iso": "2026-12-17T20:00:00+01:00",
+      "date": "2026-12-17",
+      "time": "20:00",
+      "label": "jeudi 17 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Contre-intuitif",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-50",
+      "themeLabel": "Vidéo 50/60 : Illimité : ce qui est vraiment illimité",
+      "angle": "Illimité : ce qui est vraiment illimité — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-17T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.unlimited.limits",
+        "plan.table.emails-sent",
+        "feature.sub-accounts"
+      ]
+    },
+    {
+      "iso": "2026-12-18T10:00:00+01:00",
+      "date": "2026-12-18",
+      "time": "10:00",
+      "label": "vendredi 18 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-51",
+      "themeLabel": "Vidéo 51/60 : Et si tous tes contacts étaient au même endroit ?",
+      "angle": "Et si tous tes contacts étaient au même endroit ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-18T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.contacts",
+        "feature.funnels",
+        "feature.email-marketing",
+        "plan.free.contacts",
+        "plan.startup.contacts"
+      ]
+    },
+    {
+      "iso": "2026-12-18T20:00:00+01:00",
+      "date": "2026-12-18",
+      "time": "20:00",
+      "label": "vendredi 18 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Liste",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-52",
+      "themeLabel": "Vidéo 52/60 : 3 choses à préparer avant de vendre ta formation",
+      "angle": "3 choses à préparer avant de vendre ta formation — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-18T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.courses",
+        "plan.table.courses",
+        "feature.funnels",
+        "feature.payments"
+      ]
+    },
+    {
+      "iso": "2026-12-19T10:00:00+01:00",
+      "date": "2026-12-19",
+      "time": "10:00",
+      "label": "samedi 19 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-53",
+      "themeLabel": "Vidéo 53/60 : « Comment je reçois l'argent ? »",
+      "angle": "« Comment je reçois l'argent ? » — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-19T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.payments",
+        "plan.transaction-fees"
+      ]
+    },
+    {
+      "iso": "2026-12-19T20:00:00+01:00",
+      "date": "2026-12-19",
+      "time": "20:00",
+      "label": "samedi 19 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Classement",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-54",
+      "themeLabel": "Vidéo 54/60 : Tier list : ce que tu fais avec 0 €",
+      "angle": "Tier list : ce que tu fais avec 0 € — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-19T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.price",
+        "plan.table.emails-sent",
+        "plan.free.limits",
+        "plan.table.courses",
+        "plan.table.communities",
+        "plan.table.automation-rules",
+        "plan.table.webinars",
+        "plan.free.no-card"
+      ]
+    },
+    {
+      "iso": "2026-12-20T10:00:00+01:00",
+      "date": "2026-12-20",
+      "time": "10:00",
+      "label": "dimanche 20 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Démo (ton écran)",
+      "category": "demo-fonctionnalite",
+      "categoryLabel": "Démonstration de fonctionnalité",
+      "durationSec": [
+        30,
+        50
+      ],
+      "theme": "serie-55",
+      "themeLabel": "Vidéo 55/60 : Je mets mon site en ligne",
+      "angle": "Je mets mon site en ligne — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-20T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.website",
+        "plan.free.limits",
+        "plan.startup.custom-domain"
+      ]
+    },
+    {
+      "iso": "2026-12-20T20:00:00+01:00",
+      "date": "2026-12-20",
+      "time": "20:00",
+      "label": "dimanche 20 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Diagnostic",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-56",
+      "themeLabel": "Vidéo 56/60 : Tes élèves décrochent après l'achat ?",
+      "angle": "Tes élèves décrochent après l'achat ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-20T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.community",
+        "plan.table.communities",
+        "feature.email-marketing",
+        "plan.table.emails-sent",
+        "feature.courses"
+      ]
+    },
+    {
+      "iso": "2026-12-21T10:00:00+01:00",
+      "date": "2026-12-21",
+      "time": "10:00",
+      "label": "lundi 21 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Comparatif",
+      "category": "formules-payantes",
+      "categoryLabel": "Ce que débloquent les formules payantes",
+      "durationSec": [
+        25,
+        45
+      ],
+      "theme": "serie-57",
+      "themeLabel": "Vidéo 57/60 : Webinaire et Illimité à l'année",
+      "angle": "Webinaire et Illimité à l'année — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-21T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.webinar.price",
+        "plan.webinar.price-annual",
+        "plan.unlimited.price",
+        "plan.unlimited.price-annual",
+        "plan.annual-discount"
+      ]
+    },
+    {
+      "iso": "2026-12-21T20:00:00+01:00",
+      "date": "2026-12-21",
+      "time": "20:00",
+      "label": "lundi 21 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Mise en garde",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
+      "durationSec": [
+        25,
+        40
+      ],
+      "theme": "serie-58",
+      "themeLabel": "Vidéo 58/60 : Ne passe pas à Illimité trop tôt",
+      "angle": "Ne passe pas à Illimité trop tôt — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-21T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.unlimited.price",
+        "plan.startup.limits",
+        "plan.startup.price",
+        "plan.webinar.limits",
+        "plan.webinar.price"
+      ]
+    },
+    {
+      "iso": "2026-12-22T10:00:00+01:00",
+      "date": "2026-12-22",
+      "time": "10:00",
+      "label": "mardi 22 décembre à 10:00",
+      "family": "serie",
+      "familyLabel": "Série · Et si…",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-59",
+      "themeLabel": "Vidéo 59/60 : Et si ton prochain client venait d'un affilié ?",
+      "angle": "Et si ton prochain client venait d'un affilié ? — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-22T10:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "feature.affiliate-program",
+        "feature.funnels",
+        "feature.email-marketing"
+      ]
+    },
+    {
+      "iso": "2026-12-22T20:00:00+01:00",
+      "date": "2026-12-22",
+      "time": "20:00",
+      "label": "mardi 22 décembre à 20:00",
+      "family": "serie",
+      "familyLabel": "Série · Question-réponse",
+      "category": "pub-directe",
+      "categoryLabel": "Publicité directe",
+      "durationSec": [
+        20,
+        35
+      ],
+      "theme": "serie-60",
+      "themeLabel": "Vidéo 60/60 : 60 vidéos plus tard : ta question",
+      "angle": "60 vidéos plus tard : ta question — script écrit à suivre : npm run studio -- serie:slot --slot 2026-12-22T20:00:00+01:00",
+      "formule": "celle que cite le script, sans en ajouter",
+      "facts": [
+        "plan.free.exists",
+        "plan.free.contacts",
+        "plan.startup.price",
+        "plan.webinar.price",
+        "plan.unlimited.price"
+      ]
+    },
+    {
+      "iso": "2026-12-23T10:00:00+01:00",
+      "date": "2026-12-23",
+      "time": "10:00",
+      "label": "mercredi 23 décembre à 10:00",
       "family": "conseil",
       "familyLabel": "Erreur à éviter ou conseil",
       "category": "conseils-debutant",
@@ -245,112 +1431,10 @@
       ]
     },
     {
-      "iso": "2026-11-30T20:00:00+01:00",
-      "date": "2026-11-30",
+      "iso": "2026-12-23T20:00:00+01:00",
+      "date": "2026-12-23",
       "time": "20:00",
-      "label": "lundi 30 novembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Ta communauté, sans un outil de plus. Lien en bio.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-01T20:00:00+01:00",
-      "date": "2026-12-01",
-      "time": "20:00",
-      "label": "mardi 1 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "comparaison-outils",
-      "categoryLabel": "Outils séparés ou plateforme unique",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Un site, un blog et des tunnels sans multiplier les abonnements : ce que contient un seul compte Systeme.io.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-02T20:00:00+01:00",
-      "date": "2026-12-02",
-      "time": "20:00",
-      "label": "mercredi 2 décembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Le webinaire automatique de A à Z : à quoi il sert et comment l'enchaîner avec ton tunnel de vente.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
-      ]
-    },
-    {
-      "iso": "2026-12-03T20:00:00+01:00",
-      "date": "2026-12-03",
-      "time": "20:00",
-      "label": "jeudi 3 décembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "L'erreur : répondre à la main à chaque nouvel inscrit. Une règle d'automatisation le fait à ta place.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-04T20:00:00+01:00",
-      "date": "2026-12-04",
-      "time": "20:00",
-      "label": "vendredi 4 décembre à 20:00",
+      "label": "mercredi 23 décembre à 20:00",
       "family": "court",
       "familyLabel": "Format court « lien en bio »",
       "category": "pub-directe",
@@ -359,442 +1443,17 @@
         20,
         25
       ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Ta première formation en ligne sans payer d'outil : 1 formation et 500 élèves inclus.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
+      "theme": "produits",
+      "themeLabel": "Produits numériques",
+      "angle": "Systeme.io n'ajoute aucun frais sur tes paiements : seuls ceux du processeur restent dus.",
+      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
       "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
+        "feature.digital-products",
+        "feature.physical-products",
         "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-05T20:00:00+01:00",
-      "date": "2026-12-05",
-      "time": "20:00",
-      "label": "samedi 5 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Gratuit, Startup, Webinaire, Illimité : une phrase pour savoir laquelle te correspond.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-06T20:00:00+01:00",
-      "date": "2026-12-06",
-      "time": "20:00",
-      "label": "dimanche 6 décembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Règle d'automatisation ou workflow : à quoi sert chacun, avec un exemple simple pour tes inscrits.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-07T20:00:00+01:00",
-      "date": "2026-12-07",
-      "time": "20:00",
-      "label": "lundi 7 décembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "organisation",
-      "categoryLabel": "Organiser son activité en ligne",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Une newsletter régulière sans y passer tes soirées : prépare-la et envoie-la depuis l'outil de tes pages.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-08T20:00:00+01:00",
-      "date": "2026-12-08",
-      "time": "20:00",
-      "label": "mardi 8 décembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "Pages, e-mails, formations, paiements : un seul onglet. Lien en bio.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-09T20:00:00+01:00",
-      "date": "2026-12-09",
-      "time": "20:00",
-      "label": "mercredi 9 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Combien de tunnels de vente par formule : 3, 10, 50 ou illimités, et laquelle prendre selon ton nombre d'offres.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
+        "plan.transaction-fees",
         "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-10T20:00:00+01:00",
-      "date": "2026-12-10",
-      "time": "20:00",
-      "label": "jeudi 10 décembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Écrire à tous tes contacts depuis l'outil de tes pages : ce qu'une campagne e-mail te permet.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-11T20:00:00+01:00",
-      "date": "2026-12-11",
-      "time": "20:00",
-      "label": "vendredi 11 décembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "probleme-entrepreneur",
-      "categoryLabel": "Problème d'entrepreneur",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Tu refais la même présentation chaque semaine ? Le webinaire automatique la diffuse à ta place.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
-      ]
-    },
-    {
-      "iso": "2026-12-12T20:00:00+01:00",
-      "date": "2026-12-12",
-      "time": "20:00",
-      "label": "samedi 12 décembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Tes membres au même endroit que tes cours.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-13T20:00:00+01:00",
-      "date": "2026-12-13",
-      "time": "20:00",
-      "label": "dimanche 13 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "1 domaine personnalisé en gratuit, 3 avec Startup : quand passer à Startup pour ton site.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
         "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-14T20:00:00+01:00",
-      "date": "2026-12-14",
-      "time": "20:00",
-      "label": "lundi 14 décembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "demo-fonctionnalite",
-      "categoryLabel": "Démonstration de fonctionnalité",
-      "durationSec": [
-        45,
-        50
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Le webinaire automatique expliqué : la même présentation, diffusée sans que tu la refasses en direct.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
-      ]
-    },
-    {
-      "iso": "2026-12-15T20:00:00+01:00",
-      "date": "2026-12-15",
-      "time": "20:00",
-      "label": "mardi 15 décembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "automatisation",
-      "categoryLabel": "Automatisation du marketing",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-16T20:00:00+01:00",
-      "date": "2026-12-16",
-      "time": "20:00",
-      "label": "mercredi 16 décembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
-      "durationSec": [
-        15,
-        24
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Ta formation, tes élèves et le paiement au même endroit.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-17T20:00:00+01:00",
-      "date": "2026-12-17",
-      "time": "20:00",
-      "label": "jeudi 17 décembre à 20:00",
-      "family": "formule",
-      "familyLabel": "Quelle formule prendre",
-      "category": "formules-payantes",
-      "categoryLabel": "Ce que débloquent les formules payantes",
-      "durationSec": [
-        30,
-        45
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Mensuel ou annuel : Startup à 17 €/mois ou 170 €/an, soit 2 mois offerts.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-18T20:00:00+01:00",
-      "date": "2026-12-18",
-      "time": "20:00",
-      "label": "vendredi 18 décembre à 20:00",
-      "family": "tuto",
-      "familyLabel": "Tuto de A à Z",
-      "category": "tutoriel",
-      "categoryLabel": "Tutoriel pratique",
-      "durationSec": [
-        45,
-        60
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ta première règle d'automatisation de A à Z : choisir le déclencheur, choisir l'action, puis vérifier qu'elle tourne.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-19T20:00:00+01:00",
-      "date": "2026-12-19",
-      "time": "20:00",
-      "label": "samedi 19 décembre à 20:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-20T20:00:00+01:00",
-      "date": "2026-12-20",
-      "time": "20:00",
-      "label": "dimanche 20 décembre à 20:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
-      "durationSec": [
-        20,
-        25
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "0 €, sans carte bancaire : ton compte Systeme.io peut être ouvert ce soir.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
       ]
     }
   ]

@@ -1,0 +1,2410 @@
+{
+ "title": "60 vidéos Systeme.io — noms, scripts et calendrier",
+ "source": "https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj",
+ "about": "Série de 60 vidéos du 23/11 au 22/12/2026, deux par jour à 10:00 et 20:00 (demande de l'utilisateur du 21/11/2026). Chaque production suit le script de son créneau (npm run studio -- serie:slot --slot <iso>). Faits : identifiants de data/facts/. Démo sans enregistrement de l'utilisateur : la vidéo de relève prend son créneau.",
+ "timezone": "Europe/Paris",
+ "generatedAt": "2026-11-21",
+ "entries": [
+  {
+   "n": 1,
+   "iso": "2026-11-23T10:00:00+01:00",
+   "title": "Et si d'autres vendaient ta formation ?",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 25,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Et si d'autres vendaient pour toi ?",
+    "voice": "Et si d'autres vendaient ta formation à ta place ?"
+   },
+   "lines": [
+    {
+     "voice": "Sur Systeme.io, tu peux créer ton propre programme d'affiliation.",
+     "visual": "schéma : toi, tes affiliés, leur public"
+    },
+    {
+     "voice": "Des personnes recommandent ta formation, chacune avec son lien.",
+     "visual": "graphique en 3 étapes"
+    },
+    {
+     "voice": "Ta formation, ton tunnel et ton programme restent au même endroit.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Compare les formules : lien en bio.",
+     "visual": "carte de fin"
+    }
+   ],
+   "question": "Tu vendrais quoi : formation ou ebook ?",
+   "facts": [
+    "feature.affiliate-program",
+    "feature.courses",
+    "feature.funnels"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 2,
+   "iso": "2026-11-23T20:00:00+01:00",
+   "title": "Tu postes, mais personne ne s'inscrit",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 28,
+   "visuals": "graphiques + capture des règles d'automatisation",
+   "hook": {
+    "screen": "Tu postes, personne ne s'inscrit ?",
+    "voice": "Tu postes tous les jours, mais personne ne laisse son e-mail ?"
+   },
+   "lines": [
+    {
+     "voice": "Souvent, il n'y a simplement rien à quoi s'inscrire.",
+     "visual": "personne qui fait défiler son téléphone"
+    },
+    {
+     "voice": "Sur Systeme.io, un tunnel de vente se crée à partir d'un modèle.",
+     "visual": "graphique : modèle, page, inscription"
+    },
+    {
+     "voice": "Et une règle d'automatisation envoie l'e-mail de bienvenue dès l'inscription.",
+     "visual": "capture des règles (Gratuit : 1)"
+    },
+    {
+     "voice": "Le plan gratuit inclut 3 tunnels et 1 règle. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu postes sur quel réseau ?",
+   "facts": [
+    "feature.funnels",
+    "feature.auto-email-on-subscribe",
+    "plan.free.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 3,
+   "iso": "2026-11-24T10:00:00+01:00",
+   "title": "Tier list des 4 formules Systeme.io",
+   "format": "Classement",
+   "category": "conseils-debutant",
+   "targetSec": 30,
+   "visuals": "capture des tarifs (les 4 cartes)",
+   "hook": {
+    "screen": "Tier list : les 4 formules",
+    "voice": "Je classe les quatre formules de Systeme.io, selon ton projet."
+   },
+   "lines": [
+    {
+     "voice": "Rang S pour débuter : Gratuit, 0 €, sans carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Rang A dès que tu as plusieurs offres : Startup, 17 € par mois.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "Rang B si tu vends par webinaire : Webinaire, 47 € par mois.",
+     "visual": "carte Webinaire"
+    },
+    {
+     "voice": "Rang C tant que tu n'as pas besoin de tout en illimité : Illimité, 97 €. Prix TTC.",
+     "visual": "carte Illimité"
+    }
+   ],
+   "question": "Toi, tu mets Illimité en S, A, B ou C ?",
+   "facts": [
+    "plan.free.price",
+    "plan.free.no-card",
+    "plan.startup.price",
+    "plan.webinar.price",
+    "plan.unlimited.price",
+    "plan.prices.ttc"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 4,
+   "iso": "2026-11-24T20:00:00+01:00",
+   "title": "Tes e-mails sont illimités, même en gratuit",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "capture « E-mails envoyés » (mobile)",
+   "hook": {
+    "screen": "E-mails illimités… en gratuit",
+    "voice": "Tes e-mails sont illimités, même sur le plan gratuit."
+   },
+   "lines": [
+    {
+     "voice": "C'est écrit sur la page officielle des tarifs.",
+     "visual": "capture : Illimité pour les 4 formules"
+    },
+    {
+     "voice": "Gratuit, Startup, Webinaire, Illimité : pareil pour les quatre.",
+     "visual": "zoom colonne par colonne"
+    },
+    {
+     "voice": "Ce qui change, c'est le nombre de campagnes : 1 en gratuit, 10 avec Startup.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Vérifie par toi-même : lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu écris à ta liste chaque semaine ? Oui ou non ?",
+   "facts": [
+    "plan.table.emails-sent",
+    "plan.table.email-campaigns"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 5,
+   "iso": "2026-11-25T10:00:00+01:00",
+   "title": "Un tunnel de vente, c'est 3 étapes",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphique en étapes + capture des tarifs",
+   "hook": {
+    "screen": "Un tunnel, c'est 3 étapes",
+    "voice": "Un tunnel de vente, ça fait peur. En vrai, c'est souvent 3 étapes."
+   },
+   "lines": [
+    {
+     "voice": "Un : une page où ton visiteur laisse son e-mail.",
+     "visual": "étape 1"
+    },
+    {
+     "voice": "Deux : une page qui présente ton offre.",
+     "visual": "étape 2"
+    },
+    {
+     "voice": "Trois : le paiement, avec ton processeur de paiement.",
+     "visual": "étape 3"
+    },
+    {
+     "voice": "Sur Systeme.io, tu pars d'un modèle, et le gratuit en inclut 3. Lien en bio.",
+     "visual": "capture des tarifs (Gratuit : 3 tunnels)"
+    }
+   ],
+   "question": "Tu en es à quelle étape : 1, 2 ou 3 ?",
+   "facts": [
+    "feature.funnels",
+    "feature.payments",
+    "plan.free.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 6,
+   "iso": "2026-11-25T20:00:00+01:00",
+   "title": "Je monte mon premier tunnel, chrono en main",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 35,
+   "visuals": "ton enregistrement d'écran",
+   "hook": {
+    "screen": "Mon premier tunnel, chrono en main",
+    "voice": "Je lance le chrono : mon premier tunnel sur Systeme.io."
+   },
+   "lines": [
+    {
+     "voice": "Je choisis un modèle.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je change le titre et l'image.",
+     "visual": "ton écran, en accéléré"
+    },
+    {
+     "voice": "Je publie.",
+     "visual": "ton écran, avec le vrai temps écoulé"
+    },
+    {
+     "voice": "Le plan gratuit inclut 3 tunnels. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu ferais mieux que mon chrono ?",
+   "facts": [
+    "feature.funnels",
+    "plan.free.limits"
+   ],
+   "notes": [
+    "Sans enregistrement : décale-la et publie la vidéo 9 à sa place."
+   ],
+   "demo": {
+    "feature": "funnels",
+    "fallback": 9
+   }
+  },
+  {
+   "n": 7,
+   "iso": "2026-11-26T10:00:00+01:00",
+   "title": "Compte tes contacts avant de choisir",
+   "format": "Mise en garde",
+   "category": "erreurs-debutants",
+   "targetSec": 28,
+   "visuals": "captures « Contacts »",
+   "hook": {
+    "screen": "Compte tes contacts d'abord",
+    "voice": "Ne choisis pas ta formule avant de compter tes contacts."
+   },
+   "lines": [
+    {
+     "voice": "Gratuit : jusqu'à 2 000 contacts.",
+     "visual": "capture (colonne Gratuit)"
+    },
+    {
+     "voice": "Startup : 5 000.",
+     "visual": "capture (colonne Startup)"
+    },
+    {
+     "voice": "Webinaire : 10 000. Illimité : sans limite.",
+     "visual": "capture (Webinaire, Illimité)"
+    },
+    {
+     "voice": "Moins de 2 000 ? Reste en gratuit. Lien en bio pour comparer.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as combien de contacts aujourd'hui ?",
+   "facts": [
+    "plan.free.contacts",
+    "plan.startup.contacts",
+    "plan.webinar.limits",
+    "plan.unlimited.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 8,
+   "iso": "2026-11-26T20:00:00+01:00",
+   "title": "« C'est vraiment gratuit ? »",
+   "format": "Question-réponse",
+   "category": "formules-payantes",
+   "targetSec": 25,
+   "visuals": "capture des tarifs (carte Gratuit)",
+   "hook": {
+    "screen": "C'est vraiment gratuit ?",
+    "voice": "Systeme.io, c'est vraiment gratuit ? Oui. Et voilà la limite."
+   },
+   "lines": [
+    {
+     "voice": "Le plan gratuit est à 0 €, présenté comme gratuit à vie.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Aucune carte bancaire à l'inscription.",
+     "visual": "zoom sur la mention"
+    },
+    {
+     "voice": "La limite : 3 tunnels, 1 règle d'automatisation, 1 domaine, 2 000 contacts.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Au-delà, Startup, à 17 € par mois. Lien en bio.",
+     "visual": "carte Startup"
+    }
+   ],
+   "question": "Tu le savais ? Oui ou non ?",
+   "facts": [
+    "plan.free.price",
+    "plan.free.exists",
+    "plan.free.no-card",
+    "plan.free.limits",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 9,
+   "iso": "2026-11-27T10:00:00+01:00",
+   "title": "Gratuit ou Startup : ce qui change",
+   "format": "Comparatif",
+   "category": "formules-payantes",
+   "targetSec": 28,
+   "visuals": "graphique comparatif + carte Startup",
+   "hook": {
+    "screen": "0 € ou 17 € : ce qui change",
+    "voice": "Zéro euro ou dix-sept euros : voilà ce qui change vraiment."
+   },
+   "lines": [
+    {
+     "voice": "Tunnels : 3 en gratuit, 10 avec Startup.",
+     "visual": "comparatif, ligne 1"
+    },
+    {
+     "voice": "Règles d'automatisation : 1 contre 10.",
+     "visual": "ligne 2"
+    },
+    {
+     "voice": "Contacts : 2 000 contre 5 000. Domaines : 1 contre 3.",
+     "visual": "lignes 3 et 4"
+    },
+    {
+     "voice": "Une seule offre ? Le gratuit suffit pour démarrer. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as combien d'offres : une ou plusieurs ?",
+   "facts": [
+    "plan.free.limits",
+    "plan.startup.limits",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 10,
+   "iso": "2026-11-27T20:00:00+01:00",
+   "title": "Et si tes élèves avaient leur communauté ?",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 25,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Et si tes élèves se parlaient ?",
+    "voice": "Et si tes élèves avaient leur propre espace pour échanger ?"
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io permet de créer une communauté pour tes membres.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Une communauté en gratuit, 5 avec Startup.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Ta formation et ta communauté, au même endroit.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Lien en bio pour voir ce que chaque formule inclut.",
+     "visual": null
+    }
+   ],
+   "question": "Tes élèves, tu leur parles où aujourd'hui ?",
+   "facts": [
+    "feature.community",
+    "plan.table.communities",
+    "feature.courses"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 11,
+   "iso": "2026-11-28T10:00:00+01:00",
+   "title": "Systeme.io ne prend rien sur tes ventes",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "0 frais ajouté sur tes ventes",
+    "voice": "Systeme.io n'ajoute aucun frais sur tes ventes."
+   },
+   "lines": [
+    {
+     "voice": "Quand tu vends, Systeme.io ne prend pas de pourcentage.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Attention : les frais de ton processeur de paiement restent dus.",
+     "visual": "mention écrite à l'écran"
+    },
+    {
+     "voice": "Tu relies ton processeur de paiement, et tu encaisses.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio pour voir les formules.",
+     "visual": null
+    }
+   ],
+   "question": "Tu vends déjà en ligne ? Oui ou non ?",
+   "facts": [
+    "plan.transaction-fees",
+    "feature.payments"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 12,
+   "iso": "2026-11-28T20:00:00+01:00",
+   "title": "3 choses que le plan gratuit fait déjà",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "captures des tarifs",
+   "hook": {
+    "screen": "3 choses déjà gratuites",
+    "voice": "Trois choses que le plan gratuit fait déjà, sans carte bancaire."
+   },
+   "lines": [
+    {
+     "voice": "Un : tes e-mails, en illimité.",
+     "visual": "capture « E-mails envoyés »"
+    },
+    {
+     "voice": "Deux : 3 tunnels de vente.",
+     "visual": "capture des tarifs"
+    },
+    {
+     "voice": "Trois : une communauté pour tes membres.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Enregistre cette vidéo pour plus tard. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Laquelle tu ne connaissais pas : 1, 2 ou 3 ?",
+   "facts": [
+    "plan.free.no-card",
+    "plan.table.emails-sent",
+    "plan.table.funnels",
+    "plan.table.communities"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 13,
+   "iso": "2026-11-29T10:00:00+01:00",
+   "title": "Je crée le premier module de ma formation",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 35,
+   "visuals": "ton enregistrement + capture « Formations »",
+   "hook": {
+    "screen": "Mon module 1, en direct",
+    "voice": "Je crée le premier module de ma formation, en direct."
+   },
+   "lines": [
+    {
+     "voice": "Je crée la formation et je lui donne un titre.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "J'ajoute le module 1 et ma première leçon.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Le plan gratuit inclut une formation, Startup en inclut 5.",
+     "visual": "capture « Formations »"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ta formation parlerait de quoi, en un mot ?",
+   "facts": [
+    "feature.courses",
+    "plan.table.courses"
+   ],
+   "notes": [
+    "Sans enregistrement : décale-la et publie la vidéo 35 à sa place."
+   ],
+   "demo": {
+    "feature": "courses",
+    "fallback": 35
+   }
+  },
+  {
+   "n": 14,
+   "iso": "2026-11-29T20:00:00+01:00",
+   "title": "Ta liste e-mail dort ?",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphiques + capture « E-mails envoyés »",
+   "hook": {
+    "screen": "Ta liste e-mail dort ?",
+    "voice": "Tu as une liste e-mail, mais tu ne lui écris jamais ?"
+   },
+   "lines": [
+    {
+     "voice": "Si tu ne lui écris pas, elle oublie qui tu es.",
+     "visual": "boîte de réception vide"
+    },
+    {
+     "voice": "Sur Systeme.io, tu envoies des campagnes et des newsletters.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Les e-mails envoyés sont illimités, même en gratuit.",
+     "visual": "capture"
+    },
+    {
+     "voice": "Une campagne en gratuit, 10 avec Startup. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu lui écris quand : jamais, parfois, souvent ?",
+   "facts": [
+    "feature.email-marketing",
+    "plan.table.emails-sent",
+    "plan.table.email-campaigns"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 15,
+   "iso": "2026-11-30T10:00:00+01:00",
+   "title": "Tes codes promo pour Noël",
+   "format": "Saison",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Promo de Noël : combien de codes ?",
+    "voice": "Tu prépares une promo de Noël ? Compte d'abord tes codes promo."
+   },
+   "lines": [
+    {
+     "voice": "Sur Systeme.io, tu crées des codes promo.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Un en gratuit, 10 avec Startup, 50 avec Webinaire.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Et illimités avec Illimité.",
+     "visual": "carte Illimité"
+    },
+    {
+     "voice": "Lien en bio pour comparer.",
+     "visual": null
+    }
+   ],
+   "question": "Tu fais une promo à Noël ? Oui ou non ?",
+   "facts": [
+    "feature.coupons",
+    "plan.table.coupons"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 16,
+   "iso": "2026-11-30T20:00:00+01:00",
+   "title": "Ta page mérite ton nom de domaine",
+   "format": "Mise en garde",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques + cartes des tarifs",
+   "hook": {
+    "screen": "Ta page, ton nom de domaine",
+    "voice": "Ne mets pas ta page en ligne sans ton propre nom de domaine."
+   },
+   "lines": [
+    {
+     "voice": "Le plan gratuit permet d'en connecter un.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Startup, jusqu'à 3. Webinaire, 10. Illimité, sans limite.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Un nom à toi, c'est plus facile à retenir.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as déjà ton nom de domaine ?",
+   "facts": [
+    "plan.free.limits",
+    "plan.startup.custom-domain",
+    "plan.webinar.limits",
+    "plan.unlimited.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 17,
+   "iso": "2026-12-01T10:00:00+01:00",
+   "title": "Tier list : par quoi commencer",
+   "format": "Classement",
+   "category": "conseils-debutant",
+   "targetSec": 30,
+   "visuals": "graphique de classement",
+   "hook": {
+    "screen": "Tier list : par quoi commencer",
+    "voice": "Je classe ce qu'il faut mettre en place en premier sur Systeme.io."
+   },
+   "lines": [
+    {
+     "voice": "Rang S : un tunnel de vente, à partir d'un modèle.",
+     "visual": "rang S"
+    },
+    {
+     "voice": "Rang A : l'e-mail de bienvenue automatique.",
+     "visual": "rang A"
+    },
+    {
+     "voice": "Rang B : ta formation. Rang C : ton blog.",
+     "visual": "rangs B et C"
+    },
+    {
+     "voice": "Pas d'accord ? Dis-le en commentaire.",
+     "visual": null
+    }
+   ],
+   "question": "Toi, tu mets quoi en rang S ?",
+   "facts": [
+    "feature.funnels",
+    "feature.auto-email-on-subscribe",
+    "feature.courses",
+    "feature.blog"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 18,
+   "iso": "2026-12-01T20:00:00+01:00",
+   "title": "Un test A/B, même en gratuit",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Un test A/B… en gratuit",
+    "voice": "Tu peux faire un test A/B, même sur le plan gratuit."
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io permet de faire des tests A/B.",
+     "visual": "graphique version A, version B"
+    },
+    {
+     "voice": "Un test en gratuit, 10 avec Startup, 50 avec Webinaire.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Tu compares deux versions, tu gardes celle qui marche le mieux.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu testerais quoi : le titre ou l'image ?",
+   "facts": [
+    "feature.ab-testing",
+    "plan.table.ab-tests"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 19,
+   "iso": "2026-12-02T10:00:00+01:00",
+   "title": "« Je viens d'un autre outil »",
+   "format": "Question-réponse",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques + carte Gratuit",
+   "hook": {
+    "screen": "Tu changes d'outil ?",
+    "voice": "Tu viens d'un autre outil ? La migration est gratuite."
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io propose une migration gratuite.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Et un support par e-mail, 24 heures sur 24, 7 jours sur 7.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Tu peux commencer sur le plan gratuit, sans carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu utilises quel outil aujourd'hui ?",
+   "facts": [
+    "service.migration",
+    "service.support",
+    "plan.free.no-card"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 20,
+   "iso": "2026-12-02T20:00:00+01:00",
+   "title": "L'IA écrit ma page, je la monte sur Systeme.io",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 35,
+   "visuals": "ton enregistrement",
+   "hook": {
+    "screen": "L'IA écrit, je publie",
+    "voice": "L'IA écrit ma page de vente. Je la monte sur Systeme.io."
+   },
+   "lines": [
+    {
+     "voice": "Je demande à l'IA un titre et trois arguments.",
+     "visual": "ton écran, avec l'outil d'IA que tu utilises vraiment"
+    },
+    {
+     "voice": "Je colle le texte dans un modèle de tunnel.",
+     "visual": "ton écran Systeme.io"
+    },
+    {
+     "voice": "Je publie.",
+     "visual": "ton écran, avec le vrai temps écoulé"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu utilises déjà l'IA pour écrire ?",
+   "facts": [
+    "feature.funnels"
+   ],
+   "notes": [
+    "Important : ne dis pas que Systeme.io intègre une IA (ce n'est pas vérifié) ; montre l'outil d'IA que tu utilises réellement. Sans enregistrement : décale-la et publie la vidéo 23 à sa place."
+   ],
+   "demo": {
+    "feature": "funnels",
+    "fallback": 23
+   }
+  },
+  {
+   "n": 21,
+   "iso": "2026-12-03T10:00:00+01:00",
+   "title": "Webinaire ou Illimité ?",
+   "format": "Comparatif",
+   "category": "formules-payantes",
+   "targetSec": 28,
+   "visuals": "cartes des tarifs",
+   "hook": {
+    "screen": "47 € ou 97 € ?",
+    "voice": "Webinaire ou Illimité : la vraie différence en vingt secondes."
+   },
+   "lines": [
+    {
+     "voice": "Webinaire, 47 € par mois : 10 webinaires automatiques et 10 000 contacts.",
+     "visual": "carte Webinaire"
+    },
+    {
+     "voice": "Illimité, 97 € : webinaires, tunnels, contacts et domaines sans limite.",
+     "visual": "carte Illimité"
+    },
+    {
+     "voice": "Moins de 10 000 contacts et de 50 tunnels ? Webinaire suffit.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu fais des webinaires ? Oui ou non ?",
+   "facts": [
+    "plan.webinar.price",
+    "plan.webinar.limits",
+    "plan.table.webinars",
+    "plan.unlimited.price",
+    "plan.unlimited.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 22,
+   "iso": "2026-12-03T20:00:00+01:00",
+   "title": "Tu vends encore en messages privés ?",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphiques + capture des tarifs",
+   "hook": {
+    "screen": "Tu vends en messages privés ?",
+    "voice": "Tu vends encore en messages privés, un client à la fois ?"
+   },
+   "lines": [
+    {
+     "voice": "Un tunnel de vente présente ton offre à tout le monde, en même temps.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Sur Systeme.io, tu le crées à partir d'un modèle.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Et tu encaisses avec ton processeur de paiement.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Le plan gratuit inclut 3 tunnels. Lien en bio.",
+     "visual": "capture des tarifs"
+    }
+   ],
+   "question": "Tu vends quoi en messages privés ?",
+   "facts": [
+    "feature.funnels",
+    "feature.payments",
+    "plan.free.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 23,
+   "iso": "2026-12-04T10:00:00+01:00",
+   "title": "Des sous-comptes illimités, dans chaque formule",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Plusieurs projets ? Regarde.",
+    "voice": "Et si chacun de tes projets avait son propre compte ?"
+   },
+   "lines": [
+    {
+     "voice": "Chaque formule Systeme.io permet de créer des sous-comptes.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "En nombre illimité, même avec le plan gratuit.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Un projet, un sous-compte.",
+     "visual": "schéma"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu gères combien de projets ?",
+   "facts": [
+    "feature.sub-accounts"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 24,
+   "iso": "2026-12-04T20:00:00+01:00",
+   "title": "Règles et workflows : ce que tu as vraiment",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 28,
+   "visuals": "capture « Règles d'automatisation et workflows » (mobile)",
+   "hook": {
+    "screen": "Règles et workflows : combien ?",
+    "voice": "Règles d'automatisation et workflows : voilà combien tu en as vraiment."
+   },
+   "lines": [
+    {
+     "voice": "Une règle, c'est un déclencheur et une action : une inscription, un e-mail.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Règles : 1 en gratuit, 10 avec Startup, 100 avec Webinaire.",
+     "visual": "capture"
+    },
+    {
+     "voice": "Workflows : 1 en gratuit, 5 avec Startup, 20 avec Webinaire.",
+     "visual": "capture"
+    },
+    {
+     "voice": "Illimités avec Illimité. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as déjà automatisé quelque chose ?",
+   "facts": [
+    "rule.trigger",
+    "rule.action-send-email",
+    "plan.table.automation-rules",
+    "plan.table.workflows"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 25,
+   "iso": "2026-12-05T10:00:00+01:00",
+   "title": "Tu vends aussi des cadeaux ?",
+   "format": "Saison",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Pas que du digital",
+    "voice": "Tu vends aussi des objets pour Noël ? Pas que du digital."
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io permet aussi de vendre des produits physiques.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Tes formations et tes produits, au même endroit.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Sans frais ajoutés par Systeme.io ; ceux de ton processeur de paiement restent dus.",
+     "visual": "mention à l'écran"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu vends quoi : digital ou physique ?",
+   "facts": [
+    "feature.physical-products",
+    "feature.courses",
+    "plan.transaction-fees"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 26,
+   "iso": "2026-12-05T20:00:00+01:00",
+   "title": "500 000 entrepreneurs, et un plan à 0 €",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 20,
+   "visuals": "graphique + carte Gratuit",
+   "hook": {
+    "screen": "Plus de 500 000 entrepreneurs",
+    "voice": "Plus de 500 000 entrepreneurs, selon Systeme.io. Et un plan à 0 €."
+   },
+   "lines": [
+    {
+     "voice": "C'est ce qu'annonce Systeme.io sur son site.",
+     "visual": "graphique, avec la source écrite"
+    },
+    {
+     "voice": "Et le plan gratuit ne demande pas de carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Tu peux tester avant de payer quoi que ce soit.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu l'as déjà testé ? Oui ou non ?",
+   "facts": [
+    "proof.users",
+    "plan.free.price",
+    "plan.free.no-card"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 27,
+   "iso": "2026-12-06T10:00:00+01:00",
+   "title": "Je relie ma page à un e-mail automatique",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 35,
+   "visuals": "ton enregistrement",
+   "hook": {
+    "screen": "Inscription, puis e-mail, en direct",
+    "voice": "Je relie ma page à un e-mail automatique, en direct."
+   },
+   "lines": [
+    {
+     "voice": "Je crée une règle d'automatisation.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Déclencheur : l'inscription au formulaire de ma page.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Action : envoyer mon e-mail de bienvenue.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Le gratuit inclut une règle. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ton e-mail de bienvenue, il est écrit ?",
+   "facts": [
+    "rule.trigger",
+    "rule.action-send-email",
+    "feature.auto-email-on-subscribe",
+    "plan.free.limits"
+   ],
+   "notes": [
+    "Sans enregistrement : décale-la et publie la vidéo 32 à sa place."
+   ],
+   "demo": {
+    "feature": "automations",
+    "fallback": 32
+   }
+  },
+  {
+   "n": 28,
+   "iso": "2026-12-06T20:00:00+01:00",
+   "title": "Pas de webinaire ? Pas besoin de Webinaire",
+   "format": "Mise en garde",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "cartes des tarifs + comparatif",
+   "hook": {
+    "screen": "Pas de webinaire ? Lis ça.",
+    "voice": "Tu ne fais pas de webinaire ? Ne paie pas la formule Webinaire."
+   },
+   "lines": [
+    {
+     "voice": "Webinaire, à 47 € par mois, inclut 10 webinaires automatiques.",
+     "visual": "carte Webinaire"
+    },
+    {
+     "voice": "Sans webinaire, regarde plutôt tes contacts et tes tunnels.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Jusqu'à 5 000 contacts et 10 tunnels, Startup à 17 € suffit.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as combien de tunnels ?",
+   "facts": [
+    "plan.webinar.price",
+    "plan.table.webinars",
+    "plan.startup.limits",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 29,
+   "iso": "2026-12-07T10:00:00+01:00",
+   "title": "Tier list : 4 fonctions pour vendre ta formation",
+   "format": "Classement",
+   "category": "conseils-debutant",
+   "targetSec": 30,
+   "visuals": "graphique de classement",
+   "hook": {
+    "screen": "Tier list : vendre ta formation",
+    "voice": "Je classe quatre fonctions utiles quand tu vends une formation."
+   },
+   "lines": [
+    {
+     "voice": "Rang S : le programme d'affiliation, pour que d'autres te recommandent.",
+     "visual": "rang S"
+    },
+    {
+     "voice": "Rang A : la communauté de tes élèves.",
+     "visual": "rang A"
+    },
+    {
+     "voice": "Rang B : les codes promo. Rang C : les tests A/B.",
+     "visual": "rangs B et C"
+    },
+    {
+     "voice": "Ton classement est différent ? Dis-le en commentaire. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu en utilises combien : 0, 1, 2 ?",
+   "facts": [
+    "feature.affiliate-program",
+    "feature.community",
+    "feature.coupons",
+    "feature.ab-testing"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 30,
+   "iso": "2026-12-07T20:00:00+01:00",
+   "title": "Ton blog et ta boutique au même endroit",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Blog et boutique, au même endroit",
+    "voice": "Et si ton blog et ta boutique étaient au même endroit ?"
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io permet de créer un site et un blog.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Et d'encaisser tes ventes avec ton processeur de paiement.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Un article, puis ton offre, sur le même site.",
+     "visual": "schéma"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as un blog ? Oui ou non ?",
+   "facts": [
+    "feature.website",
+    "feature.blog",
+    "feature.payments"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 31,
+   "iso": "2026-12-08T10:00:00+01:00",
+   "title": "« Gratuit à vie » : ce que ça veut dire",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 20,
+   "visuals": "carte Gratuit",
+   "hook": {
+    "screen": "Gratuit à vie ?",
+    "voice": "Gratuit à vie : c'est comme ça que Systeme.io présente son plan gratuit."
+   },
+   "lines": [
+    {
+     "voice": "0 €, sans carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Pas présenté comme un essai, mais comme un plan permanent.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Avec des limites : 3 tunnels, 2 000 contacts.",
+     "visual": "liste"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu pensais que c'était un essai ?",
+   "facts": [
+    "plan.free.exists",
+    "plan.free.price",
+    "plan.free.no-card",
+    "plan.free.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 32,
+   "iso": "2026-12-08T20:00:00+01:00",
+   "title": "Les 4 limites du plan gratuit",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "capture des tarifs (carte Gratuit)",
+   "hook": {
+    "screen": "Les 4 limites du gratuit",
+    "voice": "Le plan gratuit a quatre limites. Les voici."
+   },
+   "lines": [
+    {
+     "voice": "Un : 3 tunnels de vente.",
+     "visual": "limite 1"
+    },
+    {
+     "voice": "Deux : 1 règle d'automatisation.",
+     "visual": "limite 2"
+    },
+    {
+     "voice": "Trois : 1 domaine personnalisé. Quatre : 2 000 contacts.",
+     "visual": "limites 3 et 4"
+    },
+    {
+     "voice": "Au-delà, Startup à 17 € par mois. Enregistre et lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Laquelle te bloquerait en premier ?",
+   "facts": [
+    "plan.free.limits",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 33,
+   "iso": "2026-12-09T10:00:00+01:00",
+   "title": "Ta formation est prête, mais personne ne la voit",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Ta formation est cachée ?",
+    "voice": "Ta formation est prête, mais personne ne la voit ?"
+   },
+   "lines": [
+    {
+     "voice": "Il lui manque un chemin : un tunnel de vente.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Une page pour s'inscrire, des e-mails, puis ton offre.",
+     "visual": "schéma en 3 étapes"
+    },
+    {
+     "voice": "Sur Systeme.io, formation, tunnel et e-mails sont au même endroit.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ta formation parle de quoi, en un mot ?",
+   "facts": [
+    "feature.courses",
+    "feature.funnels",
+    "feature.email-marketing"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 34,
+   "iso": "2026-12-09T20:00:00+01:00",
+   "title": "Je prépare ma newsletter de fin d'année",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 30,
+   "visuals": "ton enregistrement + capture « E-mails envoyés »",
+   "hook": {
+    "screen": "Ma newsletter de fin d'année",
+    "voice": "Je prépare ma newsletter de fin d'année, en direct."
+   },
+   "lines": [
+    {
+     "voice": "Je crée une campagne.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "J'écris trois lignes et un lien.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je choisis ma liste et j'envoie.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Les e-mails envoyés sont illimités, même en gratuit. Lien en bio.",
+     "visual": "capture"
+    }
+   ],
+   "question": "Tu écris à ta liste avant Noël ?",
+   "facts": [
+    "feature.email-marketing",
+    "plan.table.emails-sent"
+   ],
+   "notes": [
+    "Sans enregistrement : décale-la et publie la vidéo 39 à sa place."
+   ],
+   "demo": {
+    "feature": "email-marketing",
+    "fallback": 39
+   }
+  },
+  {
+   "n": 35,
+   "iso": "2026-12-10T10:00:00+01:00",
+   "title": "Startup ou Webinaire pour vendre une formation",
+   "format": "Comparatif",
+   "category": "formules-payantes",
+   "targetSec": 28,
+   "visuals": "capture « Formations » + cartes",
+   "hook": {
+    "screen": "5 ou 20 formations ?",
+    "voice": "Startup ou Webinaire pour vendre tes formations ? Regarde les chiffres."
+   },
+   "lines": [
+    {
+     "voice": "Formations : 1 en gratuit, 5 avec Startup.",
+     "visual": "capture « Formations »"
+    },
+    {
+     "voice": "20 avec Webinaire, illimitées avec Illimité.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Startup, 17 € ; Webinaire, 47 € par mois.",
+     "visual": "cartes"
+    },
+    {
+     "voice": "Moins de 5 formations ? Startup suffit pour tes formations. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as combien de formations ?",
+   "facts": [
+    "plan.table.courses",
+    "plan.startup.price",
+    "plan.webinar.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 36,
+   "iso": "2026-12-10T20:00:00+01:00",
+   "title": "Ton projet 2027 : une formation ?",
+   "format": "Saison",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphiques + capture « Formations »",
+   "hook": {
+    "screen": "2027 : tu lances ta formation ?",
+    "voice": "Ton projet pour 2027, c'est enfin lancer ta formation ?"
+   },
+   "lines": [
+    {
+     "voice": "Commence petit : une formation, un tunnel, une liste e-mail.",
+     "visual": "liste cochée"
+    },
+    {
+     "voice": "Le plan gratuit inclut une formation et 3 tunnels.",
+     "visual": "capture « Formations » (Gratuit : 1)"
+    },
+    {
+     "voice": "0 €, sans carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu la lances quand : janvier ou plus tard ?",
+   "facts": [
+    "plan.table.courses",
+    "plan.free.limits",
+    "plan.free.price",
+    "plan.free.no-card"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 37,
+   "iso": "2026-12-11T10:00:00+01:00",
+   "title": "Teste avant de payer",
+   "format": "Mise en garde",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "carte Gratuit + graphiques",
+   "hook": {
+    "screen": "Ne paie pas avant d'avoir testé",
+    "voice": "Ne paie aucune formule avant d'avoir testé le plan gratuit."
+   },
+   "lines": [
+    {
+     "voice": "Il est à 0 €, sans carte bancaire.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Monte ton premier tunnel, écris tes premiers e-mails.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Le jour où tu touches une limite, tu sais quelle formule prendre.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as déjà payé un outil sans le tester ?",
+   "facts": [
+    "plan.free.price",
+    "plan.free.no-card",
+    "plan.free.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 38,
+   "iso": "2026-12-11T20:00:00+01:00",
+   "title": "« Je commence par quoi ? »",
+   "format": "Question-réponse",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques + carte Gratuit",
+   "hook": {
+    "screen": "Je commence par quoi ?",
+    "voice": "Tu veux te lancer, mais tu ne sais pas par quoi commencer ?"
+   },
+   "lines": [
+    {
+     "voice": "Par une seule offre.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Un tunnel pour la présenter, un e-mail de bienvenue automatique.",
+     "visual": "schéma"
+    },
+    {
+     "voice": "Les deux existent dès le plan gratuit.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ton offre, c'est quoi, en un mot ?",
+   "facts": [
+    "plan.free.limits",
+    "feature.funnels",
+    "feature.auto-email-on-subscribe"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 39,
+   "iso": "2026-12-12T10:00:00+01:00",
+   "title": "17 €, TVA comprise",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 18,
+   "visuals": "carte Startup (mobile)",
+   "hook": {
+    "screen": "17 €, TVA comprise",
+    "voice": "Startup à 17 € par mois : la TVA est déjà comprise."
+   },
+   "lines": [
+    {
+     "voice": "Les prix de Systeme.io sont affichés toutes taxes comprises, en euros.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "En France, ce que tu vois sur la carte, c'est ce que tu paies.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu pensais payer la TVA en plus ? Oui ou non ?",
+   "facts": [
+    "plan.prices.ttc",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 40,
+   "iso": "2026-12-12T20:00:00+01:00",
+   "title": "Tier list : quoi vendre en premier",
+   "format": "Classement",
+   "category": "conseils-debutant",
+   "targetSec": 28,
+   "visuals": "graphique de classement",
+   "hook": {
+    "screen": "Tier list : quoi vendre d'abord",
+    "voice": "Formation, communauté, objet, webinaire : je classe quoi vendre en premier."
+   },
+   "lines": [
+    {
+     "voice": "Rang S : une formation. Le plan gratuit en inclut une.",
+     "visual": "rang S"
+    },
+    {
+     "voice": "Rang A : une communauté. Une est incluse en gratuit aussi.",
+     "visual": "rang A"
+    },
+    {
+     "voice": "Rang B : un produit physique. Rang C : un webinaire, qui demande la formule à 47 €.",
+     "visual": "rangs B et C"
+    },
+    {
+     "voice": "Mon classement suit la facilité à démarrer, pas ce que ça rapporte. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu vends quoi en premier ?",
+   "facts": [
+    "plan.table.courses",
+    "plan.table.communities",
+    "feature.physical-products",
+    "plan.table.webinars",
+    "plan.webinar.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 41,
+   "iso": "2026-12-13T10:00:00+01:00",
+   "title": "Je crée mon code promo de fin d'année",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 30,
+   "visuals": "ton enregistrement",
+   "hook": {
+    "screen": "Mon code promo, en direct",
+    "voice": "Je crée mon code promo de fin d'année, en direct."
+   },
+   "lines": [
+    {
+     "voice": "Je choisis l'offre concernée.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je fixe la réduction.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je copie le code pour le partager.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Un code en gratuit, 10 avec Startup. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu ferais combien de réduction ?",
+   "facts": [
+    "feature.coupons",
+    "plan.table.coupons"
+   ],
+   "notes": [
+    "Les étapes exactes sont celles que montre ton écran : adapte la voix si l'ordre diffère. Sans enregistrement : décale-la et publie la vidéo 44 à sa place."
+   ],
+   "demo": {
+    "feature": "coupons",
+    "fallback": 44
+   }
+  },
+  {
+   "n": 42,
+   "iso": "2026-12-13T20:00:00+01:00",
+   "title": "Et si ton webinaire tournait tout seul ?",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 25,
+   "visuals": "graphiques + carte Webinaire",
+   "hook": {
+    "screen": "Un webinaire qui tourne seul ?",
+    "voice": "Et si ton webinaire tournait tout seul, sans toi en direct ?"
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io propose des webinaires automatiques.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Pas inclus en gratuit ni avec Startup.",
+     "visual": "comparatif"
+    },
+    {
+     "voice": "Dix avec Webinaire, à 47 € par mois ; illimités avec Illimité.",
+     "visual": "carte Webinaire"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ton webinaire parlerait de quoi ?",
+   "facts": [
+    "feature.webinars",
+    "plan.table.webinars",
+    "plan.webinar.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 43,
+   "iso": "2026-12-14T10:00:00+01:00",
+   "title": "Ta liste grandit : quand le gratuit ne suffit plus",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "captures « Contacts »",
+   "hook": {
+    "screen": "Ta liste grandit ?",
+    "voice": "Ta liste e-mail grandit ? Voilà quand le gratuit ne suffit plus."
+   },
+   "lines": [
+    {
+     "voice": "Le plan gratuit va jusqu'à 2 000 contacts.",
+     "visual": "capture (Gratuit)"
+    },
+    {
+     "voice": "Startup monte à 5 000, pour 17 € par mois.",
+     "visual": "capture (Startup)"
+    },
+    {
+     "voice": "Webinaire, 10 000 ; Illimité, sans limite.",
+     "visual": "capture (Webinaire, Illimité)"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as combien d'inscrits ?",
+   "facts": [
+    "plan.free.contacts",
+    "plan.startup.contacts",
+    "plan.startup.price",
+    "plan.webinar.limits",
+    "plan.unlimited.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 44,
+   "iso": "2026-12-14T20:00:00+01:00",
+   "title": "Startup ou Illimité : 17 € contre 97 €",
+   "format": "Comparatif",
+   "category": "formules-payantes",
+   "targetSec": 28,
+   "visuals": "cartes des tarifs + comparatif",
+   "hook": {
+    "screen": "17 € ou 97 € ?",
+    "voice": "Startup ou Illimité : 80 € d'écart par mois. Qu'est-ce que ça change ?"
+   },
+   "lines": [
+    {
+     "voice": "Tunnels : 10 contre illimités.",
+     "visual": "comparatif, ligne 1"
+    },
+    {
+     "voice": "Contacts : 5 000 contre illimités.",
+     "visual": "ligne 2"
+    },
+    {
+     "voice": "Domaines : 3 contre illimités.",
+     "visual": "ligne 3"
+    },
+    {
+     "voice": "Tant que tu restes sous ces limites, Startup suffit. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu es plutôt Startup ou Illimité ?",
+   "facts": [
+    "plan.startup.price",
+    "plan.startup.limits",
+    "plan.unlimited.price",
+    "plan.unlimited.limits"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 45,
+   "iso": "2026-12-15T10:00:00+01:00",
+   "title": "5 choses que Startup débloque",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 28,
+   "visuals": "carte Startup (mobile) + capture « Formations »",
+   "hook": {
+    "screen": "5 choses à 17 € par mois",
+    "voice": "Cinq choses que Startup débloque, à 17 € par mois."
+   },
+   "lines": [
+    {
+     "voice": "Un : 10 tunnels de vente. Deux : 10 règles d'automatisation.",
+     "visual": "carte Startup, description entourée"
+    },
+    {
+     "voice": "Trois : 5 000 contacts. Quatre : 3 domaines.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "Cinq : 5 formations.",
+     "visual": "capture « Formations »"
+    },
+    {
+     "voice": "Enregistre pour plus tard. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Laquelle te manque le plus ?",
+   "facts": [
+    "plan.startup.limits",
+    "plan.table.courses",
+    "plan.startup.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 46,
+   "iso": "2026-12-15T20:00:00+01:00",
+   "title": "Un support 24 h/24, même le week-end",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 18,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Support 24 h/24, 7 j/7",
+    "voice": "Un souci un dimanche soir ? Le support par e-mail est ouvert 24 h/24."
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io propose un support par e-mail, 24 heures sur 24, 7 jours sur 7.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Et une migration gratuite si tu viens d'un autre outil.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu as déjà attendu un support pendant des jours ? Oui ou non ?",
+   "facts": [
+    "service.support",
+    "service.migration"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 47,
+   "iso": "2026-12-16T10:00:00+01:00",
+   "title": "« Et Startup à l'année ? »",
+   "format": "Question-réponse",
+   "category": "pub-directe",
+   "targetSec": 20,
+   "visuals": "capture des tarifs annuels",
+   "hook": {
+    "screen": "Startup à l'année ? 170 €",
+    "voice": "Startup à l'année, ça coûte combien ? 170 €."
+   },
+   "lines": [
+    {
+     "voice": "Au mois, c'est 17 €.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "À l'année, 170 € : deux mois offerts.",
+     "visual": "badge officiel « 2 mois gratuits »"
+    },
+    {
+     "voice": "Ton projet démarre ? Reste au mois.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Mensuel ou annuel ?",
+   "facts": [
+    "plan.startup.price",
+    "plan.startup.price-annual",
+    "plan.annual-discount"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 48,
+   "iso": "2026-12-16T20:00:00+01:00",
+   "title": "Je crée la communauté de mes élèves",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 30,
+   "visuals": "ton enregistrement",
+   "hook": {
+    "screen": "Ma communauté, en direct",
+    "voice": "Je crée l'espace où mes élèves vont échanger. En direct."
+   },
+   "lines": [
+    {
+     "voice": "Je crée la communauté.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je lui donne un nom.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je publie le premier message.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Une communauté en gratuit, 5 avec Startup. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ta communauté s'appellerait comment ?",
+   "facts": [
+    "feature.community",
+    "plan.table.communities"
+   ],
+   "notes": [
+    "Adapte la voix aux étapes que montre ton écran. Sans enregistrement : décale-la et publie la vidéo 50 à sa place."
+   ],
+   "demo": {
+    "feature": "community",
+    "fallback": 50
+   }
+  },
+  {
+   "n": 49,
+   "iso": "2026-12-17T10:00:00+01:00",
+   "title": "Ne prends pas Startup juste pour les e-mails",
+   "format": "Mise en garde",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "capture « E-mails envoyés » + carte Startup",
+   "hook": {
+    "screen": "Startup juste pour les e-mails ?",
+    "voice": "Ne prends pas Startup juste pour envoyer plus d'e-mails."
+   },
+   "lines": [
+    {
+     "voice": "Les e-mails envoyés sont illimités dans les quatre formules, gratuit compris.",
+     "visual": "capture"
+    },
+    {
+     "voice": "Startup se justifie pour le reste : 10 tunnels, 5 000 contacts, 10 campagnes.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "Regarde ce qui te bloque vraiment avant de payer.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ce qui te bloque, c'est quoi ?",
+   "facts": [
+    "plan.table.emails-sent",
+    "plan.startup.limits",
+    "plan.table.email-campaigns"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 50,
+   "iso": "2026-12-17T20:00:00+01:00",
+   "title": "Illimité : ce qui est vraiment illimité",
+   "format": "Contre-intuitif",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "cartes des tarifs + capture « E-mails envoyés »",
+   "hook": {
+    "screen": "Illimité : vraiment illimité ?",
+    "voice": "Dans la formule Illimité, qu'est-ce qui est vraiment illimité ?"
+   },
+   "lines": [
+    {
+     "voice": "Les tunnels, les contacts, les règles d'automatisation et les domaines.",
+     "visual": "carte Illimité"
+    },
+    {
+     "voice": "Les e-mails envoyés ? Illimités partout, même en gratuit.",
+     "visual": "capture « E-mails envoyés »"
+    },
+    {
+     "voice": "Et les sous-comptes ? Illimités dans chaque formule.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Choisis selon ce qui te limite vraiment. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu pensais que les e-mails étaient limités ?",
+   "facts": [
+    "plan.unlimited.limits",
+    "plan.table.emails-sent",
+    "feature.sub-accounts"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 51,
+   "iso": "2026-12-18T10:00:00+01:00",
+   "title": "Et si tous tes contacts étaient au même endroit ?",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "graphiques + capture « Contacts »",
+   "hook": {
+    "screen": "Tous tes contacts au même endroit ?",
+    "voice": "Et si tous tes contacts étaient au même endroit que tes tunnels et tes e-mails ?"
+   },
+   "lines": [
+    {
+     "voice": "Systeme.io inclut la gestion de tes contacts.",
+     "visual": "graphique (à l'écran : « CRM inclus »)"
+    },
+    {
+     "voice": "Tes tunnels, tes e-mails et tes contacts, dans un seul outil.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Jusqu'à 2 000 contacts en gratuit, 5 000 avec Startup.",
+     "visual": "capture « Contacts » (Gratuit, Startup)"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tes contacts sont rangés où, aujourd'hui ?",
+   "facts": [
+    "feature.contacts",
+    "feature.funnels",
+    "feature.email-marketing",
+    "plan.free.contacts",
+    "plan.startup.contacts"
+   ],
+   "notes": [
+    "Ne pas prononcer le sigle « CRM » : la voix le lit mal, il reste à l'écran."
+   ],
+   "demo": null
+  },
+  {
+   "n": 52,
+   "iso": "2026-12-18T20:00:00+01:00",
+   "title": "3 choses à préparer avant de vendre ta formation",
+   "format": "Liste",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "capture « Formations » + graphiques",
+   "hook": {
+    "screen": "3 choses avant de vendre",
+    "voice": "Tu veux vendre ta formation ? Prépare d'abord ces trois choses."
+   },
+   "lines": [
+    {
+     "voice": "Un : la formation elle-même. En gratuit, tu en crées une.",
+     "visual": "capture « Formations »"
+    },
+    {
+     "voice": "Deux : un tunnel de vente pour la présenter.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Trois : un moyen de paiement. Tu connectes un processeur de paiement.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Enregistre pour plus tard. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu en es à laquelle ?",
+   "facts": [
+    "feature.courses",
+    "plan.table.courses",
+    "feature.funnels",
+    "feature.payments"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 53,
+   "iso": "2026-12-19T10:00:00+01:00",
+   "title": "« Comment je reçois l'argent ? »",
+   "format": "Question-réponse",
+   "category": "pub-directe",
+   "targetSec": 20,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Comment je reçois l'argent ?",
+    "voice": "Tu vends sur Systeme.io. Comment tu reçois l'argent ?"
+   },
+   "lines": [
+    {
+     "voice": "Tu connectes un processeur de paiement : c'est lui qui encaisse tes ventes.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Systeme.io n'ajoute pas de frais sur tes paiements.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Les frais du processeur, eux, restent dus.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu vends déjà en ligne ?",
+   "facts": [
+    "feature.payments",
+    "plan.transaction-fees"
+   ],
+   "notes": [
+    "Aucune image d'argent ni de billets : des graphiques seulement. Ne pas citer de processeur par son nom, aucun n'est vérifié."
+   ],
+   "demo": null
+  },
+  {
+   "n": 54,
+   "iso": "2026-12-19T20:00:00+01:00",
+   "title": "Tier list : ce que tu fais avec 0 €",
+   "format": "Classement",
+   "category": "conseils-debutant",
+   "targetSec": 28,
+   "visuals": "graphique de classement",
+   "hook": {
+    "screen": "Tier list : 0 €",
+    "voice": "Ce que tu fais avec zéro euro sur Systeme.io, classé du meilleur au plus limité."
+   },
+   "lines": [
+    {
+     "voice": "Tout en haut : les e-mails envoyés, illimités.",
+     "visual": "rang S"
+    },
+    {
+     "voice": "Ensuite : 2 000 contacts et 3 tunnels de vente.",
+     "visual": "rang A"
+    },
+    {
+     "voice": "Puis : une formation et une communauté.",
+     "visual": "rang B"
+    },
+    {
+     "voice": "En bas : une seule règle d'automatisation, et aucun webinaire automatique.",
+     "visual": "rang C"
+    },
+    {
+     "voice": "Sans carte bancaire. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu mettrais quoi tout en haut ?",
+   "facts": [
+    "plan.free.price",
+    "plan.table.emails-sent",
+    "plan.free.limits",
+    "plan.table.courses",
+    "plan.table.communities",
+    "plan.table.automation-rules",
+    "plan.table.webinars",
+    "plan.free.no-card"
+   ],
+   "notes": [
+    "Le classement est un avis, dit comme tel ; seules les limites sont des faits."
+   ],
+   "demo": null
+  },
+  {
+   "n": 55,
+   "iso": "2026-12-20T10:00:00+01:00",
+   "title": "Je mets mon site en ligne",
+   "format": "Démo (ton écran)",
+   "category": "demo-fonctionnalite",
+   "targetSec": 30,
+   "visuals": "ton enregistrement",
+   "hook": {
+    "screen": "Mon site, en ligne",
+    "voice": "Je mets mon site en ligne. En direct."
+   },
+   "lines": [
+    {
+     "voice": "Je crée le site.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je modifie la première page.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Je le publie.",
+     "visual": "ton écran"
+    },
+    {
+     "voice": "Un domaine personnalisé en gratuit, trois avec Startup. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Ton site parlerait de quoi ?",
+   "facts": [
+    "feature.website",
+    "plan.free.limits",
+    "plan.startup.custom-domain"
+   ],
+   "notes": [
+    "Adapte la voix aux étapes que montre ton écran. Sans enregistrement : décale-la et publie la vidéo 57 à sa place."
+   ],
+   "demo": {
+    "feature": "website",
+    "fallback": 57
+   }
+  },
+  {
+   "n": 56,
+   "iso": "2026-12-20T20:00:00+01:00",
+   "title": "Tes élèves décrochent après l'achat ?",
+   "format": "Diagnostic",
+   "category": "conseils-debutant",
+   "targetSec": 25,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Tes élèves décrochent ?",
+    "voice": "Tes élèves décrochent après l'achat ? Vérifie deux choses."
+   },
+   "lines": [
+    {
+     "voice": "Un : ont-ils un endroit pour échanger ? Une communauté en gratuit, cinq avec Startup.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Deux : est-ce que tu leur écris ? E-mails et newsletters partent sans limite d'envoi, même en gratuit.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Les deux se font dans le même outil que ta formation.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Qu'est-ce qui fait décrocher, selon toi ?",
+   "facts": [
+    "feature.community",
+    "plan.table.communities",
+    "feature.email-marketing",
+    "plan.table.emails-sent",
+    "feature.courses"
+   ],
+   "notes": [
+    "Ne rien promettre sur le taux de complétion : ce sont des pistes, pas un résultat."
+   ],
+   "demo": null
+  },
+  {
+   "n": 57,
+   "iso": "2026-12-21T10:00:00+01:00",
+   "title": "Webinaire et Illimité à l'année",
+   "format": "Comparatif",
+   "category": "formules-payantes",
+   "targetSec": 25,
+   "visuals": "capture des tarifs annuels",
+   "hook": {
+    "screen": "Webinaire, Illimité : à l'année",
+    "voice": "Webinaire et Illimité, à l'année : combien ça coûte ?"
+   },
+   "lines": [
+    {
+     "voice": "Webinaire : 47 € par mois, ou 470 € à l'année.",
+     "visual": "capture des tarifs annuels (Webinaire)"
+    },
+    {
+     "voice": "Illimité : 97 € par mois, ou 970 € à l'année.",
+     "visual": "capture des tarifs annuels (Illimité)"
+    },
+    {
+     "voice": "Dans les deux cas, deux mois offerts.",
+     "visual": "badge officiel « 2 mois gratuits »"
+    },
+    {
+     "voice": "Pas sûr de ton besoin ? Commence au mois. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Tu choisirais lequel ?",
+   "facts": [
+    "plan.webinar.price",
+    "plan.webinar.price-annual",
+    "plan.unlimited.price",
+    "plan.unlimited.price-annual",
+    "plan.annual-discount"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 58,
+   "iso": "2026-12-21T20:00:00+01:00",
+   "title": "Ne passe pas à Illimité trop tôt",
+   "format": "Mise en garde",
+   "category": "erreurs-debutants",
+   "targetSec": 25,
+   "visuals": "cartes des tarifs + comparatif",
+   "hook": {
+    "screen": "Illimité, trop tôt ?",
+    "voice": "Ne passe pas à Illimité trop tôt. Regarde d'abord tes limites."
+   },
+   "lines": [
+    {
+     "voice": "Illimité, c'est 97 € par mois.",
+     "visual": "carte Illimité"
+    },
+    {
+     "voice": "Startup va jusqu'à 10 tunnels et 5 000 contacts, pour 17 €.",
+     "visual": "carte Startup"
+    },
+    {
+     "voice": "Webinaire, jusqu'à 50 tunnels et 10 000 contacts, pour 47 €.",
+     "visual": "carte Webinaire"
+    },
+    {
+     "voice": "Passe à Illimité quand ces limites te bloquent vraiment. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Quelle limite tu atteins en premier ?",
+   "facts": [
+    "plan.unlimited.price",
+    "plan.startup.limits",
+    "plan.startup.price",
+    "plan.webinar.limits",
+    "plan.webinar.price"
+   ],
+   "notes": [],
+   "demo": null
+  },
+  {
+   "n": 59,
+   "iso": "2026-12-22T10:00:00+01:00",
+   "title": "Et si ton prochain client venait d'un affilié ?",
+   "format": "Et si…",
+   "category": "pub-directe",
+   "targetSec": 20,
+   "visuals": "graphiques",
+   "hook": {
+    "screen": "Et si un affilié parlait de toi ?",
+    "voice": "Et si ton prochain client venait de quelqu'un qui recommande ton offre ?"
+   },
+   "lines": [
+    {
+     "voice": "Avec Systeme.io, tu peux créer ton propre programme d'affiliation.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Et le gérer dans le même outil que tes tunnels et tes e-mails.",
+     "visual": "graphique"
+    },
+    {
+     "voice": "Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Qui pourrait recommander ton offre ?",
+   "facts": [
+    "feature.affiliate-program",
+    "feature.funnels",
+    "feature.email-marketing"
+   ],
+   "notes": [
+    "Aucune promesse de ventes ni de revenus. Ne pas dire dans quelle formule le programme est inclus : ce n'est pas vérifié."
+   ],
+   "demo": null
+  },
+  {
+   "n": 60,
+   "iso": "2026-12-22T20:00:00+01:00",
+   "title": "60 vidéos plus tard : ta question",
+   "format": "Question-réponse",
+   "category": "pub-directe",
+   "targetSec": 22,
+   "visuals": "cartes des tarifs",
+   "hook": {
+    "screen": "60 vidéos plus tard",
+    "voice": "Soixante vidéos sur Systeme.io. Maintenant, à toi de poser ta question."
+   },
+   "lines": [
+    {
+     "voice": "En bref : un plan gratuit à vie, jusqu'à 2 000 contacts.",
+     "visual": "carte Gratuit"
+    },
+    {
+     "voice": "Startup à 17 €, Webinaire à 47 €, Illimité à 97 € par mois.",
+     "visual": "cartes des tarifs"
+    },
+    {
+     "voice": "Ce que je n'ai pas encore montré, écris-le en commentaire. Lien en bio.",
+     "visual": null
+    }
+   ],
+   "question": "Quelle est ta question sur Systeme.io ?",
+   "facts": [
+    "plan.free.exists",
+    "plan.free.contacts",
+    "plan.startup.price",
+    "plan.webinar.price",
+    "plan.unlimited.price"
+   ],
+   "notes": [
+    "Les questions reçues deviennent les sujets suivants, seulement si la réponse se vérifie sur la page officielle."
+   ],
+   "demo": null
+  }
+ ]
+}

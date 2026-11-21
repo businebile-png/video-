@@ -93,6 +93,11 @@ export const StudioConfigSchema = z.object({
      */
     decisionRule: z.enum(['score', 'coherence']).default('score'),
     leadTimeMinutes: z.number().int().min(15),
+    /**
+     * No publication slot before this instant (ISO with offset): the 60-video series starts on 23/11/2026 at 10:00,
+     * so neither Claude nor the free-AI relief fills the day before it.
+     */
+    notBefore: z.string().regex(/^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d)?([+-]\d\d:\d\d|Z)$/).optional(),
   }),
   media: z.object({
     repo: z.string().regex(/^[\w.-]+\/[\w.-]+$/),

@@ -18,6 +18,7 @@ import {NETWORKS, type Network} from './schemas/records.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
 import {PROGRAMME_CONFIG, PROGRAMME_FILE, ProgrammeConfigSchema, buildProgramme, programmeProblems, programmeSlot} from './editorial/programme.js';
+import {loadSerie, producedNumbers, recordedFeatures, serieBrief, serieChoice, serieProblems, withSerie} from './editorial/serie.js';
 import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
 import {autoProduce, claimSlot, cleanQueue, enqueue, nextSlot, releaseClaim} from './auto/auto.js';
@@ -63,7 +64,8 @@ Préparation
 Production (dans l'ordre)
   programme [--days 30] [--from AAAA-MM-JJ]   Programme du mois : sujet, format et formule de chaque créneau (data/programme.json)
   programme:slot --slot <iso> [--theme <besoin>]   Sujet d'un créneau (avec le besoin choisi dans le panneau), en JSON
-  new [--date AAAA-MM-JJ] [--category <id>] [--correction-of <runId> --notes <texte>]
+  serie:slot --slot <iso> [--json]   Script de la série de 60 vidéos à suivre pour ce créneau (relève des démos comprise)
+  new [--date AAAA-MM-JJ] [--category <id>] [--serie <n>] [--correction-of <runId> --notes <texte>]
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
   voice:measure <runId>        Mesure de nouveau la voix existante (débit, pauses entendues, note) sans la régénérer
@@ -258,6 +260,8 @@ async function main(): Promise<void> {
       start: {type: 'string'},
       avoid: {type: 'string'},
       reason: {type: 'string'},
+      serie: {type: 'string'},
+      json: {type: 'boolean'},
     },
   });
   const str = (k: string) => (typeof values[k] === 'string' ? (values[k] as string) : undefined);
@@ -463,12 +467,14 @@ async function main(): Promise<void> {
       const config = await loadConfig();
       const editorial = await loadEditorial();
       const cfg = await readValidated(PROGRAMME_CONFIG, ProgrammeConfigSchema);
-      const problems = programmeProblems(cfg, editorial, new Set((await loadFacts()).facts.map((f) => f.id)));
+      const factIds = new Set((await loadFacts()).facts.map((f) => f.id));
+      const serie = loadSerie();
+      const problems = [...programmeProblems(cfg, editorial, factIds), ...(serie ? serieProblems(serie, editorial, factIds) : [])];
       if (problems.length) throw new Error(`Programme invalide :\n- ${problems.join('\n- ')}`);
       const timezone = config.metricool.timezone;
       const from = str('from') ?? isoDateInZone(new Date(), timezone);
       const days = Math.max(1, Math.min(62, num('days') ?? 30));
-      const slots = buildProgramme(cfg, editorial, {from, days, timezone, times: config.platforms.tiktok.postTimes});
+      const slots = withSerie(buildProgramme(cfg, editorial, {from, days, timezone, times: config.platforms.tiktok.postTimes}), serie, editorial, timezone);
       const to = addDays(from, days - 1);
       await writeJson(PROGRAMME_FILE, {generatedAt: new Date().toISOString(), from, to, timezone, slots});
       log.ok(`Programme du ${from} au ${to} : ${slots.length} créneaux (${path.relative(PATHS.root, PROGRAMME_FILE)})`);
@@ -483,17 +489,32 @@ async function main(): Promise<void> {
       console.log(JSON.stringify(entry, null, 2));
       return;
     }
+    case 'serie:slot': {
+      const serie = loadSerie();
+      if (!serie) throw new Error('Aucune série : data/serie.json manque.');
+      const iso = need(str('slot'), 'Créneau manquant : --slot <iso> (ex. 2026-11-23T10:00:00+01:00).');
+      const choice = serieChoice(serie, iso, producedNumbers(await loadHistory()), recordedFeatures(await loadCaptures()));
+      console.log(values.json === true ? JSON.stringify(choice, null, 2) : serieBrief(choice));
+      return;
+    }
     case 'new': {
       const config = await loadConfig();
       const editorial = await loadEditorial();
+      const serieN = num('serie');
+      const serieEntry = serieN === null ? null : (loadSerie()?.entries.find((e) => e.n === serieN) ?? null);
+      if (serieN !== null && !serieEntry) throw new Error(`Vidéo ${serieN} absente de la série (data/serie.json).`);
       const correctionOf = str('correction-of');
       const plan = await createPlan(config, editorial, {
         date: str('date'),
         category: str('category'),
         correction: correctionOf ? {runId: correctionOf, notes: str('notes') ?? ''} : undefined,
       });
-      await upsertHistory({runId: plan.runId, date: plan.date, category: plan.category.id, artDirection: plan.artDirection, voiceId: plan.voiceId, status: 'created'});
-      log.ok(`Production ${plan.runId} : ${plan.category.label} · ${plan.artDirection}`);
+      await upsertHistory({runId: plan.runId, date: plan.date, category: plan.category.id, artDirection: plan.artDirection, voiceId: plan.voiceId, status: 'created', ...(serieEntry ? {serie: serieEntry.n, workingTitle: serieEntry.title} : {})});
+      if (serieEntry) {
+        if (serieEntry.category !== plan.category.id) log.warn(`La série prévoit la catégorie ${serieEntry.category} pour la vidéo ${serieEntry.n} (reçu : ${plan.category.id}).`);
+        await fsp.appendFile(runPaths(plan.runId).planMd, `\n\n## Script imposé : série de 60 vidéos\n\n${serieBrief({entry: serieEntry, planned: serieEntry, reason: `vidéo ${serieEntry.n}/60`})}\n`);
+      }
+      log.ok(`Production ${plan.runId} : ${plan.category.label} · ${plan.artDirection}${serieEntry ? ` · série ${serieEntry.n}/60 « ${serieEntry.title} »` : ''}`);
       console.log(`Brief : ${path.relative(PATHS.root, runPaths(plan.runId).planMd)}\nScript attendu : ${path.relative(PATHS.root, runPaths(plan.runId).script)}`);
       return;
     }

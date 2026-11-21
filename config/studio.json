@@ -13,6 +13,7 @@
     "tiktok": {
       "enabled": true,
       "postTimes": [
+        "10:00",
         "20:00"
       ],
       "privacy": "PUBLIC_TO_EVERYONE",
@@ -22,6 +23,7 @@
     "instagram": {
       "enabled": true,
       "postTimes": [
+        "10:00",
         "20:00"
       ],
       "aiLabel": true,
@@ -30,6 +32,7 @@
     "youtube": {
       "enabled": true,
       "postTimes": [
+        "10:00",
         "20:00"
       ],
       "privacy": "public",
@@ -39,6 +42,7 @@
     "threads": {
       "enabled": true,
       "postTimes": [
+        "10:00",
         "20:00"
       ],
       "maxChars": 500
@@ -54,7 +58,8 @@
     "minScore": 80,
     "improveFrom": 75,
     "decisionRule": "coherence",
-    "leadTimeMinutes": 90
+    "leadTimeMinutes": 90,
+    "notBefore": "2026-11-23T10:00:00+01:00"
   },
   "media": {
     "repo": "businebile-png/video-",

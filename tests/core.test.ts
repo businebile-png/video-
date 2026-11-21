@@ -37,6 +37,7 @@ describe('horaires de publication', () => {
   it('propose les prochains créneaux en respectant le délai minimum', async () => {
     const config = await loadConfig();
     // Fixed schedule: the test must not depend on the hours chosen in the panel.
+    config.publish.notBefore = undefined;
     config.platforms.tiktok = {...config.platforms.tiktok, enabled: true, postTimes: ['19:07']};
     config.platforms.instagram = {...config.platforms.instagram, enabled: false};
     config.publish.leadTimeMinutes = 90;
@@ -44,8 +45,19 @@ describe('horaires de publication', () => {
     expect(slots[0]!.network).toBe('tiktok');
     expect(slots[0]!.iso).toBe('2026-11-07T19:07:00+01:00');
   });
+  it('ne propose aucun créneau avant le début de la série (publish.notBefore)', async () => {
+    const config = await loadConfig();
+    config.platforms.tiktok = {...config.platforms.tiktok, enabled: true, postTimes: ['10:00', '20:00']};
+    config.publish.leadTimeMinutes = 90;
+    config.publish.notBefore = '2026-11-23T10:00:00+01:00';
+    const slots = nextSlots(config, new Date('2026-11-21T19:30:00Z')).filter((s) => s.network === 'tiktok');
+    expect(slots.map((s) => s.iso)).toEqual(['2026-11-23T10:00:00+01:00', '2026-11-23T20:00:00+01:00']);
+    config.publish.notBefore = undefined;
+    expect(nextSlots(config, new Date('2026-11-21T19:30:00Z')).filter((s) => s.network === 'tiktok')[0]!.iso).toBe('2026-11-22T10:00:00+01:00');
+  });
   it('ne propose jamais un créneau déjà pris ni un réseau non connecté', async () => {
     const config = await loadConfig();
+    config.publish.notBefore = undefined;
     config.platforms.tiktok = {...config.platforms.tiktok, enabled: true, postTimes: ['12:00']};
     config.platforms.instagram = {...config.platforms.instagram, enabled: true, postTimes: ['12:00']};
     config.publish.leadTimeMinutes = 90;

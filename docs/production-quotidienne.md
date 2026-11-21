@@ -3,7 +3,7 @@
 Ce guide est suivi par Claude à chaque production (tâches programmées de 5:47 et 14:47, bouton « Lancer une
 production maintenant » du panneau, ou demande manuelle). Il produit **une** vidéo de haute qualité,
 la fait relire par un relecteur indépendant, la dépose dans le panneau, puis, en mode automatique
-(`approval: "auto"`, choix de l'utilisateur), la marque prête pour son créneau (20:00, une vidéo par jour) : la tâche de
+(`approval: "auto"`, choix de l'utilisateur), la marque prête pour son créneau (10:00 ou 20:00, deux vidéos par jour) : la tâche de
 programmation la publie (section 9).
 Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 80/100 (seuil choisi par l'utilisateur le 07/11/2026, `publish.minScore`).
 
@@ -227,18 +227,18 @@ npm run studio -- media:push <runId>
 2. `npm run studio -- panel:export <runId> --preview-asset <id> --preview-url <url> --cover-asset <id> --cover-url <url>`
 3. `ArtifactData set` sur `videos/<runId>` avec `file_path: "runs/<runId>/panel/video.json"`.
 
-## 9. Publication automatique à 20:00 (réglage `approval: "auto"`, choisi par l'utilisateur le 08/11/2026)
+## 9. Publication automatique à 10:00 et 20:00 (réglage `approval: "auto"`, choisi par l'utilisateur le 08/11/2026)
 
-L'utilisateur ne valide plus : **une vidéo par jour** (demande du 21/11/2026, « la meilleure vidéo possible », qui
-remplace les trois vidéos par jour) part toute seule sur TikTok, Instagram, YouTube et Threads, **à 20:00**
-(Europe/Paris), si la relecture la juge cohérente et si tous les contrôles obligatoires sont validés. Mieux vaut une
-vidéo soignée par jour que trois vidéos moyennes : prendre le temps de la relecture et des reprises.
+L'utilisateur ne valide plus : **deux vidéos par jour** (demande du 21/11/2026 : « crée les vidéos une par une… t'en
+postes 2 par jour ») partent toutes seules sur TikTok, Instagram, YouTube et Threads, **à 10:00 et à 20:00**
+(Europe/Paris), si la relecture les juge cohérentes et si tous les contrôles obligatoires sont validés. Chaque vidéo
+reste soignée : prendre le temps de la relecture et des reprises, une vidéo après l'autre.
 
-- **Productions** : la tâche « Production Systeme.io » réveille la session principale à 5:47 ; elle crée **une**
-  session de production (`create_session`, modèle économe) pour **le premier créneau libre** à plus de 6 h
-  (20:00 du jour, sinon du lendemain), avec le sujet du **programme du mois**
-  (`data/programme.json`, section 9 bis). Un créneau déjà occupé par une vidéo de la file passe au suivant.
-  Le journal porte `slot` (créneau) pour le tableau de bord.
+- **Productions** : la tâche « Production Systeme.io — série, 2 vidéos par jour » (5:47, une session neuve à chaque
+  fois) crée **une** session de production (`create_session`, modèle économe) pour **les deux premiers créneaux libres**
+  à plus de 6 h (en régime normal, 10:00 et 20:00 du lendemain), jamais avant `publish.notBefore`. Chaque créneau suit
+  son script de la série (section 9 ter), sinon le **programme du mois** (`data/programme.json`, section 9 bis). Un
+  créneau déjà occupé par une vidéo de la file passe au suivant. Le journal porte `slot` (créneau) pour le tableau de bord.
 - **Programmation** : la tâche « Publication Metricool » (13:35) programme toutes les vidéos prêtes de la file
   sur les 4 réseaux. TikTok et YouTube passent par Zernio (sans limite) ;
   Instagram et Threads par Metricool, dont la formule gratuite ne permet que 20 publications par mois : une vidéo
@@ -248,7 +248,8 @@ vidéo soignée par jour que trois vidéos moyennes : prendre le temps de la rel
 ## 9 bis. Programme du mois
 
 `npm run studio -- programme --days 30` écrit `data/programme.json` : pour chaque créneau, un format (depuis le
-21/11/2026, une vidéo par jour à 20:00 : les quatre formats tournent sur 4 jours, `cycle`/`phase` des familles —
+21/11/2026, deux vidéos par jour : erreur ou conseil à 10:00 et format court à 20:00 un jour, formule à 10:00 et
+tutoriel à 20:00 le lendemain, `cycle`/`phase` des familles —
 erreur ou conseil, format court, quelle formule prendre, tutoriel de A à Z),
 une catégorie (`new --category`), un besoin (tunnel, liste e-mail, formation…), une piste d'angle, la formule
 à conseiller et les faits vérifiés à citer (`data/facts/`). Les sujets viennent de `config/programme.json`.
@@ -290,6 +291,26 @@ nouveau créneau (l'ancien est libéré) et, pour un besoin choisi, la session l
 - L'utilisateur peut toujours arrêter une vidéo avant son heure depuis le panneau (refus ou correction).
 
 En mode `approval: "panel"`, la fiche reste « À valider » et l'utilisateur programme d'un clic depuis le panneau.
+
+
+## 9 ter. Série de 60 vidéos (23/11 → 22/12/2026)
+
+L'utilisateur a validé 60 scripts (doc « 60 vidéos Systeme.io — noms, scripts et calendrier »,
+https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj), copiés dans `data/serie.json` : deux par jour, la vidéo impaire à
+10:00, la paire à 20:00. Sur ces créneaux, la série remplace le programme du mois (`programme` les y met, titre compris,
+pour le tableau « Mois » du panneau).
+
+- `npm run studio -- serie:slot --slot <iso>` donne le script du créneau : titre, format, catégorie du studio,
+  accroche (écran et voix), phrases et visuels, question en commentaire, faits à citer, notes. Puis
+  `npm run studio -- new --category <catégorie> --serie <n>` : le script est ajouté au brief et le numéro va dans
+  l'historique.
+- Le script est imposé : garder l'accroche, l'ordre, le sens, les chiffres et les faits ; ne changer les mots que si la
+  voix les prononce mal (`sttText`) ou si `script:check` le demande. Aucun fait hors de sa liste.
+- Démo (8 vidéos : 6, 13, 20, 27, 34, 41, 48, 55) : seulement avec l'enregistrement d'écran de l'utilisateur
+  (`captures:add`, source `user-recording`, `--checked`). Sans lui, `serie:slot` donne la vidéo de relève indiquée
+  sous la démo ; au créneau de la relève, la démo passe si l'enregistrement est arrivé, sinon le programme du mois.
+- Si un fait de la série n'est plus vérifié (`data/facts/`), la phrase qui le cite est retirée ou reformulée avec un
+  fait vérifié, jamais gardée telle quelle.
 
 ## 10. Clôture
 

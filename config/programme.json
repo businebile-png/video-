@@ -1,5 +1,5 @@
 {
-  "about": "Programme du mois (demandes de l'utilisateur du 21/11/2026 : 3 vidéos par jour, à 00:00, 10:00 et 20:00) : un format par heure (00:00 format court un jour sur deux, erreur ou conseil l'autre jour), un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente. Depuis le 21/11/2026 (demande de l'utilisateur : une vidéo par jour), les quatre formats tournent à 20:00, un par jour (cycle de 4 jours).",
+  "about": "Programme du mois (demandes de l'utilisateur du 21/11/2026 : 3 vidéos par jour, à 00:00, 10:00 et 20:00) : un format par heure (00:00 format court un jour sur deux, erreur ou conseil l'autre jour), un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente. Depuis le 21/11/2026 (demande de l'utilisateur : deux vidéos par jour, à 10:00 et 20:00), les quatre formats tournent sur deux jours : erreur ou conseil à 10:00 et format court à 20:00 un jour, formule à 10:00 et tuto à 20:00 le lendemain. Du 23/11 au 22/12/2026, la série de 60 vidéos (data/serie.json) remplace ce programme sur ses créneaux.",
   "epoch": "2026-11-21",
   "families": [
     {
@@ -11,11 +11,11 @@
         25
       ],
       "offset": 9,
-      "cycle": 4,
-      "phase": 1
+      "cycle": 2,
+      "phase": 0
     },
     {
-      "time": "20:00",
+      "time": "10:00",
       "id": "conseil",
       "label": "Erreur à éviter ou conseil",
       "targetSec": [
@@ -23,7 +23,7 @@
         35
       ],
       "offset": 3,
-      "cycle": 4,
+      "cycle": 2,
       "phase": 0
     },
     {
@@ -35,11 +35,11 @@
         60
       ],
       "offset": 0,
-      "cycle": 4,
-      "phase": 3
+      "cycle": 2,
+      "phase": 1
     },
     {
-      "time": "20:00",
+      "time": "10:00",
       "id": "formule",
       "label": "Quelle formule prendre",
       "targetSec": [
@@ -47,8 +47,8 @@
         45
       ],
       "offset": 6,
-      "cycle": 4,
-      "phase": 2
+      "cycle": 2,
+      "phase": 1
     }
   ],
   "themes": [

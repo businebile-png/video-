@@ -108,6 +108,8 @@ export const HistoryRecordSchema = z.object({
   status: z.enum(['created', 'rendered', 'rejected', 'scheduled', 'published', 'failed', 'abandoned']),
   reason: z.string().nullable(),
   pexelsIds: z.array(z.number()).default([]),
+  /** Number of the video in the 60-video series (data/serie.json) this run follows, if any. */
+  serie: z.number().int().min(1).nullable().optional(),
   updatedAt: z.string(),
 });
 export type HistoryRecord = z.infer<typeof HistoryRecordSchema>;

@@ -19,13 +19,13 @@ describe('programme du mois', () => {
     expect(programmeProblems(cfg, editorial, facts)).toEqual([]);
   });
 
-  it('donne une vidéo par jour à 20:00, les quatre formats tour à tour, dans la durée de chaque catégorie', async () => {
+  it('donne deux vidéos par jour, à 10:00 et 20:00, les quatre formats sur deux jours, dans la durée de chaque catégorie', async () => {
     const {config, editorial, cfg} = await setup();
     const slots = buildProgramme(cfg, editorial, {from: '2026-11-21', days: 30, timezone: 'Europe/Paris', times: config.platforms.tiktok.postTimes});
-    expect(slots).toHaveLength(30);
+    expect(slots).toHaveLength(60);
     expect(new Set(slots.map((s) => s.date)).size).toBe(30);
-    for (const s of slots) expect(s.time).toBe('20:00');
-    // Une vidéo par jour (demande du 21/11/2026) : les quatre formats tournent, jamais le même deux jours de suite.
+    slots.forEach((s, i) => expect(s.time).toBe(i % 2 === 0 ? '10:00' : '20:00'));
+    // Deux vidéos par jour (demande du 21/11/2026) : les quatre formats tournent sur deux jours, jamais deux fois de suite.
     expect(slots.slice(0, 4).map((s) => s.family)).toEqual(['conseil', 'court', 'formule', 'tuto']);
     expect(new Set(slots.slice(0, 4).map((s) => s.family)).size).toBe(4);
     for (let i = 1; i < slots.length; i++) {
