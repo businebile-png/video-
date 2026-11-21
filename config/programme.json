@@ -1,7 +1,29 @@
 {
-  "about": "Programme du mois (demande de l'utilisateur du 21/11/2026) : un format par heure, un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente.",
+  "about": "Programme du mois (demandes de l'utilisateur du 21/11/2026 : 3 vidéos par jour, à 00:00, 10:00 et 20:00) : un format par heure (00:00 format court un jour sur deux, erreur ou conseil l'autre jour), un besoin différent à chaque créneau d'une même journée, 12 besoins qui tournent tous les 3 jours d'un format à l'autre. Pistes d'angle seulement : les faits cités viennent de data/facts/ et la production reformule si l'angle ressemble trop à une vidéo récente.",
   "epoch": "2026-11-21",
   "families": [
+    {
+      "time": "00:00",
+      "id": "court",
+      "label": "Format court « lien en bio »",
+      "targetSec": [
+        15,
+        25
+      ],
+      "offset": 9,
+      "parity": 1
+    },
+    {
+      "time": "00:00",
+      "id": "conseil",
+      "label": "Erreur à éviter ou conseil",
+      "targetSec": [
+        25,
+        35
+      ],
+      "offset": 3,
+      "parity": 0
+    },
     {
       "time": "10:00",
       "id": "tuto",
@@ -13,16 +35,6 @@
       "offset": 0
     },
     {
-      "time": "15:00",
-      "id": "conseil",
-      "label": "Erreur à éviter ou conseil",
-      "targetSec": [
-        25,
-        35
-      ],
-      "offset": 3
-    },
-    {
       "time": "20:00",
       "id": "formule",
       "label": "Quelle formule prendre",
@@ -31,16 +43,6 @@
         45
       ],
       "offset": 6
-    },
-    {
-      "time": "00:00",
-      "id": "court",
-      "label": "Format court « lien en bio »",
-      "targetSec": [
-        15,
-        25
-      ],
-      "offset": 9
     }
   ],
   "themes": [

@@ -67,7 +67,7 @@ h3.sub { font-size: 16px; margin: 22px 0 10px; }
 .today-stack { display: grid; gap: 16px; }
 @media (max-width: 980px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .week { display: grid; gap: 12px; }
-.weekday { display: grid; grid-template-columns: 150px repeat(4, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+.weekday { display: grid; grid-template-columns: 150px repeat(var(--slots, 3), minmax(0, 1fr)); gap: 10px; align-items: stretch; }
 .weekday .dayname { font-weight: 600; padding-top: 14px; }
 .weekday.today .dayname { color: var(--accent); }
 .netchips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; margin-top: 8px; }
@@ -75,7 +75,7 @@ h3.sub { font-size: 16px; margin: 22px 0 10px; }
 .netchips .ok { background: var(--ok-soft); color: var(--ok); }
 .netchips .info { background: var(--accent-soft); color: var(--accent); }
 .place select { max-width: 100%; }
-@media (max-width: 1100px) { .weekday { grid-template-columns: repeat(2, minmax(0, 1fr)); } .weekday .dayname { grid-column: 1 / -1; padding-top: 0; } }
+@media (max-width: 1100px) { .weekday { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } .weekday .dayname { grid-column: 1 / -1; padding-top: 0; } }
 @media (max-width: 560px) { .weekday { grid-template-columns: minmax(0, 1fr); } }
 .month { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .mday { gap: 2px; align-content: start; }
@@ -283,7 +283,7 @@ a.btn { text-decoration: none; display: inline-block; }
 
   <section class="view" id="view-mois" hidden>
     <div class="viewhead">
-      <div><h2>Le programme du mois</h2><p>Les 30 prochains jours, 4 vidéos par jour : le sujet prévu à chaque créneau, son format et la formule conseillée, puis la vraie vidéo dès qu’elle existe.</p></div>
+      <div><h2>Le programme du mois</h2><p>Les 30 prochains jours, 3 vidéos par jour : le sujet prévu à chaque créneau, son format et la formule conseillée, puis la vraie vidéo dès qu’elle existe.</p></div>
     </div>
     <div id="month" class="today-stack"></div>
   </section>
@@ -857,7 +857,7 @@ function renderPending() {
   const box = document.getElementById('pending');
   const intro = document.getElementById('pending-intro');
   if (intro) intro.textContent = S.settings && S.settings.approval === 'auto'
-    ? `Publication 100 % automatique : chaque matin, une production de Claude prépare les 4 vidéos suivantes et les fait relire. Si une vidéo est cohérente, avec tous les contrôles validés, elle part toute seule sur TikTok, Instagram, YouTube et Threads${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est corrigée et rien n’est publié tant qu’elle n’y arrive pas. Vous suivez tout ici et pouvez arrêter une vidéo avant son heure.`
+    ? `Publication 100 % automatique : chaque matin, une production de Claude prépare les 3 vidéos suivantes et les fait relire. Si une vidéo est cohérente, avec tous les contrôles validés, elle part toute seule sur TikTok, Instagram, YouTube et Threads${postTimesLabel(S.settings) ? ' (' + postTimesLabel(S.settings) + ')' : ''} ; en dessous, elle est corrigée et rien n’est publié tant qu’elle n’y arrive pas. Vous suivez tout ici et pouvez arrêter une vidéo avant son heure.`
     : 'Chaque matin, la production quotidienne dépose ici la vidéo du jour, sa note sur 100 et ses légendes. Regardez-la avec le son, ajustez si besoin, puis validez : la publication est programmée dans Metricool.';
   const keepFocus = document.activeElement && document.activeElement.id ? document.activeElement.id : null;
   const selStart = keepFocus && document.activeElement.selectionStart;
@@ -944,7 +944,7 @@ const GH_QUEUE = GH + '/tree/claude/serene-maxwell-pdm5wr/queue';
  */
 async function fireTrigger(text) {
   window.open(GH_RUN, '_blank', 'noopener');
-  S.ui.triggerMsg = {tone: 'ok', text: 'Page GitHub ouverte : cliquez « Run workflow » puis « Run workflow » (vert). La vidéo est prête en 1 à 2 h, puis publiée au créneau libre suivant (00:00, 10:00, 15:00 ou 20:00).' + (/Correction/.test(text) ? ' La correction demandée est notée sur la fiche ; la prochaine production repart d’un nouveau sujet.' : '')};
+  S.ui.triggerMsg = {tone: 'ok', text: 'Page GitHub ouverte : cliquez « Run workflow » puis « Run workflow » (vert). La vidéo est prête en 1 à 2 h, puis publiée au créneau libre suivant (00:00, 10:00 ou 20:00).' + (/Correction/.test(text) ? ' La correction demandée est notée sur la fiche ; la prochaine production repart d’un nouveau sujet.' : '')};
   render();
 }
 
@@ -1327,11 +1327,11 @@ function dayKey(offset) {
 }
 function slotInstant(day, hhmm) { const sl = localToSlot(`${day}T${hhmm}`, tz()); return sl ? sl.instant.getTime() : NaN; }
 const nearSlot = (iso, t) => Math.abs(Date.parse(iso || '') - t) < 20 * 60000;
-function autoTimes() { const st = S.settings || {}; return (st.autoSchedule && st.autoSchedule.times) || ['00:00', '10:00', '15:00', '20:00']; }
-// Since 21/11/2026: 4 videos a day (00:00, 10:00, 15:00, 20:00); one Claude production at 5:47 makes the next four
-// (15:00 and 20:00 the same day, 00:00 and 10:00 the next day) and one scheduling a day (13:35) sends them to the 4 networks.
-const PROD_AT = {'00:00': '5:47 la veille', '10:00': '5:47 la veille', '15:00': '5:47', '20:00': '5:47'};
-const SCHED_AT = {'00:00': '13:35 la veille', '10:00': '13:35 la veille', '15:00': '13:35', '20:00': '13:35'};
+function autoTimes() { const st = S.settings || {}; return (st.autoSchedule && st.autoSchedule.times) || ['00:00', '10:00', '20:00']; }
+// Since 21/11/2026: 3 videos a day (00:00, 10:00, 20:00); one Claude production at 5:47 makes the next three
+// (20:00 the same day, 00:00 and 10:00 the next day) and one scheduling a day (13:35) sends them to the 4 networks.
+const PROD_AT = {'00:00': '5:47 la veille', '10:00': '5:47 la veille', '20:00': '5:47'};
+const SCHED_AT = {'00:00': '13:35 la veille', '10:00': '13:35 la veille', '20:00': '13:35'};
 function listFr(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' et ' + a[a.length - 1]; }
 function secLabel(sec) { const v = Math.max(0, Math.round(Number(sec) || 0)); return `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`; }
 function clipText(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
@@ -1512,10 +1512,10 @@ function renderWeek() {
     S.ui.weekMsg ? h('div', {class: 'result ' + S.ui.weekMsg.tone, text: S.ui.weekMsg.text}) : null);
   box.replaceChildren(
     h('div', {class: 'card'}, h('strong', {text: 'Comment ça marche'}), h('div', {class: 'small', text: `Chaque matin à 5:47, Claude fabrique ${times.length} vidéos, en suivant le programme du mois (onglet « Mois »). Chaque jour à 13:35, elles sont programmées sur TikTok, Instagram, YouTube et Threads. Elles partent toutes seules à ${listFr(times)}.`})),
-    h('div', {class: 'week'}, ...rows), place);
+    h('div', {class: 'week', style: '--slots:' + times.length}, ...rows), place);
 }
 
-// ---------- month view: the programme (data/programme.json, copied to programme/current), 30 days × 4 slots ----------
+// ---------- month view: the programme (data/programme.json, copied to programme/current), 30 days × the daily slots ----------
 function programmeAt(t) { const p = S.programme; return (p && Array.isArray(p.slots) && p.slots.find((s) => Math.abs(Date.parse(s.iso) - t) < 60000)) || null; }
 function monthSlotRow(s) {
   const t = Date.parse(s.iso);
@@ -1554,7 +1554,7 @@ function renderMonth() {
   }
   box.replaceChildren(
     h('div', {class: 'card'}, h('strong', {text: 'Comment le programme est construit'}),
-      h('div', {class: 'small', text: 'Un format par heure : 00:00 format court « lien en bio », 10:00 tuto de A à Z, 15:00 erreur à éviter ou conseil, 20:00 quelle formule prendre et pourquoi. Chaque jour, les 4 vidéos parlent de 4 besoins différents (tunnel de vente, liste e-mail, formation, automatisations, site…) et chaque besoin revient tous les 3 jours dans un autre format. La formule conseillée s’appuie sur les tarifs officiels vérifiés ; le texte exact de chaque vidéo est écrit et relu le jour de sa production.'}),
+      h('div', {class: 'small', text: 'Un format par heure : 00:00 format court « lien en bio » un jour sur deux et erreur à éviter ou conseil l’autre jour, 10:00 tuto de A à Z, 20:00 quelle formule prendre et pourquoi. Chaque jour, les 3 vidéos parlent de 3 besoins différents (tunnel de vente, liste e-mail, formation, automatisations, site…) et chaque besoin revient tous les 3 jours dans un autre format. La formule conseillée s’appuie sur les tarifs officiels vérifiés ; le texte exact de chaque vidéo est écrit et relu le jour de sa production.'}),
       h('div', {class: 'small muted', text: `Programme du ${weekDayLabel(p.from)} au ${weekDayLabel(p.to)}, prolongé automatiquement quand il reste moins de 7 jours.`})),
     ...weeks.map((w) => h('div', {class: 'mweek'},
       h('h3', {class: 'sub', text: (w.start === today ? 'Cette semaine, à partir d’aujourd’hui' : 'Semaine du ' + weekDayLabel(w.start))}),

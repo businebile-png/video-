@@ -5,9 +5,9 @@ import {addDays, daysBetween, formatWithOffset, zonedInstant} from '../core/time
 import type {Editorial} from '../schemas/config.js';
 
 /**
- * Programme du mois (demande de l'utilisateur du 21/11/2026) : chaque heure de publication a sa famille de format
- * (10:00 tutoriel de A à Z, 15:00 erreur ou conseil, 20:00 quelle formule prendre, 00:00 format court) et chaque
- * créneau reçoit un besoin (tunnel, liste e-mail, formation…). Le besoin d'une famille avance d'un cran par jour et
+ * Programme du mois (demandes de l'utilisateur du 21/11/2026) : chaque heure de publication a sa famille de format
+ * (10:00 tutoriel de A à Z, 20:00 quelle formule prendre, 00:00 format court un jour sur deux et erreur ou conseil
+ * l'autre jour, `parity`) et chaque créneau reçoit un besoin (tunnel, liste e-mail, formation…). Le besoin d'une famille avance d'un cran par jour et
  * les familles sont décalées entre elles : les quatre vidéos d'une journée traitent quatre besoins différents, et
  * un besoin revient tous les 3 jours dans un autre format. Le calcul part de `epoch` : régénérer le programme plus
  * tard redonne les mêmes sujets aux mêmes dates.
@@ -20,7 +20,17 @@ export const ProgrammeConfigSchema = z.object({
   about: z.string().optional(),
   epoch: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   families: z
-    .array(z.object({time: hhmm, id: z.string().min(2), label: z.string().min(2), targetSec: z.tuple([z.number().min(5), z.number().max(120)]), offset: z.number().int().min(0)}))
+    .array(
+      z.object({
+        time: hhmm,
+        id: z.string().min(2),
+        label: z.string().min(2),
+        targetSec: z.tuple([z.number().min(5), z.number().max(120)]),
+        offset: z.number().int().min(0),
+        /** 0: even days only, 1: odd days only (days counted from `epoch`); absent: every day. */
+        parity: z.union([z.literal(0), z.literal(1)]).optional(),
+      }),
+    )
     .min(1),
   themes: z
     .array(
@@ -70,10 +80,15 @@ const mod = (n: number, m: number) => ((n % m) + m) % m;
 export function programmeProblems(cfg: ProgrammeConfig, editorial: Editorial, factIds: Set<string>): string[] {
   const problems: string[] = [];
   const categories = new Set(editorial.categories.map((c) => c.id));
-  const offsets = new Set<number>();
-  for (const f of cfg.families) {
-    if (offsets.has(mod(f.offset, cfg.themes.length))) problems.push(`familles ${f.id} : même décalage qu'une autre famille (deux vidéos du même jour auraient le même besoin)`);
-    offsets.add(mod(f.offset, cfg.themes.length));
+  for (const parity of [0, 1]) {
+    const offsets = new Set<number>();
+    const times = new Set<string>();
+    for (const f of cfg.families.filter((x) => x.parity === undefined || x.parity === parity)) {
+      if (offsets.has(mod(f.offset, cfg.themes.length))) problems.push(`familles ${f.id} : même décalage qu'une autre famille du même jour (deux vidéos auraient le même besoin)`);
+      if (times.has(f.time)) problems.push(`familles ${f.id} : deux familles à ${f.time} le même jour`);
+      offsets.add(mod(f.offset, cfg.themes.length));
+      times.add(f.time);
+    }
   }
   for (const t of cfg.themes) {
     for (const id of t.facts) if (!factIds.has(id)) problems.push(`${t.id} : fait inconnu « ${id} »`);
@@ -95,7 +110,7 @@ export function buildProgramme(cfg: ProgrammeConfig, editorial: Editorial, opts:
   for (let i = 0; i < opts.days; i++) {
     const date = addDays(opts.from, i);
     const day = daysBetween(cfg.epoch, date);
-    for (const fam of families) {
+    for (const fam of families.filter((f) => f.parity === undefined || f.parity === mod(day, 2))) {
       const n = day + fam.offset;
       const theme = cfg.themes[mod(n, count)]!;
       const variants = theme.angles[fam.id] ?? [];

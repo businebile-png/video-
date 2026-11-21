@@ -3,7 +3,7 @@
 Ce guide est suivi par Claude à chaque production (tâches programmées de 5:47 et 14:47, bouton « Lancer une
 production maintenant » du panneau, ou demande manuelle). Il produit **une** vidéo de haute qualité,
 la fait relire par un relecteur indépendant, la dépose dans le panneau, puis, en mode automatique
-(`approval: "auto"`, choix de l'utilisateur), la marque prête pour son créneau (00:00, 10:00, 15:00 ou 20:00) : la tâche de
+(`approval: "auto"`, choix de l'utilisateur), la marque prête pour son créneau (00:00, 10:00 ou 20:00) : la tâche de
 programmation la publie (section 9).
 Rien n'est publié qui n'a pas passé tous les contrôles avec au moins 80/100 (seuil choisi par l'utilisateur le 07/11/2026, `publish.minScore`).
 
@@ -227,26 +227,27 @@ npm run studio -- media:push <runId>
 2. `npm run studio -- panel:export <runId> --preview-asset <id> --preview-url <url> --cover-asset <id> --cover-url <url>`
 3. `ArtifactData set` sur `videos/<runId>` avec `file_path: "runs/<runId>/panel/video.json"`.
 
-## 9. Publication automatique à 00:00, 10:00, 15:00 et 20:00 (réglage `approval: "auto"`, choisi par l'utilisateur le 08/11/2026)
+## 9. Publication automatique à 00:00, 10:00 et 20:00 (réglage `approval: "auto"`, choisi par l'utilisateur le 08/11/2026)
 
-L'utilisateur ne valide plus : **quatre vidéos par jour** (demande du 21/11/2026) partent toutes seules sur TikTok,
-Instagram, YouTube et Threads, **à 00:00, 10:00, 15:00 et 20:00** (Europe/Paris), si la relecture les juge
+L'utilisateur ne valide plus : **trois vidéos par jour** (demande du 21/11/2026) partent toutes seules sur TikTok,
+Instagram, YouTube et Threads, **à 00:00, 10:00 et 20:00** (Europe/Paris), si la relecture les juge
 cohérentes et si tous les contrôles obligatoires sont validés.
 
 - **Productions** : la tâche « Production Systeme.io » réveille la session principale à 5:47 ; elle crée **une**
-  session de production (`create_session`, modèle économe) pour les 4 premiers créneaux libres à plus de 6 h
-  (15:00 et 20:00 du jour, 00:00 et 10:00 du lendemain), avec pour chacun le sujet du **programme du mois**
+  session de production (`create_session`, modèle économe) pour les 3 premiers créneaux libres à plus de 6 h
+  (20:00 du jour, 00:00 et 10:00 du lendemain), avec pour chacun le sujet du **programme du mois**
   (`data/programme.json`, section 9 bis). Un créneau déjà occupé par une vidéo de la file passe au suivant.
   Le journal porte `slot` (créneau) pour le tableau de bord.
 - **Programmation** : la tâche « Publication Metricool » (13:35) programme toutes les vidéos prêtes de la file
-  sur les 4 réseaux. La formule gratuite de Metricool ne permet que 20 publications par mois : 4 vidéos sur
-  4 réseaux en font 16 par jour, il faut donc une formule payante de Metricool, sinon la vidéo reste dans le
+  sur les 4 réseaux. La formule gratuite de Metricool ne permet que 20 publications par mois : 3 vidéos sur
+  4 réseaux en font 12 par jour, il faut donc une formule payante de Metricool, sinon la vidéo reste dans le
   panneau avec « La poster moi-même ».
 
 ## 9 bis. Programme du mois
 
 `npm run studio -- programme --days 30` écrit `data/programme.json` : pour chaque créneau, un format (famille
-d'horaire : 10:00 tutoriel de A à Z, 15:00 erreur ou conseil, 20:00 quelle formule prendre, 00:00 format court),
+d'horaire : 10:00 tutoriel de A à Z, 20:00 quelle formule prendre, 00:00 format court un jour sur deux et erreur ou
+conseil l'autre jour),
 une catégorie (`new --category`), un besoin (tunnel, liste e-mail, formation…), une piste d'angle, la formule
 à conseiller et les faits vérifiés à citer (`data/facts/`). Les sujets viennent de `config/programme.json`.
 La production suit l'entrée de son créneau (`new --category <categorie>`, angle proche de la piste, formule

@@ -19,17 +19,20 @@ describe('programme du mois', () => {
     expect(programmeProblems(cfg, editorial, facts)).toEqual([]);
   });
 
-  it('donne 4 créneaux par jour, 4 besoins différents chaque jour, dans la durée de chaque catégorie', async () => {
+  it('donne 3 créneaux par jour, 3 besoins différents chaque jour, dans la durée de chaque catégorie', async () => {
     const {config, editorial, cfg} = await setup();
     const slots = buildProgramme(cfg, editorial, {from: '2026-11-21', days: 30, timezone: 'Europe/Paris', times: config.platforms.tiktok.postTimes});
-    expect(slots).toHaveLength(120);
+    expect(slots).toHaveLength(90);
     const byDay = new Map<string, typeof slots>();
     for (const s of slots) byDay.set(s.date, [...(byDay.get(s.date) ?? []), s]);
     expect(byDay.size).toBe(30);
     for (const day of byDay.values()) {
-      expect(day.map((s) => s.time)).toEqual(['00:00', '10:00', '15:00', '20:00']);
-      expect(new Set(day.map((s) => s.theme)).size).toBe(4);
+      expect(day.map((s) => s.time)).toEqual(['00:00', '10:00', '20:00']);
+      expect(new Set(day.map((s) => s.theme)).size).toBe(3);
     }
+    // 00:00 alternates the short format and the « erreur ou conseil » format, day after day.
+    const midnights = slots.filter((s) => s.time === '00:00').map((s) => s.family);
+    expect(midnights.slice(0, 4)).toEqual(['conseil', 'court', 'conseil', 'court']);
     for (const s of slots) {
       const cat = editorial.categories.find((c) => c.id === s.category)!;
       expect(s.durationSec[0]).toBeGreaterThanOrEqual(cat.durationSec[0]);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T06:57:15.173Z",
+  "generatedAt": "2026-11-21T07:03:56.224Z",
   "from": "2026-11-21",
   "to": "2026-12-20",
   "timezone": "Europe/Paris",
@@ -9,23 +9,25 @@
       "date": "2026-11-21",
       "time": "00:00",
       "label": "samedi 21 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "automatisation",
+      "categoryLabel": "Automatisation du marketing",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Un code promo pour ton lancement, depuis le même outil.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
+      "theme": "automatisation",
+      "themeLabel": "Automatisations",
+      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
+      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
       "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
+        "feature.automations",
+        "feature.auto-email-on-subscribe",
+        "rule.trigger",
+        "rule.action-send-email",
+        "plan.table.automation-rules",
+        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -51,34 +53,6 @@
         "feature.funnels",
         "feature.landing-pages",
         "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-21T15:00:00+01:00",
-      "date": "2026-11-21",
-      "time": "15:00",
-      "label": "samedi 21 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "automatisation",
-      "categoryLabel": "Automatisation du marketing",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -161,31 +135,6 @@
       ]
     },
     {
-      "iso": "2026-11-22T15:00:00+01:00",
-      "date": "2026-11-22",
-      "time": "15:00",
-      "label": "dimanche 22 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "organisation",
-      "categoryLabel": "Organiser son activité en ligne",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site, ton blog et tes tunnels au même endroit : un seul outil à tenir à jour au lieu de trois.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
       "iso": "2026-11-22T20:00:00+01:00",
       "date": "2026-11-22",
       "time": "20:00",
@@ -215,24 +164,25 @@
       "date": "2026-11-23",
       "time": "00:00",
       "label": "lundi 23 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "produits-numeriques",
+      "categoryLabel": "Vendre des produits numériques",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Ta présentation, diffusée automatiquement.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
+      "theme": "produits",
+      "themeLabel": "Produits numériques",
+      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
+      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
       "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
+        "feature.digital-products",
+        "feature.physical-products",
+        "feature.payments",
+        "plan.transaction-fees",
+        "plan.table.funnels",
+        "plan.startup.price"
       ]
     },
     {
@@ -262,32 +212,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-11-23T15:00:00+01:00",
-      "date": "2026-11-23",
-      "time": "15:00",
-      "label": "lundi 23 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "produits-numeriques",
-      "categoryLabel": "Vendre des produits numériques",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
       ]
     },
     {
@@ -373,30 +297,6 @@
       ]
     },
     {
-      "iso": "2026-11-24T15:00:00+01:00",
-      "date": "2026-11-24",
-      "time": "15:00",
-      "label": "mardi 24 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une communauté peut garder tes élèves actifs entre deux leçons : comment la lancer sans y passer tes journées.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-11-24T20:00:00+01:00",
       "date": "2026-11-24",
       "time": "20:00",
@@ -427,26 +327,24 @@
       "date": "2026-11-25",
       "time": "00:00",
       "label": "mercredi 25 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
-        20,
-        25
+        25,
+        35
       ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "2 000 contacts et des e-mails envoyés illimités, sans payer ni carte bancaire.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
+      "theme": "campagnes",
+      "themeLabel": "Campagnes e-mail et newsletter",
+      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
+      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
       "facts": [
-        "feature.landing-pages",
         "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
+        "plan.table.email-campaigns",
         "plan.table.emails-sent",
-        "plan.startup.price"
+        "plan.startup.price",
+        "plan.webinar.price"
       ]
     },
     {
@@ -472,31 +370,6 @@
         "plan.free.limits",
         "plan.startup.custom-domain",
         "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-11-25T15:00:00+01:00",
-      "date": "2026-11-25",
-      "time": "15:00",
-      "label": "mercredi 25 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
       ]
     },
     {
@@ -581,35 +454,6 @@
       ]
     },
     {
-      "iso": "2026-11-26T15:00:00+01:00",
-      "date": "2026-11-26",
-      "time": "15:00",
-      "label": "jeudi 26 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "L'erreur : prendre la plus grosse formule dès le départ. Paie pour ce dont tu as besoin aujourd'hui.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
       "iso": "2026-11-26T20:00:00+01:00",
       "date": "2026-11-26",
       "time": "20:00",
@@ -639,25 +483,23 @@
       "date": "2026-11-27",
       "time": "00:00",
       "label": "vendredi 27 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ton premier e-mail automatique tient en une seule règle. Lien en bio.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
+      "theme": "promo",
+      "themeLabel": "Codes promo et tests A/B",
+      "angle": "Avant de refaire toute ta page, teste un seul élément avec un test A/B.",
+      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
       "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
+        "feature.coupons",
+        "feature.ab-testing",
+        "plan.table.coupons",
+        "plan.table.ab-tests",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -682,32 +524,6 @@
       "facts": [
         "feature.community",
         "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-11-27T15:00:00+01:00",
-      "date": "2026-11-27",
-      "time": "15:00",
-      "label": "vendredi 27 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Avant de refaire toute ta page, teste un seul élément avec un test A/B.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -788,32 +604,6 @@
       ]
     },
     {
-      "iso": "2026-11-28T15:00:00+01:00",
-      "date": "2026-11-28",
-      "time": "15:00",
-      "label": "samedi 28 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "formations-en-ligne",
-      "categoryLabel": "Créer et vendre une formation",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "Teste ton idée de formation avec une première version courte avant de tout enregistrer.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-11-28T20:00:00+01:00",
       "date": "2026-11-28",
       "time": "20:00",
@@ -845,25 +635,24 @@
       "date": "2026-11-29",
       "time": "00:00",
       "label": "dimanche 29 novembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
       "durationSec": [
-        20,
-        25
+        25,
+        35
       ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Systeme.io n'ajoute aucun frais sur tes paiements : seuls ceux du processeur restent dus.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
+      "theme": "webinaire",
+      "themeLabel": "Webinaires automatiques",
+      "angle": "Avant de payer pour les webinaires, vends d'abord avec un tunnel simple.",
+      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
       "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
+        "feature.webinars",
+        "plan.table.webinars",
+        "plan.webinar.price",
+        "plan.unlimited.price",
+        "plan.webinar.limits"
       ]
     },
     {
@@ -893,31 +682,6 @@
         "plan.prices.ttc",
         "service.migration",
         "service.support"
-      ]
-    },
-    {
-      "iso": "2026-11-29T15:00:00+01:00",
-      "date": "2026-11-29",
-      "time": "15:00",
-      "label": "dimanche 29 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Avant de payer pour les webinaires, vends d'abord avec un tunnel simple.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
       ]
     },
     {
@@ -1000,31 +764,6 @@
       ]
     },
     {
-      "iso": "2026-11-30T15:00:00+01:00",
-      "date": "2026-11-30",
-      "time": "15:00",
-      "label": "lundi 30 novembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "tunnels-de-vente",
-      "categoryLabel": "Les tunnels de vente",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "Un tunnel, c'est un chemin : une page, une action, puis la suivante. Commence par une seule offre.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-11-30T20:00:00+01:00",
       "date": "2026-11-30",
       "time": "20:00",
@@ -1057,24 +796,26 @@
       "date": "2026-12-01",
       "time": "00:00",
       "label": "mardi 1 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "E-mails envoyés illimités, même en gratuit. Lien en bio.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
+      "theme": "liste",
+      "themeLabel": "Liste e-mail",
+      "angle": "L'erreur : ne compter que sur l'algorithme pour joindre ton audience. Une liste e-mail, c'est un contact direct en plus.",
+      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
       "facts": [
+        "feature.landing-pages",
         "feature.email-marketing",
-        "plan.table.email-campaigns",
+        "plan.free.contacts",
+        "plan.free.no-card",
+        "plan.startup.contacts",
         "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "plan.startup.price"
       ]
     },
     {
@@ -1101,33 +842,6 @@
         "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-01T15:00:00+01:00",
-      "date": "2026-12-01",
-      "time": "15:00",
-      "label": "mardi 1 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "L'erreur : ne compter que sur l'algorithme pour joindre ton audience. Une liste e-mail, c'est un contact direct en plus.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
       ]
     },
     {
@@ -1210,35 +924,6 @@
       ]
     },
     {
-      "iso": "2026-12-02T15:00:00+01:00",
-      "date": "2026-12-02",
-      "time": "15:00",
-      "label": "mercredi 2 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "L'erreur : attendre d'avoir un produit fini pour ouvrir ton compte. Le plan gratuit ne demande pas de carte bancaire.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
-      ]
-    },
-    {
       "iso": "2026-12-02T20:00:00+01:00",
       "date": "2026-12-02",
       "time": "20:00",
@@ -1269,23 +954,25 @@
       "date": "2026-12-03",
       "time": "00:00",
       "label": "jeudi 3 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Deux versions de ta page. Tu gardes la meilleure.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
+      "theme": "automatisation",
+      "themeLabel": "Automatisations",
+      "angle": "L'erreur : répondre à la main à chaque nouvel inscrit. Une règle d'automatisation le fait à ta place.",
+      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
       "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
+        "feature.automations",
+        "feature.auto-email-on-subscribe",
+        "rule.trigger",
+        "rule.action-send-email",
+        "plan.table.automation-rules",
+        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -1311,34 +998,6 @@
         "feature.funnels",
         "feature.landing-pages",
         "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-03T15:00:00+01:00",
-      "date": "2026-12-03",
-      "time": "15:00",
-      "label": "jeudi 3 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "L'erreur : répondre à la main à chaque nouvel inscrit. Une règle d'automatisation le fait à ta place.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -1421,31 +1080,6 @@
       ]
     },
     {
-      "iso": "2026-12-04T15:00:00+01:00",
-      "date": "2026-12-04",
-      "time": "15:00",
-      "label": "vendredi 4 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "L'erreur : un site sans aucun moyen de récupérer l'e-mail de tes visiteurs.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
       "iso": "2026-12-04T20:00:00+01:00",
       "date": "2026-12-04",
       "time": "20:00",
@@ -1475,24 +1109,25 @@
       "date": "2026-12-05",
       "time": "00:00",
       "label": "samedi 5 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "probleme-entrepreneur",
+      "categoryLabel": "Problème d'entrepreneur",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "10 webinaires automatiques avec la formule Webinaire. Lien en bio.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
+      "theme": "produits",
+      "themeLabel": "Produits numériques",
+      "angle": "Ta page, ton paiement et ton e-mail dans trois outils qui ne se parlent pas ? Tout relier au même endroit.",
+      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
       "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
+        "feature.digital-products",
+        "feature.physical-products",
+        "feature.payments",
+        "plan.transaction-fees",
+        "plan.table.funnels",
+        "plan.startup.price"
       ]
     },
     {
@@ -1522,32 +1157,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-05T15:00:00+01:00",
-      "date": "2026-12-05",
-      "time": "15:00",
-      "label": "samedi 5 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "probleme-entrepreneur",
-      "categoryLabel": "Problème d'entrepreneur",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ta page, ton paiement et ton e-mail dans trois outils qui ne se parlent pas ? Tout relier au même endroit.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
       ]
     },
     {
@@ -1633,30 +1242,6 @@
       ]
     },
     {
-      "iso": "2026-12-06T15:00:00+01:00",
-      "date": "2026-12-06",
-      "time": "15:00",
-      "label": "dimanche 6 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "organisation",
-      "categoryLabel": "Organiser son activité en ligne",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Ta communauté au même endroit que tes formations et tes e-mails, plutôt qu'un groupe de plus à gérer.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-12-06T20:00:00+01:00",
       "date": "2026-12-06",
       "time": "20:00",
@@ -1687,26 +1272,24 @@
       "date": "2026-12-07",
       "time": "00:00",
       "label": "lundi 7 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "organisation",
+      "categoryLabel": "Organiser son activité en ligne",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "Ta liste e-mail commence par une seule page. Lien en bio.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
+      "theme": "campagnes",
+      "themeLabel": "Campagnes e-mail et newsletter",
+      "angle": "Une newsletter régulière sans y passer tes soirées : prépare-la et envoie-la depuis l'outil de tes pages.",
+      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
       "facts": [
-        "feature.landing-pages",
         "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
+        "plan.table.email-campaigns",
         "plan.table.emails-sent",
-        "plan.startup.price"
+        "plan.startup.price",
+        "plan.webinar.price"
       ]
     },
     {
@@ -1732,31 +1315,6 @@
         "plan.free.limits",
         "plan.startup.custom-domain",
         "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-07T15:00:00+01:00",
-      "date": "2026-12-07",
-      "time": "15:00",
-      "label": "lundi 7 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "organisation",
-      "categoryLabel": "Organiser son activité en ligne",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Une newsletter régulière sans y passer tes soirées : prépare-la et envoie-la depuis l'outil de tes pages.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
       ]
     },
     {
@@ -1841,35 +1399,6 @@
       ]
     },
     {
-      "iso": "2026-12-08T15:00:00+01:00",
-      "date": "2026-12-08",
-      "time": "15:00",
-      "label": "mardi 8 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "Mensuel d'abord, annuel quand tu es sûr : l'annuel offre 2 mois, mais engage-toi au bon moment.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
-      ]
-    },
-    {
       "iso": "2026-12-08T20:00:00+01:00",
       "date": "2026-12-08",
       "time": "20:00",
@@ -1899,25 +1428,23 @@
       "date": "2026-12-09",
       "time": "00:00",
       "label": "mercredi 9 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Quelqu'un s'inscrit, l'e-mail part. Sans toi.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
+      "theme": "promo",
+      "themeLabel": "Codes promo et tests A/B",
+      "angle": "L'erreur : deviner quel titre marche. Un test A/B te montre lequel.",
+      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
       "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
+        "feature.coupons",
+        "feature.ab-testing",
+        "plan.table.coupons",
+        "plan.table.ab-tests",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -1942,32 +1469,6 @@
       "facts": [
         "feature.community",
         "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-09T15:00:00+01:00",
-      "date": "2026-12-09",
-      "time": "15:00",
-      "label": "mercredi 9 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "L'erreur : deviner quel titre marche. Un test A/B te montre lequel.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
-      "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -2048,32 +1549,6 @@
       ]
     },
     {
-      "iso": "2026-12-10T15:00:00+01:00",
-      "date": "2026-12-10",
-      "time": "15:00",
-      "label": "jeudi 10 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "formation",
-      "themeLabel": "Formation en ligne",
-      "angle": "L'erreur : tourner dix heures de vidéo avant d'avoir un seul élève.",
-      "formule": "Plan gratuit : 1 formation et 500 élèves ; Startup (17 €/mois) : 5 formations et élèves illimités ; Webinaire (47 €/mois) : 20 formations.",
-      "facts": [
-        "feature.courses",
-        "plan.table.courses",
-        "plan.table.students",
-        "feature.payments",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-12-10T20:00:00+01:00",
       "date": "2026-12-10",
       "time": "20:00",
@@ -2105,25 +1580,24 @@
       "date": "2026-12-11",
       "time": "00:00",
       "label": "vendredi 11 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "probleme-entrepreneur",
+      "categoryLabel": "Problème d'entrepreneur",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ton guide, ta page de vente, ton paiement. Lien en bio.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
+      "theme": "webinaire",
+      "themeLabel": "Webinaires automatiques",
+      "angle": "Tu refais la même présentation chaque semaine ? Le webinaire automatique la diffuse à ta place.",
+      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
       "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
+        "feature.webinars",
+        "plan.table.webinars",
+        "plan.webinar.price",
+        "plan.unlimited.price",
+        "plan.webinar.limits"
       ]
     },
     {
@@ -2153,31 +1627,6 @@
         "plan.prices.ttc",
         "service.migration",
         "service.support"
-      ]
-    },
-    {
-      "iso": "2026-12-11T15:00:00+01:00",
-      "date": "2026-12-11",
-      "time": "15:00",
-      "label": "vendredi 11 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "probleme-entrepreneur",
-      "categoryLabel": "Problème d'entrepreneur",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Tu refais la même présentation chaque semaine ? Le webinaire automatique la diffuse à ta place.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
-      "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
       ]
     },
     {
@@ -2260,31 +1709,6 @@
       ]
     },
     {
-      "iso": "2026-12-12T15:00:00+01:00",
-      "date": "2026-12-12",
-      "time": "15:00",
-      "label": "samedi 12 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "tunnel",
-      "themeLabel": "Tunnel de vente",
-      "angle": "L'erreur qui fait fuir les visiteurs : une page sans étape suivante. Chaque page de ton tunnel mène à la prochaine.",
-      "formule": "Plan gratuit pour un premier tunnel (3 tunnels inclus) ; Startup (17 €/mois) pour plusieurs offres (10 tunnels) ; Webinaire (47 €/mois) pour 50 tunnels et les webinaires automatiques.",
-      "facts": [
-        "feature.funnels",
-        "feature.landing-pages",
-        "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-12-12T20:00:00+01:00",
       "date": "2026-12-12",
       "time": "20:00",
@@ -2317,24 +1741,26 @@
       "date": "2026-12-13",
       "time": "00:00",
       "label": "dimanche 13 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "conseils-debutant",
+      "categoryLabel": "Conseils pour débuter",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "Tes e-mails partent du même outil que tes pages.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
+      "theme": "liste",
+      "themeLabel": "Liste e-mail",
+      "angle": "Commence ta liste avant ton produit : chaque inscrit est une personne à prévenir le jour du lancement.",
+      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
       "facts": [
+        "feature.landing-pages",
         "feature.email-marketing",
-        "plan.table.email-campaigns",
+        "plan.free.contacts",
+        "plan.free.no-card",
+        "plan.startup.contacts",
         "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
+        "plan.startup.price"
       ]
     },
     {
@@ -2361,33 +1787,6 @@
         "feature.payments",
         "plan.startup.price",
         "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-13T15:00:00+01:00",
-      "date": "2026-12-13",
-      "time": "15:00",
-      "label": "dimanche 13 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "Commence ta liste avant ton produit : chaque inscrit est une personne à prévenir le jour du lancement.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
-      "facts": [
-        "feature.landing-pages",
-        "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
-        "plan.table.emails-sent",
-        "plan.startup.price"
       ]
     },
     {
@@ -2470,35 +1869,6 @@
       ]
     },
     {
-      "iso": "2026-12-14T15:00:00+01:00",
-      "date": "2026-12-14",
-      "time": "15:00",
-      "label": "lundi 14 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "decouverte",
-      "themeLabel": "C'est quoi Systeme.io",
-      "angle": "Avant d'empiler un outil pour tes pages, un pour tes e-mails et un pour ta formation, regarde ce qu'un seul compte fait déjà.",
-      "formule": "Commencer avec le plan gratuit (0 €, sans carte bancaire) ; passer à Startup (17 €/mois) quand on dépasse ses limites (3 tunnels, 2 000 contacts, 1 règle d'automatisation).",
-      "facts": [
-        "plan.free.price",
-        "plan.free.no-card",
-        "plan.free.limits",
-        "plan.free.contacts",
-        "plan.startup.price",
-        "feature.funnels",
-        "feature.email-marketing",
-        "feature.courses",
-        "feature.website"
-      ]
-    },
-    {
       "iso": "2026-12-14T20:00:00+01:00",
       "date": "2026-12-14",
       "time": "20:00",
@@ -2529,23 +1899,25 @@
       "date": "2026-12-15",
       "time": "00:00",
       "label": "mardi 15 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "automatisation",
+      "categoryLabel": "Automatisation du marketing",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "promo",
-      "themeLabel": "Codes promo et tests A/B",
-      "angle": "Un code promo pour ton lancement, depuis le même outil.",
-      "formule": "Plan gratuit : 1 code promo et 1 test A/B ; Startup (17 €/mois) : 10 de chaque ; Webinaire (47 €/mois) : 50 de chaque.",
+      "theme": "automatisation",
+      "themeLabel": "Automatisations",
+      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
+      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
       "facts": [
-        "feature.coupons",
-        "feature.ab-testing",
-        "plan.table.coupons",
-        "plan.table.ab-tests",
+        "feature.automations",
+        "feature.auto-email-on-subscribe",
+        "rule.trigger",
+        "rule.action-send-email",
+        "plan.table.automation-rules",
+        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -2571,34 +1943,6 @@
         "feature.funnels",
         "feature.landing-pages",
         "plan.table.funnels",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
-      "iso": "2026-12-15T15:00:00+01:00",
-      "date": "2026-12-15",
-      "time": "15:00",
-      "label": "mardi 15 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "automatisation",
-      "categoryLabel": "Automatisation du marketing",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "automatisation",
-      "themeLabel": "Automatisations",
-      "angle": "Ton e-mail de bienvenue peut partir tout seul : un déclencheur (l'inscription à un formulaire), une action (envoyer l'e-mail), et c'est réglé.",
-      "formule": "Plan gratuit : 1 règle d'automatisation et 1 workflow ; Startup (17 €/mois) : 10 règles et 5 workflows ; Webinaire (47 €/mois) : 100 règles et 20 workflows.",
-      "facts": [
-        "feature.automations",
-        "feature.auto-email-on-subscribe",
-        "rule.trigger",
-        "rule.action-send-email",
-        "plan.table.automation-rules",
-        "plan.table.workflows",
         "plan.startup.price",
         "plan.webinar.price"
       ]
@@ -2681,31 +2025,6 @@
       ]
     },
     {
-      "iso": "2026-12-16T15:00:00+01:00",
-      "date": "2026-12-16",
-      "time": "15:00",
-      "label": "mercredi 16 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "organisation",
-      "categoryLabel": "Organiser son activité en ligne",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "site",
-      "themeLabel": "Site, blog et nom de domaine",
-      "angle": "Ton site, ton blog et tes tunnels au même endroit : un seul outil à tenir à jour au lieu de trois.",
-      "formule": "Plan gratuit : 1 domaine personnalisé ; Startup (17 €/mois) : jusqu'à 3 domaines personnalisés.",
-      "facts": [
-        "feature.website",
-        "feature.blog",
-        "plan.free.limits",
-        "plan.startup.custom-domain",
-        "plan.startup.price"
-      ]
-    },
-    {
       "iso": "2026-12-16T20:00:00+01:00",
       "date": "2026-12-16",
       "time": "20:00",
@@ -2735,24 +2054,25 @@
       "date": "2026-12-17",
       "time": "00:00",
       "label": "jeudi 17 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "edit-court",
-      "categoryLabel": "Edit court « lien en bio »",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "produits-numeriques",
+      "categoryLabel": "Vendre des produits numériques",
       "durationSec": [
-        15,
-        24
+        25,
+        35
       ],
-      "theme": "webinaire",
-      "themeLabel": "Webinaires automatiques",
-      "angle": "Ta présentation, diffusée automatiquement.",
-      "formule": "Les webinaires automatiques ne sont pas inclus en Gratuit ni en Startup : Webinaire (47 €/mois) en donne 10, Illimité (97 €/mois) sans limite.",
+      "theme": "produits",
+      "themeLabel": "Produits numériques",
+      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
+      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
       "facts": [
-        "feature.webinars",
-        "plan.table.webinars",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.webinar.limits"
+        "feature.digital-products",
+        "feature.physical-products",
+        "feature.payments",
+        "plan.transaction-fees",
+        "plan.table.funnels",
+        "plan.startup.price"
       ]
     },
     {
@@ -2782,32 +2102,6 @@
         "feature.email-marketing",
         "feature.courses",
         "feature.website"
-      ]
-    },
-    {
-      "iso": "2026-12-17T15:00:00+01:00",
-      "date": "2026-12-17",
-      "time": "15:00",
-      "label": "jeudi 17 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "produits-numeriques",
-      "categoryLabel": "Vendre des produits numériques",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "produits",
-      "themeLabel": "Produits numériques",
-      "angle": "Ton premier produit numérique peut être petit : un guide, un modèle, une checklist. Commence là.",
-      "formule": "Startup (17 €/mois) dès que tu veux plus de 3 tunnels de vente (10 inclus) ; Systeme.io n'ajoute aucun frais sur tes paiements (ceux du processeur de paiement restent dus).",
-      "facts": [
-        "feature.digital-products",
-        "feature.physical-products",
-        "feature.payments",
-        "plan.transaction-fees",
-        "plan.table.funnels",
-        "plan.startup.price"
       ]
     },
     {
@@ -2893,30 +2187,6 @@
       ]
     },
     {
-      "iso": "2026-12-18T15:00:00+01:00",
-      "date": "2026-12-18",
-      "time": "15:00",
-      "label": "vendredi 18 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "conseils-debutant",
-      "categoryLabel": "Conseils pour débuter",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "communaute",
-      "themeLabel": "Communauté",
-      "angle": "Une communauté peut garder tes élèves actifs entre deux leçons : comment la lancer sans y passer tes journées.",
-      "formule": "Plan gratuit : 1 communauté ; Startup (17 €/mois) : 5 ; Webinaire (47 €/mois) : 20 ; Illimité : sans limite.",
-      "facts": [
-        "feature.community",
-        "plan.table.communities",
-        "plan.startup.price",
-        "plan.webinar.price"
-      ]
-    },
-    {
       "iso": "2026-12-18T20:00:00+01:00",
       "date": "2026-12-18",
       "time": "20:00",
@@ -2947,26 +2217,24 @@
       "date": "2026-12-19",
       "time": "00:00",
       "label": "samedi 19 décembre à 00:00",
-      "family": "court",
-      "familyLabel": "Format court « lien en bio »",
-      "category": "pub-directe",
-      "categoryLabel": "Publicité directe",
+      "family": "conseil",
+      "familyLabel": "Erreur à éviter ou conseil",
+      "category": "erreurs-debutants",
+      "categoryLabel": "Erreurs fréquentes des débutants",
       "durationSec": [
-        20,
-        25
+        25,
+        35
       ],
-      "theme": "liste",
-      "themeLabel": "Liste e-mail",
-      "angle": "2 000 contacts et des e-mails envoyés illimités, sans payer ni carte bancaire.",
-      "formule": "Plan gratuit jusqu'à 2 000 contacts, avec des e-mails envoyés illimités ; Startup (17 €/mois) jusqu'à 5 000 contacts.",
+      "theme": "campagnes",
+      "themeLabel": "Campagnes e-mail et newsletter",
+      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
+      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
       "facts": [
-        "feature.landing-pages",
         "feature.email-marketing",
-        "plan.free.contacts",
-        "plan.free.no-card",
-        "plan.startup.contacts",
+        "plan.table.email-campaigns",
         "plan.table.emails-sent",
-        "plan.startup.price"
+        "plan.startup.price",
+        "plan.webinar.price"
       ]
     },
     {
@@ -2992,31 +2260,6 @@
         "plan.free.limits",
         "plan.startup.custom-domain",
         "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-19T15:00:00+01:00",
-      "date": "2026-12-19",
-      "time": "15:00",
-      "label": "samedi 19 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "campagnes",
-      "themeLabel": "Campagnes e-mail et newsletter",
-      "angle": "L'erreur : n'écrire à ta liste que pour vendre. Commence par des e-mails utiles.",
-      "formule": "Plan gratuit : 1 campagne e-mail ; Startup (17 €/mois) : 10 campagnes ; Webinaire (47 €/mois) : 100. Les e-mails envoyés sont illimités dans toutes les formules.",
-      "facts": [
-        "feature.email-marketing",
-        "plan.table.email-campaigns",
-        "plan.table.emails-sent",
-        "plan.startup.price",
-        "plan.webinar.price"
       ]
     },
     {
@@ -3098,35 +2341,6 @@
         "plan.transaction-fees",
         "plan.table.funnels",
         "plan.startup.price"
-      ]
-    },
-    {
-      "iso": "2026-12-20T15:00:00+01:00",
-      "date": "2026-12-20",
-      "time": "15:00",
-      "label": "dimanche 20 décembre à 15:00",
-      "family": "conseil",
-      "familyLabel": "Erreur à éviter ou conseil",
-      "category": "erreurs-debutants",
-      "categoryLabel": "Erreurs fréquentes des débutants",
-      "durationSec": [
-        25,
-        35
-      ],
-      "theme": "choisir",
-      "themeLabel": "Choisir sa formule",
-      "angle": "L'erreur : prendre la plus grosse formule dès le départ. Paie pour ce dont tu as besoin aujourd'hui.",
-      "formule": "Gratuit pour démarrer ; Startup (17 €/mois) pour plusieurs offres ; Webinaire (47 €/mois) pour vendre par webinaire ; Illimité (97 €/mois) sans limite. En annuel, 2 mois offerts (Startup : 170 €/an).",
-      "facts": [
-        "plan.free.price",
-        "plan.startup.price",
-        "plan.webinar.price",
-        "plan.unlimited.price",
-        "plan.annual-discount",
-        "plan.startup.price-annual",
-        "plan.prices.ttc",
-        "service.migration",
-        "service.support"
       ]
     },
     {

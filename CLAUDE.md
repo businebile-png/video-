@@ -27,13 +27,13 @@ répondre, commenter et écrire les messages de commit en français.
   branchement Google Cloud Text-to-Speech (`docs/voix-google.md`) reste disponible mais inutilisé : ne pas le remettre
   en tête des voix sans nouvelle demande de l'utilisateur (il exige une facturation Google activée).
 - Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). À 5:47, la session
-  principale lance une production Claude de 4 vidéos (modèle économe), une par créneau, qui suit le programme du mois
+  principale lance une production Claude de 3 vidéos (modèle économe), une par créneau, qui suit le programme du mois
   (`data/programme.json`, `npm run studio -- programme`), réserve chaque créneau (`queue:claim`) et met chaque vidéo
   dans `queue/` (`queue:add`). À 6:47 et 15:47, GitHub Actions (`npm run studio -- auto --if-needed`, IA gratuites :
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
   échec) : voir `docs/production-sans-claude.md`.
-- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : quatre vidéos par jour
-  depuis le 21/11/2026, à 00:00, 10:00, 15:00 et 20:00, sur TikTok et Instagram via Metricool, et aussi en Short sur YouTube et sur Threads depuis le 15/11/2026 (comptes
+- Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : trois vidéos par jour
+  depuis le 21/11/2026, à 00:00, 10:00 et 20:00, sur TikTok et Instagram via Metricool, et aussi en Short sur YouTube et sur Threads depuis le 15/11/2026 (comptes
   connectés à Metricool ; YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
   Threads : légende raccourcie à 500 caractères par `condenseForThreads`). Légendes : « Publicité · Systeme.io » en tête,
   sans phrase sur la commission (demande de l'utilisateur du 21/11/2026 ; « Publicité » reste obligatoire). Pas de note minimum (choix de l'utilisateur le
