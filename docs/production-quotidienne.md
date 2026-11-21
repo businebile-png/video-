@@ -120,6 +120,21 @@ Lire `runs/<runId>/plan.md` en entier.
 
 ## 5. Script
 
+> **Ce que disent les chiffres TikTok (analyse du 21/11/2026, 7 vidéos)** : 228 à 283 vues, 0 à 4 j'aime, aucun
+> commentaire ni partage. Les vidéos restent dans le premier lot de test de l'algorithme. Trois causes et leurs remèdes :
+> 1. **Accroche** : elle parlait des formules (« Tunnel de vente : quelle formule choisir ? »), ce qui n'intéresse que
+>    ceux qui connaissent déjà Systeme.io. Commencer par le problème ou le résultat du spectateur (« Tu paies encore un
+>    outil pour tes pages, un pour tes e-mails et un pour tes formations ? », « Ne lance pas ton tunnel de vente avant
+>    d'avoir vu ça. », « Regarde ce que le plan gratuit fait déjà, sans carte bancaire. »). Systeme.io arrive après 2 à 3 s.
+> 2. **Rétention** : toujours le même modèle (4 formules et 4 prix à la suite). Montrer d'abord le résultat (la page de
+>    vente finie, l'e-mail reçu), puis comment on fait, étape par étape ; une seule formule recommandée pour le besoin
+>    montré, et pourquoi. Changer de plan toutes les 1,5 à 2 s. 25 à 35 s pour toucher du monde, 45 à 60 s pour les
+>    tutoriels complets.
+> 3. **Engagement** : question facile à laquelle on répond en un mot (« Tu vends quoi, toi ? »), invitation à enregistrer
+>    pour plus tard. Hashtags : #systemeio, un ou deux du sujet (#tunneldevente, #formationenligne, #emailmarketing…),
+>    un d'audience (#entrepreneurfrancais), pas plus de 4. Publier sans trou : 4 jours sans vidéo cassent la dynamique.
+
+
 Écrire `runs/<runId>/script.json` (schéma `src/schemas/script.ts`) :
 
 - **Objectif : l'abonnement payant.** Montrer concrètement ce que débloquent les formules payantes quand le sujet
