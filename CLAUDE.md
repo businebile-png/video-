@@ -36,7 +36,7 @@ répondre, commenter et écrire les messages de commit en français.
   depuis le 21/11/2026, à 00:00, 10:00 et 20:00, sur TikTok, Instagram, YouTube (Short) et Threads. Depuis le 21/11/2026, TikTok et YouTube passent par **Zernio**
   (connecteur « zernio », gratuit pour ces 2 comptes, sans limite de publications ; déclarations « contenu de marque » et
   « IA » cochées) et Instagram et Threads par Metricool (formule gratuite : 20 publications par mois ; au-delà, « à
-  poster soi-même » depuis le panneau). L'utilisateur ne peut pas payer de formule. (Comptes YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
+  poster soi-même » depuis le panneau). L'utilisateur ne peut pas payer de formule. (YouTube : titre « Publicité · … », description = légende TikTok, voix de synthèse déclarée ;
   Threads : légende raccourcie à 500 caractères par `condenseForThreads`). Légendes : « Publicité · Systeme.io » en tête,
   sans phrase sur la commission (demande de l'utilisateur du 21/11/2026 ; « Publicité » reste obligatoire). Pas de note minimum (choix de l'utilisateur le
   09/11/2026, `publish.decisionRule: "coherence"`) : la vidéo part si la relecture la juge cohérente (depuis le
