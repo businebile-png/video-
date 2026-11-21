@@ -875,12 +875,12 @@
       "musicTrack": null,
       "voiceId": "claire",
       "durationSec": 51.7,
-      "score": null,
-      "decision": null,
-      "status": "rendered",
-      "reason": null,
+      "score": 77,
+      "decision": "redo",
+      "status": "rejected",
+      "reason": "77/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
-      "updatedAt": "2026-11-21T03:48:56.368Z"
+      "updatedAt": "2026-11-21T04:06:49.831Z"
     }
   ]
 }
