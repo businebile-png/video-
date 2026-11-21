@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {loadConfig, loadEditorial} from '../src/core/config.js';
 import {readValidated} from '../src/core/fsx.js';
 import {similarity} from '../src/core/text.js';
-import {PROGRAMME_CONFIG, ProgrammeConfigSchema, buildProgramme, programmeEntry, programmeProblems} from '../src/editorial/programme.js';
+import {PROGRAMME_CONFIG, ProgrammeConfigSchema, buildProgramme, programmeEntry, programmeProblems, programmeSlot} from '../src/editorial/programme.js';
 import {loadFacts} from '../src/facts/facts.js';
 
 async function setup() {
@@ -58,5 +58,18 @@ describe('programme du mois', () => {
       for (let j = i + 1; j < Math.min(slots.length, i + 32); j++) expect(similarity(slots[i]!.angle, slots[j]!.angle), `${slots[i]!.label} / ${slots[j]!.label}`).toBeLessThanOrEqual(max);
     }
     for (const s of slots) expect(`${s.angle} ${s.formule}`).not.toMatch(/commission|revenu|gagner de l.argent|passif|pendant que tu dors|riche|fortune/i);
+  });
+
+  it('donne le sujet d\'un créneau, avec le besoin choisi dans le tableau du panneau', async () => {
+    const {editorial, cfg} = await setup();
+    const times = ['00:00', '10:00', '20:00'];
+    const tz = 'Europe/Paris';
+    const listed = buildProgramme(cfg, editorial, {from: '2026-11-23', days: 1, timezone: tz, times}).find((s) => s.time === '10:00');
+    expect(programmeSlot(cfg, editorial, {iso: '2026-11-23T10:00:00+01:00', timezone: tz, times})).toEqual(listed);
+    const chosen = programmeSlot(cfg, editorial, {iso: '2026-11-23T09:00:00Z', timezone: tz, theme: 'webinaire', times})!;
+    expect([chosen.theme, chosen.family, chosen.time]).toEqual(['webinaire', 'tuto', '10:00']);
+    expect(chosen.angle).toMatch(/webinaire/i);
+    expect(() => programmeSlot(cfg, editorial, {iso: '2026-11-23T10:00:00+01:00', timezone: tz, theme: 'inconnu', times})).toThrow(/besoin inconnu/);
+    expect(programmeSlot(cfg, editorial, {iso: '2026-11-23T15:00:00+01:00', timezone: tz, times})).toBeNull();
   });
 });

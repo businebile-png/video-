@@ -17,7 +17,7 @@ import {FEATURES, type ApprovedVoice, type Feature} from './schemas/config.js';
 import {NETWORKS, type Network} from './schemas/records.js';
 import {TrackSchema} from './schemas/assets.js';
 import {createPlan, type Plan} from './editorial/plan.js';
-import {PROGRAMME_CONFIG, PROGRAMME_FILE, ProgrammeConfigSchema, buildProgramme, programmeProblems} from './editorial/programme.js';
+import {PROGRAMME_CONFIG, PROGRAMME_FILE, ProgrammeConfigSchema, buildProgramme, programmeProblems, programmeSlot} from './editorial/programme.js';
 import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
 import {autoProduce, claimSlot, cleanQueue, enqueue, nextSlot, releaseClaim} from './auto/auto.js';
@@ -62,6 +62,7 @@ Préparation
 
 Production (dans l'ordre)
   programme [--days 30] [--from AAAA-MM-JJ]   Programme du mois : sujet, format et formule de chaque créneau (data/programme.json)
+  programme:slot --slot <iso> [--theme <besoin>]   Sujet d'un créneau (avec le besoin choisi dans le panneau), en JSON
   new [--date AAAA-MM-JJ] [--category <id>] [--correction-of <runId> --notes <texte>]
   script:check <runId>         Contrôle le script (promesses, urgence, faits, durée, répétitions)
   voice <runId>                Voix off + vérification de prononciation
@@ -201,6 +202,7 @@ async function main(): Promise<void> {
     options: {
       date: {type: 'string'},
       days: {type: 'string'},
+      theme: {type: 'string'},
       from: {type: 'string'},
       slot: {type: 'string'},
       category: {type: 'string'},
@@ -470,6 +472,15 @@ async function main(): Promise<void> {
       const to = addDays(from, days - 1);
       await writeJson(PROGRAMME_FILE, {generatedAt: new Date().toISOString(), from, to, timezone, slots});
       log.ok(`Programme du ${from} au ${to} : ${slots.length} créneaux (${path.relative(PATHS.root, PROGRAMME_FILE)})`);
+      return;
+    }
+    case 'programme:slot': {
+      const config = await loadConfig();
+      const cfg = await readValidated(PROGRAMME_CONFIG, ProgrammeConfigSchema);
+      const iso = need(str('slot'), 'Créneau manquant : --slot <iso> (ex. 2026-11-23T10:00:00+01:00).');
+      const entry = programmeSlot(cfg, await loadEditorial(), {iso, timezone: config.metricool.timezone, theme: str('theme'), times: config.platforms.tiktok.postTimes});
+      if (!entry) throw new Error(`Aucun format prévu à ce créneau (${iso}) : heures de publication ${config.platforms.tiktok.postTimes.join(', ')}.`);
+      console.log(JSON.stringify(entry, null, 2));
       return;
     }
     case 'new': {

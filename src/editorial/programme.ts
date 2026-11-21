@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {z} from 'zod';
 import {PATHS} from '../core/paths.js';
-import {addDays, daysBetween, formatWithOffset, zonedInstant} from '../core/time.js';
+import {addDays, daysBetween, formatLocal, formatWithOffset, zonedInstant} from '../core/time.js';
 import type {Editorial} from '../schemas/config.js';
 
 /**
@@ -101,45 +101,74 @@ export function programmeProblems(cfg: ProgrammeConfig, editorial: Editorial, fa
   return problems;
 }
 
-export function buildProgramme(cfg: ProgrammeConfig, editorial: Editorial, opts: {from: string; days: number; timezone: string; times?: string[]}): ProgrammeSlot[] {
-  const tz = opts.timezone;
-  const dayFmt = new Intl.DateTimeFormat('fr-FR', {timeZone: tz, weekday: 'long', day: 'numeric', month: 'long'});
-  const families = cfg.families.filter((f) => !opts.times || opts.times.includes(f.time)).sort((a, b) => a.time.localeCompare(b.time));
+function makeEntry(
+  cfg: ProgrammeConfig,
+  editorial: Editorial,
+  tz: string,
+  date: string,
+  fam: ProgrammeConfig['families'][number],
+  themeId?: string,
+): ProgrammeSlot | null {
   const count = cfg.themes.length;
+  const n = daysBetween(cfg.epoch, date) + fam.offset;
+  const theme = themeId ? cfg.themes.find((t) => t.id === themeId) : cfg.themes[mod(n, count)];
+  if (!theme) throw new Error(`Programme : besoin inconnu « ${themeId} » (besoins : ${cfg.themes.map((t) => t.id).join(', ')}).`);
+  const variants = theme.angles[fam.id] ?? [];
+  if (!variants.length) return null;
+  const pick = variants[mod(Math.floor(n / count), variants.length)]!;
+  const category = editorial.categories.find((c) => c.id === pick.category);
+  if (!category) throw new Error(`Programme : catégorie inconnue « ${pick.category} » (${theme.id}/${fam.id}).`);
+  const lo = Math.max(fam.targetSec[0], category.durationSec[0]);
+  const hi = Math.min(fam.targetSec[1], category.durationSec[1]);
+  const instant = zonedInstant(date, fam.time, tz);
+  const dayFmt = new Intl.DateTimeFormat('fr-FR', {timeZone: tz, weekday: 'long', day: 'numeric', month: 'long'});
+  return {
+    iso: formatWithOffset(instant, tz),
+    date,
+    time: fam.time,
+    label: `${dayFmt.format(instant)} à ${fam.time}`,
+    family: fam.id,
+    familyLabel: fam.label,
+    category: category.id,
+    categoryLabel: category.label,
+    durationSec: lo <= hi ? [lo, hi] : [category.durationSec[0], category.durationSec[1]],
+    theme: theme.id,
+    themeLabel: theme.label,
+    angle: pick.angle,
+    formule: theme.formule,
+    facts: theme.facts,
+  };
+}
+
+function familiesOn(cfg: ProgrammeConfig, date: string, times?: string[]) {
+  const parity = mod(daysBetween(cfg.epoch, date), 2);
+  return cfg.families
+    .filter((f) => (!times || times.includes(f.time)) && (f.parity === undefined || f.parity === parity))
+    .sort((a, b) => a.time.localeCompare(b.time));
+}
+
+export function buildProgramme(cfg: ProgrammeConfig, editorial: Editorial, opts: {from: string; days: number; timezone: string; times?: string[]}): ProgrammeSlot[] {
   const out: ProgrammeSlot[] = [];
   for (let i = 0; i < opts.days; i++) {
     const date = addDays(opts.from, i);
-    const day = daysBetween(cfg.epoch, date);
-    for (const fam of families.filter((f) => f.parity === undefined || f.parity === mod(day, 2))) {
-      const n = day + fam.offset;
-      const theme = cfg.themes[mod(n, count)]!;
-      const variants = theme.angles[fam.id] ?? [];
-      if (!variants.length) continue;
-      const pick = variants[mod(Math.floor(n / count), variants.length)]!;
-      const category = editorial.categories.find((c) => c.id === pick.category);
-      if (!category) throw new Error(`Programme : catégorie inconnue « ${pick.category} » (${theme.id}/${fam.id}).`);
-      const lo = Math.max(fam.targetSec[0], category.durationSec[0]);
-      const hi = Math.min(fam.targetSec[1], category.durationSec[1]);
-      const instant = zonedInstant(date, fam.time, tz);
-      out.push({
-        iso: formatWithOffset(instant, tz),
-        date,
-        time: fam.time,
-        label: `${dayFmt.format(instant)} à ${fam.time}`,
-        family: fam.id,
-        familyLabel: fam.label,
-        category: category.id,
-        categoryLabel: category.label,
-        durationSec: lo <= hi ? [lo, hi] : [category.durationSec[0], category.durationSec[1]],
-        theme: theme.id,
-        themeLabel: theme.label,
-        angle: pick.angle,
-        formule: theme.formule,
-        facts: theme.facts,
-      });
+    for (const fam of familiesOn(cfg, date, opts.times)) {
+      const entry = makeEntry(cfg, editorial, opts.timezone, date, fam);
+      if (entry) out.push(entry);
     }
   }
   return out;
+}
+
+/**
+ * The entry of one slot, optionally with the need (« besoin ») the user chose for it in the panel's monthly table:
+ * same hour, same format family, the chosen need's angle for that family, its recommended plan and its facts.
+ */
+export function programmeSlot(cfg: ProgrammeConfig, editorial: Editorial, opts: {iso: string; timezone: string; theme?: string; times?: string[]}): ProgrammeSlot | null {
+  const local = formatLocal(new Date(opts.iso), opts.timezone);
+  const date = local.slice(0, 10);
+  const time = local.slice(11, 16);
+  const fam = familiesOn(cfg, date, opts.times).find((f) => f.time === time);
+  return fam ? makeEntry(cfg, editorial, opts.timezone, date, fam, opts.theme) : null;
 }
 
 /** The planned entry for a slot (same instant, whatever the offset notation), or null. */

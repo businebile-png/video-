@@ -255,6 +255,14 @@ conseillée seulement si les faits la justifient) ; si l'angle est trop proche d
 reformule. Le panneau affiche le programme dans l'onglet « Mois ». Quand il reste moins de 7 jours de programme,
 la production relance `programme --days 30` et le pousse avec sa vidéo.
 
+**Tableau de programmation (onglet « Mois » du panneau).** Pour chaque créneau à venir, l'utilisateur peut choisir le
+besoin traité, demander « pas de vidéo » ou y placer une vidéo prête. Ses choix sont dans la collection `choix` du
+panneau (un document par créneau, identifiant `AAAA-MM-JJTHHMM`, heure de Paris) : `{kind: "sujet", theme}`,
+`{kind: "aucune"}` ou `{kind: "video", runId}` (la fiche de la vidéo reçoit aussi `requestedSlot`, que suit la tâche de
+programmation). La tâche de production les lit : elle saute les créneaux « aucune », compte une vidéo déplacée à son
+nouveau créneau (l'ancien est libéré) et, pour un besoin choisi, la session lance
+`npm run studio -- programme:slot --slot <iso> --theme <besoin>` et suit l'entrée affichée.
+
 - **Musique choisie par l'utilisateur** (« All For Nothing », Zachariehs) : une fois la vidéo relue et notée
   80/100 ou plus, télécharger la chanson depuis le stockage privé du panneau (outil `Artifact`, action
   `read`, `path` = `music.userTrack.panelAssetId`), puis `npm run studio -- music:overlay <runId> --file

@@ -77,19 +77,37 @@ h3.sub { font-size: 16px; margin: 22px 0 10px; }
 .place select { max-width: 100%; }
 @media (max-width: 1100px) { .weekday { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } .weekday .dayname { grid-column: 1 / -1; padding-top: 0; } }
 @media (max-width: 560px) { .weekday { grid-template-columns: minmax(0, 1fr); } }
-.month { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.mday { gap: 2px; align-content: start; }
-.mday .dayname { font-weight: 650; }
-.mday .dayname::first-letter, .weekday .dayname::first-letter { text-transform: uppercase; }
-.mday.today { border-color: var(--accent); }
-.mslot { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; padding: 8px 0 4px; border-top: 1px solid var(--line); }
-.mslot.past { opacity: .55; }
-.mbody { display: grid; gap: 4px; min-width: 0; }
-.mslot .fam { color: var(--muted); font-size: 13px; }
-.mtime { font-family: var(--font-mono); font-size: 14px; font-weight: 600; padding-top: 1px; }
-.mslot details summary { cursor: pointer; color: var(--accent); font-size: 13px; }
-.mslot details > div { margin-top: 4px; }
 .plan-note { color: var(--muted); }
+.mtable-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.mtable { width: 100%; border-collapse: collapse; }
+.mtable th, .mtable td { padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; text-align: left; }
+.mtable thead th { border-top: 0; background: var(--surface-2); font-size: 13px; color: var(--muted); font-weight: 650; }
+.mtable tbody th { width: 128px; font-weight: 650; white-space: nowrap; background: transparent; text-transform: none; letter-spacing: normal; font-size: 14px; color: var(--ink); }
+.mtable tbody th::first-letter { text-transform: uppercase; }
+.mtable tr.wk > * { border-top: 3px solid var(--line); }
+.mtable tr.today > th { color: var(--accent); }
+.mtable td { min-width: 190px; }
+.mtable td.past { opacity: .5; }
+.mtable .fam { font-size: 12px; color: var(--muted); }
+.mtable .mtitle { font-weight: 600; margin: 2px 0 4px; overflow-wrap: anywhere; }
+.mtable .mtitle.none { color: var(--muted); font-weight: 500; }
+.mtable .mine { display: inline-block; font-size: 11.5px; font-weight: 650; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 8px; margin-bottom: 4px; }
+.mtable select.msel { display: block; width: 100%; max-width: 280px; font-size: 13px; margin-top: 6px; padding: 5px 8px; }
+.mtable details { margin-top: 6px; }
+.mtable details summary { font-size: 12.5px; color: var(--accent); cursor: pointer; }
+.mtable details > div { margin-top: 4px; font-size: 12.5px; }
+.mcount { display: flex; flex-wrap: wrap; gap: 8px; }
+.mcount span { background: var(--surface-2); border-radius: 999px; padding: 3px 10px; font-size: 13px; }
+@media (max-width: 720px) {
+  .mtable-wrap { overflow: visible; border: 0; background: transparent; }
+  .mtable, .mtable tbody, .mtable tr, .mtable th, .mtable td { display: block; width: auto; min-width: 0; }
+  .mtable thead { display: none; }
+  .mtable tr { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; padding: 4px 0; }
+  .mtable tr.wk > * { border-top-width: 1px; }
+  .mtable tbody th { border-top: 0; padding-bottom: 2px; }
+  .mtable td { position: relative; padding-left: 68px; }
+  .mtable td::before { content: attr(data-label); position: absolute; left: 12px; top: 10px; font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
+}
 @media (max-width: 560px) { .slots { grid-template-columns: minmax(0, 1fr); } .event { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 .prog .chips { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
 .prog .chips span { padding: 2px 8px; border-radius: 999px; background: var(--line); color: var(--muted); }
@@ -283,7 +301,7 @@ a.btn { text-decoration: none; display: inline-block; }
 
   <section class="view" id="view-mois" hidden>
     <div class="viewhead">
-      <div><h2>Le programme du mois</h2><p>Les 30 prochains jours, 3 vidéos par jour : le sujet prévu à chaque créneau, son format et la formule conseillée, puis la vraie vidéo dès qu’elle existe.</p></div>
+      <div><h2>Programmer le mois</h2><p>Les 30 prochains jours, 3 vidéos par jour. Pour chaque créneau : le sujet, une vidéo prête à y placer, ou pas de vidéo. Vos choix sont suivis par la production du matin.</p></div>
     </div>
     <div id="month" class="today-stack"></div>
   </section>
@@ -363,7 +381,7 @@ const PHASES = {hook: 'Accroche', problem: 'Problème', agitation: 'Enjeu', solu
 const NETS = {tiktok: 'TikTok', instagram: 'Instagram', youtube: 'YouTube', threads: 'Threads'};
 const S = {
   db: null, mcp: null, user: null, canEdit: null, dbState: 'loading',
-  videos: [], settings: null, ideas: [], affiliate: [], runs: [], voices: [],
+  videos: [], settings: null, ideas: [], affiliate: [], runs: [], voices: [], choix: [], programme: null,
   loaded: {}, ui: {view: 'a-valider', filter: 'tout', panel: {}, drafts: {}, busy: {}, msg: {}, open: {}, trigger: null, triggerMsg: null, sdraft: null, smsg: null},
 };
 let started = false;
@@ -1442,24 +1460,33 @@ function netChips(v) {
     return h('span', {text: `${NETS[n]} · ${v.status !== 'prete' ? '—' : v.manualOnly ? 'à poster vous-même' : 'à 13:35'}`});
   }));
 }
+function shortDay(day) { return new Intl.DateTimeFormat('fr-FR', {timeZone: tz(), weekday: 'short', day: 'numeric', month: 'short'}).format(new Date(slotInstant(day, '12:00'))); }
 function freeSlotsAhead(days) {
   const out = [];
   for (let d = 0; d < days; d++) for (const hhmm of autoTimes()) {
     const day = dayKey(d); const t = slotInstant(day, hhmm);
     if (t - Date.now() < 2 * 3600e3 || weekSlotVideo(t)) continue;
     const sl = localToSlot(`${day}T${hhmm}`, tz());
-    if (sl) out.push({iso: sl.iso, label: `${weekDayLabel(day)} à ${hhmm}`});
+    if (sl) out.push({iso: sl.iso, label: `${weekDayLabel(day)} à ${hhmm}`, key: `${day}T${hhmm.replace(':', '')}`, short: `${shortDay(day)} · ${hhmm}`});
   }
   return out;
 }
+function readyVideos() { return S.videos.filter((v) => v.status === 'prete' && !Object.values(v.publications || {}).some((p) => p.status === 'scheduled' || p.status === 'published')); }
+// Placing a ready video on a slot (week or month view): the scheduling task reads requestedSlot; the morning
+// production reads the « choix » collection, so it neither doubles that slot nor leaves the video's old slot empty.
 async function moveToSlot(v, iso) {
-  const sl = freeSlotsAhead(7).find((x) => x.iso === iso);
+  const sl = freeSlotsAhead(31).find((x) => x.iso === iso);
   if (!sl || !S.db) return;
+  const now = new Date().toISOString();
+  let msg;
   try {
-    await S.db.doc('videos/' + v.runId).update({requestedSlot: sl, updatedAt: new Date().toISOString()});
-    S.ui.weekMsg = {tone: 'ok', text: `« ${v.title || v.runId} » partira ${sl.label} : programmée sur les 4 réseaux au prochain passage de 13:35.`};
-  } catch (e) { S.ui.weekMsg = {tone: 'bad', text: 'Enregistrement impossible : ' + ((e && e.message) || e)}; }
-  renderWeek();
+    await S.db.doc('videos/' + v.runId).update({requestedSlot: {iso: sl.iso, label: sl.label}, updatedAt: now});
+    for (const c of S.choix.filter((c) => c.kind === 'video' && c.runId === v.runId && c.id !== sl.key)) await S.db.doc('choix/' + c.id).delete().catch(() => {});
+    await S.db.doc('choix/' + sl.key).set({kind: 'video', runId: v.runId, title: v.title || v.runId, iso: sl.iso, label: sl.label, updatedAt: now, by: 'panel'});
+    msg = {tone: 'ok', text: `« ${v.title || v.runId} » partira ${sl.label}` + (v.manualOnly ? ' (à poster vous-même tant que la limite de Metricool est atteinte).' : ' : programmée sur les 4 réseaux au prochain passage de 13:35.')};
+  } catch (e) { msg = {tone: 'bad', text: 'Enregistrement impossible : ' + ((e && e.message) || e)}; }
+  S.ui.weekMsg = msg; S.ui.monthMsg = msg;
+  if (S.ui.view === 'mois') renderMonth(); else renderWeek();
 }
 // Posting by hand (Metricool's free plan allows 20 posts a month): the video file and each network's caption.
 function copyText(text, btn) {
@@ -1517,25 +1544,63 @@ function renderWeek() {
 
 // ---------- month view: the programme (data/programme.json, copied to programme/current), 30 days × the daily slots ----------
 function programmeAt(t) { const p = S.programme; return (p && Array.isArray(p.slots) && p.slots.find((s) => Math.abs(Date.parse(s.iso) - t) < 60000)) || null; }
-function monthSlotRow(s) {
+function slotKey(s) { return s.date + 'T' + s.time.replace(':', ''); }
+function choiceFor(s) { return S.choix.find((c) => c.id === slotKey(s)) || null; }
+function monthThemes() {
+  const seen = new Map();
+  for (const s of (S.programme && S.programme.slots) || []) if (!seen.has(s.theme)) seen.set(s.theme, s.themeLabel);
+  return [...seen].map(([id, label]) => ({id, label})).sort((a, b) => a.label.localeCompare(b.label, 'fr'));
+}
+async function setChoice(s, value) {
+  if (!S.db) return;
+  const key = slotKey(s);
+  const now = new Date().toISOString();
+  const th = monthThemes().find((x) => x.id === value);
+  try {
+    if (!value) await S.db.doc('choix/' + key).delete();
+    else if (value === '__aucune') await S.db.doc('choix/' + key).set({kind: 'aucune', iso: s.iso, label: s.label, updatedAt: now, by: 'panel'});
+    else await S.db.doc('choix/' + key).set({kind: 'sujet', theme: value, themeLabel: th ? th.label : value, iso: s.iso, label: s.label, updatedAt: now, by: 'panel'});
+    S.ui.monthMsg = {tone: 'ok', text: value === '__aucune' ? `Pas de vidéo ${s.label} : la production saute ce créneau.` : value ? `${s.label} : la vidéo parlera de « ${th ? th.label : value} ».` : `${s.label} : retour au sujet du programme (« ${s.themeLabel} »).`};
+  } catch (e) { S.ui.monthMsg = {tone: 'bad', text: 'Enregistrement impossible : ' + ((e && e.message) || e)}; }
+  renderMonth();
+}
+function monthCell(s, ctx) {
   const t = Date.parse(s.iso);
   const v = weekSlotVideo(t);
   const past = t < Date.now();
-  const body = h('div', {class: 'mbody'});
+  const c = choiceFor(s);
+  const td = h('td', {'data-label': s.time, class: past ? 'past' : null}, h('div', {class: 'fam', text: s.familyLabel}));
   if (v) {
-    body.append(h('div', {class: 'slottitle', text: v.title || v.runId}), netChips(v));
-    if (v.status === 'prete' && v.manualOnly) body.append(h('div', {class: 'small muted', text: 'À poster vous-même (limite Metricool du mois) : bouton dans l’onglet « Semaine ».'}));
-  } else {
-    body.append(h('div', null, h('span', {class: 'fam', text: s.familyLabel + ' · '}), h('strong', {text: s.themeLabel})));
-    const run = activeRun();
-    if (run && run.slot && nearSlot(run.slot.iso, t)) body.append(h('div', null, h('span', {class: 'pill info', text: 'En production'})));
-    else if (past) body.append(h('div', {class: 'small muted', text: 'Aucune vidéo à ce créneau.'}));
-    body.append(h('details', null, h('summary', {text: past ? 'Ce qui était prévu' : 'Le sujet prévu'}),
-      h('div', {class: 'small', text: s.angle}),
-      h('div', {class: 'small muted', text: 'Formule conseillée : ' + s.formule}),
-      h('div', {class: 'small muted', text: `${s.categoryLabel} · ${s.durationSec[0]} à ${s.durationSec[1]} s`})));
+    const pubs = Object.values(v.publications || {});
+    const st = v.status === 'publiee' || (pubs.length && pubs.every((p) => p.status === 'published')) ? 'publiee' : v.status;
+    td.append(h('div', {class: 'mtitle', text: v.title || v.runId}), v.status === 'prete' && v.manualOnly ? h('span', {class: 'pill warn', text: 'À poster vous-même'}) : pill(st));
+    if (v.status === 'prete' && !past && ctx.editable) {
+      const targets = ctx.free.filter((x) => x.iso !== s.iso);
+      if (targets.length) td.append(h('select', {class: 'msel', 'aria-label': 'Déplacer « ' + (v.title || v.runId) + ' »', onchange: (e) => moveToSlot(v, e.target.value)},
+        h('option', {value: '', text: 'Déplacer vers…'}), ...targets.map((x) => h('option', {value: x.iso, text: x.short}))));
+    }
+    return td;
   }
-  return h('div', {class: 'mslot' + (past ? ' past' : '')}, h('span', {class: 'mtime', text: s.time}), body);
+  if (past) { td.append(h('div', {class: 'mtitle none', text: 'Aucune vidéo'})); return td; }
+  const run = activeRun();
+  if (run && run.slot && nearSlot(run.slot.iso, t)) td.append(h('span', {class: 'pill info', text: 'En production'}));
+  if (c && c.kind === 'aucune') td.append(h('div', {class: 'mtitle none', text: 'Pas de vidéo'}), h('span', {class: 'mine', text: 'votre choix'}));
+  else if (c && c.kind === 'sujet') td.append(h('div', {class: 'mtitle', text: c.themeLabel || c.theme}), h('span', {class: 'mine', text: 'votre choix'}));
+  else td.append(h('div', {class: 'mtitle', text: s.themeLabel}));
+  if (ctx.editable) {
+    const cur = c && (c.kind === 'aucune' ? '__aucune' : c.kind === 'sujet' ? c.theme : '');
+    td.append(h('select', {class: 'msel', 'aria-label': 'Sujet ' + s.label, onchange: (e) => setChoice(s, e.target.value)},
+      h('option', {value: '', text: 'Sujet du programme : ' + s.themeLabel, selected: !cur}),
+      ...ctx.themes.filter((x) => x.id !== s.theme).map((x) => h('option', {value: x.id, text: x.label, selected: cur === x.id})),
+      h('option', {value: '__aucune', text: 'Pas de vidéo à ce créneau', selected: cur === '__aucune'})));
+    if (ctx.ready.length) td.append(h('select', {class: 'msel', 'aria-label': 'Placer une vidéo prête ' + s.label, onchange: (e) => { const x = ctx.ready.find((r) => r.runId === e.target.value); if (x) moveToSlot(x, s.iso); }},
+      h('option', {value: '', text: 'Mettre une vidéo prête ici…'}),
+      ...ctx.ready.map((x) => { const at = (x.requestedSlot && x.requestedSlot.iso) || (x.autoSlot && x.autoSlot.iso); return h('option', {value: x.runId, text: clipText(x.title || x.runId, 38) + (at ? ' (' + fmtDate(at, true) + ')' : '')}); })));
+  }
+  if (!c || c.kind !== 'aucune') {
+    if (!c || c.kind !== 'sujet') td.append(h('details', null, h('summary', {text: 'Le sujet prévu'}), h('div', {text: s.angle}), h('div', {class: 'muted', text: 'Formule conseillée : ' + s.formule})));
+  }
+  return td;
 }
 function renderMonth() {
   const box = document.getElementById('month'); if (!box) return;
@@ -1544,22 +1609,35 @@ function renderMonth() {
     box.replaceChildren(h('div', {class: 'card'}, h('div', {class: 'small muted', text: S.loaded.programme ? 'Le programme du mois n’est pas encore dans le panneau : il arrive avec la prochaine production.' : 'Chargement du programme…'})));
     return;
   }
-  const today = dayKey(0);
+  const todayKey = dayKey(0);
+  const times = [...new Set(p.slots.map((s) => s.time))].sort();
   const days = new Map();
-  for (const s of p.slots) { if (s.date < today) continue; if (!days.has(s.date)) days.set(s.date, []); days.get(s.date).push(s); }
-  const weeks = []; let cur = null;
-  for (const [date, slots] of days) {
-    if (!cur || new Date(date + 'T12:00:00Z').getUTCDay() === 1) { cur = {start: date, days: []}; weeks.push(cur); }
-    cur.days.push([date, slots]);
+  for (const s of p.slots) { if (s.date < todayKey) continue; if (!days.has(s.date)) days.set(s.date, []); days.get(s.date).push(s); }
+  const ctx = {editable: Boolean(S.db) && S.canEdit !== false, themes: monthThemes(), ready: readyVideos(), free: freeSlotsAhead(31)};
+  const future = [...days.values()].flat().filter((s) => Date.parse(s.iso) > Date.now());
+  let withVideo = 0, toMake = 0, skipped = 0, chosen = 0;
+  for (const s of future) {
+    const c = choiceFor(s);
+    if (weekSlotVideo(Date.parse(s.iso))) withVideo++;
+    else if (c && c.kind === 'aucune') skipped++;
+    else { toMake++; if (c && c.kind === 'sujet') chosen++; }
   }
-  box.replaceChildren(
-    h('div', {class: 'card'}, h('strong', {text: 'Comment le programme est construit'}),
-      h('div', {class: 'small', text: 'Un format par heure : 00:00 format court « lien en bio » un jour sur deux et erreur à éviter ou conseil l’autre jour, 10:00 tuto de A à Z, 20:00 quelle formule prendre et pourquoi. Chaque jour, les 3 vidéos parlent de 3 besoins différents (tunnel de vente, liste e-mail, formation, automatisations, site…) et chaque besoin revient tous les 3 jours dans un autre format. La formule conseillée s’appuie sur les tarifs officiels vérifiés ; le texte exact de chaque vidéo est écrit et relu le jour de sa production.'}),
-      h('div', {class: 'small muted', text: `Programme du ${weekDayLabel(p.from)} au ${weekDayLabel(p.to)}, prolongé automatiquement quand il reste moins de 7 jours.`})),
-    ...weeks.map((w) => h('div', {class: 'mweek'},
-      h('h3', {class: 'sub', text: (w.start === today ? 'Cette semaine, à partir d’aujourd’hui' : 'Semaine du ' + weekDayLabel(w.start))}),
-      h('div', {class: 'month'}, ...w.days.map(([date, slots]) => h('div', {class: 'card mday' + (date === today ? ' today' : '')},
-        h('div', {class: 'dayname', text: (date === today ? 'Aujourd’hui, ' : '') + weekDayLabel(date)}), ...slots.map(monthSlotRow)))))));
+  const manual = S.videos.some((v) => v.status === 'prete' && v.manualOnly);
+  const rows = [...days].map(([date, slots]) => h('tr', {class: date === todayKey ? 'today' : new Date(date + 'T12:00:00Z').getUTCDay() === 1 ? 'wk' : null},
+    h('th', {scope: 'row', text: (date === todayKey ? 'Aujourd’hui · ' : '') + shortDay(date)}),
+    ...times.map((tm) => { const s = slots.find((x) => x.time === tm); return s ? monthCell(s, ctx) : h('td', {'data-label': tm}); })));
+  box.replaceChildren(...[
+    h('div', {class: 'card'}, h('strong', {text: 'Comment programmer'}),
+      h('div', {class: 'small', text: 'Chaque case est un créneau. Choisissez le sujet (le besoin dont parle la vidéo), mettez « Pas de vidéo », ou placez-y une vidéo déjà prête. C’est enregistré tout de suite. La production de 5:47 fabrique le créneau de 20:00 du jour et ceux de 00:00 et 10:00 du lendemain : un choix compte s’il est fait avant ce passage.'}),
+      h('div', {class: 'small muted', text: 'Formats : 10:00 tuto de A à Z · 20:00 quelle formule prendre · 00:00 format court un jour sur deux, erreur ou conseil l’autre jour. La formule conseillée s’appuie sur les tarifs officiels vérifiés ; le texte exact est écrit et relu le jour de la production.'}),
+      h('div', {class: 'mcount'}, h('span', {text: `${withVideo} créneau${withVideo > 1 ? 'x' : ''} avec une vidéo`}), h('span', {text: `${toMake} à produire`}), h('span', {text: `${chosen} sujet${chosen > 1 ? 's' : ''} choisi${chosen > 1 ? 's' : ''} par vous`}), h('span', {text: `${skipped} sans vidéo`})),
+      manual ? h('div', {class: 'small', text: 'Publication : la limite de Metricool est atteinte ce mois-ci. Les vidéos placées ici restent « à poster vous-même » (bouton dans l’onglet « Semaine ») jusqu’au mois prochain ou à une formule payante.'}) : null,
+      ctx.editable ? null : h('div', {class: 'small muted', text: 'Lecture seule : ouvrez le panneau avec le compte propriétaire pour programmer.'})),
+    S.ui.monthMsg ? h('div', {class: 'result ' + S.ui.monthMsg.tone, text: S.ui.monthMsg.text}) : null,
+    h('div', {class: 'mtable-wrap'}, h('table', {class: 'mtable'},
+      h('thead', null, h('tr', null, h('th', {scope: 'col', text: 'Jour'}), ...times.map((tm) => h('th', {scope: 'col', text: tm})))),
+      h('tbody', null, ...rows))),
+    h('div', {class: 'small muted', text: `Programme du ${weekDayLabel(p.from)} au ${weekDayLabel(p.to)}, prolongé automatiquement quand il reste moins de 7 jours.`})].filter(Boolean));
 }
 
 function render() {
@@ -1600,6 +1678,7 @@ async function start() {
   watchCollection('affiliate', db.collection('affiliate').limit(500));
   watchCollection('runs', db.collection('runs').limit(40));
   watchCollection('voices', db.collection('voices').limit(40));
+  watchCollection('choix', db.collection('choix').limit(500));
   db.doc('programme/current').onSnapshot((snap) => {
     S.programme = snap.exists ? snap.data() : null; S.loaded.programme = !snap.metadata.fromCache || S.loaded.programme;
     if (S.ui.view === 'mois') renderMonth(); if (S.ui.view === 'semaine') renderWeek();
