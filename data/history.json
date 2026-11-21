@@ -921,6 +921,26 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-21T04:57:22.586Z"
+    },
+    {
+      "runId": "2026-11-21-f",
+      "date": "2026-11-21",
+      "category": "formules-payantes",
+      "hookStyle": "constat-chiffre",
+      "hook": "Tu approches des cinq mille contacts ? Startup s'arrête là.",
+      "angle": "Quand passer de Startup à Webinaire : contacts, tunnels, webinaires et prix côte à côte",
+      "workingTitle": "Startup ou Webinaire ?",
+      "artDirection": "studio-nuit",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 21.73,
+      "voiceId": "claire",
+      "durationSec": 31.2,
+      "score": 72,
+      "decision": "publishable",
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-21T05:10:51.750Z"
     }
   ]
 }
