@@ -7,10 +7,14 @@ name: Publication Instagram et Threads (API Meta)
 
 on:
   schedule:
-    # Heure d'hiver (UTC+1). Le job démarre avant le créneau et attend l'heure ; GitHub peut retarder un peu les départs.
-    - cron: '50 8 * * *'    # 9:50 à Paris : attend le créneau de 10:00
+    # Heure d'hiver (UTC+1). GitHub lance ses tâches planifiées avec 10 à 60 minutes de retard : on part tôt, le job attend
+    # l'heure exacte du créneau (jusqu'à 70 min) et publie à 10:00 ou 20:00 pile. Plusieurs départs par créneau (le groupe
+    # de concurrence les met en file : les suivants trouvent tout publié et s'arrêtent) ; reprise en cas d'échec.
+    - cron: '20 8 * * *'    # 9:20 à Paris : attend le créneau de 10:00
+    - cron: '50 8 * * *'    # 9:50 à Paris : idem, si le premier départ a été retardé
     - cron: '15 11 * * *'   # 12:15 : reprise si le créneau de 10:00 a échoué
-    - cron: '50 18 * * *'   # 19:50 à Paris : attend le créneau de 20:00
+    - cron: '20 18 * * *'   # 19:20 à Paris : attend le créneau de 20:00
+    - cron: '50 18 * * *'   # 19:50 à Paris : idem
     - cron: '15 21 * * *'   # 22:15 : reprise si le créneau de 20:00 a échoué
   workflow_dispatch:
     inputs:
@@ -32,7 +36,7 @@ concurrency:
 jobs:
   publier:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 90
     env:
       INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
       THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
@@ -56,7 +60,7 @@ jobs:
 
       - name: Publier ce qui est dû
         if: github.event_name != 'workflow_dispatch' || inputs.mode == 'publier'
-        run: npx --yes tsx@4.23.15 src/publish/meta.ts publier --attendre 25
+        run: npx --yes tsx@4.23.15 src/publish/meta.ts publier --attendre 70
 
       - name: Enregistrer l'état (data/meta-publications.json)
         if: always()
