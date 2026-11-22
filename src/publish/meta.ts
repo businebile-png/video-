@@ -190,19 +190,87 @@ export function classifyAll(entries: QueueEntry[], state: MetaState, env: Env, n
 }
 
 /**
- * Adresses où Meta peut télécharger la vidéo : GitHub (adresse de la file), puis jsDelivr (types MIME corrects) en secours,
- * épinglée sur le commit `META_MEDIA_REF` que le workflow vient de récupérer.
+ * Adresses où Meta peut télécharger la vidéo, de la plus sûre à la moins sûre :
+ *  1. jsDelivr et 2. githack (Cloudflare) : type MIME `video/mp4`, épinglées sur le commit `META_MEDIA_REF` que le workflow
+ *     vient de récupérer (jsDelivr ne sert pas les fichiers de plus de 20 Mo) ;
+ *  3. GitHub brut (adresse de la file) : servi en `application/octet-stream`, que Meta peut refuser.
+ * `rankMediaUrls` les interroge avant de s'en servir et ne garde que celles qui répondent avec un vrai type vidéo.
  */
 export function mediaUrls(entry: QueueEntry, env: Env = {}): string[] {
   const primary = entry.media?.publicUrl;
   if (!primary) return [];
-  const urls = [primary];
   const m = /^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/.+?\/(videos\/[^/]+\.mp4)$/.exec(primary);
   const repo = m ? `${m[1]}/${m[2]}` : env.GITHUB_REPOSITORY;
   const ref = env.META_MEDIA_REF?.trim();
   const file = m ? m[3] : `videos/${entry.runId}.mp4`;
-  if (repo && ref) urls.push(`https://cdn.jsdelivr.net/gh/${repo}@${ref}/${file}`);
+  const urls: string[] = [];
+  if (repo && ref) {
+    urls.push(`https://cdn.jsdelivr.net/gh/${repo}@${ref}/${file}`);
+    urls.push(`https://rawcdn.githack.com/${repo}/${ref}/${file}`);
+  }
+  urls.push(primary);
   return urls;
+}
+
+export interface MediaProbe {
+  url: string;
+  /** Code HTTP ; 0 si l'adresse n'a pas répondu. */
+  status: number;
+  contentType: string;
+  /** Taille totale du fichier en octets, si le serveur la donne. */
+  size: number | null;
+  /** 0 = vidéo bien typée (`video/*`) · 1 = type générique (`application/octet-stream`) · 2 = inutilisable. */
+  rank: 0 | 1 | 2;
+}
+
+const PROBE_TIMEOUT_MS = 20_000;
+/** En dessous, ce n'est pas une vidéo (page d'erreur, fichier tronqué). */
+const MIN_VIDEO_BYTES = 50_000;
+
+/** Interroge une adresse (un seul octet demandé, par Range) : code HTTP, type MIME et taille du fichier. */
+export async function probeMedia(fetchFn: typeof fetch, url: string): Promise<MediaProbe> {
+  try {
+    const res = await fetchFn(url, {method: 'GET', headers: {range: 'bytes=0-1'}, signal: AbortSignal.timeout(PROBE_TIMEOUT_MS)});
+    void res.body?.cancel().catch(() => {});
+    const contentType = (res.headers.get('content-type') ?? '').split(';')[0]!.trim().toLowerCase();
+    const total = /\/(\d+)\s*$/.exec(res.headers.get('content-range') ?? '');
+    const length = Number(res.headers.get('content-length'));
+    const size = total ? Number(total[1]) : res.status === 200 && Number.isFinite(length) && length > 0 ? length : null;
+    const answered = res.status === 200 || res.status === 206;
+    let rank: MediaProbe['rank'] = 2;
+    if (answered && (size === null || size >= MIN_VIDEO_BYTES)) {
+      if (contentType.startsWith('video/')) rank = 0;
+      else if (/^(application|binary)\/octet-stream$/.test(contentType)) rank = 1;
+    }
+    return {url, status: res.status, contentType, size, rank};
+  } catch {
+    return {url, status: 0, contentType: '', size: null, rank: 2};
+  }
+}
+
+export function describeProbe(p: MediaProbe): string {
+  const host = (() => {
+    try {
+      return new URL(p.url).hostname;
+    } catch {
+      return p.url;
+    }
+  })();
+  const answer = p.status ? `HTTP ${p.status}` : 'sans réponse';
+  const type = p.contentType || 'type inconnu';
+  const size = p.size ? ` · ${(p.size / 1_048_576).toFixed(1)} Mo` : '';
+  const verdict = p.rank === 0 ? 'utilisable' : p.rank === 1 ? 'type générique, en dernier recours' : 'écartée';
+  return `${host} : ${answer} · ${type}${size} → ${verdict}`;
+}
+
+/**
+ * Interroge toutes les adresses et les range : vidéos bien typées d'abord (dans l'ordre d'origine), puis type générique.
+ * Si aucune ne répond correctement (panne passagère côté GitHub Actions ?), garde l'ordre d'origine : Meta peut quand même y accéder.
+ */
+export async function rankMediaUrls(fetchFn: typeof fetch, urls: string[]): Promise<{urls: string[]; probes: MediaProbe[]}> {
+  const probes = await Promise.all(urls.map((u) => probeMedia(fetchFn, u)));
+  const usable = probes.filter((p) => p.rank < 2).sort((a, b) => a.rank - b.rank);
+  return {urls: (usable.length ? usable : probes).map((p) => p.url), probes};
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -369,6 +437,11 @@ export interface RunOptions {
   dryRun?: boolean;
   /** Si un créneau tombe dans les N prochaines minutes, attend qu'il arrive (le workflow démarre un peu avant l'heure). */
   waitMinutes?: number;
+  /**
+   * Ne publie rien tant que `data/meta-publications.json` ne porte pas `"actif": true`. Verrou contre les doublons : Instagram et
+   * Threads restent sur Metricool jusqu'à ce que cette publication directe soit déclarée active (les simulations ne sont pas concernées).
+   */
+  requireActive?: boolean;
   log?: (message: string) => void;
   pollMs?: number;
   maxPolls?: number;
@@ -379,7 +452,11 @@ export interface RunResult {
   failed: Array<{runId: string; network: MetaNetwork; error: string}>;
   planned: Array<{runId: string; network: MetaNetwork}>;
   ignored: Array<{runId: string; network: MetaNetwork; reason: string}>;
+  /** Vrai si rien n'a été tenté parce que la publication directe n'est pas encore déclarée active. */
+  inactive?: boolean;
 }
+
+export const INACTIVE_MESSAGE = 'Publication directe inactive : « actif » n’est pas à true dans data/meta-publications.json (aucune publication tentée).';
 
 function makeCtx(opts: RunOptions): Ctx {
   return {
@@ -397,6 +474,10 @@ export async function runDue(opts: RunOptions): Promise<RunResult> {
   const state = readState(opts.root);
   const entries = readQueue(opts.root);
   const result: RunResult = {published: [], failed: [], planned: [], ignored: []};
+  if (opts.requireActive && !opts.dryRun && state.actif !== true) {
+    ctx.log(INACTIVE_MESSAGE);
+    return {...result, inactive: true};
+  }
 
   let all = classifyAll(entries, state, opts.env, nowFn());
   const upcoming = all.filter((c): c is Extract<Classified, {kind: 'upcoming'}> => c.kind === 'upcoming');
@@ -418,6 +499,8 @@ export async function runDue(opts: RunOptions): Promise<RunResult> {
     .map((c) => c.due)
     .sort((a, b) => a.slot - b.slot || META_NETWORKS.indexOf(a.network) - META_NETWORKS.indexOf(b.network));
 
+  // Les adresses de la vidéo sont interrogées une seule fois par vidéo (Instagram et Threads partagent le résultat).
+  const ranked = new Map<string, string[]>();
   for (const d of due) {
     const label = `${d.entry.runId} → ${d.network}`;
     if (opts.dryRun) {
@@ -426,7 +509,13 @@ export async function runDue(opts: RunOptions): Promise<RunResult> {
       continue;
     }
     const token = tokenFor(opts.env, d.network)!;
-    const urls = mediaUrls(d.entry, opts.env);
+    let urls = ranked.get(d.entry.runId);
+    if (!urls) {
+      const r = await rankMediaUrls(ctx.fetchFn, mediaUrls(d.entry, opts.env));
+      for (const p of r.probes) ctx.log(`  Vidéo ${d.entry.runId} — ${describeProbe(p)}`);
+      urls = r.urls;
+      ranked.set(d.entry.runId, urls);
+    }
     const previous = state.posts[d.entry.runId]?.[d.network];
     try {
       ctx.log(`Publication ${label}…`);
@@ -471,6 +560,32 @@ export async function verifyTokens(opts: RunOptions): Promise<VerifyResult[]> {
   return out;
 }
 
+export interface MediaCheck {
+  runId: string;
+  /** Vrai si la vidéo attend encore sa publication ; faux : simple essai sur la plus récente de la file. */
+  pending: boolean;
+  probes: MediaProbe[];
+}
+
+/** Interroge les adresses de la prochaine vidéo à publier (à défaut, de la plus récente de la file) sans rien publier. */
+export async function verifyMedia(opts: RunOptions): Promise<MediaCheck | null> {
+  const fetchFn = opts.fetchFn ?? fetch;
+  const nowMs = (opts.nowFn ?? (() => Date.now()))();
+  const state = readState(opts.root);
+  const bySlot = (a: QueueEntry, b: QueueEntry) => (slotMs(a) ?? 0) - (slotMs(b) ?? 0);
+  const entries = readQueue(opts.root).filter((e) => e.media?.publicUrl);
+  const pending = entries
+    .filter((e) => {
+      const s = slotMs(e);
+      return s !== null && nowMs <= s + WINDOW_HOURS * 3_600_000 && !META_NETWORKS.every((n) => state.posts[e.runId]?.[n]?.status === 'published');
+    })
+    .sort(bySlot);
+  const target = pending[0] ?? [...entries].sort(bySlot).reverse()[0];
+  if (!target) return null;
+  const {probes} = await rankMediaUrls(fetchFn, mediaUrls(target, opts.env));
+  return {runId: target.runId, pending: pending.length > 0, probes};
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // Ligne de commande
 // ---------------------------------------------------------------------------------------------------------------
@@ -494,7 +609,23 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
       console.log(`${r.ok ? '✓' : '✗'} ${r.network} : ${r.detail}`);
       if (!r.ok && !r.detail.includes('absent')) code = 1;
     }
-    summary(['### Jetons Meta', ...res.map((r) => `- ${r.ok ? '✅' : '❌'} **${r.network}** : ${r.detail}`)].join('\n'));
+    const media = await verifyMedia({root, env});
+    const mediaLines: string[] = [];
+    if (!media) {
+      mediaLines.push('Aucune vidéo dans la file : adresses de téléchargement non testées.');
+    } else {
+      mediaLines.push(`Adresses de la vidéo ${media.runId}${media.pending ? '' : ' (déjà passée : simple essai)'} :`);
+      for (const p of media.probes) mediaLines.push(`${p.rank === 2 ? '✗' : '✓'} ${describeProbe(p)}`);
+      if (media.probes.every((p) => p.rank === 2)) mediaLines.push('⚠ aucune adresse utilisable : la vidéo est-elle toujours dans le dépôt (videos/) ?');
+      else if (media.probes.every((p) => p.rank !== 0)) mediaLines.push('⚠ aucune adresse ne sert un type vidéo : Meta peut refuser la vidéo.');
+    }
+    for (const l of mediaLines) console.log(l);
+    const active = readState(root).actif === true;
+    const activeLine = active
+      ? '✓ Publication directe active (« actif » est à true).'
+      : '⏸ Publication directe inactive : mettre « actif »: true dans data/meta-publications.json quand les jetons sont bons et que les posts Instagram et Threads de Metricool sont en brouillon.';
+    console.log(activeLine);
+    summary(['### Jetons Meta', ...res.map((r) => `- ${r.ok ? '✅' : '❌'} **${r.network}** : ${r.detail}`), '', '### Adresses de la vidéo', ...mediaLines.map((l) => `- ${l}`), '', '### Activation', `- ${activeLine}`].join('\n'));
     return code;
   }
   if (command === 'publier') {
@@ -502,7 +633,11 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
     const nowMs = now ? Date.parse(now) : NaN;
     if (now && !Number.isFinite(nowMs)) throw new Error(`Date invalide : ${now}`);
     const wait = Number(flag(rest, 'attendre') ?? 0) || 0;
-    const res = await runDue({root, env, dryRun: rest.includes('--simuler'), waitMinutes: wait, ...(now ? {nowFn: () => nowMs} : {})});
+    const res = await runDue({root, env, dryRun: rest.includes('--simuler'), waitMinutes: wait, requireActive: true, ...(now ? {nowFn: () => nowMs} : {})});
+    if (res.inactive) {
+      summary(`### Publication Instagram et Threads\n- ⏸️ ${INACTIVE_MESSAGE}`);
+      return 0;
+    }
     if (!res.published.length && !res.failed.length && !res.planned.length) console.log('Rien à publier pour le moment.');
     for (const i of res.ignored) console.log(`· ${i.runId} → ${i.network} : ${i.reason}`);
     summary(
