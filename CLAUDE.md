@@ -47,6 +47,14 @@ répondre, commenter et écrire les messages de commit en français.
   l'utilisateur) et la tâche hebdomadaire du samedi 02:17 (`trig_01NmMfBWqwFmfwNEP5u3eKYR`, « chef d'orchestre »)
   relance la production après la remise à zéro de la limite de Claude. Choix de l'utilisateur le 22/11/2026 (question
   « Après le 29/11 ») : **continuer la série** jusqu'au 22/12, sans s'arrêter après dimanche 29/11 ; cette tâche reste active.
+  **Constat du 22/11/2026 après-midi** : la relève gratuite de GitHub (`production-auto`) n'a produit aucune vidéo depuis le
+  14/11 (13 essais, 13 échecs : repli Pollinations « This model does not support image input », scripts refusés par le
+  contrôleur, « produce a échoué ») et ses déclenchements planifiés arrivent avec jusqu'à 8 h de retard : ne pas compter
+  dessus. Deux vidéos faites par Haiku ont été bloquées après 3 versions chacune (notes 62 et 64) alors que les deux seules
+  passées (notes 72 et 74) venaient d'un modèle plus fort. Choix de l'utilisateur le 22/11 : Haiku seulement pour 2 vidéos
+  ciblées (lundi 10:00 et mardi 10:00), puis **Sonnet à effort réduit** (`create_session` model `claude-sonnet-5-5`, effort
+  `medium`) pour les créneaux suivants, par sessions de 2 vidéos, une seule session à la fois (`data/history.json` et le
+  claim sont partagés), créées à l'avance et lancées par le message « Go » de la régie : voir `docs/lot-de-production.md`.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **deux vidéos par jour, à
   10:00 et 20:00** (demande de l'utilisateur du 21/11/2026, qui remplace la vidéo unique de 20:00 ; `postTimes` de
   `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série ; la tâche de 13:35 programme les
