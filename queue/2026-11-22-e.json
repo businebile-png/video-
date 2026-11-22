@@ -1,0 +1,704 @@
+{
+  "runId": "2026-11-22-e",
+  "date": "2026-11-22",
+  "createdAt": "2026-11-22T17:30:01.408Z",
+  "updatedAt": "2026-11-22T17:30:01.408Z",
+  "status": "prete",
+  "title": "Et si d'autres vendaient ta formation ?",
+  "category": {
+    "id": "pub-directe",
+    "label": "Publicité directe"
+  },
+  "angle": "Systeme.io permet de créer son propre programme d'affiliation : des affiliés recommandent ta formation avec leur lien, le tout au même endroit que ta formation et ton tunnel",
+  "hook": "Et si ta formation se vendait grâce à d'autres ?",
+  "hookStyle": "question-directe",
+  "artDirection": {
+    "id": "clarte",
+    "label": "Clarté SaaS — lumineux, net, bleu électrique"
+  },
+  "durationSec": 19.13,
+  "score": {
+    "total": 69,
+    "decision": "publishable",
+    "summary": "69/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 12,
+        "basis": "relecture 12/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0, 161 mots/min, pause max 0.25 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 9,
+        "basis": "relecture 9/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 8,
+        "basis": "relecture 8/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "6 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "48 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "Ce qui est dit correspond à ce qui est affiché, le message se suit sans contradiction et n'emploie que des faits vérifiés ; mention « Publicité » visible partout, aucun texte coupé ou chevauché. Qualité correcte mais générique : fonds disparates et fin peu motivée, sans défaut bloquant."
+      }
+    ],
+    "virality": {
+      "total": 11,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Question directe qui parle au créateur de formation, mais l'image 0 est un fond gris presque vide avec seulement les premiers mots en sous-titre, sans titre d'accroche gros ni mouvement marqué."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "Durée courte et rythme régulier, une coupe tous les 3 à 4 s, mais aucune raison de rester au-delà de la compréhension de l'idée, et la fin est abrupte et décalée."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 2,
+          "justification": "Information réelle (on peut créer son programme d'affiliation) mais sans exemple concret ni comparaison à enregistrer."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une vraie question facile à commenter (« Ta formation parlerait de quoi ? ») sans promesse, mais la vidéo elle-même n'en pose aucune."
+        }
+      ],
+      "actions": [
+        "Afficher le titre « Et si d'autres vendaient pour toi ? » en gros dès l'image 0, avec un mouvement immédiat",
+        "Ajouter un exemple concret vérifié (formule gratuite sans carte bancaire) avant l'appel à l'action pour motiver le clic",
+        "Poser la question de la légende à l'écran dans la dernière scène pour déclencher les commentaires"
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 12,
+        "justification": "Textes nets, grandes cartes lisibles et hors des zones de l'interface, mention « Publicité » présente sur toute la durée, aucun visage. Mais les fonds changent à chaque scène sans lien avec le propos (câbles réseau bleus, cubes colorés, hexagones, dégradé rose-vert) : aspect générique de banque d'images, avec des cartes blanches très semblables. L'image 0 est un fond gris presque vide avec quelques mots, peu arrêtante."
+      },
+      "editing": {
+        "score": 10,
+        "justification": "Une coupe par scène environ toutes 3 à 4 s et un surlignage mot à mot synchronisé avec la voix, ce qui tient le rythme sur 19 s. Les graphiques sont toutefois des listes qui se cochent plutôt que de vraies explications : le schéma « Toi, tes affiliés, leur public » ne montre aucune relation (pas de flèches ni de liens). Pas d'effet gratuit, mais peu de variété."
+      },
+      "script": {
+        "score": 10,
+        "justification": "Question d'accroche directe et courte, ton naturel, progression claire en 5 phrases sans longueur. Elle reste abstraite : aucun cas concret (qui sont ces affiliés, quel bénéfice chiffré ou vérifié), et la phrase de fin sur « les formules » surgit sans raccord avec le sujet affiliation. La voix dit « d'autres » alors que le titre écrit dit « d'autres vendaient pour toi », légère redite sans gravité."
+      },
+      "explanation": {
+        "score": 9,
+        "justification": "On comprend que Systeme.io permet de créer son programme d'affiliation et de le garder avec formation et tunnel : tout est couvert par les faits vérifiés. Mais l'explication reste superficielle (comment le lien d'affilié fonctionne, qui l'utilise, ce que l'on y gagne) et rien ne montre l'interface, par choix. La liste « E-mails » est vérifiée mais n'est pas reprise à la voix."
+      },
+      "conversion": {
+        "score": 8,
+        "justification": "Appel à l'action clair (« Lien en bio », mention « Publicité · lien affilié ») et sans promesse ni pression. Mais « Compare les formules » n'est pas motivé : aucune formule, aucun prix ni limite n'est cité alors que le programme d'affiliation est le sujet ; la raison de cliquer est faible et l'orientation vers l'abonnement payant reste vague."
+      }
+    },
+    "improvements": [
+      "Relier la fin au sujet : dire par exemple que la formule gratuite permet de commencer sans carte bancaire (faits plan.free.exists et plan.free.no-card) puis comparer les formules pour le programme d'affiliation, au lieu de « Compare les formules » seul.",
+      "Remplacer le schéma de la scène 1 par une vraie relation visuelle (toi au centre, flèches vers des affiliés) et afficher le titre d'accroche en grand dès l'image 0.",
+      "Choisir des fonds plus homogènes et plus sobres (une seule teinte de marque) plutôt que des textures disparates sans lien avec le message."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "6148 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-2 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "48 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×0.98",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.39 s entre deux changements d’image (coupe ou recadrage), min 0.6 s ; 8 plans montés, moy. 2.39 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "6 sources (6 séquences filmées, 0 captures réelles)",
+      "expected": "≥ 3"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "2 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.7 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 0.0 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 161,
+    "wer": 0,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Et si ta formation se vendait grâce à d'autres ?",
+      "headline": "Et si d'autres vendaient pour toi ?",
+      "visual": "graphic",
+      "fromSec": 0,
+      "toSec": 2.9
+    },
+    {
+      "id": "s2",
+      "phase": "solution",
+      "voiceover": "Sur Systeme.io, tu peux créer ton propre programme d'affiliation.",
+      "headline": "Ton programme d'affiliation",
+      "visual": "graphic",
+      "fromSec": 2.9,
+      "toSec": 7.2
+    },
+    {
+      "id": "s3",
+      "phase": "benefits",
+      "voiceover": "Des personnes recommandent ta formation grâce à ton programme.",
+      "headline": "Ils recommandent ta formation",
+      "visual": "graphic",
+      "fromSec": 7.2,
+      "toSec": 10.5
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "Ta formation, ton tunnel et ton programme restent au même endroit.",
+      "headline": "Tout au même endroit",
+      "visual": "graphic",
+      "fromSec": 10.5,
+      "toSec": 14.5
+    },
+    {
+      "id": "s5",
+      "phase": "cta",
+      "voiceover": "Compare les formules : lien en bio. À toi de choisir.",
+      "headline": "Compare les formules",
+      "visual": "broll",
+      "fromSec": 14.5,
+      "toSec": 19.1
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente à partir de modèles.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "feature.courses",
+      "statement": "Systeme.io permet de créer et vendre des formations en ligne.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "feature.affiliate-program",
+      "statement": "Systeme.io permet de créer et gérer son propre programme d’affiliation.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "feature.affiliate-funnels",
+      "statement": "Systeme.io permet d’intégrer son programme d’affiliation avec ses tunnels de vente et ses sites web.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-22T14:18:19.064Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 20072,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-20072/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 14900,
+        "author": "cipnt",
+        "pageUrl": "https://pixabay.com/videos/id-14900/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 81185,
+        "author": "ChristianBodhi",
+        "pageUrl": "https://pixabay.com/videos/id-81185/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 199015,
+        "author": "draisthetic",
+        "pageUrl": "https://pixabay.com/videos/id-199015/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 17926,
+        "author": "LaurencD",
+        "pageUrl": "https://pixabay.com/videos/id-17926/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 21536,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-21536/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 26011,
+        "author": "motionstock",
+        "pageUrl": "https://pixabay.com/videos/id-26011/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 49131,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-49131/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 199019,
+        "author": "draisthetic",
+        "pageUrl": "https://pixabay.com/videos/id-199019/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 250446,
+        "author": "AbstractBackground",
+        "pageUrl": "https://pixabay.com/videos/id-250446/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+      "blogId": "7791839",
+      "date": "2026-11-23T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+        "videoCoverMilliseconds": 9130,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Et si d'autres vendaient pour toi ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : le lien est dans ma bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+      "blogId": "7791839",
+      "date": "2026-11-23T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Ta formation parlerait de quoi ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : le lien est dans ma bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+        "videoCoverMilliseconds": 9130,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    },
+    {
+      "network": "youtube",
+      "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+      "blogId": "7791839",
+      "date": "2026-11-23T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "youtube"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\n\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\n\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\n\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n💾 Enregistre-la pour comparer plus tard.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #formationenligne #programmedaffiliation #tunneldevente",
+        "youtubeData": {
+          "title": "Publicité · Et si ta formation se vendait grâce à d'autres ?",
+          "type": "short",
+          "privacy": "public",
+          "tags": [
+            "systemeio",
+            "formationenligne",
+            "programmedaffiliation",
+            "tunneldevente"
+          ],
+          "category": "HOWTO_STYLE",
+          "madeForKids": false,
+          "isAiGeneratedContent": true
+        }
+      }
+    },
+    {
+      "network": "threads",
+      "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+      "blogId": "7791839",
+      "date": "2026-11-23T10:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "threads"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T10:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nEt si ta formation se vendait grâce à d'autres ? 👇\nSur Systeme.io, tu peux créer ton propre programme d'affiliation : des personnes recommandent ta formation, chacune avec son lien.\nTa formation, ton tunnel de vente et ton programme d'affiliation restent au même endroit.\nTa formation parlerait de quoi ? Réponds en un mot.\n👉 Compare les formules : lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+        "threadsData": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-23T10:00:00+01:00",
+      "local": "2026-11-23T10:00:00",
+      "label": "lundi 23 novembre à 10:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-e.jpg",
+    "coverMs": 9130,
+    "sha256": "eb60f64c91901778a0e4ca6eaafd0241fce5becfa5488925de9322f5e5e545fa",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-22T17:29:43.349Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "c3d7f50b422341bb357e16bbb891acfe",
+    "url": "/_blob/c3d7f50b422341bb357e16bbb891acfe"
+  },
+  "cover": {
+    "assetId": "c7cf24bcafb95ad483bf679ac2206592",
+    "url": "/_blob/c7cf24bcafb95ad483bf679ac2206592"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Systeme.io",
+  "autoSlot": {
+    "iso": "2026-11-23T10:00:00+01:00",
+    "label": "lundi 23 novembre à 10:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 43.91,
+    "end": 63.05
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-22T17:30:02.239Z"
+}

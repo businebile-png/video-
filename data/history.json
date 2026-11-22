@@ -1152,16 +1152,17 @@
       "angle": "Systeme.io permet de créer son propre programme d'affiliation : des affiliés recommandent ta formation avec leur lien, le tout au même endroit que ta formation et ton tunnel",
       "workingTitle": "Et si d'autres vendaient ta formation ?",
       "artDirection": "clarte",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 43.91,
       "voiceId": "claire",
-      "durationSec": 28.43,
-      "score": null,
-      "decision": null,
+      "durationSec": 19.13,
+      "score": 69,
+      "decision": "publishable",
       "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 1,
-      "updatedAt": "2026-11-22T15:12:09.673Z"
+      "updatedAt": "2026-11-22T17:29:39.397Z"
     },
     {
       "runId": "2026-11-22-f",
