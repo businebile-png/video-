@@ -13,6 +13,11 @@ restent sur Zernio (2 comptes gratuits, publications illimitées).
 - `.github/workflows/publier-meta.yml` le lance par GitHub Actions (gratuit, indépendant du quota de Claude) à 9:50 et
   19:50 (il attend l'heure du créneau), avec une reprise à 12:15 et 22:15 en cas d'échec. **Ce fichier doit rester sur la
   branche par défaut du dépôt** (`claude/kind-euler-t08y5a`) : GitHub n'exécute les planifications que depuis elle.
+- Meta télécharge elle-même la vidéo à une adresse publique (le téléversement direct exige « Facebook Login for Business »,
+  hors de cette formule gratuite). GitHub brut sert les MP4 en `application/octet-stream`, que Meta peut refuser, et jsDelivr
+  ne sert pas les fichiers de plus de 20 Mo. Le publieur teste donc, avant d'appeler Meta, trois adresses épinglées sur le
+  commit récupéré (jsDelivr, githack, GitHub brut), ne garde que celles qui répondent avec un vrai type vidéo (`video/mp4`)
+  et passe à la suivante si Meta refuse la première. Le mode « verifier » affiche ces tests pour la prochaine vidéo.
 - Contrôles refaits à la publication : vidéo « publishable », légende commençant par « Publicité », créneau atteint et
   dépassé de moins de 5 h, 3 essais au plus par réseau. Une vidéo n'est jamais publiée deux fois (`data/meta-publications.json`).
 - Résultat de chaque publication (identifiant, adresse du post) : `data/meta-publications.json`, commité par le workflow.

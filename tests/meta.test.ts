@@ -5,11 +5,15 @@ import {describe, expect, it} from 'vitest';
 import {
   MAX_ATTEMPTS,
   classify,
+  describeProbe,
   fitThreads,
   mediaUrls,
+  probeMedia,
+  rankMediaUrls,
   readState,
   runDue,
   threadsLength,
+  verifyMedia,
   verifyTokens,
   type MetaState,
   type QueueEntry,
@@ -18,6 +22,8 @@ import {
 const SLOT = '2026-11-23T20:00:00+01:00';
 const SLOT_MS = Date.parse(SLOT);
 const RAW = 'https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4';
+const JSDELIVR = 'https://cdn.jsdelivr.net/gh/businebile-png/video-@abc123/videos/2026-11-22-a.mp4';
+const GITHACK = 'https://rawcdn.githack.com/businebile-png/video-/abc123/videos/2026-11-22-a.mp4';
 const TOKENS = {INSTAGRAM_ACCESS_TOKEN: 'IGTOKEN-secret', THREADS_ACCESS_TOKEN: 'THTOKEN-secret'};
 
 function entry(patch: Partial<QueueEntry> = {}): QueueEntry {
@@ -55,12 +61,29 @@ interface Call {
   params: URLSearchParams;
 }
 
-/** Faux serveur Graph : `routes` répond selon « METHODE chemin » ; une liste de réponses est consommée une à une. */
-function fakeGraph(routes: Record<string, unknown>) {
+/** Réponse d'une adresse de vidéo à la demande d'un octet : 206 avec type et taille, ou une réponse toute faite. */
+function mediaAnswer(type: string, size = 18_745_440): Response {
+  return new Response('xx', {status: 206, headers: {'content-type': type, 'content-range': `bytes 0-1/${size}`}});
+}
+
+const MEDIA_HOSTS = ['raw.githubusercontent.com', 'cdn.jsdelivr.net', 'rawcdn.githack.com'];
+
+/**
+ * Faux serveur Graph : `routes` répond selon « METHODE chemin » ; une liste de réponses est consommée une à une.
+ * Les adresses de la vidéo (GitHub, jsDelivr, githack) répondent à part : par défaut GitHub en octet-stream, les CDN en video/mp4 ;
+ * `media` remplace la réponse d'une adresse. Ces demandes sont comptées dans `probes`, pas dans `calls`.
+ */
+function fakeGraph(routes: Record<string, unknown>, media: Record<string, Response> = {}) {
   const calls: Call[] = [];
+  const probes: string[] = [];
   const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const method = init?.method ?? 'GET';
     const u = new URL(String(input));
+    if (MEDIA_HOSTS.includes(u.hostname)) {
+      probes.push(u.href);
+      const given = media[u.href];
+      return given ? given.clone() : mediaAnswer(u.hostname === 'raw.githubusercontent.com' ? 'application/octet-stream' : 'video/mp4');
+    }
     const params = new URLSearchParams(method === 'GET' ? u.search : String(init?.body ?? ''));
     calls.push({method, url: `${u.origin}${u.pathname}`, params});
     const key = `${method} ${u.pathname.replace(/^\/(v[\d.]+)/, '')}`;
@@ -71,7 +94,7 @@ function fakeGraph(routes: Record<string, unknown>) {
     if (r instanceof Response) return r;
     return new Response(JSON.stringify(r), {status: 200});
   }) as typeof fetch;
-  return {fetchFn, calls};
+  return {fetchFn, calls, probes};
 }
 
 const igRoutes = (extra: Record<string, unknown> = {}) => ({
@@ -126,9 +149,59 @@ describe('Threads : longueur et adresses de la vidéo', () => {
     expect(fitThreads('court')).toBe('court');
   });
 
-  it('propose GitHub puis jsDelivr épinglé sur le commit récupéré', () => {
+  it('propose jsDelivr et githack épinglés sur le commit récupéré, puis GitHub brut en dernier', () => {
     expect(mediaUrls(entry(), {})).toEqual([RAW]);
-    expect(mediaUrls(entry(), {META_MEDIA_REF: 'abc123'})).toEqual([RAW, 'https://cdn.jsdelivr.net/gh/businebile-png/video-@abc123/videos/2026-11-22-a.mp4']);
+    expect(mediaUrls(entry(), {META_MEDIA_REF: 'abc123'})).toEqual([JSDELIVR, GITHACK, RAW]);
+    expect(mediaUrls(entry({media: {}}), {META_MEDIA_REF: 'abc123'})).toEqual([]);
+  });
+});
+
+describe('adresses de la vidéo : test avant de les donner à Meta', () => {
+  it('lit le code, le type MIME et la taille avec une demande d’un octet', async () => {
+    const g = fakeGraph({}, {[JSDELIVR]: new Response('Package size exceeded the configured limit', {status: 403, headers: {'content-type': 'text/plain'}})});
+    expect(await probeMedia(g.fetchFn, GITHACK)).toEqual({url: GITHACK, status: 206, contentType: 'video/mp4', size: 18_745_440, rank: 0});
+    expect(await probeMedia(g.fetchFn, RAW)).toMatchObject({status: 206, contentType: 'application/octet-stream', rank: 1});
+    expect(await probeMedia(g.fetchFn, JSDELIVR)).toMatchObject({status: 403, contentType: 'text/plain', rank: 2});
+    // Pas de Content-Range (200 avec la taille complète) ; page d'erreur minuscule ; serveur muet.
+    const plain = fakeGraph({}, {[GITHACK]: new Response('x'.repeat(10), {status: 200, headers: {'content-type': 'video/mp4', 'content-length': '10'}})});
+    expect(await probeMedia(plain.fetchFn, GITHACK)).toMatchObject({status: 200, size: 10, rank: 2});
+    const down = (async () => {
+      throw new Error('ECONNRESET');
+    }) as unknown as typeof fetch;
+    expect(await probeMedia(down, RAW)).toEqual({url: RAW, status: 0, contentType: '', size: null, rank: 2});
+  });
+
+  it('range les adresses : vidéo bien typée d’abord, type générique en dernier recours, jamais une erreur', async () => {
+    const urls = [JSDELIVR, GITHACK, RAW];
+    // Vidéo de plus de 20 Mo : jsDelivr refuse, githack et GitHub répondent.
+    const big = fakeGraph({}, {[JSDELIVR]: new Response('limit', {status: 403, headers: {'content-type': 'text/plain'}}), [GITHACK]: mediaAnswer('video/mp4', 32_332_971)});
+    expect((await rankMediaUrls(big.fetchFn, urls)).urls).toEqual([GITHACK, RAW]);
+    // Tout répond bien : l'ordre d'origine est gardé, GitHub brut (octet-stream) reste dernier.
+    const ok = fakeGraph({});
+    expect((await rankMediaUrls(ok.fetchFn, urls)).urls).toEqual([JSDELIVR, GITHACK, RAW]);
+    // Les CDN sont en panne : GitHub brut reste possible.
+    const cdnDown = fakeGraph({}, {[JSDELIVR]: new Response('', {status: 404}), [GITHACK]: new Response('', {status: 502})});
+    expect((await rankMediaUrls(cdnDown.fetchFn, urls)).urls).toEqual([RAW]);
+    // Rien ne répond : on garde l'ordre d'origine (Meta peut parfois joindre ce que GitHub Actions n'atteint pas).
+    const none = fakeGraph({}, {[JSDELIVR]: new Response('', {status: 404}), [GITHACK]: new Response('', {status: 404}), [RAW]: new Response('', {status: 404})});
+    expect((await rankMediaUrls(none.fetchFn, urls)).urls).toEqual(urls);
+  });
+
+  it('décrit chaque adresse en une ligne lisible', () => {
+    expect(describeProbe({url: GITHACK, status: 206, contentType: 'video/mp4', size: 18_745_440, rank: 0})).toBe('rawcdn.githack.com : HTTP 206 · video/mp4 · 17.9 Mo → utilisable');
+    expect(describeProbe({url: RAW, status: 0, contentType: '', size: null, rank: 2})).toBe('raw.githubusercontent.com : sans réponse · type inconnu → écartée');
+  });
+
+  it('« verifier » teste les adresses de la prochaine vidéo, ou de la plus récente si tout est passé', async () => {
+    const root = makeRoot([entry()]);
+    const g = fakeGraph({});
+    const env = {META_MEDIA_REF: 'abc123'};
+    const next = await verifyMedia({root, env, nowFn: () => SLOT_MS - 3_600_000, fetchFn: g.fetchFn});
+    expect(next).toMatchObject({runId: '2026-11-22-a', pending: true});
+    expect(next!.probes.map((p) => p.url)).toEqual([JSDELIVR, GITHACK, RAW]);
+    const past = await verifyMedia({root, env, nowFn: () => SLOT_MS + 24 * 3_600_000, fetchFn: g.fetchFn});
+    expect(past).toMatchObject({runId: '2026-11-22-a', pending: false});
+    expect(await verifyMedia({root: makeRoot([]), env, fetchFn: g.fetchFn})).toBeNull();
   });
 });
 
@@ -176,12 +249,12 @@ describe('runDue : publication complète', () => {
     expect(again.published).toEqual([]);
   });
 
-  it("essaie l'adresse de secours si Meta refuse la première, sans jamais republier après la publication", async () => {
+  it("essaie l'adresse suivante si Meta refuse la première, sans jamais republier après la publication", async () => {
     const root = makeRoot();
-    // Le conteneur créé avec l'adresse GitHub finit en erreur ; celui créé avec jsDelivr (c2) est accepté.
+    // Le conteneur créé avec l'adresse jsDelivr finit en erreur ; celui créé avec githack (c2) est accepté.
     const g = fakeGraph(
       igRoutes({
-        'POST /111/media': (c: Call) => ({id: c.params.get('video_url') === RAW ? 'c1' : 'c2'}),
+        'POST /111/media': (c: Call) => ({id: c.params.get('video_url') === JSDELIVR ? 'c1' : 'c2'}),
         'GET /c1': {status_code: 'ERROR', status: 'Media download failed'},
         'GET /c2': {status_code: 'FINISHED'},
         'POST /111/media_publish': (c: Call) => (c.params.get('creation_id') === 'c2' ? {id: 'm1'} : new Response('{"error":{"message":"mauvais conteneur"}}', {status: 400})),
@@ -191,7 +264,28 @@ describe('runDue : publication complète', () => {
     expect(res.failed).toEqual([]);
     expect(res.published).toHaveLength(1);
     const urls = g.calls.filter((c) => c.method === 'POST' && c.url.endsWith('/111/media')).map((c) => c.params.get('video_url'));
-    expect(urls).toEqual([RAW, 'https://cdn.jsdelivr.net/gh/businebile-png/video-@abc123/videos/2026-11-22-a.mp4']);
+    expect(urls).toEqual([JSDELIVR, GITHACK]);
+  });
+
+  it('vidéo de plus de 20 Mo : jsDelivr refuse, Meta reçoit directement l’adresse githack ; une seule série de tests par vidéo', async () => {
+    const root = makeRoot();
+    const g = fakeGraph(igRoutes(), {[JSDELIVR]: new Response('limit', {status: 403, headers: {'content-type': 'text/plain'}}), [GITHACK]: mediaAnswer('video/mp4', 32_332_971)});
+    const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).startsWith('https://graph.threads.com/v1.0/me')) return new Response(JSON.stringify({id: '222', username: 'thr'}), {status: 200});
+      if (String(input).startsWith('https://graph.threads.com/v1.0')) {
+        const u = new URL(String(input));
+        const answers: Record<string, unknown> = {'/v1.0/222/threads': {id: 't1'}, '/v1.0/t1': {status: 'FINISHED'}, '/v1.0/222/threads_publish': {id: 'tm1'}, '/v1.0/tm1': {permalink: 'https://www.threads.com/p'}};
+        return new Response(JSON.stringify(answers[u.pathname] ?? {}), {status: 200});
+      }
+      return g.fetchFn(input, init);
+    }) as typeof fetch;
+    const logs: string[] = [];
+    const res = await runDue({root, env: {...TOKENS, META_MEDIA_REF: 'abc123'}, nowFn: () => SLOT_MS + 1000, fetchFn, sleep: async () => {}, log: (m) => logs.push(m)});
+    expect(res.failed).toEqual([]);
+    expect(res.published.map((p) => p.network)).toEqual(['instagram', 'threads']);
+    expect(g.calls.find((c) => c.url.endsWith('/111/media'))!.params.get('video_url')).toBe(GITHACK);
+    expect(g.probes).toEqual([JSDELIVR, GITHACK, RAW]); // Instagram et Threads se partagent les 3 tests
+    expect(logs.some((l) => l.includes('cdn.jsdelivr.net : HTTP 403') && l.includes('écartée'))).toBe(true);
   });
 
   it("note l'échec sans jamais écrire le jeton, et s'arrête après 3 essais", async () => {
