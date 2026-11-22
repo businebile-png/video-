@@ -1175,14 +1175,14 @@
       "artDirection": "studio-nuit",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": 29.47,
+      "durationSec": 32.07,
       "score": 70,
       "decision": "redo",
-      "status": "rejected",
+      "status": "rendered",
       "reason": "70/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
       "serie": 3,
-      "updatedAt": "2026-11-22T19:52:19.256Z"
+      "updatedAt": "2026-11-22T20:17:05.263Z"
     }
   ]
 }
