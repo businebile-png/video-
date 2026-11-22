@@ -23,6 +23,7 @@ import {lintScript} from './script/lint.js';
 import {convertMetricool} from './analytics/metricool.js';
 import {autoProduce, claimSlot, cleanQueue, enqueue, nextSlot, releaseClaim} from './auto/auto.js';
 import {nextSlots} from './publish/publish.js';
+import {metaCli} from './publish/meta.js';
 import {chat} from './llm/client.js';
 import {viralChecklist, VIRAL_MIN_PASSED} from './script/viral.js';
 import {loadFacts, refreshSnapshots, saveFacts, usableFacts, verifyFacts} from './facts/facts.js';
@@ -99,6 +100,7 @@ Suivi
   queue:add <runId> [--slot <iso>]  Met une vidéo prête dans la file de publication (et libère la réservation)
   queue:release                Retire la réservation de créneau
   queue:clean                  Retire les vidéos de la file dont le créneau est passé de 6 h
+  meta:publish verifier|publier [--simuler] [--maintenant <iso>] [--attendre <min>]  Instagram (Reels) et Threads par les API de Meta (gratuit ; jetons INSTAGRAM_ACCESS_TOKEN / THREADS_ACCESS_TOKEN)
   stats:metricool <export.json> [--videos <dossier>]  Lignes Metricool → chiffres par vidéo (panneau + stats)
   stats:import <fichier.json>  Statistiques des publications (Metricool)
   affiliate:add --date AAAA-MM-JJ [--clicks N] [--signups N] [--paid N] [--commission X]
@@ -806,6 +808,12 @@ async function main(): Promise<void> {
       if (!slot) throw new Error('Aucun créneau.');
       const file = await enqueue(id, slot, {pipeline: 'claude'});
       log.ok(`Vidéo ${id} dans la file pour ${slot.label} : ${path.relative(PATHS.root, file)}`);
+      return;
+    }
+    case 'meta:publish': {
+      // Instagram (Reels) et Threads par les API de Meta, gratuit : `verifier` | `publier [--simuler]` (docs/publication-meta.md).
+      const code = await metaCli(rest, PATHS.root);
+      if (code !== 0) process.exitCode = code;
       return;
     }
     case 'queue:clean': {
