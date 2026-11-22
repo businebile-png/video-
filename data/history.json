@@ -1041,6 +1041,26 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-21T15:43:26.766Z"
+    },
+    {
+      "runId": "2026-11-21-l",
+      "date": "2026-11-21",
+      "category": "pub-directe",
+      "hookStyle": "question-directe",
+      "hook": "Et si d'autres vendaient ta formation à ta place ? Oui, ça existe.",
+      "angle": "Programme d'affiliation intégré à Systeme.io : d'autres personnes recommandent ta formation, chacune avec son lien.",
+      "workingTitle": "Et si d'autres vendaient ta formation ?",
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": 25.7,
+      "score": 72,
+      "decision": "redo",
+      "status": "rejected",
+      "reason": "72/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "pexelsIds": [],
+      "serie": 1,
+      "updatedAt": "2026-11-22T00:57:34.109Z"
     }
   ]
 }
