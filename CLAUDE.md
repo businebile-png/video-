@@ -29,9 +29,9 @@ répondre, commenter et écrire les messages de commit en français.
 - Production : **Claude d'abord, IA gratuites en relève** (choix de l'utilisateur le 09/11/2026). Jusqu'au 22/12/2026,
   production **en continu** (demande de l'utilisateur du 21/11/2026 au soir : « continue les vidéos jusqu'à ce que tu
   finisses le mois et programme-les tous automatiquement ») : la tâche « Production du mois en continu »
-  (`trig_01RNBHFDf7LNerv47ffZzS7Z`, toutes les 6 h et relancée par chaque session de production à sa fin, rattachée à la
-  session de la régie `session_01N7BpMrqV24PNBWQH4tAsxv` ; une tâche « session neuve » n'aurait ni le dépôt ni
-  `create_session`) lance des lots de 4 vidéos (modèle économe), faites une par une, pour les premiers créneaux libres à
+  (`trig_01FJL4NcNJW3ZnGzUY9UccMz`, toutes les 6 h et relancée par chaque session de production à sa fin) réveille une
+  petite session « chef d'orchestre » économe (`session_01N7BpMrjyPj7wXDKpwG2nNq`, modèle économe ; une tâche « session
+  neuve » n'aurait ni le dépôt ni `create_session`, et la session de la régie coûterait trop cher à chaque passage), qui lance des lots de 4 vidéos (modèle économe), faites une par une, pour les premiers créneaux libres à
   plus de 6 h ; limite d'utilisation atteinte : la session reprend après la remise à zéro. Série complète : la tâche
   repasse à 2 vidéos par jour à 5:47. Du 23/11 au 22/12/2026, chaque créneau suit son
   script de la **série de 60 vidéos** (`data/serie.json`, copie du doc https://claude.ai/artifact/ARvQZ1yHphg25qnphZ9Boj :
