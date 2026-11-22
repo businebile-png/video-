@@ -1168,9 +1168,9 @@
       "runId": "2026-11-22-f",
       "date": "2026-11-22",
       "category": "conseils-debutant",
-      "hookStyle": null,
-      "hook": null,
-      "angle": null,
+      "hookStyle": "question-directe",
+      "hook": "Tu hésites entre quatre formules ? Voici mon classement, selon ton projet.",
+      "angle": "Classer les quatre formules de Systeme.io par rang selon le projet : Gratuit pour débuter, Startup dès plusieurs offres, Webinaire pour vendre par webinaire, Illimité quand tout doit être sans limite",
       "workingTitle": "Tier list des 4 formules Systeme.io",
       "artDirection": "studio-nuit",
       "musicTrack": null,
@@ -1182,7 +1182,7 @@
       "reason": null,
       "pexelsIds": [],
       "serie": 3,
-      "updatedAt": "2026-11-22T15:12:54.579Z"
+      "updatedAt": "2026-11-22T17:50:57.927Z"
     }
   ]
 }
