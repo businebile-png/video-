@@ -59,9 +59,15 @@ l'honnêteté : jamais de mystère trompeur, de fausse urgence ni de promesse.
 
 ## À signaler impérativement
 
+Note de procédure (accord de l'utilisateur du 22/11/2026) : la mention « Publicité · Systeme.io » en tête de légende
+n'est pas écrite dans les légendes de `script.json` ; le studio l'ajoute lui-même à la publication
+(`src/publish/publish.ts`), et la tâche de publication vérifie, avant de programmer, que chaque légende commence par
+« Publicité » (sinon rien ne part). Ne signale donc pas son absence dans `script.json` ; vérifie que la mention
+« Publicité » est visible dans la vidéo, toute la durée.
+
 - `blockingIssues` : tout ce qui interdit la diffusion (texte illisible ou coupé, image choquante ou
   hors sujet, plan qui fait croire qu'une personne filmée recommande le produit, voix absente,
-  mention « Publicité » absente, interface de Systeme.io inventée).
+  mention « Publicité » absente de la vidéo, interface de Systeme.io inventée).
 - `factualConcerns` : toute affirmation non couverte par les faits vérifiés du plan (prix, limites,
   fonctionnalités, résultats).
 - `rightsConcerns` : logo de marque visible, musique ou image de provenance douteuse.
