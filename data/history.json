@@ -1061,6 +1061,27 @@
       "pexelsIds": [],
       "serie": 1,
       "updatedAt": "2026-11-22T00:57:34.109Z"
+    },
+    {
+      "runId": "2026-11-22-a",
+      "date": "2026-11-22",
+      "category": "conseils-debutant",
+      "hookStyle": "erreur",
+      "hook": "Tu postes tous les jours, mais personne ne laisse son e-mail ?",
+      "angle": "Diagnostic : si personne ne s'inscrit, il manque souvent une page où s'inscrire ; un tunnel depuis un modèle et un e-mail automatique.",
+      "workingTitle": "Tu postes, mais personne ne s'inscrit",
+      "artDirection": "energie",
+      "musicTrack": "all-for-nothing",
+      "musicStart": 32.83,
+      "voiceId": "claire",
+      "durationSec": 27.47,
+      "score": 74,
+      "decision": "publishable",
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "serie": 2,
+      "updatedAt": "2026-11-22T01:13:12.435Z"
     }
   ]
 }
