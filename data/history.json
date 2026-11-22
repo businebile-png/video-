@@ -1213,16 +1213,17 @@
       "angle": "Fait contre-intuitif vérifié : les e-mails envoyés sont illimités dans les quatre formules, y compris la gratuite ; seul le nombre de campagnes change",
       "workingTitle": "Tes e-mails sont illimités, même en gratuit",
       "artDirection": "energie",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 10.75,
       "voiceId": "claire",
-      "durationSec": null,
-      "score": null,
-      "decision": null,
-      "status": "created",
+      "durationSec": 27.57,
+      "score": 76,
+      "decision": "publishable",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 4,
-      "updatedAt": "2026-11-22T21:28:32.700Z"
+      "updatedAt": "2026-11-22T22:13:54.917Z"
     }
   ]
 }

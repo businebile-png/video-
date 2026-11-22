@@ -1,0 +1,691 @@
+{
+  "runId": "2026-11-22-h",
+  "date": "2026-11-22",
+  "createdAt": "2026-11-22T22:14:03.474Z",
+  "updatedAt": "2026-11-22T22:14:03.474Z",
+  "status": "prete",
+  "title": "Tes e-mails sont illimités, même en gratuit",
+  "category": {
+    "id": "pub-directe",
+    "label": "Publicité directe"
+  },
+  "angle": "Fait contre-intuitif vérifié : les e-mails envoyés sont illimités dans les quatre formules, y compris la gratuite ; seul le nombre de campagnes change",
+  "hook": "Tes e-mails sont illimités, même sur le plan gratuit.",
+  "hookStyle": "contre-intuitif",
+  "artDirection": {
+    "id": "energie",
+    "label": "Énergie — rythmé, contrasté, citron vert"
+  },
+  "durationSec": 27.57,
+  "score": {
+    "total": 76,
+    "decision": "publishable",
+    "summary": "76/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 13,
+        "basis": "relecture 13/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0.029, 155 mots/min, pause max 0.41 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "3 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "68 mots synchronisés, -14 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Ce qui est dit correspond à ce qui est montré : les chiffres du tableau officiel et de la comparaison sont ceux de la voix et couverts par les faits vérifiés. En revanche, le texte gris des cartes de comparaison est peu lisible sur téléphone et la carte d'étapes s4 s'affiche vide au début ; dans le doute je refuse la bonne qualité, sans défaut bloquant."
+      }
+    ],
+    "virality": {
+      "total": 13,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 4,
+          "justification": "Titre gros dès l'image 0, fait surprenant adressé au spectateur et tableau officiel visible immédiatement ; peu de mouvement dans la première seconde."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "Sous-titres dynamiques et changements de carte réguliers, mais pas de liste annoncée ni de question tenue jusqu'au bout ; la deuxième moitié est plus plate."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "Information concrète et utile pour un débutant qui hésite sur le plan gratuit, facile à enregistrer, mais peu de situation où la cible se reconnaît."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une question oui/non facile à commenter et invite à enregistrer sans promesse ; la question n'est pas dans la vidéo elle-même."
+        }
+      ],
+      "actions": [
+        "Mettre la question de la légende (« Tu écris à ta liste chaque semaine ? ») en carte finale à l'écran.",
+        "Remplacer le plan flou de s5 par un mouvement net pour relancer l'attention à mi-vidéo."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 13,
+        "justification": "Le tableau officiel (capture datée) en ouverture est net, lisible et prouve la phrase dite ; identité vert acide cohérente, mention Publicité visible partout. En revanche les plans de fond sont génériques et flous (clavier gaming néon bleu/rouge pour une newsletter, mains floues sur la comparaison) et le texte des cartes Gratuit/Startup est gris sur fond sombre, peu lisible sur téléphone."
+      },
+      "editing": {
+        "score": 11,
+        "justification": "Surlignage du tableau synchronisé avec la voix et sous-titres mot à mot dynamiques, coupes régulières. Mais la carte d'étapes s4 apparaît d'abord avec trois cases vides, et la comparaison s5 reste statique et faible ; plans de fond sans rapport précis avec la phrase."
+      },
+      "script": {
+        "score": 11,
+        "justification": "Accroche contre-intuitive de 9 mots, tenue par la preuve immédiate à l'écran. Progression claire, mais la section s2 (« Voici ce qui change ») annonce un changement puis s3 répète que tout est pareil, ce qui est un peu confus ; la fin est sobre mais sans véritable relance."
+      },
+      "explanation": {
+        "score": 11,
+        "justification": "Le message principal (e-mails illimités dans les quatre formules, campagnes limitées à 1 en gratuit contre 10 en Startup) est clair et appuyé par la page officielle. Peu d'explication sur ce qu'est une campagne et pour qui c'est utile, aucune interface de Systeme.io montrée hors tableau des tarifs."
+      },
+      "conversion": {
+        "score": 10,
+        "justification": "Appel à l'action clair (lien en bio, vérifier la page officielle) sans pression ni promesse, et orientation vers la comparaison des formules. La raison de cliquer reste faible : on est invité à vérifier, pas à essayer ou à passer à Startup pour un besoin précis."
+      }
+    },
+    "improvements": [
+      "Augmenter le contraste et la taille du texte des cartes Gratuit/Startup en s5 (fond plus sombre ou texte blanc plein dès l'apparition).",
+      "Remplir la carte d'étapes de s4 dès le premier plan au lieu de trois cases vides, et remplacer le clavier néon gaming par un plan de travail neutre.",
+      "Resserrer s2 : retirer « Voici ce qui change » ou le placer avant la comparaison s5 pour éviter l'annonce répétée."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "5076 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-14 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-2 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "68 mots synchronisés, -14 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.1",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.76 s entre deux changements d’image (coupe ou recadrage), min 0.77 s ; 10 plans montés, moy. 2.76 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "8 sources (7 séquences filmées, 1 captures réelles)",
+      "expected": "≥ 4"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "2 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "5.7 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 2.9 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 155,
+    "wer": 0.029,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Tes e-mails sont illimités, même sur le plan gratuit.",
+      "headline": "E-mails illimités… en gratuit",
+      "visual": "demo",
+      "fromSec": 0,
+      "toSec": 3.5
+    },
+    {
+      "id": "s2",
+      "phase": "proof",
+      "voiceover": "C'est écrit sur la page officielle des tarifs. Voici ce qui change.",
+      "headline": null,
+      "visual": "demo",
+      "fromSec": 3.5,
+      "toSec": 7.4
+    },
+    {
+      "id": "s3",
+      "phase": "proof",
+      "voiceover": "Gratuit, Startup, Webinaire, Illimité : pareil pour les quatre formules.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 7.4,
+      "toSec": 12.7
+    },
+    {
+      "id": "s4",
+      "phase": "solution",
+      "voiceover": "Systeme.io sert à envoyer tes newsletters et tes campagnes à tes contacts.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 12.7,
+      "toSec": 17.2
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Ce qui change, c'est le nombre de campagnes : une en gratuit, dix avec Startup.",
+      "headline": null,
+      "visual": "graphic",
+      "fromSec": 17.2,
+      "toSec": 21.9
+    },
+    {
+      "id": "s6",
+      "phase": "cta",
+      "voiceover": "Lien en bio : vérifie par toi-même, tout est sur la page officielle.",
+      "headline": null,
+      "visual": "broll",
+      "fromSec": 21.9,
+      "toSec": 27.6
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.table.email-campaigns",
+      "statement": "Campagnes e-mail : 1 avec Gratuit, 10 avec Startup, 100 avec Webinaire, illimitées avec Illimité.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.table.emails-sent",
+      "statement": "Les e-mails envoyés sont illimités dans les quatre formules, y compris la gratuite.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 203260,
+        "author": "Natures_Embrace",
+        "pageUrl": "https://pixabay.com/videos/id-203260/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 78640,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-78640/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 47158,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-47158/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 174003,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-174003/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 43459,
+        "author": "Nicolas_Garay",
+        "pageUrl": "https://pixabay.com/videos/id-43459/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 180776,
+        "author": "Darioguzben",
+        "pageUrl": "https://pixabay.com/videos/id-180776/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 34258,
+        "author": "thenickmurphy",
+        "pageUrl": "https://pixabay.com/videos/id-34258/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 107240,
+        "author": "mootlak",
+        "pageUrl": "https://pixabay.com/videos/id-107240/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 47743,
+        "author": "crew_jak",
+        "pageUrl": "https://pixabay.com/videos/id-47743/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-24T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-24T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "E-mails illimités… en gratuit",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-24T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Oui ou non ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-24T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    },
+    {
+      "network": "youtube",
+      "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-24T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "youtube"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-24T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #newsletter #entrepreneurfrancais",
+        "youtubeData": {
+          "title": "Publicité · Tes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page…",
+          "type": "short",
+          "privacy": "public",
+          "tags": [
+            "systemeio",
+            "emailmarketing",
+            "newsletter",
+            "entrepreneurfrancais"
+          ],
+          "category": "HOWTO_STYLE",
+          "madeForKids": false,
+          "isAiGeneratedContent": true
+        }
+      }
+    },
+    {
+      "network": "threads",
+      "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+      "blogId": "7791839",
+      "date": "2026-11-24T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "threads"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-24T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nTes e-mails sont illimités, même sur le plan gratuit : c'est écrit sur la page officielle des tarifs. Ce qui change, c'est le nombre de campagnes (1 en gratuit, 10 avec Startup). Enregistre-la pour comparer plus tard. Tu écris à ta liste chaque semaine ? Oui ou non ? Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+        "threadsData": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-24T20:00:00+01:00",
+      "local": "2026-11-24T20:00:00",
+      "label": "mardi 24 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-24T20:00:00+01:00",
+      "local": "2026-11-24T20:00:00",
+      "label": "mardi 24 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-24T20:00:00+01:00",
+      "local": "2026-11-24T20:00:00",
+      "label": "mardi 24 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-24T20:00:00+01:00",
+      "local": "2026-11-24T20:00:00",
+      "label": "mardi 24 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-h.jpg",
+    "coverMs": 0,
+    "sha256": "4b39ea9712466c899f8b1501fc25194a28995dbcd34611bafa398864d71fe347",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-22T22:13:56.172Z"
+  },
+  "publishable": true,
+  "overrideAllowed": true,
+  "preview": {
+    "assetId": null,
+    "url": null
+  },
+  "cover": {
+    "assetId": null,
+    "url": null
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Systeme.io",
+  "autoSlot": {
+    "iso": "2026-11-24T20:00:00+01:00",
+    "label": "mardi 24 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 10.75,
+    "end": 38.33
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-22T22:14:04.244Z"
+}
