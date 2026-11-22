@@ -1,8 +1,8 @@
 {
   "slot": {
-    "iso": "2026-11-24T10:00:00+01:00",
-    "label": "mardi 24 novembre à 10:00"
+    "iso": "2026-11-24T20:00:00+01:00",
+    "label": "mardi 24 novembre à 20:00"
   },
-  "startedAt": "2026-11-22T21:14:20.085Z",
+  "startedAt": "2026-11-22T21:23:15.725Z",
   "by": "claude"
 }

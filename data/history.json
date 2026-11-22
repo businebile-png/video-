@@ -1183,6 +1183,25 @@
       "pexelsIds": [],
       "serie": 3,
       "updatedAt": "2026-11-22T21:05:10.574Z"
+    },
+    {
+      "runId": "2026-11-22-g",
+      "date": "2026-11-22",
+      "category": "conseils-debutant",
+      "hookStyle": "scenario",
+      "hook": "Tu veux lancer ta première formation sans rien payer ?",
+      "angle": "Lancer sa première formation sans payer : ce que le plan gratuit permet (1 formation, 500 élèves) et quand Startup devient utile",
+      "workingTitle": "Ta première formation, sans rien payer",
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-22T21:22:46.013Z"
     }
   ]
 }
