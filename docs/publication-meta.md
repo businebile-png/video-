@@ -37,7 +37,9 @@ restent sur Zernio (2 comptes gratuits, publications illimitées).
    `✓ instagram : @compte` et `✓ threads : @compte` sans rien publier.
 6. Une fois les jetons contrôlés, mettre `"actif": true` dans `data/meta-publications.json` : dès lors Instagram et Threads
    ne sont plus programmés sur Metricool ni Zernio (les publications Metricool déjà créées pour ces réseaux passent en
-   brouillon, sinon doublon).
+   brouillon, sinon doublon). **C'est aussi un verrou** : tant que `"actif"` n'est pas à `true`, le workflow ne publie rien
+   (il l'écrit dans son journal), même si les jetons sont déjà en place. Ordre à respecter : jetons → « verifier » →
+   posts Metricool en brouillon → `"actif": true`.
 
 ## Entretien
 

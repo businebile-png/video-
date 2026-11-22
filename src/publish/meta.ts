@@ -437,6 +437,11 @@ export interface RunOptions {
   dryRun?: boolean;
   /** Si un créneau tombe dans les N prochaines minutes, attend qu'il arrive (le workflow démarre un peu avant l'heure). */
   waitMinutes?: number;
+  /**
+   * Ne publie rien tant que `data/meta-publications.json` ne porte pas `"actif": true`. Verrou contre les doublons : Instagram et
+   * Threads restent sur Metricool jusqu'à ce que cette publication directe soit déclarée active (les simulations ne sont pas concernées).
+   */
+  requireActive?: boolean;
   log?: (message: string) => void;
   pollMs?: number;
   maxPolls?: number;
@@ -447,7 +452,11 @@ export interface RunResult {
   failed: Array<{runId: string; network: MetaNetwork; error: string}>;
   planned: Array<{runId: string; network: MetaNetwork}>;
   ignored: Array<{runId: string; network: MetaNetwork; reason: string}>;
+  /** Vrai si rien n'a été tenté parce que la publication directe n'est pas encore déclarée active. */
+  inactive?: boolean;
 }
+
+export const INACTIVE_MESSAGE = 'Publication directe inactive : « actif » n’est pas à true dans data/meta-publications.json (aucune publication tentée).';
 
 function makeCtx(opts: RunOptions): Ctx {
   return {
@@ -465,6 +474,10 @@ export async function runDue(opts: RunOptions): Promise<RunResult> {
   const state = readState(opts.root);
   const entries = readQueue(opts.root);
   const result: RunResult = {published: [], failed: [], planned: [], ignored: []};
+  if (opts.requireActive && !opts.dryRun && state.actif !== true) {
+    ctx.log(INACTIVE_MESSAGE);
+    return {...result, inactive: true};
+  }
 
   let all = classifyAll(entries, state, opts.env, nowFn());
   const upcoming = all.filter((c): c is Extract<Classified, {kind: 'upcoming'}> => c.kind === 'upcoming');
@@ -607,7 +620,12 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
       else if (media.probes.every((p) => p.rank !== 0)) mediaLines.push('⚠ aucune adresse ne sert un type vidéo : Meta peut refuser la vidéo.');
     }
     for (const l of mediaLines) console.log(l);
-    summary(['### Jetons Meta', ...res.map((r) => `- ${r.ok ? '✅' : '❌'} **${r.network}** : ${r.detail}`), '', '### Adresses de la vidéo', ...mediaLines.map((l) => `- ${l}`)].join('\n'));
+    const active = readState(root).actif === true;
+    const activeLine = active
+      ? '✓ Publication directe active (« actif » est à true).'
+      : '⏸ Publication directe inactive : mettre « actif »: true dans data/meta-publications.json quand les jetons sont bons et que les posts Instagram et Threads de Metricool sont en brouillon.';
+    console.log(activeLine);
+    summary(['### Jetons Meta', ...res.map((r) => `- ${r.ok ? '✅' : '❌'} **${r.network}** : ${r.detail}`), '', '### Adresses de la vidéo', ...mediaLines.map((l) => `- ${l}`), '', '### Activation', `- ${activeLine}`].join('\n'));
     return code;
   }
   if (command === 'publier') {
@@ -615,7 +633,11 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
     const nowMs = now ? Date.parse(now) : NaN;
     if (now && !Number.isFinite(nowMs)) throw new Error(`Date invalide : ${now}`);
     const wait = Number(flag(rest, 'attendre') ?? 0) || 0;
-    const res = await runDue({root, env, dryRun: rest.includes('--simuler'), waitMinutes: wait, ...(now ? {nowFn: () => nowMs} : {})});
+    const res = await runDue({root, env, dryRun: rest.includes('--simuler'), waitMinutes: wait, requireActive: true, ...(now ? {nowFn: () => nowMs} : {})});
+    if (res.inactive) {
+      summary(`### Publication Instagram et Threads\n- ⏸️ ${INACTIVE_MESSAGE}`);
+      return 0;
+    }
     if (!res.published.length && !res.failed.length && !res.planned.length) console.log('Rien à publier pour le moment.');
     for (const i of res.ignored) console.log(`· ${i.runId} → ${i.network} : ${i.reason}`);
     summary(

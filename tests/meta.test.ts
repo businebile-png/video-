@@ -308,6 +308,32 @@ describe('runDue : publication complète', () => {
     expect(g.calls.length).toBe(callsBefore);
   });
 
+  it('ne publie rien tant que « actif » n’est pas à true : verrou contre les doublons avec Metricool', async () => {
+    const root = makeRoot();
+    const g = fakeGraph(igRoutes());
+    const logs: string[] = [];
+    const common = {env: {INSTAGRAM_ACCESS_TOKEN: 'IG'}, requireActive: true, nowFn: () => SLOT_MS + 1000, fetchFn: g.fetchFn, sleep: async () => {}};
+    const off = await runDue({...common, root, log: (m) => logs.push(m)});
+    expect(off).toMatchObject({inactive: true, published: [], failed: []});
+    expect(g.calls).toHaveLength(0);
+    expect(g.probes).toHaveLength(0);
+    expect(logs.join('\n')).toContain('inactive');
+    expect(fs.existsSync(path.join(root, 'data', 'meta-publications.json'))).toBe(false);
+
+    const falseRoot = makeRoot([entry()], {version: 1, actif: false, posts: {}});
+    expect((await runDue({...common, root: falseRoot, log: () => {}})).inactive).toBe(true);
+
+    const onRoot = makeRoot([entry()], {version: 1, actif: true, posts: {}});
+    const on = await runDue({...common, root: onRoot, log: () => {}});
+    expect(on.inactive).toBeUndefined();
+    expect(on.published.map((p) => p.network)).toEqual(['instagram']);
+    expect(readState(onRoot).actif).toBe(true); // le drapeau survit à l'enregistrement de l'état
+
+    // La simulation n'est pas concernée par le verrou.
+    const dry = await runDue({...common, env: TOKENS, root, dryRun: true, log: () => {}});
+    expect(dry.planned.map((p) => p.network)).toEqual(['instagram', 'threads']);
+  });
+
   it('sans jeton Threads, publie seulement Instagram', async () => {
     const root = makeRoot();
     const g = fakeGraph(igRoutes());
