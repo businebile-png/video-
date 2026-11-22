@@ -1089,19 +1089,19 @@
       "category": "pub-directe",
       "hookStyle": "scenario",
       "hook": "Tu savais que des affiliés peuvent vendre ta formation pour toi ?",
-      "angle": "Et si d'autres vendaient ta formation : le programme d'affiliation de Systeme.io, au même endroit que la formation et le tunnel",
+      "angle": "Et si d'autres vendaient ta formation : le programme d'affiliation de Systeme.io, relié à tes tunnels de vente",
       "workingTitle": "Et si d'autres vendaient ta formation ?",
       "artDirection": "clarte",
       "musicTrack": null,
       "voiceId": "claire",
       "durationSec": 22.4,
-      "score": null,
-      "decision": null,
+      "score": 69,
+      "decision": "publishable",
       "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 1,
-      "updatedAt": "2026-11-22T06:59:33.760Z"
+      "updatedAt": "2026-11-22T07:13:41.407Z"
     }
   ]
 }
