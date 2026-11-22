@@ -1102,6 +1102,26 @@
       "pexelsIds": [],
       "serie": 1,
       "updatedAt": "2026-11-22T07:25:05.251Z"
+    },
+    {
+      "runId": "2026-11-22-c",
+      "date": "2026-11-22",
+      "category": "conseils-debutant",
+      "hookStyle": "liste",
+      "hook": "Je classe les quatre formules de Systeme.io, selon ton projet.",
+      "angle": "Tier list des quatre formules Systeme.io, classées selon le projet de celui qui débute",
+      "workingTitle": "Tier list des 4 formules Systeme.io",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "serie": 3,
+      "updatedAt": "2026-11-22T07:26:25.813Z"
     }
   ]
 }
