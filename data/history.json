@@ -1114,14 +1114,14 @@
       "artDirection": "nuit-edit",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": null,
+      "durationSec": 29.17,
       "score": null,
       "decision": null,
-      "status": "created",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 3,
-      "updatedAt": "2026-11-22T07:52:39.978Z"
+      "updatedAt": "2026-11-22T08:39:46.788Z"
     }
   ]
 }
