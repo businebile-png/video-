@@ -1095,13 +1095,13 @@
       "musicTrack": null,
       "voiceId": "claire",
       "durationSec": 22.4,
-      "score": 69,
-      "decision": "publishable",
-      "status": "rendered",
-      "reason": null,
+      "score": 64,
+      "decision": "redo",
+      "status": "rejected",
+      "reason": "64/100 (note indicative) — bloquée : Droits : licences des séquences, de la musique et des captures ; Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
       "serie": 1,
-      "updatedAt": "2026-11-22T07:13:41.407Z"
+      "updatedAt": "2026-11-22T07:25:05.251Z"
     }
   ]
 }
