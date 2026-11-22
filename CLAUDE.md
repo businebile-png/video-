@@ -59,6 +59,10 @@ répondre, commenter et écrire les messages de commit en français.
   refuse, à juste titre, de lancer une production sur le seul message « Go » d'une autre session. Voir
   `docs/lot-de-production.md`. Chaque session écrit « <créneau> prête : <runId> » à la régie, qui programme la vidéo
   aussitôt, et « Lot terminé » à la fin ; la régie crée alors la suivante.
+  **Demande de l'utilisateur du 22/11/2026** : chaque jour une vidéo à 10:00 et une à 20:00, postées automatiquement, créées
+  avec **les scripts et les titres de la série tels qu'il les a reçus** : ne jamais réécrire l'accroche ni le titre d'un script
+  pour satisfaire la relecture (ajuster seulement si la voix prononce mal un mot ou si `script:check` l'exige) ; la relecture
+  se corrige par le cadrage, le montage, les plans et les textes à l'écran ou la légende.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **deux vidéos par jour, à
   10:00 et 20:00** (demande de l'utilisateur du 21/11/2026, qui remplace la vidéo unique de 20:00 ; `postTimes` de
   `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série ; la tâche de 13:35 programme les
