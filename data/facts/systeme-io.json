@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T22:01:29.805Z",
+  "updatedAt": "2026-11-22T06:44:18.699Z",
   "facts": [
     {
       "id": "feature.funnels",
@@ -156,6 +156,19 @@
       "verifiedAt": "2026-11-20T22:01:18.006Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
+    },
+    {
+      "id": "feature.affiliate-funnels",
+      "statement": "Systeme.io permet d’intégrer son programme d’affiliation avec ses tunnels de vente et ses sites web.",
+      "tags": [
+        "feature:affiliate-program"
+      ],
+      "sourceId": "pricing",
+      "evidence": "Créez, gérez et intégrez votre propre programme d'affiliation avec vos tunnels et vos sites web",
+      "status": "verified",
+      "verifiedAt": "2026-11-20T22:01:18.006Z",
+      "ttlDays": 30,
+      "notes": "Extrait copié mot pour mot depuis la page officielle (même copie que feature.affiliate-program)."
     },
     {
       "id": "feature.contacts",
@@ -355,7 +368,7 @@
       ],
       "sourceId": "pricing",
       "evidence": "Facturation annuelle 2 mois gratuits",
-      "status": "verified",
+      "status": "stale",
       "verifiedAt": "2026-11-20T22:01:18.006Z",
       "ttlDays": 7,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
@@ -382,7 +395,7 @@
       ],
       "sourceId": "pricing",
       "evidence": "chaque plan vous permet de créer un nombre illimité de sous-comptes",
-      "status": "verified",
+      "status": "stale",
       "verifiedAt": "2026-11-20T22:01:18.006Z",
       "ttlDays": 30,
       "notes": "Extrait copié mot pour mot depuis la page officielle."
