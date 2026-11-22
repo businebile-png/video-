@@ -1,0 +1,701 @@
+{
+  "runId": "2026-11-22-a",
+  "date": "2026-11-22",
+  "createdAt": "2026-11-22T01:13:33.416Z",
+  "updatedAt": "2026-11-22T01:13:33.417Z",
+  "status": "prete",
+  "title": "Tu postes, mais personne ne s'inscrit",
+  "category": {
+    "id": "conseils-debutant",
+    "label": "Conseils pour débuter"
+  },
+  "angle": "Diagnostic : si personne ne s'inscrit, il manque souvent une page où s'inscrire ; un tunnel depuis un modèle et un e-mail automatique.",
+  "hook": "Tu postes tous les jours, mais personne ne laisse son e-mail ?",
+  "hookStyle": "erreur",
+  "artDirection": {
+    "id": "energie",
+    "label": "Énergie — rythmé, contrasté, citron vert"
+  },
+  "durationSec": 27.47,
+  "score": {
+    "total": 74,
+    "decision": "publishable",
+    "summary": "74/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 14,
+        "basis": "relecture 14/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 13,
+        "basis": "mesures : WER 0.046, 149 mots/min, pause max 0.48 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "3 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "65 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message se suit sans contradiction et les chiffres à l'écran (3 tunnels, 1 règle) correspondent à la voix et aux faits vérifiés. La qualité n'est pas assez soignée : carte de fin avec textes qui se chevauchent, plan principal de la scène 3 très flou, graphique annoncé non visible."
+      }
+    ],
+    "virality": {
+      "total": 12,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 4,
+          "justification": "Titre gros et lisible dès l'image 0, problème concret (« personne ne s'inscrit ? »), plan humain en mouvement. Pas de marque dans l'accroche."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 3,
+          "justification": "Changement d'image toutes les 2 à 3 s et sous-titres dynamiques, mais aucune promesse de liste ni de question qui retient, et le plan flou de la scène 3 crée un temps faible."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 2,
+          "justification": "Le constat est reconnaissable mais l'information est mince : pas de démonstration concrète à enregistrer ou à envoyer."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "La légende pose une vraie question facile à commenter (« Tu postes sur quel réseau ? ») et invite à enregistrer sans promesse. La vidéo elle-même ne la pose pas."
+        }
+      ],
+      "actions": [
+        "Ajouter à l'écran la question « Tu postes sur quel réseau ? » avant la carte de fin.",
+        "Montrer le graphique ou une vraie interface de tunnel net pendant la scène 3 au lieu du plan flou.",
+        "Nettoyer la carte de fin pour qu'un seul appel à l'action soit lisible."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 14,
+        "justification": "Plans réels de téléphone cohérents avec la phrase dite, titres jaune fluo très lisibles et dans la zone sûre, mention Publicité présente partout. En revanche, le plan de la femme au portable (s3) est très flou et sombre, et la carte de fin superpose « Compare les formules », « Lien en bio » deux fois et la capture tarifs en dessous : les textes se chevauchent. Les plans de mains sur téléphone restent génériques."
+      },
+      "editing": {
+        "score": 11,
+        "justification": "Une image change en moyenne toutes les 2,3 s, sous-titres mot à mot calés sur la voix, 3 transitions sobres. Le plan flou de la scène 3 dure longtemps et le titre « Rien à quoi s'inscrire » apparaît partiellement tronqué pendant la transition. La capture de règles est bien mise en avant mais brève."
+      },
+      "script": {
+        "score": 11,
+        "justification": "Accroche en question dans les 3 premières secondes, problème crédible pour un créateur débutant, progression claire problème, solution, bénéfice, appel à l'action. Le texte reste très proche du script imposé, donc correct mais générique. Phrase 2 un peu redondante (« Souvent… Voilà le vrai problème »)."
+      },
+      "explanation": {
+        "score": 10,
+        "justification": "On comprend qu'un tunnel se crée depuis un modèle et qu'une règle envoie l'e-mail de bienvenue, avec les limites du plan gratuit prouvées par une capture réelle. Mais le graphique annoncé (modèle, page, inscription) n'est visible sur aucune image extraite, et on ne voit jamais l'interface du tunnel ou de la règle : l'explication reste abstraite."
+      },
+      "conversion": {
+        "score": 10,
+        "justification": "Le plan gratuit comme porte d'entrée est honnête et sans promesse, avec une raison de cliquer (voir ce qui est inclus). Mais aucune formule payante n'est évoquée alors que 1 règle et 3 tunnels sont des limites pertinentes, et la carte de fin est confuse (deux « Lien en bio » superposés)."
+      }
+    },
+    "improvements": [
+      "Carte de fin : retirer le doublon « Lien en bio » (sous-ligne et bouton) et ne pas superposer le titre à la capture tarifs (capture plus bas ou plus estompée) pour supprimer le chevauchement de textes.",
+      "Remplacer ou raccourcir le plan flou de la femme (scène s3) par un plan net, et vérifier que le graphique checklist (Un modèle / Une page / Une inscription) s'affiche bien : il n'apparaît pas dans les images extraites.",
+      "Dans la scène s4, ajouter une phrase ou une légende sur ce que débloque Startup (10 règles) pour orienter honnêtement vers la formule payante, avec faits vérifiés plan.startup.limits."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "5460 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-2.1 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "65 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.11",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.29 s entre deux changements d’image (coupe ou recadrage), min 0.7 s ; 12 plans montés, moy. 2.29 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "12 sources (10 séquences filmées, 2 captures réelles)",
+      "expected": "≥ 4"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.2 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 4.6 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 149,
+    "wer": 0.046,
+    "score": 13,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Tu postes tous les jours, mais personne ne laisse son e-mail ?",
+      "headline": "Tu postes, personne ne s'inscrit ?",
+      "visual": "broll",
+      "fromSec": 0,
+      "toSec": 3.7
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Souvent, il n'y a simplement rien à quoi s'inscrire. Voilà le vrai problème.",
+      "headline": "Rien à quoi s'inscrire",
+      "visual": "broll",
+      "fromSec": 3.7,
+      "toSec": 8.7
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Sur Systeme.io, un tunnel de vente se crée directement à partir d'un modèle.",
+      "headline": "Un tunnel depuis un modèle",
+      "visual": "graphic",
+      "fromSec": 8.7,
+      "toSec": 14.5
+    },
+    {
+      "id": "s4",
+      "phase": "benefits",
+      "voiceover": "Et une règle d'automatisation envoie l'e-mail de bienvenue dès que quelqu'un s'inscrit.",
+      "headline": "E-mail de bienvenue automatique",
+      "visual": "demo",
+      "fromSec": 14.5,
+      "toSec": 19.8
+    },
+    {
+      "id": "s5",
+      "phase": "cta",
+      "voiceover": "Le plan gratuit inclut 3 tunnels et 1 règle d'automatisation. Lien en bio, pour tout voir.",
+      "headline": "Le plan gratuit : 3 tunnels, 1 règle",
+      "visual": "demo",
+      "fromSec": 19.8,
+      "toSec": 27.5
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.funnels",
+      "statement": "Systeme.io permet de créer des tunnels de vente à partir de modèles.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "plan.free.limits",
+      "statement": "Le plan gratuit de Systeme.io inclut 3 tunnels de vente, 1 règle d'automatisation, 1 domaine personnalisé et jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-20T22:01:18.006Z"
+    },
+    {
+      "id": "feature.auto-email-on-subscribe",
+      "statement": "Avec une règle d'automatisation, Systeme.io peut envoyer automatiquement un e-mail quand un contact s'inscrit sur une page de capture.",
+      "verifiedAt": "2026-11-20T22:01:28.189Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 233390,
+        "author": "Yasir1120",
+        "pageUrl": "https://pixabay.com/videos/id-233390/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 174003,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-174003/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 202987,
+        "author": "Natures_Embrace",
+        "pageUrl": "https://pixabay.com/videos/id-202987/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 169445,
+        "author": "magicmore",
+        "pageUrl": "https://pixabay.com/videos/id-169445/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 348444,
+        "author": "JonathanSlatterMusic",
+        "pageUrl": "https://pixabay.com/videos/id-348444/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 142641,
+        "author": "u_etjkkdz15b",
+        "pageUrl": "https://pixabay.com/videos/id-142641/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 47743,
+        "author": "crew_jak",
+        "pageUrl": "https://pixabay.com/videos/id-47743/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 130650,
+        "author": "SYG_Anime",
+        "pageUrl": "https://pixabay.com/videos/id-130650/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 78640,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-78640/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 130646,
+        "author": "SYG_Anime",
+        "pageUrl": "https://pixabay.com/videos/id-130646/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 180776,
+        "author": "Darioguzben",
+        "pageUrl": "https://pixabay.com/videos/id-180776/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 258359,
+        "author": "padrinan",
+        "pageUrl": "https://pixabay.com/videos/id-258359/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-23T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Tu postes, personne ne s'inscrit ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-23T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu postes sur quel réseau ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    },
+    {
+      "network": "youtube",
+      "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+      "blogId": "7791839",
+      "date": "2026-11-23T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "youtube"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #tunneldevente #emailmarketing #entrepreneurfrancais",
+        "youtubeData": {
+          "title": "Publicité · Personne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi…",
+          "type": "short",
+          "privacy": "public",
+          "tags": [
+            "systemeio",
+            "tunneldevente",
+            "emailmarketing",
+            "entrepreneurfrancais"
+          ],
+          "category": "HOWTO_STYLE",
+          "madeForKids": false,
+          "isAiGeneratedContent": true
+        }
+      }
+    },
+    {
+      "network": "threads",
+      "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+      "blogId": "7791839",
+      "date": "2026-11-23T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "threads"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-23T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPersonne ne laisse son e-mail après tes posts ? Souvent, il n'y a rien à quoi s'inscrire : un tunnel de vente à partir d'un modèle, plus un e-mail de bienvenue automatique sur Systeme.io. Tu postes sur quel réseau ? Réponds en un mot. Enregistre la vidéo pour la tester plus tard. Lien en bio.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+        "threadsData": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-23T20:00:00+01:00",
+      "local": "2026-11-23T20:00:00",
+      "label": "lundi 23 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.jpg",
+    "coverMs": 0,
+    "sha256": "bc494e49b10dbe92f18ff433ae8bf2b087e2574f1b6b881bc5efdf2f019c6b7a",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-22T01:13:17.036Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "b658507b9f5f7599b6e19f0ec883e670",
+    "url": "/_blob/b658507b9f5f7599b6e19f0ec883e670"
+  },
+  "cover": {
+    "assetId": "6d10944ed79e7012c827d62a631770d7",
+    "url": "/_blob/6d10944ed79e7012c827d62a631770d7"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Systeme.io",
+  "autoSlot": {
+    "iso": "2026-11-23T20:00:00+01:00",
+    "label": "lundi 23 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 32.83,
+    "end": 60.31
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-22T01:13:34.229Z"
+}
