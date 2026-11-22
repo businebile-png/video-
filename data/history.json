@@ -1088,20 +1088,20 @@
       "date": "2026-11-22",
       "category": "pub-directe",
       "hookStyle": "scenario",
-      "hook": "Et si des affiliés vendaient ta formation, au lieu de toi seul ?",
+      "hook": "Tu savais que des affiliés peuvent vendre ta formation pour toi ?",
       "angle": "Et si d'autres vendaient ta formation : le programme d'affiliation de Systeme.io, au même endroit que la formation et le tunnel",
       "workingTitle": "Et si d'autres vendaient ta formation ?",
       "artDirection": "clarte",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": 26.13,
+      "durationSec": 22.4,
       "score": null,
       "decision": null,
       "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 1,
-      "updatedAt": "2026-11-22T06:34:21.769Z"
+      "updatedAt": "2026-11-22T06:59:33.760Z"
     }
   ]
 }
