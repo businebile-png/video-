@@ -191,9 +191,9 @@ export function classifyAll(entries: QueueEntry[], state: MetaState, env: Env, n
 
 /**
  * Adresses où Meta peut télécharger la vidéo, de la plus sûre à la moins sûre :
- *  1. jsDelivr et 2. githack (Cloudflare) : type MIME `video/mp4`, épinglées sur le commit `META_MEDIA_REF` que le workflow
- *     vient de récupérer (jsDelivr ne sert pas les fichiers de plus de 20 Mo) ;
- *  3. GitHub brut (adresse de la file) : servi en `application/octet-stream`, que Meta peut refuser.
+ *  1. jsDelivr (`video/mp4`, mais pas de fichier de plus de 20 Mo), 2. Statically et 3. githack (ce dernier relaie le type de GitHub,
+ *     donc `application/octet-stream`), épinglées sur le commit `META_MEDIA_REF` que le workflow vient de récupérer ;
+ *  4. GitHub brut (adresse de la file) : servi en `application/octet-stream`, que Meta peut refuser.
  * `rankMediaUrls` les interroge avant de s'en servir et ne garde que celles qui répondent avec un vrai type vidéo.
  */
 export function mediaUrls(entry: QueueEntry, env: Env = {}): string[] {
@@ -206,6 +206,7 @@ export function mediaUrls(entry: QueueEntry, env: Env = {}): string[] {
   const urls: string[] = [];
   if (repo && ref) {
     urls.push(`https://cdn.jsdelivr.net/gh/${repo}@${ref}/${file}`);
+    urls.push(`https://cdn.statically.io/gh/${repo}/${ref}/${file}`);
     urls.push(`https://rawcdn.githack.com/${repo}/${ref}/${file}`);
   }
   urls.push(primary);
@@ -578,7 +579,12 @@ export interface MediaCheck {
   /** Vrai si la vidéo attend encore sa publication ; faux : simple essai sur la plus récente de la file. */
   pending: boolean;
   probes: MediaProbe[];
+  /** La vidéo de plus de 20 Mo la plus lourde de la file (jsDelivr les refuse), testée en plus pour voir quelle adresse la sert. */
+  heaviest?: {runId: string; bytes: number; probes: MediaProbe[]};
 }
+
+/** Au-delà, jsDelivr ne sert plus un fichier GitHub. */
+export const JSDELIVR_MAX_BYTES = 20 * 1_048_576;
 
 /** Interroge les adresses de la prochaine vidéo à publier (à défaut, de la plus récente de la file) sans rien publier. */
 export async function verifyMedia(opts: RunOptions): Promise<MediaCheck | null> {
@@ -596,7 +602,19 @@ export async function verifyMedia(opts: RunOptions): Promise<MediaCheck | null> 
   const target = pending[0] ?? [...entries].sort(bySlot).reverse()[0];
   if (!target) return null;
   const {probes} = await rankMediaUrls(fetchFn, mediaUrls(target, opts.env));
-  return {runId: target.runId, entry: target, pending: pending.length > 0, probes};
+  const bytesOf = (e: QueueEntry): number => {
+    try {
+      return fs.statSync(path.join(opts.root, 'videos', `${e.runId}.mp4`)).size;
+    } catch {
+      return 0;
+    }
+  };
+  const heavy = [...entries].sort((a, b) => bytesOf(b) - bytesOf(a))[0];
+  const check: MediaCheck = {runId: target.runId, entry: target, pending: pending.length > 0, probes};
+  if (heavy && heavy.runId !== target.runId && bytesOf(heavy) > JSDELIVR_MAX_BYTES) {
+    check.heaviest = {runId: heavy.runId, bytes: bytesOf(heavy), probes: (await rankMediaUrls(fetchFn, mediaUrls(heavy, opts.env))).probes};
+  }
+  return check;
 }
 
 export interface ContainerTest {
@@ -681,6 +699,11 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
       for (const p of media.probes) mediaLines.push(`${p.rank === 2 ? '✗' : '✓'} ${describeProbe(p)}`);
       if (media.probes.every((p) => p.rank === 2)) mediaLines.push('⚠ aucune adresse utilisable : la vidéo est-elle toujours dans le dépôt (videos/) ?');
       else if (media.probes.every((p) => p.rank !== 0)) mediaLines.push('⚠ aucune adresse ne sert un type vidéo : Meta peut refuser la vidéo.');
+      if (media.heaviest) {
+        mediaLines.push(`Vidéo la plus lourde de la file, ${media.heaviest.runId} (${(media.heaviest.bytes / 1_048_576).toFixed(1)} Mo, plus que les 20 Mo de jsDelivr) :`);
+        for (const p of media.heaviest.probes) mediaLines.push(`${p.rank === 2 ? '✗' : '✓'} ${describeProbe(p)}`);
+        if (media.heaviest.probes.every((p) => p.rank !== 0)) mediaLines.push('⚠ aucune adresse ne sert un type vidéo pour les vidéos de plus de 20 Mo : voir docs/publication-meta.md.');
+      }
     }
     if (media) {
       const goodNetworks = res.filter((r) => r.ok).map((r) => r.network);
