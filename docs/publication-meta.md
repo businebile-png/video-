@@ -43,6 +43,16 @@ restent sur Zernio (2 comptes gratuits, publications illimitées).
    (il l'écrit dans son journal), même si les jetons sont déjà en place. Ordre à respecter : jetons → « verifier » →
    posts Metricool en brouillon → `"actif": true`.
 
+## Limite connue : vidéos de plus de 20 Mo
+
+Mesuré depuis GitHub Actions le 22/11/2026 (mode « verifier ») : pour une vidéo de 17,9 Mo, jsDelivr répond `video/mp4` ;
+pour une de 30,8 Mo, jsDelivr et Statically refusent (403, plafond de 20 Mo), githack et GitHub brut répondent
+`application/octet-stream`. Ce que Meta fait d'un `octet-stream` n'est pas encore connu : l'essai réel de « verifier »
+(conteneurs jamais publiés) le dira dès que les jetons sont en place. Les vidéos de la série durent 22 à 28 s et font
+environ 15 à 19 Mo, donc la plupart passent par jsDelivr. Si Meta refuse l'`octet-stream` et qu'une vidéo dépasse 20 Mo :
+ne pas activer la publication pour elle (« skipped » dans `data/meta-publications.json`), puis soit la réencoder à moins de
+19 Mo avant `media:push`, soit servir les MP4 par GitHub Pages (réglage à faire par l'utilisateur).
+
 ## Entretien
 
 - Les jetons durent **60 jours** : en générer de nouveaux (étapes 2 et 3) et remplacer les secrets avant l'échéance

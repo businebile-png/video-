@@ -26,6 +26,7 @@ const SLOT_MS = Date.parse(SLOT);
 const RAW = 'https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-22-a.mp4';
 const JSDELIVR = 'https://cdn.jsdelivr.net/gh/businebile-png/video-@abc123/videos/2026-11-22-a.mp4';
 const GITHACK = 'https://rawcdn.githack.com/businebile-png/video-/abc123/videos/2026-11-22-a.mp4';
+const STATICALLY = 'https://cdn.statically.io/gh/businebile-png/video-/abc123/videos/2026-11-22-a.mp4';
 const TOKENS = {INSTAGRAM_ACCESS_TOKEN: 'IGTOKEN-secret', THREADS_ACCESS_TOKEN: 'THTOKEN-secret'};
 
 function entry(patch: Partial<QueueEntry> = {}): QueueEntry {
@@ -68,7 +69,7 @@ function mediaAnswer(type: string, size = 18_745_440): Response {
   return new Response('xx', {status: 206, headers: {'content-type': type, 'content-range': `bytes 0-1/${size}`}});
 }
 
-const MEDIA_HOSTS = ['raw.githubusercontent.com', 'cdn.jsdelivr.net', 'rawcdn.githack.com'];
+const MEDIA_HOSTS = ['raw.githubusercontent.com', 'cdn.jsdelivr.net', 'cdn.statically.io', 'rawcdn.githack.com'];
 
 /**
  * Faux serveur Graph : `routes` répond selon « METHODE chemin » ; une liste de réponses est consommée une à une.
@@ -171,7 +172,7 @@ describe('Threads : longueur et adresses de la vidéo', () => {
 
   it('propose jsDelivr et githack épinglés sur le commit récupéré, puis GitHub brut en dernier', () => {
     expect(mediaUrls(entry(), {})).toEqual([RAW]);
-    expect(mediaUrls(entry(), {META_MEDIA_REF: 'abc123'})).toEqual([JSDELIVR, GITHACK, RAW]);
+    expect(mediaUrls(entry(), {META_MEDIA_REF: 'abc123'})).toEqual([JSDELIVR, STATICALLY, GITHACK, RAW]);
     expect(mediaUrls(entry({media: {}}), {META_MEDIA_REF: 'abc123'})).toEqual([]);
   });
 });
@@ -218,10 +219,26 @@ describe('adresses de la vidéo : test avant de les donner à Meta', () => {
     const env = {META_MEDIA_REF: 'abc123'};
     const next = await verifyMedia({root, env, nowFn: () => SLOT_MS - 3_600_000, fetchFn: g.fetchFn});
     expect(next).toMatchObject({runId: '2026-11-22-a', pending: true});
-    expect(next!.probes.map((p) => p.url)).toEqual([JSDELIVR, GITHACK, RAW]);
+    expect(next!.probes.map((p) => p.url)).toEqual([JSDELIVR, STATICALLY, GITHACK, RAW]);
+    expect(next!.heaviest).toBeUndefined(); // aucun fichier de plus de 20 Mo dans videos/
     const past = await verifyMedia({root, env, nowFn: () => SLOT_MS + 24 * 3_600_000, fetchFn: g.fetchFn});
     expect(past).toMatchObject({runId: '2026-11-22-a', pending: false});
     expect(await verifyMedia({root: makeRoot([]), env, fetchFn: g.fetchFn})).toBeNull();
+  });
+
+  it('« verifier » teste aussi la vidéo la plus lourde de la file quand elle dépasse les 20 Mo de jsDelivr', async () => {
+    const heavy = entry({runId: '2026-11-21-d', autoSlot: {iso: '2026-11-24T20:00:00+01:00'}, media: {publicUrl: RAW.replace('2026-11-22-a', '2026-11-21-d')}});
+    const root = makeRoot([entry(), heavy]);
+    fs.mkdirSync(path.join(root, 'videos'), {recursive: true});
+    fs.writeFileSync(path.join(root, 'videos', '2026-11-22-a.mp4'), Buffer.alloc(1_000));
+    fs.truncateSync(path.join(root, 'videos', '2026-11-22-a.mp4'), 18 * 1_048_576);
+    fs.writeFileSync(path.join(root, 'videos', '2026-11-21-d.mp4'), Buffer.alloc(1_000));
+    fs.truncateSync(path.join(root, 'videos', '2026-11-21-d.mp4'), 32 * 1_048_576);
+    const g = fakeGraph({});
+    const check = await verifyMedia({root, env: {META_MEDIA_REF: 'abc123'}, nowFn: () => SLOT_MS - 3_600_000, fetchFn: g.fetchFn});
+    expect(check).toMatchObject({runId: '2026-11-22-a'});
+    expect(check!.heaviest).toMatchObject({runId: '2026-11-21-d', bytes: 32 * 1_048_576});
+    expect(check!.heaviest!.probes.map((p) => p.url)).toContain('https://cdn.jsdelivr.net/gh/businebile-png/video-@abc123/videos/2026-11-21-d.mp4');
   });
 });
 
@@ -271,7 +288,7 @@ describe('runDue : publication complète', () => {
 
   it("essaie l'adresse suivante si Meta refuse la première, sans jamais republier après la publication", async () => {
     const root = makeRoot();
-    // Le conteneur créé avec l'adresse jsDelivr finit en erreur ; celui créé avec githack (c2) est accepté.
+    // Le conteneur créé avec l'adresse jsDelivr finit en erreur ; celui créé avec Statically (c2) est accepté.
     const g = fakeGraph(
       igRoutes({
         'POST /111/media': (c: Call) => ({id: c.params.get('video_url') === JSDELIVR ? 'c1' : 'c2'}),
@@ -284,12 +301,13 @@ describe('runDue : publication complète', () => {
     expect(res.failed).toEqual([]);
     expect(res.published).toHaveLength(1);
     const urls = g.calls.filter((c) => c.method === 'POST' && c.url.endsWith('/111/media')).map((c) => c.params.get('video_url'));
-    expect(urls).toEqual([JSDELIVR, GITHACK]);
+    expect(urls).toEqual([JSDELIVR, STATICALLY]);
   });
 
-  it('vidéo de plus de 20 Mo : jsDelivr refuse, Meta reçoit directement l’adresse githack ; une seule série de tests par vidéo', async () => {
+  it('vidéo de plus de 20 Mo : jsDelivr et Statically refusent, Meta reçoit directement l’adresse suivante bien typée ; une seule série de tests par vidéo', async () => {
     const root = makeRoot();
-    const g = fakeGraph(igRoutes(), {[JSDELIVR]: new Response('limit', {status: 403, headers: {'content-type': 'text/plain'}}), [GITHACK]: mediaAnswer('video/mp4', 32_332_971)});
+    const refuse = () => new Response('limit', {status: 403, headers: {'content-type': 'text/plain'}});
+    const g = fakeGraph(igRoutes(), {[JSDELIVR]: refuse(), [STATICALLY]: refuse(), [GITHACK]: mediaAnswer('video/mp4', 32_332_971)});
     const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
       if (String(input).startsWith('https://graph.threads.com/v1.0/me')) return new Response(JSON.stringify({id: '222', username: 'thr'}), {status: 200});
       if (String(input).startsWith('https://graph.threads.com/v1.0')) {
@@ -304,7 +322,7 @@ describe('runDue : publication complète', () => {
     expect(res.failed).toEqual([]);
     expect(res.published.map((p) => p.network)).toEqual(['instagram', 'threads']);
     expect(g.calls.find((c) => c.url.endsWith('/111/media'))!.params.get('video_url')).toBe(GITHACK);
-    expect(g.probes).toEqual([JSDELIVR, GITHACK, RAW]); // Instagram et Threads se partagent les 3 tests
+    expect(g.probes).toEqual([JSDELIVR, STATICALLY, GITHACK, RAW]); // Instagram et Threads se partagent les 4 tests
     expect(logs.some((l) => l.includes('cdn.jsdelivr.net : HTTP 403') && l.includes('écartée'))).toBe(true);
   });
 
@@ -441,7 +459,7 @@ describe('« verifier » : essai réel auprès de Meta, conteneurs jamais publi�
     expect(tests[0]!.detail).not.toContain(TOKENS.INSTAGRAM_ACCESS_TOKEN);
     expect(bad.calls.filter((c) => c.method === 'POST')).toHaveLength(0);
 
-    const nothing = fakeGraph(igAnswers, {[JSDELIVR]: new Response('', {status: 404}), [GITHACK]: new Response('', {status: 404}), [RAW]: new Response('', {status: 404})});
+    const nothing = fakeGraph(igAnswers, {[JSDELIVR]: new Response('', {status: 404}), [STATICALLY]: new Response('', {status: 404}), [GITHACK]: new Response('', {status: 404}), [RAW]: new Response('', {status: 404})});
     const opts2 = {...opts, fetchFn: nothing.fetchFn};
     expect(await testContainers(opts2, (await verifyMedia(opts2))!)).toEqual([]);
     expect(nothing.calls).toHaveLength(0);
