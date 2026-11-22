@@ -42,6 +42,11 @@ répondre, commenter et écrire les messages de commit en français.
   GitHub Models puis Pollinations) ne produit que si le créneau n'est ni servi ni réservé (quota de Claude épuisé,
   échec), sans suivre la série : voir `docs/production-sans-claude.md`. Les anciennes tâches de production de la session
   principale (`trig_011uUZC54x62D6LBd5XAGJWq`, `trig_01CK4GpGHEs6z5W7xKf2Lo8C`) restent désactivées.
+  **État au 22/11/2026** : la tâche « toutes les 6 h » n'est plus parmi les tâches actives ; la semaine du 23 au 29/11 est
+  produite par des lots lancés un par un par la session de la régie (lot 1 en cours, modèle Haiku choisi par
+  l'utilisateur) et la tâche hebdomadaire du samedi 02:17 (`trig_01NmMfBWqwFmfwNEP5u3eKYR`, « chef d'orchestre »)
+  relance la production après la remise à zéro de la limite de Claude. Choix de l'utilisateur le 22/11/2026 (question
+  « Après le 29/11 ») : **continuer la série** jusqu'au 22/12, sans s'arrêter après dimanche 29/11 ; cette tâche reste active.
 - Publication : 100 % automatique, sans validation (choix de l'utilisateur le 08/11/2026) : **deux vidéos par jour, à
   10:00 et 20:00** (demande de l'utilisateur du 21/11/2026, qui remplace la vidéo unique de 20:00 ; `postTimes` de
   `config/studio.json`, aucun créneau avant `publish.notBefore`, le début de la série ; la tâche de 13:35 programme les
@@ -67,7 +72,12 @@ répondre, commenter et écrire les messages de commit en français.
   mettre en brouillon ceux déjà créés (sinon doublon) et, à 13:35, passer les fiches du panneau à « publiée » d'après ce
   fichier (identifiant et adresse de chaque post : la plateforme a confirmé). Tant que `actif` n'y est pas, Instagram et
   Threads restent tentés via Metricool, même quand son quota semble épuisé (« à poster soi-même » seulement si Metricool
-  refuse ou si la publication échoue), et on le dit à l'utilisateur.
+  refuse ou si la publication échoue), et on le dit à l'utilisateur. Le fichier du workflow est sur la branche par défaut
+  (`claude/kind-euler-t08y5a`) depuis le 22/11/2026, avec l'accord explicite de l'utilisateur pour ce seul fichier : GitHub
+  n'exécute les planifications que depuis elle, mais tout le code reste sur la branche du studio (modifier le YAML demande
+  un nouvel accord). **Verrou** : le publieur ne publie rien tant que `actif` n'est pas à `true`. Ordre à respecter :
+  jetons dans les secrets GitHub → lancement manuel « verifier » (essai réel auprès de Meta, rien n'est publié) → posts
+  Metricool d'Instagram et de Threads en brouillon → `"actif": true`.
 - Musique : « All For Nothing » (Zachariehs), choix de l'utilisateur qui déclare en avoir le droit (licence non
   vérifiée par le studio) : un extrait différent sous chaque vidéo (`music:overlay`, après la relecture) ; le
   fichier reste dans le stockage privé du panneau, jamais dans le dépôt public.

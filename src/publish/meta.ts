@@ -354,21 +354,35 @@ export async function threadsAccount(ctx: Ctx, token: string): Promise<Account> 
   return {id, username: String(j.username ?? '')};
 }
 
+/** Crée le conteneur Instagram (Reel) et attend que Meta ait téléchargé et traité la vidéo : rien n'est publié. */
+async function instagramContainer(ctx: Ctx, token: string, accountId: string, url: string, caption: string, coverMs: number): Promise<string> {
+  const c = await graph(
+    ctx,
+    'POST',
+    `${IG_BASE}/${accountId}/media`,
+    {media_type: 'REELS', video_url: url, caption, share_to_feed: true, is_ai_generated: true, thumb_offset: coverMs > 0 ? coverMs : undefined},
+    token,
+  );
+  const id = String(c.id);
+  await waitFinished(ctx, token, `${IG_BASE}/${id}`, 'status_code,status', 'status_code');
+  return id;
+}
+
+/** Crée le conteneur Threads (vidéo) et attend que Meta ait téléchargé et traité la vidéo : rien n'est publié. */
+async function threadsContainer(ctx: Ctx, token: string, accountId: string, url: string, text: string): Promise<string> {
+  const c = await graph(ctx, 'POST', `${THREADS_BASE}/${accountId}/threads`, {media_type: 'VIDEO', video_url: url, text, is_made_with_ai: true}, token);
+  const id = String(c.id);
+  await waitFinished(ctx, token, `${THREADS_BASE}/${id}`, 'status,error_message', 'status');
+  return id;
+}
+
 async function publishInstagram(ctx: Ctx, token: string, d: Due, urls: string[]): Promise<{id: string; permalink?: string; note?: string}> {
   const me = await instagramAccount(ctx, token);
   let lastError: unknown = new MetaApiError('aucune adresse de vidéo');
   for (const url of urls) {
     let containerId: string;
     try {
-      const c = await graph(
-        ctx,
-        'POST',
-        `${IG_BASE}/${me.id}/media`,
-        {media_type: 'REELS', video_url: url, caption: d.text, share_to_feed: true, is_ai_generated: true, thumb_offset: d.coverMs > 0 ? d.coverMs : undefined},
-        token,
-      );
-      containerId = String(c.id);
-      await waitFinished(ctx, token, `${IG_BASE}/${containerId}`, 'status_code,status', 'status_code');
+      containerId = await instagramContainer(ctx, token, me.id, url, d.text, d.coverMs);
     } catch (e) {
       // Avant la publication : on peut essayer l'adresse suivante sans risque de doublon.
       lastError = e;
@@ -402,9 +416,7 @@ async function publishThreads(ctx: Ctx, token: string, d: Due, urls: string[]): 
   for (const url of urls) {
     let containerId: string;
     try {
-      const c = await graph(ctx, 'POST', `${THREADS_BASE}/${me.id}/threads`, {media_type: 'VIDEO', video_url: url, text: d.text, is_made_with_ai: true}, token);
-      containerId = String(c.id);
-      await waitFinished(ctx, token, `${THREADS_BASE}/${containerId}`, 'status,error_message', 'status');
+      containerId = await threadsContainer(ctx, token, me.id, url, d.text);
     } catch (e) {
       lastError = e;
       ctx.log(`  Threads : ${(e as Error).message} — adresse suivante`);
@@ -562,6 +574,7 @@ export async function verifyTokens(opts: RunOptions): Promise<VerifyResult[]> {
 
 export interface MediaCheck {
   runId: string;
+  entry: QueueEntry;
   /** Vrai si la vidéo attend encore sa publication ; faux : simple essai sur la plus récente de la file. */
   pending: boolean;
   probes: MediaProbe[];
@@ -583,7 +596,57 @@ export async function verifyMedia(opts: RunOptions): Promise<MediaCheck | null> 
   const target = pending[0] ?? [...entries].sort(bySlot).reverse()[0];
   if (!target) return null;
   const {probes} = await rankMediaUrls(fetchFn, mediaUrls(target, opts.env));
-  return {runId: target.runId, pending: pending.length > 0, probes};
+  return {runId: target.runId, entry: target, pending: pending.length > 0, probes};
+}
+
+export interface ContainerTest {
+  network: MetaNetwork;
+  url: string;
+  contentType: string;
+  ok: boolean;
+  detail: string;
+}
+
+/**
+ * Essai réel auprès de Meta, sans rien publier : crée un conteneur (jamais publié, il expire de lui-même et personne ne le voit)
+ * pour la première adresse de chaque type — vidéo bien typée, type générique — et dit si Meta a accepté de télécharger et de traiter
+ * la vidéo. C'est la seule façon de savoir si Meta refuse l'« octet-stream » de GitHub avant la première vraie publication.
+ * `media_publish` et `threads_publish` ne sont jamais appelés ici.
+ */
+export async function testContainers(opts: RunOptions, media: MediaCheck, networks: MetaNetwork[] = META_NETWORKS): Promise<ContainerTest[]> {
+  const ctx = makeCtx({...opts, pollMs: opts.pollMs ?? 10_000, maxPolls: opts.maxPolls ?? 18});
+  const chosen: MediaProbe[] = [];
+  for (const rank of [0, 1] as const) {
+    const first = media.probes.find((p) => p.rank === rank);
+    if (first) chosen.push(first);
+  }
+  const out: ContainerTest[] = [];
+  for (const network of networks) {
+    const token = tokenFor(opts.env, network);
+    if (!token || !chosen.length) continue;
+    let accountId: string;
+    try {
+      accountId = (network === 'instagram' ? await instagramAccount(ctx, token) : await threadsAccount(ctx, token)).id;
+    } catch (e) {
+      out.push({network, url: '', contentType: '', ok: false, detail: redact((e as Error).message, [token])});
+      continue;
+    }
+    for (const probe of chosen) {
+      try {
+        if (network === 'instagram') await instagramContainer(ctx, token, accountId, probe.url, 'Test technique : non publié', 0);
+        else await threadsContainer(ctx, token, accountId, probe.url, 'Test technique : non publié');
+        out.push({network, url: probe.url, contentType: probe.contentType, ok: true, detail: 'Meta a téléchargé et traité la vidéo'});
+      } catch (e) {
+        out.push({network, url: probe.url, contentType: probe.contentType, ok: false, detail: redact((e as Error).message, [token])});
+      }
+    }
+  }
+  return out;
+}
+
+export function describeContainerTest(t: ContainerTest): string {
+  const where = t.url ? `${new URL(t.url).hostname} (${t.contentType || 'type inconnu'})` : 'compte';
+  return `${t.network} · ${where} : ${t.ok ? t.detail : `refusé — ${t.detail}`}`;
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -618,6 +681,17 @@ export async function metaCli(args: string[], root = process.cwd(), env: Env = p
       for (const p of media.probes) mediaLines.push(`${p.rank === 2 ? '✗' : '✓'} ${describeProbe(p)}`);
       if (media.probes.every((p) => p.rank === 2)) mediaLines.push('⚠ aucune adresse utilisable : la vidéo est-elle toujours dans le dépôt (videos/) ?');
       else if (media.probes.every((p) => p.rank !== 0)) mediaLines.push('⚠ aucune adresse ne sert un type vidéo : Meta peut refuser la vidéo.');
+    }
+    if (media) {
+      const goodNetworks = res.filter((r) => r.ok).map((r) => r.network);
+      if (goodNetworks.length && media.probes.some((p) => p.rank < 2)) {
+        mediaLines.push('Essai réel auprès de Meta (conteneurs jamais publiés) :');
+        const tests = await testContainers({root, env}, media, goodNetworks);
+        for (const t of tests) mediaLines.push(`${t.ok ? '✓' : '✗'} ${describeContainerTest(t)}`);
+        for (const n of goodNetworks) {
+          if (!tests.some((t) => t.network === n && t.ok)) mediaLines.push(`⚠ ${n} : Meta n'a accepté aucune adresse de la vidéo : la publication échouera tant que ce n'est pas réglé.`);
+        }
+      }
     }
     for (const l of mediaLines) console.log(l);
     const active = readState(root).actif === true;

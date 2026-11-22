@@ -5,6 +5,7 @@ import {describe, expect, it} from 'vitest';
 import {
   MAX_ATTEMPTS,
   classify,
+  describeContainerTest,
   describeProbe,
   fitThreads,
   mediaUrls,
@@ -12,6 +13,7 @@ import {
   rankMediaUrls,
   readState,
   runDue,
+  testContainers,
   threadsLength,
   verifyMedia,
   verifyTokens,
@@ -95,6 +97,24 @@ function fakeGraph(routes: Record<string, unknown>, media: Record<string, Respon
     return new Response(JSON.stringify(r), {status: 200});
   }) as typeof fetch;
   return {fetchFn, calls, probes};
+}
+
+/** Faux serveur Threads : répond aux appels de graph.threads.com et laisse passer le reste au faux serveur `inner`. */
+function withThreads(inner: typeof fetch, answers: Record<string, unknown>) {
+  const calls: Call[] = [];
+  const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    const u = new URL(String(input));
+    if (u.hostname !== 'graph.threads.com') return inner(input, init);
+    const method = init?.method ?? 'GET';
+    const call: Call = {method, url: `${u.origin}${u.pathname}`, params: new URLSearchParams(method === 'GET' ? u.search : String(init?.body ?? ''))};
+    calls.push(call);
+    let r = answers[`${method} ${u.pathname.replace(/^\/v[\d.]+/, '')}`];
+    if (typeof r === 'function') r = (r as (c: Call) => unknown)(call);
+    if (Array.isArray(r)) r = r.length > 1 ? r.shift() : r[0];
+    if (r === undefined) return new Response(JSON.stringify({error: {message: 'route Threads inconnue', code: 1}}), {status: 404});
+    return r instanceof Response ? r : new Response(JSON.stringify(r), {status: 200});
+  }) as typeof fetch;
+  return {fetchFn, calls};
 }
 
 const igRoutes = (extra: Record<string, unknown> = {}) => ({
@@ -371,6 +391,60 @@ describe('runDue : publication complète', () => {
     expect(dry.planned.map((p) => p.network)).toEqual(['instagram', 'threads']);
     expect(g.calls).toHaveLength(0);
     expect(fs.existsSync(path.join(root, 'data', 'meta-publications.json'))).toBe(false);
+  });
+});
+
+describe('« verifier » : essai réel auprès de Meta, conteneurs jamais publiés', () => {
+  const igAnswers = {
+    'GET /me': {user_id: '111', username: '12eu125', account_type: 'BUSINESS'},
+    'POST /111/media': (c: Call) => ({id: c.params.get('video_url') === JSDELIVR ? 'c1' : 'c2'}),
+    'GET /c1': {status_code: 'FINISHED'},
+    'GET /c2': {status_code: 'ERROR', status: 'Media download failed'},
+  };
+
+  it('teste la première adresse de chaque type, dit ce que Meta accepte et ne publie jamais', async () => {
+    const root = makeRoot([entry()]);
+    // Comme sur GitHub Actions : jsDelivr sert video/mp4, githack et GitHub brut servent octet-stream.
+    const g = fakeGraph(igAnswers, {[GITHACK]: mediaAnswer('application/octet-stream')});
+    const th = withThreads(g.fetchFn, {
+      'GET /me': {id: '222', username: 'thr'},
+      'POST /222/threads': (c: Call) => ({id: c.params.get('video_url') === JSDELIVR ? 't1' : 't2'}),
+      'GET /t1': {status: 'FINISHED'},
+      'GET /t2': {status: 'FINISHED'},
+    });
+    const opts = {root, env: {...TOKENS, META_MEDIA_REF: 'abc123'}, fetchFn: th.fetchFn, nowFn: () => SLOT_MS - 3_600_000, sleep: async () => {}, log: () => {}};
+    const media = (await verifyMedia(opts))!;
+    const tests = await testContainers(opts, media);
+    expect(tests.map((t) => `${t.network}:${new URL(t.url).hostname}:${t.ok}`)).toEqual([
+      'instagram:cdn.jsdelivr.net:true',
+      'instagram:rawcdn.githack.com:false',
+      'threads:cdn.jsdelivr.net:true',
+      'threads:rawcdn.githack.com:true',
+    ]);
+    expect(tests[1]!.detail).toContain('Media download failed');
+    expect(describeContainerTest(tests[1]!)).toBe('instagram · rawcdn.githack.com (application/octet-stream) : refusé — ' + tests[1]!.detail);
+    // Jamais de publication, ni de commentaire.
+    expect(g.calls.some((c) => c.url.includes('/media_publish') || c.url.includes('/comments'))).toBe(false);
+    expect(th.calls.some((c) => c.url.includes('/threads_publish'))).toBe(false);
+    // Les conteneurs de test portent un texte de test, pas la légende de la vidéo.
+    expect(g.calls.find((c) => c.url.endsWith('/111/media'))!.params.get('caption')).toBe('Test technique : non publié');
+  });
+
+  it("un jeton refusé donne une seule ligne et aucun conteneur ; sans adresse utilisable, rien n'est tenté", async () => {
+    const root = makeRoot([entry()]);
+    const bad = fakeGraph({'GET /me': new Response(JSON.stringify({error: {message: `Invalid OAuth access token ${TOKENS.INSTAGRAM_ACCESS_TOKEN}`, code: 190}}), {status: 400})});
+    const opts = {root, env: {INSTAGRAM_ACCESS_TOKEN: TOKENS.INSTAGRAM_ACCESS_TOKEN, META_MEDIA_REF: 'abc123'}, fetchFn: bad.fetchFn, nowFn: () => SLOT_MS - 3_600_000, sleep: async () => {}, log: () => {}};
+    const media = (await verifyMedia(opts))!;
+    const tests = await testContainers(opts, media);
+    expect(tests).toHaveLength(1);
+    expect(tests[0]).toMatchObject({network: 'instagram', ok: false, url: ''});
+    expect(tests[0]!.detail).not.toContain(TOKENS.INSTAGRAM_ACCESS_TOKEN);
+    expect(bad.calls.filter((c) => c.method === 'POST')).toHaveLength(0);
+
+    const nothing = fakeGraph(igAnswers, {[JSDELIVR]: new Response('', {status: 404}), [GITHACK]: new Response('', {status: 404}), [RAW]: new Response('', {status: 404})});
+    const opts2 = {...opts, fetchFn: nothing.fetchFn};
+    expect(await testContainers(opts2, (await verifyMedia(opts2))!)).toEqual([]);
+    expect(nothing.calls).toHaveLength(0);
   });
 });
 

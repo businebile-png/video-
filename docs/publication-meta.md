@@ -34,7 +34,9 @@ restent sur Zernio (2 comptes gratuits, publications illimitées).
 4. Dépôt GitHub → Settings → Secrets and variables → Actions → **New repository secret** : `INSTAGRAM_ACCESS_TOKEN` et
    `THREADS_ACCESS_TOKEN`. Ne jamais coller un jeton dans une conversation ni dans le dépôt.
 5. Onglet Actions → « Publication Instagram et Threads (API Meta) » → Run workflow → mode `verifier` : le journal affiche
-   `✓ instagram : @compte` et `✓ threads : @compte` sans rien publier.
+   `✓ instagram : @compte` et `✓ threads : @compte`, teste les adresses de la prochaine vidéo, puis fait un **essai réel
+   auprès de Meta** : un conteneur (jamais publié, invisible, expiré de lui-même) par type d'adresse, pour savoir si Meta
+   accepte la vidéo telle que GitHub la sert. Rien n'est publié, aucun commentaire n'est posté.
 6. Une fois les jetons contrôlés, mettre `"actif": true` dans `data/meta-publications.json` : dès lors Instagram et Threads
    ne sont plus programmés sur Metricool ni Zernio (les publications Metricool déjà créées pour ces réseaux passent en
    brouillon, sinon doublon). **C'est aussi un verrou** : tant que `"actif"` n'est pas à `true`, le workflow ne publie rien
