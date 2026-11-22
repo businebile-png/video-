@@ -58,10 +58,12 @@ répondre, commenter et écrire les messages de commit en français.
   (mention « Publicité », faits, droits, son, aucun problème bloquant ni doute factuel à la relecture) ; tâche courte à 13:35 dans une conversation Claude qui a le connecteur Metricool (la formule gratuite de Metricool
   plafonne à 20 publications par mois) ; jamais deux
   vidéos au même créneau. **Demande de l'utilisateur du 22/11/2026** : chaque vidéo part *automatiquement* sur TikTok,
-  Instagram (Reels) et YouTube, avec ses comptes Metricool et Zernio, qu'il a connectés (« tu peux quand même ») ;
-  Threads n'est pas demandé (« à poster soi-même »). Instagram est donc toujours tenté via Metricool, même quand son
-  quota gratuit semble épuisé : on ne le marque « à poster soi-même » que si Metricool refuse ou si la publication
-  échoue (ERROR), et on le dit à l'utilisateur.
+  Instagram (Reels), YouTube et Threads (« et TikTok et YouTube et Threads »), avec ses comptes Metricool et Zernio,
+  qu'il a connectés (« tu peux quand même »). Instagram et Threads sont donc toujours tentés via Metricool, même quand
+  son quota gratuit semble épuisé : on ne les marque « à poster soi-même » que si Metricool refuse ou si la
+  publication échoue (ERROR), et on le dit à l'utilisateur. Zernio n'offre que 2 comptes gratuits (TikTok et YouTube) :
+  un 3ᵉ et un 4ᵉ compte (Instagram, Threads) y demandent une carte (environ 6 $/mois chacun) ; dès qu'ils y sont
+  connectés, ils passent par Zernio (sans quota) et le doublon Metricool est mis en brouillon.
 - Musique : « All For Nothing » (Zachariehs), choix de l'utilisateur qui déclare en avoir le droit (licence non
   vérifiée par le studio) : un extrait différent sous chaque vidéo (`music:overlay`, après la relecture) ; le
   fichier reste dans le stockage privé du panneau, jamais dans le dépôt public.
