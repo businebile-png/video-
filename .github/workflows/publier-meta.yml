@@ -1,0 +1,74 @@
+# Publication directe sur Instagram (Reels) et Threads avec les API officielles de Meta : gratuit, sans Metricool ni Zernio
+# (demande de l'utilisateur du 22/11/2026 : « automatiquement, mais gratuitement »). TikTok et YouTube restent sur Zernio.
+# Le code est dans src/publish/meta.ts (lu depuis la branche du studio) ; ce fichier doit rester sur la branche par défaut
+# du dépôt pour que la planification s'exécute. Secrets à ajouter dans Settings > Secrets and variables > Actions :
+# INSTAGRAM_ACCESS_TOKEN et THREADS_ACCESS_TOKEN (voir docs/publication-meta.md). Sans jeton, le workflow ne fait rien.
+name: Publication Instagram et Threads (API Meta)
+
+on:
+  schedule:
+    # Heure d'hiver (UTC+1). Le job démarre avant le créneau et attend l'heure ; GitHub peut retarder un peu les départs.
+    - cron: '50 8 * * *'    # 9:50 à Paris : attend le créneau de 10:00
+    - cron: '15 11 * * *'   # 12:15 : reprise si le créneau de 10:00 a échoué
+    - cron: '50 18 * * *'   # 19:50 à Paris : attend le créneau de 20:00
+    - cron: '15 21 * * *'   # 22:15 : reprise si le créneau de 20:00 a échoué
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "verifier : contrôle les jetons sans rien publier · publier : publie ce qui est dû"
+        type: choice
+        default: verifier
+        options:
+          - verifier
+          - publier
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publier-meta
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+    steps:
+      - name: Récupérer le dépôt (branche du studio)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/serene-maxwell-pdm5wr
+          fetch-depth: 20
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Épingler la version des vidéos (adresse de secours jsDelivr)
+        run: echo "META_MEDIA_REF=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Contrôler les jetons (lancement manuel « verifier »)
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'verifier'
+        run: npx --yes tsx@4.23.15 src/publish/meta.ts verifier
+
+      - name: Publier ce qui est dû
+        if: github.event_name != 'workflow_dispatch' || inputs.mode == 'publier'
+        run: npx --yes tsx@4.23.15 src/publish/meta.ts publier --attendre 25
+
+      - name: Enregistrer l'état (data/meta-publications.json)
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/meta-publications.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+          git commit -m "Publication Meta : état des publications Instagram et Threads"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin claude/serene-maxwell-pdm5wr && git push origin HEAD:claude/serene-maxwell-pdm5wr; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::Impossible d'enregistrer l'état des publications"
+          exit 1
