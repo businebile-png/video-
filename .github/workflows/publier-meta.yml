@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: claude/serene-maxwell-pdm5wr
-          fetch-depth: 1
+          fetch-depth: 20
 
       - uses: actions/setup-node@v4
         with:
