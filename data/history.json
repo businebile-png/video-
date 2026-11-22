@@ -1142,6 +1142,46 @@
       "pexelsIds": [],
       "serie": 1,
       "updatedAt": "2026-11-22T13:48:22.329Z"
+    },
+    {
+      "runId": "2026-11-22-e",
+      "date": "2026-11-22",
+      "category": "pub-directe",
+      "hookStyle": "question-directe",
+      "hook": "Et si ta formation se vendait grâce à d'autres ?",
+      "angle": "Systeme.io permet de créer son propre programme d'affiliation : des affiliés recommandent ta formation avec leur lien, le tout au même endroit que ta formation et ton tunnel",
+      "workingTitle": "Et si d'autres vendaient ta formation ?",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": 28.43,
+      "score": null,
+      "decision": null,
+      "status": "rendered",
+      "reason": null,
+      "pexelsIds": [],
+      "serie": 1,
+      "updatedAt": "2026-11-22T15:12:09.673Z"
+    },
+    {
+      "runId": "2026-11-22-f",
+      "date": "2026-11-22",
+      "category": "conseils-debutant",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": "Tier list des 4 formules Systeme.io",
+      "artDirection": "studio-nuit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "serie": 3,
+      "updatedAt": "2026-11-22T15:12:54.579Z"
     }
   ]
 }

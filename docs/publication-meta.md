@@ -10,8 +10,10 @@ restent sur Zernio (2 comptes gratuits, publications illimitées).
 - `src/publish/meta.ts` lit `queue/*.json` (les vidéos prêtes) et publie, au créneau de la vidéo (10:00 ou 20:00), le Reel
   Instagram puis le post Threads, avec la légende déjà préparée (`posts[instagram]`, `posts[threads]`, mention
   « Publicité · Systeme.io » en tête, déclaration « contenu IA » cochée côté Instagram et Threads).
-- `.github/workflows/publier-meta.yml` le lance par GitHub Actions (gratuit, indépendant du quota de Claude) à 9:50 et
-  19:50 (il attend l'heure du créneau), avec une reprise à 12:15 et 22:15 en cas d'échec. **Ce fichier doit rester sur la
+- `.github/workflows/publier-meta.yml` le lance par GitHub Actions (gratuit, indépendant du quota de Claude) à 9:20 et 9:50
+  (puis 19:20 et 19:50) heure de Paris : GitHub retarde ses tâches planifiées de 10 à 60 minutes, donc le job part tôt, attend
+  jusqu'à 70 minutes l'heure exacte du créneau (10:00 ou 20:00) et publie pile ; reprise à 12:15 et 22:15 en cas d'échec.
+  Les départs suivants d'un même créneau trouvent tout publié et s'arrêtent (groupe de concurrence). **Ce fichier doit rester sur la
   branche par défaut du dépôt** (`claude/kind-euler-t08y5a`) : GitHub n'exécute les planifications que depuis elle.
 - Meta télécharge elle-même la vidéo à une adresse publique (le téléversement direct exige « Facebook Login for Business »,
   hors de cette formule gratuite). GitHub brut sert les MP4 en `application/octet-stream`, que Meta peut refuser, et jsDelivr
