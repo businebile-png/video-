@@ -95,7 +95,7 @@ Multiple triggers: You can define multiple triggers to occur simultaneously.
 Email link clicked cooldown: For the Email link clicked trigger, the system applies a 1-minute cooldown after the first recorded click. This prevents the trigger from executing multiple times due to accidental double-clicks or automated background security checks performed by email providers (like Gmail).
 4. Adding a workflow step
 After setting your trigger, click the (+) icon (1) to add the next step.
-A menu will appear allowing you to choose between three types of steps (2): Action, Decision, Delay, or Goal.
+A menu will appear allowing you to choose between four types of steps (2): Action, Decision, Delay, or Goal.
 a. Action
 An action performs a specific operation on the contact.
 In the example below, we chose the action "Enroll in course".
@@ -179,4 +179,4 @@ Actions: "Add a new row to a Google Sheet" and "Send webhook".
 Execution history: Workflow execution history is stored for one month only. After this period, it is automatically removed from the system for data optimization. If you can't find a past workflow task in a contact's profile, it means the task was over one month old and was removed during cleanup.
 Timezones: The dates and times displayed throughout your workflows (including scheduled delays and execution logs) automatically follow the format and timezone configured in your main account settings .
 Did this answer your question?
-Last updated on November 20, 2026
+Last updated on November 21, 2026
