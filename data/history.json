@@ -1224,6 +1224,46 @@
       "pexelsIds": [],
       "serie": 4,
       "updatedAt": "2026-11-22T22:13:54.917Z"
+    },
+    {
+      "runId": "2026-11-23-a",
+      "date": "2026-11-23",
+      "category": "conseils-debutant",
+      "hookStyle": "liste",
+      "hook": "Un tunnel de vente, ça fait peur. En vrai, c'est souvent 3 étapes.",
+      "angle": "Un tunnel de vente se résume souvent à 3 étapes : capture de l'e-mail, offre, paiement ; le plan gratuit en inclut 3.",
+      "workingTitle": "Un tunnel de vente, c'est 3 étapes",
+      "artDirection": "clarte",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": 25.57,
+      "score": 69,
+      "decision": "redo",
+      "status": "rejected",
+      "reason": "69/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "pexelsIds": [],
+      "serie": 5,
+      "updatedAt": "2026-11-23T07:04:12.849Z"
+    },
+    {
+      "runId": "2026-11-23-b",
+      "date": "2026-11-23",
+      "category": "formules-payantes",
+      "hookStyle": "constat-chiffre",
+      "hook": "Zéro euro ou dix-sept euros : voilà ce qui change vraiment. Je te montre quatre limites, côte à côte.",
+      "angle": "Gratuit ou Startup : ce qui change, chiffres officiels côte à côte, pour décider sans pression.",
+      "workingTitle": "Gratuit ou Startup : ce qui change",
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "serie": 9,
+      "updatedAt": "2026-11-23T06:48:28.421Z"
     }
   ]
 }
