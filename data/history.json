@@ -1257,14 +1257,14 @@
       "artDirection": "editorial",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": null,
+      "durationSec": 27.13,
       "score": null,
       "decision": null,
-      "status": "created",
+      "status": "rendered",
       "reason": null,
       "pexelsIds": [],
       "serie": 9,
-      "updatedAt": "2026-11-23T06:48:28.421Z"
+      "updatedAt": "2026-11-23T07:29:45.104Z"
     }
   ]
 }
