@@ -1257,14 +1257,14 @@
       "artDirection": "editorial",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": 27.13,
+      "durationSec": 27.2,
       "score": 72,
       "decision": "redo",
-      "status": "rejected",
+      "status": "rendered",
       "reason": "72/100 (note indicative) — bloquée : Droits : licences des séquences, de la musique et des captures.",
       "pexelsIds": [],
       "serie": 9,
-      "updatedAt": "2026-11-23T07:47:35.584Z"
+      "updatedAt": "2026-11-23T08:05:28.787Z"
     }
   ]
 }
