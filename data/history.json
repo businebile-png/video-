@@ -1234,16 +1234,17 @@
       "angle": "Un tunnel de vente se résume souvent à 3 étapes : capture de l'e-mail, offre, paiement ; le plan gratuit en inclut 3.",
       "workingTitle": "Un tunnel de vente, c'est 3 étapes",
       "artDirection": "clarte",
-      "musicTrack": null,
+      "musicTrack": "all-for-nothing",
+      "musicStart": 21.73,
       "voiceId": "claire",
       "durationSec": 25.83,
-      "score": 69,
-      "decision": "redo",
+      "score": 71,
+      "decision": "publishable",
       "status": "rendered",
-      "reason": "69/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
+      "reason": null,
       "pexelsIds": [],
       "serie": 5,
-      "updatedAt": "2026-11-23T07:15:56.458Z"
+      "updatedAt": "2026-11-23T07:18:30.351Z"
     },
     {
       "runId": "2026-11-23-b",
