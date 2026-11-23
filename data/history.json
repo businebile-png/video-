@@ -1265,6 +1265,25 @@
       "pexelsIds": [],
       "serie": 9,
       "updatedAt": "2026-11-23T08:06:30.503Z"
+    },
+    {
+      "runId": "2026-11-23-c",
+      "date": "2026-11-23",
+      "category": "conseils-debutant",
+      "hookStyle": "question-directe",
+      "hook": "Combien de contacts peux-tu garder sans payer ?",
+      "angle": "Combien de contacts garder gratuitement, et quand passer à Startup, avec les limites officielles.",
+      "workingTitle": "Combien de contacts sans payer ?",
+      "artDirection": "nuit-edit",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-23T08:07:28.096Z"
     }
   ]
 }
