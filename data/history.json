@@ -1236,14 +1236,14 @@
       "artDirection": "clarte",
       "musicTrack": null,
       "voiceId": "claire",
-      "durationSec": 25.57,
+      "durationSec": 25.83,
       "score": 69,
       "decision": "redo",
-      "status": "rejected",
+      "status": "rendered",
       "reason": "69/100 (note indicative) — bloquée : Aucun problème bloquant ni doute factuel relevé à la relecture.",
       "pexelsIds": [],
       "serie": 5,
-      "updatedAt": "2026-11-23T07:04:12.849Z"
+      "updatedAt": "2026-11-23T07:15:56.458Z"
     },
     {
       "runId": "2026-11-23-b",
