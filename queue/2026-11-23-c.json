@@ -1,0 +1,720 @@
+{
+  "runId": "2026-11-23-c",
+  "date": "2026-11-23",
+  "createdAt": "2026-11-23T08:32:25.697Z",
+  "updatedAt": "2026-11-23T08:32:25.697Z",
+  "status": "prete",
+  "title": "Combien de contacts sans payer ?",
+  "category": {
+    "id": "conseils-debutant",
+    "label": "Conseils pour débuter"
+  },
+  "angle": "Combien de contacts garder gratuitement, et quand passer à Startup, avec les limites officielles.",
+  "hook": "Combien de contacts peux-tu garder sans payer ?",
+  "hookStyle": "question-directe",
+  "artDirection": {
+    "id": "nuit-edit",
+    "label": "Edit nuit — noir cinéma, gros texte central, coupes rapides"
+  },
+  "durationSec": 26.43,
+  "score": {
+    "total": 74,
+    "decision": "publishable",
+    "summary": "74/100 (note indicative) — publiable : cohérente selon la relecture, tous les contrôles obligatoires validés.",
+    "criteria": [
+      {
+        "id": "visual",
+        "label": "Qualité visuelle",
+        "max": 20,
+        "score": 12,
+        "basis": "relecture 12/20, plafond technique 20"
+      },
+      {
+        "id": "voice",
+        "label": "Naturel de la voix",
+        "max": 15,
+        "score": 15,
+        "basis": "mesures : WER 0, 150 mots/min, pause max 0.35 s, voix approuvée"
+      },
+      {
+        "id": "editing",
+        "label": "Qualité du montage",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond rythme 15"
+      },
+      {
+        "id": "script",
+        "label": "Qualité du script",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15, 0 avertissement(s)"
+      },
+      {
+        "id": "explanation",
+        "label": "Explication de Systeme.io",
+        "max": 15,
+        "score": 11,
+        "basis": "relecture 11/15"
+      },
+      {
+        "id": "conversion",
+        "label": "Potentiel de conversion",
+        "max": 15,
+        "score": 10,
+        "basis": "relecture 10/15, plafond CTA 15"
+      },
+      {
+        "id": "audio",
+        "label": "Qualité audio",
+        "max": 5,
+        "score": 5,
+        "basis": "4/4 mesures conformes"
+      }
+    ],
+    "gates": [
+      {
+        "id": "lint",
+        "label": "Script conforme (aucune promesse, urgence ou affirmation non sourcée)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "facts",
+        "label": "Faits cités vérifiés sur les pages officielles",
+        "ok": true,
+        "detail": "6 fait(s) utilisé(s)"
+      },
+      {
+        "id": "affiliate",
+        "label": "Lien affilié configuré (format Systeme.io, sans « www », avec « sa »)",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "disclosure",
+        "label": "Mention « Publicité » visible toute la vidéo",
+        "ok": true,
+        "detail": "Publicité"
+      },
+      {
+        "id": "rights",
+        "label": "Droits : licences des séquences, de la musique et des captures",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "voice",
+        "label": "Voix approuvée et prononciation vérifiée",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "audio",
+        "label": "Audio techniquement conforme",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "spec",
+        "label": "Format 1080×1920, 30 i/s, H.264, AAC",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "sound",
+        "label": "Vidéo sonore : voix off présente et audible",
+        "ok": true,
+        "detail": "63 mots synchronisés, -13.9 LUFS"
+      },
+      {
+        "id": "review",
+        "label": "Aucun problème bloquant ni doute factuel relevé à la relecture",
+        "ok": true,
+        "detail": "ok"
+      },
+      {
+        "id": "coherence",
+        "label": "Vidéo cohérente (verdict de la relecture)",
+        "ok": true,
+        "detail": "cohérente (qualité jugée perfectible, non bloquante) : Le message est cohérent : voix et chiffres à l'écran concordent (2 000, illimités, 5 000, 17 €), tous couverts par les faits vérifiés. En revanche la qualité visuelle est moyenne : fonds sombres et flous sans rapport avec le propos dès s2, doublon de texte à l'accroche et plan d'ouverture au rendu un peu IA. À améliorer mais rien de bloquant."
+      }
+    ],
+    "virality": {
+      "total": 11,
+      "max": 20,
+      "parts": [
+        {
+          "id": "hook",
+          "label": "Accroche (arrêter le pouce)",
+          "score": 3,
+          "justification": "Texte gros dès l'image 0 et vraie question pour la cible, mais le titre est dupliqué par le sous-titre et le plan d'ouverture est calme, sans mouvement fort."
+        },
+        {
+          "id": "retention",
+          "label": "Rétention (rester jusqu’au bout)",
+          "score": 2,
+          "justification": "Pas de liste annoncée ni de démonstration ; les cartes sombres sur fond flou se ressemblent et la fin sur écran presque noir traîne."
+        },
+        {
+          "id": "shareability",
+          "label": "Envie d’envoyer ou d’enregistrer",
+          "score": 3,
+          "justification": "Chiffres concrets et utiles à enregistrer (2 000, 5 000, 17 €), mais présentés sans comparaison visuelle claire."
+        },
+        {
+          "id": "engagement",
+          "label": "Envie de commenter",
+          "score": 3,
+          "justification": "Question finale « Tu en as combien ? » facile à commenter et reprise en légende, sans forcing."
+        }
+      ],
+      "actions": [
+        "Titre d'accroche unique et plus grand, par exemple « 2 000 contacts gratuits ? ».",
+        "Alterner des plans nets et lumineux au lieu de fonds sombres flous toutes les 2 à 3 secondes.",
+        "Montrer un comparatif gratuit contre Startup (2 000 contre 5 000) sur une seule carte."
+      ]
+    }
+  },
+  "review": {
+    "reviewer": "independent-subagent",
+    "criteria": {
+      "visual": {
+        "score": 12,
+        "justification": "Les deux premiers plans (bureau, clavier) sont nets et crédibles, mais le plan d'ouverture a un rendu légèrement lissé/IA (reflet de l'écran étrange). Dès la scène s2, les fonds sont des plans très sombres et flous (machine à café, mains floues, tache jaune) sans rapport avec les contacts ni les e-mails : l'écran est surtout noir. Textes lisibles et dans la zone sûre, mention « Publicité » visible partout, identité rose/sombre cohérente."
+      },
+      "editing": {
+        "score": 10,
+        "justification": "Sous-titres mot à mot dynamiques et cartes graphiques propres, rythme régulier. Mais le titre d'accroche rose et le sous-titre répètent la même chose (« COMBIEN DE CONTACTS » deux fois à l'image 0), et les scènes s2 à s4 reposent sur le même type de carte sombre sur fond flou, donc peu de variété visuelle. La coupe sur la carte « Plan gratuit » ne montre rien de nouveau pendant plusieurs secondes."
+      },
+      "script": {
+        "score": 11,
+        "justification": "Accroche en question directe claire (7 mots, ~2,3 s), progression simple gratuit, e-mails, illimités, Startup, appel à l'action. Mais la phrase s3 (« e-mails, campagnes, newsletters ») est générique, et la scène s2 enchaîne la réponse en une longue phrase qui coupe l'effet de la question. Le plafond de 2 000 est dit sans exemple concret pour un débutant."
+      },
+      "explanation": {
+        "score": 11,
+        "justification": "On comprend que le plan gratuit permet 2 000 contacts et des e-mails illimités, et que Startup passe à 5 000 pour 17 €/mois, avec source affichée. En revanche, rien ne montre ce qu'est Systeme.io ni comment on envoie un e-mail, aucune interface, et la voix n'explique pas ce que sont des campagnes par rapport à des e-mails. Utile mais superficiel."
+      },
+      "conversion": {
+        "score": 10,
+        "justification": "Raison de cliquer correcte (voir les limites du plan gratuit et de Startup), orientation vers la formule payante sans pression, « Lien en bio » et mention « lien affilié » claire. L'appel à l'action est dit puis redit sur une carte noire presque vide pendant plusieurs secondes, et la question finale « Tu en as combien ? » éloigne du clic."
+      }
+    },
+    "improvements": [
+      "Supprimer le doublon à l'image 0 : garder soit le titre rose, soit le sous-titre mot à mot « Combien de contacts », ou changer le titre en « 2 000 contacts gratuits ? ».",
+      "Remplacer les plans flous et sombres des scènes s2 à s5 (machine à café, mains floues) par des plans nets de personne qui travaille sur ordinateur et éclaircir le fond sous les cartes.",
+      "Raccourcir la carte de fin (écran presque noir) et fusionner « Lien en bio » avec la dernière phrase pour garder la tension.",
+      "Ajouter un exemple concret en s3 (ex. envoyer une newsletter hebdomadaire à sa liste) pour rendre l'explication moins générique."
+    ]
+  },
+  "technical": [
+    {
+      "label": "Résolution 1080×1920",
+      "ok": true,
+      "value": "1080×1920",
+      "expected": "1080×1920"
+    },
+    {
+      "label": "Cadence",
+      "ok": true,
+      "value": "30.00 i/s",
+      "expected": "30 i/s"
+    },
+    {
+      "label": "Codec vidéo H.264 / yuv420p",
+      "ok": true,
+      "value": "h264/yuv420p",
+      "expected": "h264/yuv420p"
+    },
+    {
+      "label": "Audio AAC 48 kHz",
+      "ok": true,
+      "value": "aac/48000",
+      "expected": "aac/48000"
+    },
+    {
+      "label": "Débit vidéo suffisant",
+      "ok": true,
+      "value": "5292 kb/s",
+      "expected": "≥ 4 500 kb/s"
+    },
+    {
+      "label": "Volume (EBU R128)",
+      "ok": true,
+      "value": "-13.9 LUFS",
+      "expected": "-14 ± 1.5"
+    },
+    {
+      "label": "Crêtes (true peak)",
+      "ok": true,
+      "value": "-1.9 dBTP",
+      "expected": "≤ -0.8 dBTP"
+    },
+    {
+      "label": "Voix off présente et audible",
+      "ok": true,
+      "value": "63 mots synchronisés, -13.9 LUFS",
+      "expected": "voix off sur toute la vidéo"
+    },
+    {
+      "label": "Pas de trou de son",
+      "ok": true,
+      "value": "aucun",
+      "expected": "aucun silence > 1 s"
+    },
+    {
+      "label": "Pas d’image noire",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune"
+    },
+    {
+      "label": "Pas d’image figée",
+      "ok": true,
+      "value": "aucune",
+      "expected": "aucune > 1,8 s"
+    },
+    {
+      "label": "Netteté des séquences (pas d’agrandissement excessif)",
+      "ok": true,
+      "value": "×1.11",
+      "expected": "≤ ×1.2"
+    },
+    {
+      "label": "Textes dans la zone sûre TikTok/Reels",
+      "ok": true,
+      "value": "ok",
+      "expected": "aucun débordement"
+    },
+    {
+      "label": "Rythme des images",
+      "ok": true,
+      "value": "moy. 2.46 s entre deux changements d’image (coupe ou recadrage), min 0.67 s ; 11 plans montés, moy. 2.46 s",
+      "expected": "moy. 0,9–3,8 s, min ≥ 0,5 s"
+    },
+    {
+      "label": "Variété des images",
+      "ok": true,
+      "value": "10 sources (10 séquences filmées, 0 captures réelles)",
+      "expected": "≥ 4"
+    },
+    {
+      "label": "Transitions sobres",
+      "ok": true,
+      "value": "3 stylisées",
+      "expected": "≤ 3"
+    },
+    {
+      "label": "Mention « Publicité » permanente",
+      "ok": true,
+      "value": "Publicité",
+      "expected": "Publicité"
+    },
+    {
+      "label": "Carte d’appel à l’action ≥ 2,5 s",
+      "ok": true,
+      "value": "3.8 s",
+      "expected": "≥ 2,5 s"
+    },
+    {
+      "label": "Voix intelligible sur le mixage final",
+      "ok": true,
+      "value": "WER 0.0 %",
+      "expected": "≤ 12 %"
+    }
+  ],
+  "voice": {
+    "id": "claire",
+    "name": "Claire (voix naturelle)",
+    "wpm": 150,
+    "wer": 0,
+    "score": 15,
+    "problems": []
+  },
+  "musicTrackId": null,
+  "script": [
+    {
+      "id": "s1",
+      "phase": "hook",
+      "voiceover": "Combien de contacts peux-tu garder sans payer ?",
+      "headline": "Combien de contacts, gratuit ?",
+      "visual": "broll",
+      "fromSec": 0,
+      "toSec": 2.8
+    },
+    {
+      "id": "s2",
+      "phase": "problem",
+      "voiceover": "Avec le plan gratuit de Systeme.io, tu peux en garder jusqu'à 2 000.",
+      "headline": "Ta liste, gratuite",
+      "visual": "graphic",
+      "fromSec": 2.8,
+      "toSec": 7.7
+    },
+    {
+      "id": "s3",
+      "phase": "solution",
+      "voiceover": "Tu leur envoies des e-mails, des campagnes et des newsletters.",
+      "headline": "Des e-mails à tes contacts",
+      "visual": "graphic",
+      "fromSec": 7.7,
+      "toSec": 11.6
+    },
+    {
+      "id": "s4",
+      "phase": "solution",
+      "voiceover": "Et les e-mails envoyés sont illimités, même en gratuit.",
+      "headline": "E-mails envoyés illimités",
+      "visual": "graphic",
+      "fromSec": 11.6,
+      "toSec": 16.3
+    },
+    {
+      "id": "s5",
+      "phase": "benefits",
+      "voiceover": "Si ta liste grandit, Startup monte jusqu'à 5 000 contacts, à 17 euros par mois.",
+      "headline": "Startup : 5 000 contacts",
+      "visual": "graphic",
+      "fromSec": 16.3,
+      "toSec": 22.7
+    },
+    {
+      "id": "s6",
+      "phase": "cta",
+      "voiceover": "Lien en bio. Et toi, tu en as combien ?",
+      "headline": "Tu en as combien ?",
+      "visual": "broll",
+      "fromSec": 22.7,
+      "toSec": 26.4
+    }
+  ],
+  "facts": [
+    {
+      "id": "feature.email-marketing",
+      "statement": "Systeme.io permet d'envoyer des e-mails, des campagnes et des newsletters à ses contacts.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.free.exists",
+      "statement": "Systeme.io propose un plan gratuit, présenté comme « gratuit à vie ».",
+      "verifiedAt": "2026-11-22T14:18:19.064Z"
+    },
+    {
+      "id": "plan.free.contacts",
+      "statement": "Le plan gratuit de Systeme.io inclut jusqu'à 2 000 contacts.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.startup.price",
+      "statement": "En facturation mensuelle, le plan Startup de Systeme.io coûte 17 € par mois.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.startup.contacts",
+      "statement": "Le plan Startup de Systeme.io inclut jusqu'à 5 000 contacts.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    },
+    {
+      "id": "plan.table.emails-sent",
+      "statement": "Les e-mails envoyés sont illimités dans les quatre formules, y compris la gratuite.",
+      "verifiedAt": "2026-11-22T14:18:09.343Z"
+    }
+  ],
+  "credits": {
+    "footage": [
+      {
+        "pexelsId": 368623,
+        "author": "gulshari_jamil",
+        "pageUrl": "https://pixabay.com/videos/id-368623/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 78640,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-78640/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 203260,
+        "author": "Natures_Embrace",
+        "pageUrl": "https://pixabay.com/videos/id-203260/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 46989,
+        "author": "NickyPe",
+        "pageUrl": "https://pixabay.com/videos/id-46989/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 180776,
+        "author": "Darioguzben",
+        "pageUrl": "https://pixabay.com/videos/id-180776/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 38057,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-38057/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 236256,
+        "author": "xBriantcx",
+        "pageUrl": "https://pixabay.com/videos/id-236256/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 142641,
+        "author": "u_etjkkdz15b",
+        "pageUrl": "https://pixabay.com/videos/id-142641/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 202987,
+        "author": "Natures_Embrace",
+        "pageUrl": "https://pixabay.com/videos/id-202987/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 174003,
+        "author": "Amorn_mimi",
+        "pageUrl": "https://pixabay.com/videos/id-174003/",
+        "source": "Pixabay"
+      },
+      {
+        "pexelsId": 47158,
+        "author": "Engin_Akyurt",
+        "pageUrl": "https://pixabay.com/videos/id-47158/",
+        "source": "Pixabay"
+      }
+    ],
+    "music": null
+  },
+  "posts": [
+    {
+      "network": "tiktok",
+      "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+      "blogId": "7791839",
+      "date": "2026-11-25T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "tiktok"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-25T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+        "videoCoverMilliseconds": 0,
+        "tiktokData": {
+          "disableComment": false,
+          "disableDuet": false,
+          "disableStitch": false,
+          "privacyOption": "PUBLIC_TO_EVERYONE",
+          "commercialContentThirdParty": true,
+          "commercialContentOwnBrand": false,
+          "title": "Combien de contacts, gratuit ?",
+          "autoAddMusic": false,
+          "photoCoverIndex": 0,
+          "isAigc": true
+        }
+      }
+    },
+    {
+      "network": "instagram",
+      "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+      "blogId": "7791839",
+      "date": "2026-11-25T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "Tu en es à combien de contacts ? 👇",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "instagram"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-25T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+        "videoCoverMilliseconds": 0,
+        "instagramData": {
+          "type": "REEL",
+          "showReelOnFeed": true,
+          "isAiGenerated": true
+        }
+      }
+    },
+    {
+      "network": "youtube",
+      "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+      "blogId": "7791839",
+      "date": "2026-11-25T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "youtube"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-25T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix de synthèse IA, d'après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.\n🎵 Musique : « All For Nothing » — Zachariehs\n\n#systemeio #emailmarketing #entrepreneurfrancais #debutant",
+        "youtubeData": {
+          "title": "Publicité · Publicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000…",
+          "type": "short",
+          "privacy": "public",
+          "tags": [
+            "systemeio",
+            "emailmarketing",
+            "entrepreneurfrancais",
+            "debutant"
+          ],
+          "category": "HOWTO_STYLE",
+          "madeForKids": false,
+          "isAiGeneratedContent": true
+        }
+      }
+    },
+    {
+      "network": "threads",
+      "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+      "blogId": "7791839",
+      "date": "2026-11-25T20:00:00+01:00",
+      "info": {
+        "autoPublish": true,
+        "draft": false,
+        "descendants": [],
+        "firstCommentText": "",
+        "hasNotReadNotes": false,
+        "media": [
+          "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.mp4"
+        ],
+        "mediaAltText": [],
+        "providers": [
+          {
+            "network": "threads"
+          }
+        ],
+        "publicationDate": {
+          "dateTime": "2026-11-25T20:00:00",
+          "timezone": "Europe/Paris"
+        },
+        "shortener": false,
+        "smartLinkData": {
+          "ids": []
+        },
+        "text": "Publicité · Systeme.io\n\nPublicité · Systeme.io. Combien de contacts peux-tu garder sans payer ? Jusqu'à 2 000 avec le plan gratuit, et des e-mails envoyés illimités. Startup (17 € par mois) monte jusqu'à 5 000 contacts. Tu en es à combien de contacts ? Dis-le en commentaire. Enregistre la vidéo pour plus tard. Lien en bio.\n\nPrix vérifiés sur systeme.io le 22/11/2026.\n\nVoix IA d’après SIWIS (Honnet et al., CC BY 4.0), modifiée. 🎵 « All For Nothing » — Zachariehs\n\n#systemeio",
+        "threadsData": {}
+      }
+    }
+  ],
+  "slots": [
+    {
+      "network": "tiktok",
+      "iso": "2026-11-25T20:00:00+01:00",
+      "local": "2026-11-25T20:00:00",
+      "label": "mercredi 25 novembre à 20:00"
+    },
+    {
+      "network": "instagram",
+      "iso": "2026-11-25T20:00:00+01:00",
+      "local": "2026-11-25T20:00:00",
+      "label": "mercredi 25 novembre à 20:00"
+    },
+    {
+      "network": "youtube",
+      "iso": "2026-11-25T20:00:00+01:00",
+      "local": "2026-11-25T20:00:00",
+      "label": "mercredi 25 novembre à 20:00"
+    },
+    {
+      "network": "threads",
+      "iso": "2026-11-25T20:00:00+01:00",
+      "local": "2026-11-25T20:00:00",
+      "label": "mercredi 25 novembre à 20:00"
+    }
+  ],
+  "media": {
+    "publicUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.mp4",
+    "coverUrl": "https://raw.githubusercontent.com/businebile-png/video-/claude/serene-maxwell-pdm5wr/videos/2026-11-23-c.jpg",
+    "coverMs": 0,
+    "sha256": "b858a1acc4d757c4111fa16589e283782ccdcc003b5c352f3eb87ac4f289dcb8",
+    "pushed": true,
+    "verified": true
+  },
+  "linkCheck": {
+    "ok": true,
+    "problems": [],
+    "checkedAt": "2026-11-23T08:32:07.577Z"
+  },
+  "publishable": true,
+  "overrideAllowed": false,
+  "preview": {
+    "assetId": "18a99c77f0fb9ef97d4b3c22fddbc181",
+    "url": "/_blob/18a99c77f0fb9ef97d4b3c22fddbc181"
+  },
+  "cover": {
+    "assetId": "741d920362e1d76f8d7da4d4786d187e",
+    "url": "/_blob/741d920362e1d76f8d7da4d4786d187e"
+  },
+  "decision": null,
+  "publications": {},
+  "metrics": null,
+  "disclosure": "Publicité · Systeme.io",
+  "autoSlot": {
+    "iso": "2026-11-25T20:00:00+01:00",
+    "label": "mercredi 25 novembre à 20:00"
+  },
+  "music": {
+    "title": "All For Nothing",
+    "start": 32.83,
+    "end": 59.28
+  },
+  "producedBy": {
+    "pipeline": "claude"
+  },
+  "queuedAt": "2026-11-23T08:32:26.312Z"
+}
