@@ -1325,6 +1325,25 @@
       "reason": null,
       "pexelsIds": [],
       "updatedAt": "2026-11-26T15:52:13.124Z"
+    },
+    {
+      "runId": "2026-11-27-a",
+      "date": "2026-11-27",
+      "category": "formules-payantes",
+      "hookStyle": null,
+      "hook": null,
+      "angle": null,
+      "workingTitle": null,
+      "artDirection": "editorial",
+      "musicTrack": null,
+      "voiceId": "claire",
+      "durationSec": null,
+      "score": null,
+      "decision": null,
+      "status": "created",
+      "reason": null,
+      "pexelsIds": [],
+      "updatedAt": "2026-11-26T23:23:46.754Z"
     }
   ]
 }

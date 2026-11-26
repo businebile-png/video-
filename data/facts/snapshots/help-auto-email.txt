@@ -1,5 +1,6 @@
 Loading
 © 2026 systeme.io Help Center · help.systeme.io
+How to automatically send an email when a lead subscribes | systeme.io Help Center
 Categories
 Affiliation
 Blog
@@ -96,4 +97,3 @@ The form button's action must be set to Submit form for the automation rule to b
 To improve email deliverability, we restrict the size of file attachments to 5 MB. If your file is larger than 5 MB, you will need to compress it before adding it.
 Did this answer your question?
 Last updated on November 10, 2026
-How to automatically send an email when a lead subscribes | systeme.io Help Center
