@@ -45,6 +45,11 @@ Tags
 10
 100
 Illimité
+Tags du helpdesk
+1
+10
+100
+Illimité
 Pipelines CRM
 1
 5

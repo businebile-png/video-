@@ -2,9 +2,9 @@
   "sourceId": "home",
   "url": "https://systeme.io/fr",
   "finalUrl": "https://systeme.io/fr",
-  "fetchedAt": "2026-11-22T14:18:19.064Z",
+  "fetchedAt": "2026-11-26T15:52:10.655Z",
   "status": 200,
-  "sha256": "1e03018c35a6fea1ea25dd48ffeefa0f3b5aac17f83436aa845e0e6a7b9c21b6",
-  "chars": 2019,
+  "sha256": "fd577cc9ee8135e0b3420dd35726b5e0830c95e41b29533d23d131620d434073",
+  "chars": 3035,
   "method": "http"
 }
