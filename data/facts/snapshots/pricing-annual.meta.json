@@ -2,9 +2,9 @@
   "sourceId": "pricing-annual",
   "url": "https://systeme.io/fr/pricing",
   "finalUrl": "https://systeme.io/fr/pricing",
-  "fetchedAt": "2026-11-26T23:23:44.222Z",
+  "fetchedAt": "2026-11-27T15:39:17.046Z",
   "status": 200,
-  "sha256": "cb20affc549a0a952a0fc2edc70d0e4c61c57578ff576af17c3cdf6437e0a9aa",
+  "sha256": "2e98c964fbcca2971662da1315c73cffb74edae6dccc52c6faf5442aaeec57ef",
   "chars": 5196,
   "method": "browser"
 }
