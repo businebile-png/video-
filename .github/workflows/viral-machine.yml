@@ -1,0 +1,106 @@
+# Viral Content Machine — tâche quotidienne (vidéos).
+# Ce fichier vit sur la branche par défaut (.github/workflows/) : GitHub n'exécute les planifications que depuis elle.
+# Tout le code reste sur la branche de la machine (ccr-a92e76b7-88k8fk), récupérée à chaque passage.
+#
+# Secrets du dépôt à créer (Settings → Secrets and variables → Actions → New repository secret) :
+#   ZERNIO_API_KEY    clé API Zernio (publication TikTok et YouTube, statistiques)            — obligatoire
+#   PIXABAY_API_KEY   clé API Pixabay (plans vidéo sous licence)                              — conseillé
+#   INSTAGRAM_ACCESS_TOKEN, THREADS_ACCESS_TOKEN  jetons Meta (Reels et Threads)               — facultatifs
+# Sans ZERNIO_API_KEY, rien n'est publié : la machine le dit dans le journal et s'arrête là.
+
+name: Viral Content Machine — vidéos du jour
+
+on:
+  schedule:
+    - cron: '23 4 * * *' # chaque jour vers 5 h 23 (Paris, heure d'hiver)
+  workflow_dispatch:
+    inputs:
+      per_account:
+        description: Vidéos à produire par compte publié automatiquement
+        default: '1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: viral-machine
+  cancel-in-progress: false
+
+jobs:
+  videos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    defaults:
+      run:
+        working-directory: viral
+    env:
+      ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ccr-a92e76b7-88k8fk
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: viral/package-lock.json
+      - name: Clé Zernio présente ?
+        run: |
+          if [ -z "$ZERNIO_API_KEY" ]; then
+            echo "::error::Secret ZERNIO_API_KEY absent : ajoutez-le dans Settings → Secrets and variables → Actions. Rien n'est produit ni publié."
+            exit 1
+          fi
+      - name: État de la machine (conservé d'un passage à l'autre)
+        uses: actions/cache@v4
+        with:
+          path: viral/var
+          key: viral-var-${{ github.run_id }}
+          restore-keys: viral-var-
+      - name: Base de départ (premier passage)
+        run: test -f var/viral.db || (mkdir -p var && cp state/seed.db var/viral.db)
+      - name: Outils (FFmpeg, navigateur pour le rendu)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Modèles de voix (conservés d'un passage à l'autre)
+        uses: actions/cache@v4
+        with:
+          path: |
+            viral/models
+            viral/.venv-voice
+          key: voix-kokoro-${{ hashFiles('viral/scripts/fetch_voice_models.py', 'viral/scripts/setup-voice.sh') }}
+      - name: Voix gratuites rapides (Siwis, Hugo rapide, voix étrangères)
+        run: STUDIO_STRICT_SETUP=1 SKIP_CHATTERBOX=1 bash scripts/setup-voice.sh
+      - name: Faits Systeme.io relus sur les pages officielles
+        run: npm run -s viral -- facts:verify || true
+      - name: Posts déjà programmés chez Zernio (aucun créneau en double)
+        run: npm run -s viral -- publish:sync-remote
+      - name: Vidéos du jour (script, voix, plans, musique, montage, contrôle, programmation, envoi à Zernio)
+        run: npm run -s viral -- factory:daily --per-account ${{ inputs.per_account || '1' }} --voice siwis
+      - name: Statistiques et apprentissage
+        run: |
+          npm run -s viral -- analytics:sync || true
+          npm run -s viral -- learn || true
+      - name: Faits relus (copies datées)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/facts || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Viral : faits relus sur systeme.io (tâche quotidienne)"
+            git push origin HEAD:ccr-a92e76b7-88k8fk || true
+          fi
+      - name: Instantané du tableau de bord
+        if: always()
+        run: npm run -s viral -- dashboard:snapshot --out var/exports/tableau-de-bord.html || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tableau-de-bord
+          path: viral/var/exports/tableau-de-bord.html
+          if-no-files-found: ignore
