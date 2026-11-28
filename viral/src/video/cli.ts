@@ -138,6 +138,7 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
           }
           let planned: unknown = null;
           if (flags.schedule) {
+            await syncRemote(db).catch(() => null);
             const sch = schedule(db, cfg, id);
             const rep = await runDue(db, cfg, {only: sch.id, leadMinutes: Number(flags['lead-hours'] ?? 400) * 60});
             const row2 = db.get('SELECT status, provider_post_id, last_error FROM schedule WHERE id = ?', sch.id);
@@ -327,29 +328,9 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
       }));
       return true;
     }
-    case 'publish:sync-remote': {
-      // Posts already scheduled at Zernio (by this machine elsewhere, or by hand) count in the calendar: no double slot.
-      const {listAccounts} = await import('../core/accounts.js');
-      const {nowIso} = await import('../core/util.js');
-      const res = await fetch('https://zernio.com/api/v1/posts?status=scheduled&limit=100', {headers: {Authorization: `Bearer ${process.env.ZERNIO_API_KEY ?? 'proxy'}`}, signal: AbortSignal.timeout(30_000)});
-      if (!res.ok) throw new Error(`Zernio : HTTP ${res.status}`);
-      const body: any = await res.json();
-      const posts: any[] = body.posts ?? body.data ?? [];
-      const accounts = listAccounts(db);
-      let added = 0;
-      for (const p of posts) {
-        for (const pl of p.platforms ?? []) {
-          const accId = typeof pl.accountId === 'object' ? pl.accountId?._id : pl.accountId;
-          const acc = accounts.find((a) => a.providerAccountId && a.providerAccountId === accId);
-          if (!acc || !p.scheduledFor) continue;
-          if (db.get('SELECT id FROM schedule WHERE provider_post_id = ? AND account_id = ?', p._id, acc.id)) continue;
-          db.upsert('schedule', {id: `ext_${p._id}_${acc.id}`, slideshow_id: `externe:${p._id}`, account_id: acc.id, platform: acc.platform, provider: 'zernio', scheduled_for: new Date(p.scheduledFor).toISOString(), status: 'queued_remote', provider_post_id: p._id, attempts: 0, max_attempts: 0, last_error: null, next_attempt_at: null, published_at: null, created_at: nowIso(), updated_at: nowIso()});
-          added++;
-        }
-      }
-      out({programmes_chez_zernio: posts.length, ajoutes_au_calendrier: added});
+    case 'publish:sync-remote':
+      out(await syncRemote(db));
       return true;
-    }
     case 'factory:daily': {
       // The daily task: for every account whose videos may be published automatically, make N videos and hand them over.
       const {listAccounts, videoSettings} = await import('../core/accounts.js');
@@ -372,6 +353,7 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
         }
         const b = createBatch(db, {accountId: a.id, quantity: per, voice: flags.voice as string | undefined, engine: 'auto', budgetEur: 0});
         const r = await runBatch(db, cfg, b.batchId, {log});
+        await syncRemote(db).catch(() => null);
         const planned = autoSchedule(db, cfg, {accountId: a.id});
         report.push({compte: a.id, lot: b.batchId, faites: r.done, echouees: r.failed, programmees: planned.length});
       }
@@ -407,4 +389,27 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
     default:
       return false;
   }
+}
+
+/** Posts already scheduled at Zernio (by this machine elsewhere, the daily task, or by hand) join the calendar: no double slot. */
+export async function syncRemote(db: Db): Promise<{programmes_chez_zernio: number; ajoutes_au_calendrier: number}> {
+  const {listAccounts} = await import('../core/accounts.js');
+  const {nowIso} = await import('../core/util.js');
+  const res = await fetch('https://zernio.com/api/v1/posts?status=scheduled&limit=100', {headers: {Authorization: `Bearer ${process.env.ZERNIO_API_KEY ?? 'proxy'}`}, signal: AbortSignal.timeout(30_000)});
+  if (!res.ok) throw new Error(`Zernio : HTTP ${res.status}`);
+  const body: any = await res.json();
+  const posts: any[] = body.posts ?? body.data ?? [];
+  const accounts = listAccounts(db);
+  let added = 0;
+  for (const p of posts) {
+    for (const pl of p.platforms ?? []) {
+      const accId = typeof pl.accountId === 'object' ? pl.accountId?._id : pl.accountId;
+      const acc = accounts.find((a) => a.providerAccountId && a.providerAccountId === accId);
+      if (!acc || !p.scheduledFor) continue;
+      if (db.get('SELECT id FROM schedule WHERE provider_post_id = ? AND account_id = ?', p._id, acc.id)) continue;
+      db.upsert('schedule', {id: `ext_${p._id}_${acc.id}`, slideshow_id: `externe:${p._id}`, account_id: acc.id, platform: acc.platform, provider: 'zernio', scheduled_for: new Date(p.scheduledFor).toISOString(), status: 'queued_remote', provider_post_id: p._id, attempts: 0, max_attempts: 0, last_error: null, next_attempt_at: null, published_at: null, created_at: nowIso(), updated_at: nowIso()});
+      added++;
+    }
+  }
+  return {programmes_chez_zernio: posts.length, ajoutes_au_calendrier: added};
 }
