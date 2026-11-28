@@ -1,6 +1,8 @@
 import {fontFaceCss} from '../render/fonts.js';
 import type {VideoFormatDef} from './formats.js';
 import type {Timeline} from './timeline.js';
+import type {CaptionSettings} from './types.js';
+import {FONT_FAMILIES} from '../render/fonts.js';
 
 /**
  * The page the renderer films, frame by frame. Everything moves through the Web Animations API, paused and
@@ -21,6 +23,8 @@ export interface PageInput {
   character?: {svg: string; name: string; mode: 'narrator' | 'story'};
   mouth?: number[];
   seed: number;
+  captions: CaptionSettings;
+  emphasis: string[];
 }
 
 const CSS = `
@@ -68,16 +72,20 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:#000}
 .on-media .note{color:rgba(255,255,255,.75)}
 .bubble{position:relative;background:var(--fg);color:var(--bg);border-radius:calc(var(--u)*40);padding:calc(var(--u)*34) calc(var(--u)*40);font-family:var(--hfont);font-weight:700;font-size:calc(var(--u)*54);line-height:1.15;max-width:96%}
 .bubble::after{content:'';position:absolute;left:50%;bottom:calc(var(--u)*-34);border:calc(var(--u)*20) solid transparent;border-top:calc(var(--u)*24) solid var(--fg);transform:translateX(-50%)}
-#world{z-index:0}#char{position:absolute;z-index:2;left:50%;width:calc(var(--u)*480);transform:translateX(-50%);bottom:0;transform-style:preserve-3d}
+#world{z-index:0}#char{position:absolute;z-index:2;left:50%;width:calc(var(--u)*430);transform:translateX(-50%);bottom:var(--charb);transform-style:preserve-3d}
 #char.narrator{width:calc(var(--u)*470)}
 #char svg{width:100%;height:auto;display:block;filter:drop-shadow(0 calc(var(--u)*30) calc(var(--u)*40) rgba(0,0,0,.35))}
 #charname{position:absolute;left:50%;bottom:calc(var(--u)*24);transform:translateX(-50%);font-size:calc(var(--u)*28);font-weight:700;padding:calc(var(--u)*8) calc(var(--u)*20);border-radius:99px;background:rgba(0,0,0,.55);color:#fff;white-space:nowrap}
 #captions{position:absolute;z-index:3;left:var(--sl);right:var(--sr);top:var(--cy);display:flex;justify-content:center;pointer-events:none}
-.cap{position:absolute;max-width:100%;text-align:center;font-family:var(--cfont);font-weight:800;font-size:calc(var(--u)*var(--cs));line-height:1.12;color:#fff;-webkit-text-stroke:calc(var(--u)*var(--stroke)) rgba(0,0,0,.85);paint-order:stroke fill;text-shadow:0 calc(var(--u)*6) calc(var(--u)*18) rgba(0,0,0,.45)}
+.cap{position:absolute;max-width:100%;text-align:center;font-family:var(--cfont);font-weight:800;font-size:calc(var(--u)*var(--cs)*var(--capScale));line-height:1.12;color:var(--capColor);-webkit-text-stroke:calc(var(--u)*var(--stroke)) rgba(0,0,0,.85);paint-order:stroke fill;text-shadow:0 calc(var(--u)*6) calc(var(--u)*18) rgba(0,0,0,.45);text-wrap:balance}
 .cap .cw{display:inline-block;margin:0 calc(var(--u)*3);transform-origin:50% 70%}
-.cap-bold .cap{text-transform:uppercase;letter-spacing:.01em}
-.cap-serif .cap{font-weight:700;-webkit-text-stroke:0;text-shadow:0 calc(var(--u)*4) calc(var(--u)*16) rgba(0,0,0,.8)}
-.cap-minimal .cap{font-weight:600;-webkit-text-stroke:0;background:rgba(0,0,0,.58);padding:calc(var(--u)*10) calc(var(--u)*24);border-radius:calc(var(--u)*16);text-shadow:none}
+.cap .cw.em{color:var(--capHi)}
+.cap-tiktok .cap{font-weight:900}
+.cap-mot .cap{font-weight:900;text-transform:uppercase;font-size:calc(var(--u)*var(--cs)*var(--capScale)*1.3)}
+.cap-phrase .cap{font-weight:700;font-size:calc(var(--u)*var(--cs)*var(--capScale)*.78);-webkit-text-stroke:calc(var(--u)*4) rgba(0,0,0,.8)}
+.cap-documentaire .cap{font-weight:600;-webkit-text-stroke:0;font-size:calc(var(--u)*var(--cs)*var(--capScale)*.7);background:rgba(0,0,0,.55);padding:calc(var(--u)*12) calc(var(--u)*26);border-radius:calc(var(--u)*10);text-shadow:none;line-height:1.25}
+.cap-minimal .cap{font-weight:600;-webkit-text-stroke:0;font-size:calc(var(--u)*var(--cs)*var(--capScale)*.75);background:rgba(0,0,0,.58);padding:calc(var(--u)*10) calc(var(--u)*24);border-radius:calc(var(--u)*16);text-shadow:none}
+.cap-cinematique .cap{font-weight:600;-webkit-text-stroke:0;text-transform:uppercase;letter-spacing:.16em;font-size:calc(var(--u)*var(--cs)*var(--capScale)*.62);text-shadow:0 calc(var(--u)*4) calc(var(--u)*22) rgba(0,0,0,.9);line-height:1.35}
 #hud{position:absolute;inset:0;pointer-events:none;z-index:5}
 .badge{position:absolute;left:var(--sl);top:var(--st);font-family:var(--bfont);font-weight:800;font-size:calc(var(--u)*30);letter-spacing:.04em;padding:calc(var(--u)*10) calc(var(--u)*22);border-radius:calc(var(--u)*12);background:rgba(255,255,255,.92);color:#111;box-shadow:0 calc(var(--u)*6) calc(var(--u)*20) rgba(0,0,0,.25)}
 .handle{position:absolute;right:var(--sr);top:var(--st);font-weight:700;font-size:calc(var(--u)*30);color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);opacity:.9}
@@ -231,16 +239,28 @@ window.__video = (tl, opt) => {
     if (head) anim(head, [{transform: 'rotate(-2deg) translateY(0)'}, {transform: 'rotate(2deg) translateY(-4px)'}], 0, 1.6, 'ease-in-out', {iterations: Math.ceil(D / 1.6), direction: 'alternate'});
     ch.querySelectorAll('.lid').forEach((lid) => { for (let t = 1.2 + rnd() * 2; t < D; t += 2.6 + rnd() * 2.2) anim(lid, [{height: '0px'}, {height: '24px'}, {height: '0px'}], t, 0.16, 'linear', {fill: 'none'}); });
   }
-  // Captions: one line at a time, the spoken word lit up.
+  // Captions: one line at a time; the spoken word lit up; important words in the highlight colour.
   const capBox = document.getElementById('captions');
+  const C = opt.captions || {};
+  const emph = new Set((opt.emphasis || []).map(norm));
+  const entry = {
+    pop: [[{transform: 'translateY(18px) scale(.9)', opacity: 0}, {transform: 'none', opacity: 1}], 0.14, E_OUT],
+    fondu: [[{opacity: 0}, {opacity: 1}], 0.2, 'linear'],
+    glisse: [[{transform: 'translateY(40px)', opacity: 0}, {transform: 'none', opacity: 1}], 0.22, E_OUT],
+    rebond: [[{transform: 'scale(.5)', opacity: 0}, {transform: 'none', opacity: 1}], 0.3, E_BACK],
+    machine: [[{opacity: 1}, {opacity: 1}], 0.01, 'linear'],
+  }[C.animation || 'pop'] || [[{opacity: 0}, {opacity: 1}], 0.15, 'linear'];
   (tl.captions || []).forEach((cap) => {
     const line = $('div', 'cap', capBox);
     show(line, cap.start, cap.end);
-    anim(line, [{transform: 'translateY(18px) scale(.94)', opacity: 0}, {transform: 'none', opacity: 1}], cap.start, 0.14);
+    anim(line, entry[0], cap.start, entry[1], entry[2]);
     cap.words.forEach((w, k) => {
       if (k) line.appendChild(document.createTextNode(' '));
       const s = $('span', 'cw', line, w.text);
-      anim(s, [{color: '#ffffff', transform: 'scale(1)'}, {color: opt.capColor, transform: 'scale(1.07)', offset: 0.25}, {color: opt.capColor, transform: 'scale(1.03)'}], w.start, Math.max(0.12, w.end - w.start), 'ease-out', {fill: 'none'});
+      const important = C.emphasis !== false && (emph.has(norm(w.text)) || /\d/.test(w.text) || /^systeme/i.test(w.text));
+      if (important) s.classList.add('em');
+      if (C.animation === 'machine') s.animate([{opacity: 0}, {opacity: 1}], {delay: Math.max(0, w.start) * 1000, duration: 60, fill: 'both'});
+      if (opt.style !== 'documentaire' && opt.style !== 'cinematique') anim(s, [{color: important ? opt.capHi : opt.capBase, transform: 'scale(1)'}, {color: opt.capHi, transform: 'scale(1.07)', offset: 0.25}, {color: opt.capHi, transform: 'scale(1.03)'}], w.start, Math.max(0.12, w.end - w.start), 'ease-out', {fill: 'none'});
     });
   });
   // HUD: the advertising mention, the handle and a progress bar for the whole video.
@@ -273,9 +293,12 @@ export function buildVideoPage(p: PageInput): string {
   const {timeline: tl, def, palette: c, safe} = p;
   const u = Math.min(tl.width, tl.height) / 1080;
   const aspectCls = tl.aspect === '16:9' ? 'aspect-169' : tl.aspect === '1:1' ? 'aspect-11' : 'aspect-916';
-  const capFont = def.captions === 'bold' ? p.fonts.heading : def.captions === 'serif' ? p.fonts.heading : p.fonts.body;
-  const capSize = def.captions === 'bold' ? 74 : def.captions === 'minimal' ? 46 : def.captions === 'serif' ? 58 : 64;
-  const capY = tl.aspect === '9:16' ? Math.round(tl.height * 0.64) : tl.aspect === '1:1' ? Math.round(tl.height * 0.76) : Math.round(tl.height * 0.8);
+  const cs = p.captions;
+  const style = cs.style;
+  const capFont = cs.font && FONT_FAMILIES.includes(cs.font) ? cs.font : ['mot', 'cinematique', 'documentaire'].includes(style) ? p.fonts.heading : p.fonts.body;
+  const capSize = 66;
+  const yBase = tl.aspect === '9:16' ? 0.64 : tl.aspect === '1:1' ? 0.76 : 0.8;
+  const capY = Math.round(tl.height * (cs.position === 'haut' ? 0.3 : cs.position === 'milieu' ? 0.5 : yBase));
   const vars = [
     `--W:${tl.width}px`,
     `--H:${tl.height}px`,
@@ -285,8 +308,12 @@ export function buildVideoPage(p: PageInput): string {
     `--sl:${safe.left}px`,
     `--sr:${safe.right}px`,
     `--cy:${capY}px`,
+    `--charb:${tl.aspect === '9:16' ? Math.round(safe.bottom * 0.75) : 0}px`,
     `--cs:${capSize}`,
-    `--stroke:${def.captions === 'bold' ? 7 : 5}`,
+    `--stroke:${style === 'mot' || style === 'tiktok' ? 7 : 5}`,
+    `--capScale:${cs.size}`,
+    `--capColor:${cs.color}`,
+    `--capHi:${cs.highlight ?? c.accent2}`,
     `--bg:${c.bg}`,
     `--fg:${c.fg}`,
     `--accent:${c.accent}`,
@@ -306,12 +333,16 @@ export function buildVideoPage(p: PageInput): string {
     seed: p.seed,
     effects: fx,
     voice: def.voice,
-    capColor: c.accent2,
+    capHi: cs.highlight ?? c.accent2,
+    capBase: cs.color,
+    captions: cs,
+    style,
+    emphasis: p.emphasis,
     character: p.character ? {mode: p.character.mode} : null,
     mouth: p.mouth ?? null,
   };
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>${fontFaceCss([p.fonts.heading, p.fonts.body, capFont])}</style><style>:root{${vars}}${CSS}</style><script>${JS}</script></head>
-<body><div id="stage" class="${aspectCls} cap-${def.captions}">
+<body><div id="stage" class="${aspectCls} cap-${style}">
 ${p.character ? `<div id="char" class="${p.character.mode}">${p.character.svg}<div id="charname">${escapeHtml(p.character.name)} · personnage fictif</div></div>` : ''}
 <div id="captions"></div>
 ${fx.vignette ? '<div class="fx vignette"></div>' : ''}${fx.lightLeak ? '<div class="fx leak"></div>' : ''}${fx.grain ? '<div class="fx grain"></div>' : ''}${letterbox}

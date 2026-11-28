@@ -69,6 +69,35 @@ export const VideoAccountSchema = z
     visuals: z.enum(['auto', 'motion', 'stock', 'images', 'ai']).default('auto'),
     music: z.enum(['original', 'licence', 'aucune']).default('original'),
     maxPerDay: z.number().int().min(0).default(1),
+    /** Sound identity of the account (Audio Studio). « auto » lets the machine choose from the script. */
+    audio: z
+      .object({
+        auto: z.boolean().default(true),
+        musicCategory: z.string().default('auto'),
+        musicVolume: z.number().min(0).max(1).default(0.3),
+        voiceVolume: z.number().min(0.2).max(2).default(1),
+        ducking: z.enum(['leger', 'normal', 'fort']).default('normal'),
+        fadeIn: z.number().min(0).max(5).default(0.4),
+        fadeOut: z.number().min(0).max(8).default(1.6),
+        sfx: z.boolean().default(true),
+        sfxVolume: z.number().min(0).max(2).default(1),
+        ambience: z.boolean().default(true),
+        pitch: z.number().min(-4).max(4).default(0),
+      })
+      .prefault({}),
+    /** Caption look of the account. */
+    captions: z
+      .object({
+        style: z.enum(['auto', 'mot', 'phrase', 'tiktok', 'documentaire', 'minimal', 'cinematique']).default('auto'),
+        font: z.string().optional(),
+        color: z.string().default('#FFFFFF'),
+        highlight: z.string().optional(),
+        size: z.number().min(0.6).max(1.6).default(1),
+        position: z.enum(['haut', 'milieu', 'bas']).default('bas'),
+        animation: z.enum(['pop', 'fondu', 'glisse', 'rebond', 'machine']).default('pop'),
+        emphasis: z.boolean().default(true),
+      })
+      .prefault({}),
     /** Declare synthetic voice / AI visuals on the platform (TikTok, YouTube, Instagram labels). */
     aiLabel: z.boolean().default(true),
   })

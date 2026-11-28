@@ -138,6 +138,8 @@ def tts(job):
     accept = float(job.get("accept", 0.12))
     seed_base = int(job.get("seed", 1))
     sentence_gap = np.zeros(int(sr * job.get("sentenceBreakMs", 160) / 1000), dtype=np.float32)
+    # Viral machine: a longer breath after « … » (dramatic pause) than after an ordinary full stop.
+    long_gap = np.zeros(int(sr * job.get("ellipsisBreakMs", 420) / 1000), dtype=np.float32)
     scene_gap = np.zeros(int(sr * job.get("sceneBreakMs", 300) / 1000), dtype=np.float32)
     chunks, report, part_samples = [], [], []
     t0 = time.time()
@@ -150,7 +152,7 @@ def tts(job):
                 torch.manual_seed(seed_base * 10007 + p * 101 + s * 13 + attempt)
                 wav = model.generate(
                     sentence,
-                    language_id="fr",
+                    language_id=job.get("language", "fr"),
                     audio_prompt_path=job["reference"],
                     exaggeration=float(job.get("exaggeration", 0.5)),
                     cfg_weight=float(job.get("cfg", 0.5)),
@@ -161,7 +163,7 @@ def tts(job):
                     continue
                 audio, _ = librosa.effects.trim(audio, top_db=38)
                 a16 = torchaudio.functional.resample(torch.from_numpy(audio).unsqueeze(0), sr, 16000)[0].numpy()
-                segments = list(asr.transcribe(a16, language="fr", beam_size=5, condition_on_previous_text=False, word_timestamps=True)[0])
+                segments = list(asr.transcribe(a16, language=job.get("language", "fr"), beam_size=5, condition_on_previous_text=False, word_timestamps=True)[0])
                 heard = " ".join(seg.text.strip() for seg in segments)
                 spoken = [w for seg in segments for w in (seg.words or [])]
                 if spoken:
@@ -180,7 +182,7 @@ def tts(job):
                 raise SystemExit(f"Synthèse impossible pour : {sentence!r}")
             report.append({"scene": p, "sentence": sentence, "takes": best[3], "error": round(best[0], 3), "heard": best[2]})
             chunks.append(best[1])
-            chunks.append(sentence_gap if s < len(sentences) - 1 else np.zeros(0, dtype=np.float32))
+            chunks.append((long_gap if sentence.rstrip().endswith("…") else sentence_gap) if s < len(sentences) - 1 else np.zeros(0, dtype=np.float32))
         part_samples.append(sum(len(c) for c in chunks) - part_start)
         if p < len(job["parts"]) - 1:
             chunks.append(scene_gap)

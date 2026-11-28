@@ -39,6 +39,8 @@ def tts(job):
     lang = job.get("lang", "fr-fr")
     sample_rate = 24000
     gap = np.zeros(int(sample_rate * job.get("sceneBreakMs", 300) / 1000), dtype=np.float32)
+    # Viral machine: one pause per part (sentence pause inside a scene, longer one between scenes).
+    gaps_ms = job.get("gapsMs")
     chunks, switched, phonemes_out, part_seconds = [], [], [], []
     for i, part in enumerate(job["parts"]):
         raw = kokoro.tokenizer.phonemize(part, lang)
@@ -56,7 +58,7 @@ def tts(job):
         chunks.append(audio.astype(np.float32))
         part_seconds.append(round(len(audio) / sample_rate, 4))
         if i < len(job["parts"]) - 1:
-            chunks.append(gap)
+            chunks.append(np.zeros(int(sample_rate * gaps_ms[i] / 1000), dtype=np.float32) if gaps_ms else gap)
     audio = np.concatenate(chunks) if chunks else np.zeros(1, dtype=np.float32)
     peak = float(np.max(np.abs(audio))) or 1.0
     sf.write(job["out"], (audio / peak * 0.89).astype(np.float32), sample_rate, subtype="PCM_16")

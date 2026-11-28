@@ -23,7 +23,13 @@ export const VIDEO_HELP = `
                 factory:status [lot] · factory:resume <lot> · factory:retry <lot> · factory:cancel <lot>
                 video:from <id> --format <f> --duration 30 (un carrousel devient une vidéo) · video:produce <id…>
                 video:render <id> [--aspect 1:1|16:9] [--draft] · video:qc <id> [--aspect] · video:adapt <id> --to <compte>
-                video:export <id> (paquet de publication manuelle) · video:costs`;
+                video:export <id> (paquet de publication manuelle) · video:costs
+  Audio         audio:voices · audio:previews [--voices claire,hugo] (aperçus d'écoute : voix, musiques, effets)
+                audio:preview --voice <id> [--text "…"] [--speed 1.1] [--pitch -2] [--language en-US]
+                audio:set <compte> [--voice hugo] [--music-category auto|cinematic|…] [--music-volume 0.3] [--sfx true]
+                       [--captions tiktok|mot|phrase|documentaire|minimal|cinematique] [--caption-color #FFF] [--auto true]
+                music:list · music:add <fichier> --id x --title t --artist a --license "CC0" --proof <url> [--platforms tiktok,instagram]
+                       [--moods cinematic,chill] [--attribution "…"]`;
 
 type Out = (x: unknown) => void;
 
@@ -159,6 +165,85 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
     case 'video:export':
       out(exportVideo(db, cfg, pos[0]));
       return true;
+    case 'audio:voices': {
+      const rows = [];
+      for (const v of loadMedia().voices) {
+        const st = await voiceStatus(v, true);
+        rows.push({id: v.id, voix: v.label, genre: v.gender, langue: v.language, autres_langues: v.languages ?? [], accent: v.accent, moteur: v.engine, disponible: st.ok, raison: st.reason ?? null});
+      }
+      out(rows);
+      return true;
+    }
+    case 'audio:previews': {
+      const {allPreviews} = await import('./previews.js');
+      const {voicePreview} = await import('./voice.js');
+      const path = await import('node:path');
+      const {PATHS} = await import('../core/paths.js');
+      const done: Record<string, unknown> = allPreviews();
+      const ids = typeof flags.voices === 'string' ? flags.voices.split(',') : loadMedia().voices.filter((v) => v.engine === 'kokoro').map((v) => v.id);
+      const voices: unknown[] = [];
+      for (const id of ids) {
+        try {
+          const r = await voicePreview(db, id, {outDir: path.join(PATHS.var, 'audio', 'previews')});
+          voices.push({voix: id, fichier: r.file, secondes: r.seconds});
+        } catch (e) {
+          voices.push({voix: id, erreur: (e as Error).message});
+        }
+      }
+      out({...done, voix: voices});
+      return true;
+    }
+    case 'audio:preview': {
+      const {voicePreview} = await import('./voice.js');
+      const path = await import('node:path');
+      const {PATHS} = await import('../core/paths.js');
+      out(await voicePreview(db, String(flags.voice ?? 'siwis'), {text: flags.text as string | undefined, speed: flags.speed ? Number(flags.speed) : undefined, pitch: flags.pitch ? Number(flags.pitch) : undefined, language: flags.language as string | undefined, outDir: path.join(PATHS.var, 'audio', 'previews')}));
+      return true;
+    }
+    case 'audio:set': {
+      const {getAccount, videoSettings, updateAccount} = await import('../core/accounts.js');
+      const {VideoAccountSchema} = await import('../core/config.js');
+      const a = getAccount(db, pos[0]);
+      const v = videoSettings(a);
+      const num = (k: string) => (flags[k] !== undefined ? Number(flags[k]) : undefined);
+      const bool = (k: string) => (flags[k] !== undefined ? String(flags[k]) !== 'false' : undefined);
+      const clean = (o: Record<string, unknown>) => Object.fromEntries(Object.entries(o).filter(([, x]) => x !== undefined));
+      const next = VideoAccountSchema.parse({
+        ...v,
+        voice: {...v.voice, ...clean({id: flags.voice, gender: flags.gender, speed: num('speed'), intonation: flags.intonation, language: flags.language})},
+        audio: {...v.audio, ...clean({auto: bool('auto'), musicCategory: flags['music-category'], musicVolume: num('music-volume'), voiceVolume: num('voice-volume'), ducking: flags.ducking, sfx: bool('sfx'), sfxVolume: num('sfx-volume'), ambience: bool('ambience'), pitch: num('pitch'), fadeIn: num('fade-in'), fadeOut: num('fade-out')})},
+        captions: {...v.captions, ...clean({style: flags.captions, font: flags['caption-font'], color: flags['caption-color'], highlight: flags['caption-highlight'], size: num('caption-size'), position: flags['caption-position'], animation: flags['caption-animation'], emphasis: bool('caption-emphasis')})},
+        ...(flags.music ? {music: flags.music} : {}),
+      });
+      updateAccount(db, a.id, {settings: {video: next}});
+      out({compte: a.id, video: next});
+      return true;
+    }
+    case 'music:list': {
+      const {loadTracks, checkTrack} = await import('./music-library.js');
+      const {MUSIC_CATEGORIES} = await import('./music.js');
+      out({categories_originales: MUSIC_CATEGORIES, pistes_sous_licence: loadTracks().map((t) => ({...t, problemes: checkTrack(t)}))});
+      return true;
+    }
+    case 'music:add': {
+      const {addTrack} = await import('./music-library.js');
+      out(
+        addTrack(pos[0], {
+          id: String(flags.id),
+          title: String(flags.title ?? flags.id),
+          artist: String(flags.artist ?? ''),
+          license: String(flags.license ?? ''),
+          licenseUrl: flags['license-url'] as string | undefined,
+          proof: String(flags.proof ?? ''),
+          commercial: flags.commercial !== 'false',
+          platforms: list(flags.platforms) ?? [],
+          contentId: flags['content-id'] === 'true',
+          moods: (list(flags.moods) ?? []) as any,
+          attribution: flags.attribution as string | undefined,
+        }),
+      );
+      return true;
+    }
     case 'video:costs':
       out({fournisseurs: providerCosts(db), lots: db.all('SELECT id, account_id, quantity, done, failed, budget_eur, spent_eur, status FROM video_batches ORDER BY created_at DESC LIMIT 20')});
       return true;

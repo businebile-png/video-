@@ -27,8 +27,33 @@ export type VideoFormatId = (typeof VIDEO_FORMAT_IDS)[number];
 export type VoiceMode = 'voix' | 'aucune';
 /** What fills the frame behind the text. */
 export type VisualMode = 'motion' | 'stock' | 'images' | 'ai';
-export type MusicMood = 'warm' | 'light' | 'uplifting' | 'corporate' | 'mysterious' | 'driving' | 'cinematic' | 'playful' | 'calm';
+export type MusicMood = 'cinematic' | 'uplifting' | 'mysterious' | 'emotional' | 'driving' | 'corporate' | 'documentary' | 'suspense' | 'chill' | 'warm' | 'light' | 'playful' | 'calm';
 export type Transition = 'cube' | 'flip' | 'depth' | 'swing' | 'zoom' | 'whip';
+/** Caption styles: word by word, sentence by sentence, TikTok, documentary, minimal, cinematic (kinetic = no voice). */
+export type CaptionStyle = 'mot' | 'phrase' | 'tiktok' | 'documentaire' | 'minimal' | 'cinematique' | 'kinetic';
+
+export interface AudioSettings {
+  musicVolume: number;
+  voiceVolume: number;
+  ducking: 'leger' | 'normal' | 'fort';
+  fadeIn: number;
+  fadeOut: number;
+  sfx: boolean;
+  sfxVolume: number;
+  ambience: boolean;
+  pitch: number;
+}
+
+export interface CaptionSettings {
+  style: CaptionStyle;
+  font?: string;
+  color: string;
+  highlight?: string;
+  size: number;
+  position: 'haut' | 'milieu' | 'bas';
+  animation: 'pop' | 'fondu' | 'glisse' | 'rebond' | 'machine';
+  emphasis: boolean;
+}
 
 export type SceneRole = 'hook' | 'intro' | 'point' | 'twist' | 'proof' | 'compare' | 'story' | 'product' | 'cta';
 export type SceneLayout = 'title' | 'number' | 'statement' | 'compare' | 'product' | 'cta' | 'quote' | 'character';
@@ -88,9 +113,11 @@ export interface VideoSpec {
   duration: DurationTarget;
   aspect: Aspect;
   profile: string;
-  voice: {mode: VoiceMode; id: string; gender: 'female' | 'male'; speed: number; intonation: 'neutre' | 'expressive' | 'calme'; language: string};
+  voice: {mode: VoiceMode; id: string; gender: 'female' | 'male'; speed: number; intonation: 'neutre' | 'expressive' | 'calme'; language: string; pitch?: number};
   visuals: VisualMode;
-  music: {mode: 'original' | 'licence' | 'aucune'; mood: MusicMood};
+  music: {mode: 'original' | 'licence' | 'aucune'; mood: MusicMood; trackId?: string; candidates?: MusicMood[]};
+  audio?: AudioSettings;
+  captions?: CaptionSettings;
   template: string;
   transitions: Transition[];
   script: VideoScript;

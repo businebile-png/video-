@@ -17,6 +17,7 @@ import {recordPublication, retry, runDue} from '../publish/runner.js';
 import {importAnalyticsFile, refreshIntelligence} from '../analytics/sync.js';
 import {AiRouter} from '../ai/router.js';
 import * as data from './data.js';
+import * as vdata from './video-data.js';
 
 /**
  * Local dashboard: a JSON API over the database plus the single-page interface in ./public.
@@ -50,20 +51,34 @@ function startJob(kind: string, fn: (progress: (m: string) => void) => Promise<u
   return job;
 }
 
-const MIME: Record<string, string> = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.zip': 'application/zip', '.pdf': 'application/pdf', '.json': 'application/json', '.svg': 'image/svg+xml'};
+const MIME: Record<string, string> = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.zip': 'application/zip', '.pdf': 'application/pdf', '.json': 'application/json', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.srt': 'text/plain; charset=utf-8', '.vtt': 'text/vtt; charset=utf-8'};
 
 function send(res: http.ServerResponse, status: number, body: unknown) {
   res.writeHead(status, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'});
   res.end(JSON.stringify(body));
 }
 
-function serveFile(res: http.ServerResponse, file: string, root: string) {
+/** Static files; byte ranges for audio and video so the players can seek. */
+function serveFile(res: http.ServerResponse, file: string, root: string, range?: string) {
   const resolved = path.resolve(file);
   if (!resolved.startsWith(path.resolve(root)) || !fs.existsSync(resolved) || !fs.statSync(resolved).isFile()) {
     res.writeHead(404);
     return res.end('introuvable');
   }
-  res.writeHead(200, {'Content-Type': MIME[path.extname(resolved)] ?? 'application/octet-stream'});
+  const size = fs.statSync(resolved).size;
+  const type = MIME[path.extname(resolved)] ?? 'application/octet-stream';
+  const m = range ? /bytes=(\d*)-(\d*)/.exec(range) : null;
+  if (m) {
+    const start = m[1] ? Number(m[1]) : Math.max(0, size - Number(m[2]));
+    const end = m[1] && m[2] ? Math.min(size - 1, Number(m[2])) : size - 1;
+    if (start >= size || start > end) {
+      res.writeHead(416, {'Content-Range': `bytes */${size}`});
+      return res.end();
+    }
+    res.writeHead(206, {'Content-Type': type, 'Content-Range': `bytes ${start}-${end}/${size}`, 'Accept-Ranges': 'bytes', 'Content-Length': end - start + 1});
+    return fs.createReadStream(resolved, {start, end}).pipe(res);
+  }
+  res.writeHead(200, {'Content-Type': type, 'Content-Length': size, 'Accept-Ranges': 'bytes'});
   fs.createReadStream(resolved).pipe(res);
 }
 
@@ -85,7 +100,7 @@ export function createHandler(db: Db, cfg: AppConfig) {
     const url = new URL(req.url ?? '/', 'http://localhost');
     const p = url.pathname;
     try {
-      if (p.startsWith('/media/')) return serveFile(res, path.join(PATHS.var, decodeURIComponent(p.slice(7))), PATHS.var);
+      if (p.startsWith('/media/')) return serveFile(res, path.join(PATHS.var, decodeURIComponent(p.slice(7))), PATHS.var, req.headers.range);
       if (!p.startsWith('/api/')) return serveFile(res, path.join(PATHS.dashboardPublic, p === '/' ? 'index.html' : p.slice(1)), PATHS.dashboardPublic);
       if (req.method !== 'GET' && token && req.headers['x-dashboard-token'] !== token) return send(res, 401, {error: 'jeton du tableau de bord requis'});
       const q = Object.fromEntries(url.searchParams);
@@ -118,6 +133,10 @@ export function createHandler(db: Db, cfg: AppConfig) {
             return send(res, 200, data.integrationsPage(db, cfg));
           case 'jobs':
             return send(res, 200, seg[1] ? jobs.get(seg[1]) ?? {error: 'inconnu'} : [...jobs.values()].slice(-20));
+          case 'audio':
+            return send(res, 200, vdata.audioStudio(db, cfg));
+          case 'videos':
+            return seg[1] ? send(res, 200, vdata.videoDetail(db, seg[1])) : send(res, 200, vdata.videosPage(db, cfg));
         }
         return send(res, 404, {error: 'route inconnue'});
       }
@@ -179,6 +198,58 @@ export function createHandler(db: Db, cfg: AppConfig) {
         }
         case 'analyze':
           return send(res, 200, refreshIntelligence(db, cfg));
+        case 'audio': {
+          const {getAccount, videoSettings} = await import('../core/accounts.js');
+          if (seg[1] === 'settings') {
+            // Sound identity of one account: voice, audio mix, captions (validated by the account schema).
+            const a = getAccount(db, seg[2]);
+            const v = videoSettings(a);
+            const next = {...v, voice: {...v.voice, ...(b.voice ?? {})}, audio: {...v.audio, ...(b.audio ?? {})}, captions: {...v.captions, ...(b.captions ?? {})}, ...(b.music ? {music: b.music} : {})};
+            const {VideoAccountSchema} = await import('../core/config.js');
+            return send(res, 200, updateAccount(db, a.id, {settings: {video: VideoAccountSchema.parse(next)}}));
+          }
+          if (seg[1] === 'preview') {
+            const {voicePreview} = await import('../video/voice.js');
+            const job = startJob('apercu-voix', async (progress) => {
+              progress(`synthèse avec ${b.voice}`);
+              const r = await voicePreview(db, String(b.voice), {language: b.language, text: b.text ? String(b.text).slice(0, 400) : undefined, speed: b.speed ? Number(b.speed) : undefined, pitch: b.pitch ? Number(b.pitch) : undefined, outDir: path.join(PATHS.var, 'audio', 'previews')});
+              return {...r, url: `/media/${path.relative(PATHS.var, r.file).split(path.sep).map(encodeURIComponent).join('/')}`};
+            });
+            return send(res, 202, job);
+          }
+          if (seg[1] === 'music-preview') {
+            const {previewMusic} = await import('../video/previews.js');
+            const f = previewMusic(String(b.mood), Number(b.seconds ?? 20));
+            return send(res, 200, {url: `/media/${path.relative(PATHS.var, f).split(path.sep).map(encodeURIComponent).join('/')}`});
+          }
+          break;
+        }
+        case 'factory': {
+          const {createBatch, runBatch} = await import('../video/factory.js');
+          const created = createBatch(db, {accountId: b.accountId, quantity: Number(b.quantity ?? 1), formats: b.formats, durations: b.durations?.map(Number), voice: b.voice, visuals: b.visuals, engine: b.engine ?? 'auto', budgetEur: Number(b.budgetEur ?? 0), topic: b.topic});
+          const job = startJob('production-video', async (progress) => runBatch(db, cfg, created.batchId, {log: progress}));
+          return send(res, 202, {...job, batchId: created.batchId, plan: created.plan});
+        }
+        case 'videos': {
+          const id = seg[1];
+          if (seg[2] === 'render' || seg[2] === 'qc') {
+            const {runVideoQc} = await import('../video/qc.js');
+            if (seg[2] === 'render') {
+              const {stepRender} = await import('../video/produce.js');
+              const job = startJob('rendu-video', async (progress) => {
+                await stepRender(db, cfg, id, {onProgress: (d, t) => progress(`${d}/${t} images`)});
+                return runVideoQc(db, cfg, id);
+              });
+              return send(res, 202, job);
+            }
+            return send(res, 200, runVideoQc(db, cfg, id));
+          }
+          if (seg[2] === 'export') {
+            const {exportVideo} = await import('../video/export.js');
+            return send(res, 200, exportVideo(db, cfg, id));
+          }
+          break;
+        }
       }
       return send(res, 404, {error: 'action inconnue'});
     } catch (e) {

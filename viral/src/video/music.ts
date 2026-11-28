@@ -39,6 +39,10 @@ const PRESETS: Record<MusicMood, Preset> = {
   driving: {bpm: 124, root: 64, progressions: [[[0, 'm'], [8, 'M'], [3, 'M'], [10, 'M']], [[0, 'm'], [10, 'M'], [8, 'M'], [7, 'M']]], pad: 0.12, padCutoff: 1600, pluck: 0.14, pluckEvery: 4, bell: 0, bass: 0.3, bassEvery: 2, kick: 'four', kickGain: 0.58, clap: 0.15, hat: 0.08, hatEvery: 4, boom: 0, pump: 0.5, reverb: 0.15},
   cinematic: {bpm: 70, root: 62, progressions: [[[0, 'm'], [8, 'M'], [3, 'M'], [10, 'M']], [[0, 'm'], [5, 'm'], [8, 'M'], [7, 'M']]], pad: 0.22, padCutoff: 1100, pluck: 0.1, pluckEvery: 2, bell: 0.06, bass: 0.2, bassEvery: 1, kick: 'none', kickGain: 0, clap: 0, hat: 0, hatEvery: 2, boom: 0.5, pump: 0, reverb: 0.45},
   playful: {bpm: 112, root: 60, progressions: [[[0, 'M'], [9, 'm'], [2, 'm'], [7, 'M']], [[0, 'M'], [5, 'M'], [7, 'M'], [0, 'M']]], pad: 0.07, padCutoff: 2000, pluck: 0.27, pluckEvery: 2, bell: 0.06, bass: 0.24, bassEvery: 2, kick: 'twoFour', kickGain: 0.4, clap: 0.14, hat: 0.05, hatEvery: 2, boom: 0, pump: 0.2, reverb: 0.18},
+  emotional: {bpm: 72, root: 64, progressions: [[[0, 'M'], [7, 'M'], [9, 'm'], [5, 'M']], [[9, 'm'], [5, 'M'], [0, 'M'], [7, 'M']]], pad: 0.14, padCutoff: 1100, pluck: 0.3, pluckEvery: 2, bell: 0.05, bass: 0.18, bassEvery: 1, kick: 'none', kickGain: 0, clap: 0, hat: 0, hatEvery: 2, boom: 0, pump: 0, reverb: 0.45},
+  documentary: {bpm: 80, root: 62, progressions: [[[0, 'm'], [5, 'm'], [8, 'M'], [10, 'M']], [[0, 'M'], [9, 'm'], [5, 'M'], [7, 'M']]], pad: 0.2, padCutoff: 1000, pluck: 0.12, pluckEvery: 2, bell: 0.05, bass: 0.18, bassEvery: 1, kick: 'half', kickGain: 0.22, clap: 0, hat: 0.02, hatEvery: 2, boom: 0.15, pump: 0, reverb: 0.42},
+  suspense: {bpm: 96, root: 52, progressions: [[[0, 'm'], [1, 'M'], [0, 'm'], [6, 'M']], [[0, 'm'], [8, 'M'], [6, 'M'], [7, 'M']]], pad: 0.16, padCutoff: 700, pluck: 0.07, pluckEvery: 4, bell: 0.07, bass: 0.3, bassEvery: 2, kick: 'half', kickGain: 0.45, clap: 0, hat: 0.06, hatEvery: 4, boom: 0.25, pump: 0.1, reverb: 0.35},
+  chill: {bpm: 84, root: 63, progressions: [[[0, 'M7'], [5, 'M7'], [2, 'm7'], [7, 'M']], [[9, 'm7'], [2, 'm7'], [7, 'M'], [0, 'M7']]], pad: 0.15, padCutoff: 1300, pluck: 0.16, pluckEvery: 2, bell: 0.03, bass: 0.24, bassEvery: 1, kick: 'twoFour', kickGain: 0.42, clap: 0.08, hat: 0.05, hatEvery: 2, boom: 0, pump: 0.15, reverb: 0.28},
   calm: {bpm: 76, root: 65, progressions: [[[0, 'M'], [4, 'm'], [9, 'm'], [5, 'M']], [[0, 'M7'], [5, 'M7'], [9, 'm7'], [7, 'M']]], pad: 0.18, padCutoff: 1200, pluck: 0.14, pluckEvery: 2, bell: 0.04, bass: 0.16, bassEvery: 1, kick: 'none', kickGain: 0, clap: 0, hat: 0, hatEvery: 2, boom: 0, pump: 0, reverb: 0.4},
 };
 
@@ -55,7 +59,14 @@ export interface MusicResult {
   seed: number;
 }
 
-export function composeMusic(file: string, opts: {mood: MusicMood; seconds: number; seed: number; sampleRate?: number}): MusicResult {
+/** Moments of the edit the music follows: drums come in after the hook, accents on the cuts, outro under the call to action. */
+export interface MusicCues {
+  drop?: number;
+  cuts?: number[];
+  outro?: number;
+}
+
+export function composeMusic(file: string, opts: {mood: MusicMood; seconds: number; seed: number; sampleRate?: number; cues?: MusicCues; fadeIn?: number; fadeOut?: number}): MusicResult {
   const p = PRESETS[opts.mood];
   const sr = opts.sampleRate ?? 48000;
   const rand = rng(opts.seed);
@@ -195,10 +206,14 @@ export function composeMusic(file: string, opts: {mood: MusicMood; seconds: numb
       }
     }
     // Drums.
-    const breakBar = bars > 6 && b === Math.floor(bars * 0.6);
-    if (!breakBar && b >= 1) {
+    const breakBar = !opts.cues && bars > 6 && b === Math.floor(bars * 0.6);
+    const drop = opts.cues?.drop ?? bar;
+    const outro = opts.cues?.outro ?? Infinity;
+    if (!breakBar) {
       for (let s = 0; s < 4; s++) {
         const st = s0 + Math.floor(s * beat * sr);
+        const tb = st / sr;
+        if (tb < drop - 0.01 || tb >= outro) continue;
         const kickHere = p.kick === 'four' || (p.kick === 'twoFour' && (s === 0 || s === 2)) || (p.kick === 'half' && s === 0);
         if (kickHere && p.kickGain > 0) {
           const dur = Math.floor(sr * 0.4);
@@ -249,6 +264,26 @@ export function composeMusic(file: string, opts: {mood: MusicMood; seconds: numb
     }
   }
 
+  // Accents on the cuts (they fall on beats): a low hit and a soft cymbal wash, so picture and music move together.
+  for (const cut of opts.cues?.cuts ?? []) {
+    const st = Math.floor(cut * sr);
+    const dur = Math.floor(sr * 1.1);
+    let hp = 0;
+    let last = 0;
+    for (let i = 0; i < dur; i++) {
+      const t = i / sr;
+      const x = rand() * 2 - 1;
+      hp = 0.92 * (hp + x - last);
+      last = x;
+      const wash = hp * Math.exp(-t * 3.2) * 0.05;
+      const hit = Math.sin(2 * Math.PI * (52 + 40 * Math.exp(-t * 25)) * t) * Math.exp(-t * 9) * 0.16;
+      add(L, st + i, wash * 0.9 + hit);
+      add(R, st + i, wash + hit);
+      add(sendL, st + i, wash * 0.6);
+      add(sendR, st + i, wash * 0.6);
+    }
+  }
+
   // Side-chain pump, reverb (Schroeder: 4 combs + 2 all-pass per side), master, fades.
   if (p.pump > 0) for (let i = 0; i < n; i++) {
     const g = 1 - p.pump * 0.5 * kickEnv[i];
@@ -285,8 +320,8 @@ export function composeMusic(file: string, opts: {mood: MusicMood; seconds: numb
     R[i] = Math.tanh(R[i] * 1.1);
     peak = Math.max(peak, Math.abs(L[i]), Math.abs(R[i]));
   }
-  const fadeIn = Math.floor(sr * 0.4);
-  const fadeOut = Math.floor(sr * 1.6);
+  const fadeIn = Math.max(1, Math.floor(sr * (opts.fadeIn ?? 0.4)));
+  const fadeOut = Math.max(1, Math.floor(sr * (opts.fadeOut ?? 1.6)));
   const data = new Float32Array(n * 2);
   for (let i = 0; i < n; i++) {
     const g = (0.89 / peak) * Math.min(1, i / fadeIn) * Math.min(1, (n - i) / fadeOut);
@@ -301,3 +336,50 @@ export function composeMusic(file: string, opts: {mood: MusicMood; seconds: numb
 }
 
 export const MUSIC_MOODS = Object.keys(PRESETS) as MusicMood[];
+
+/** The library's categories, as shown to the user. */
+export const MUSIC_CATEGORIES: Record<MusicMood, {label: string; description: string}> = {
+  cinematic: {label: 'Cinématique', description: 'Nappes amples, impacts graves, montée lente'},
+  uplifting: {label: 'Motivante', description: 'Rythme quatre temps, accords lumineux, pompage'},
+  mysterious: {label: 'Mystérieuse', description: 'Mineur, cloches, basse profonde'},
+  emotional: {label: 'Émotionnelle', description: 'Cordes pincées lentes, sans batterie'},
+  driving: {label: 'Dynamique', description: 'Basse pulsée, charleston rapide, énergie constante'},
+  corporate: {label: 'Business', description: 'Arpèges nets, batterie légère, ton confiant'},
+  documentary: {label: 'Documentaire', description: 'Ambiance posée, pulsation douce, profondeur'},
+  suspense: {label: 'Suspense', description: 'Bourdon grave, demi-ton inquiétant, tic-tac'},
+  chill: {label: 'Chill', description: 'Accords jazzy, batterie souple, détendu'},
+  warm: {label: 'Chaleureuse', description: 'Accords doux, guitare pincée'},
+  light: {label: 'Légère', description: 'Arpèges clairs, batterie discrète'},
+  playful: {label: 'Ludique', description: 'Pizzicati et claquements de mains'},
+  calm: {label: 'Calme', description: 'Nappes et notes isolées, sans rythme'},
+};
+
+/** Tempo and beat grid of a track before it is written (the edit snaps its cuts to these beats). */
+export function musicGrid(mood: MusicMood, seed: number, seconds: number): {bpm: number; beats: number[]} {
+  const rand = rng(seed);
+  const bpm = PRESETS[mood].bpm + Math.round((rand() - 0.5) * 6);
+  const beat = 60 / bpm;
+  const beats: number[] = [];
+  for (let t = 0; t < seconds; t += beat) beats.push(Math.round(t * 1000) / 1000);
+  return {bpm, beats};
+}
+
+/**
+ * Music chosen from the subject and mood of the script: a few fitting categories by format and wording,
+ * then the learning loop picks among them (what kept viewers on this account), with exploration.
+ */
+export function musicCandidates(format: string, structure: string, text: string, fallback: MusicMood): MusicMood[] {
+  const t = text.toLowerCase();
+  const out: MusicMood[] = [];
+  const add = (...m: MusicMood[]) => m.forEach((x) => !out.includes(x) && out.push(x));
+  if (/erreur|attention|piège|danger|évite|arnaque|perds?\b/.test(t)) add('suspense');
+  if (/histoire|exemple|déclic|leçon|elle |il /.test(t) || structure === 'histoire') add('emotional', 'cinematic');
+  if (/savais|secret|caché|personne ne|mystère/.test(t) || format === 'faits') add('mysterious');
+  if (/lance|commence|ose|objectif|chaque jour|motivation/.test(t) || format === 'motivation') add('uplifting');
+  if (format === 'top5' || format === 'top10' || format === 'sans-voix') add('driving');
+  if (format === 'business' || structure === 'faits') add('corporate');
+  if (format === 'documentaire') add('documentary', 'cinematic');
+  if (format === 'educatif' || structure === 'etapes' || structure === 'definition') add('chill', 'light');
+  add(fallback);
+  return out.slice(0, 3);
+}

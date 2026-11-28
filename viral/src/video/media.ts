@@ -10,6 +10,14 @@ export interface VoiceDef {
   label: string;
   engine: 'chatterbox' | 'kokoro' | 'elevenlabs' | 'google';
   voice?: string;
+  /** Chatterbox: reference recording (models/voice-refs). */
+  ref?: string;
+  /** Kokoro: espeak language code. */
+  kokoroLang?: string;
+  /** Other languages the same voice can speak. */
+  languages?: string[];
+  style?: string;
+  speed?: string;
   voices?: Record<string, string>;
   model?: string;
   language: string;

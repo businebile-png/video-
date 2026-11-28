@@ -64,7 +64,7 @@ export async function voiceStatus(def: VoiceDef, fresh = false): Promise<{ok: bo
   let st: {ok: boolean; reason?: string; detail?: any};
   const missing = (files: string[]) => files.filter((f) => !fs.existsSync(f)).map((f) => path.relative(ROOT, f));
   if (def.engine === 'chatterbox') {
-    const m = missing([PY_CB, PY_VOICE, path.join(FILES.chatterbox, 't3_mtl23ls_v2.safetensors'), FILES.claireRef, path.join(FILES.whisper, 'model.bin')]);
+    const m = missing([PY_CB, PY_VOICE, path.join(FILES.chatterbox, 't3_mtl23ls_v2.safetensors'), path.join(MODELS, 'voice-refs', def.ref ?? 'claire.wav'), path.join(FILES.whisper, 'model.bin')]);
     st = m.length ? {ok: false, reason: `non installée (bash scripts/setup-voice.sh) : ${m.join(', ')}`} : {ok: true};
   } else if (def.engine === 'kokoro') {
     const m = missing([PY_VOICE, FILES.kokoroModel, FILES.kokoroVoices, path.join(FILES.whisper, 'model.bin')]);
@@ -101,16 +101,32 @@ export interface SynthesisRequest {
   speed: number;
   intonation: 'neutre' | 'expressive' | 'calme';
   language: string;
+  /** Tone shift in semitones (-4 … +4), pitch only (formants kept). */
+  pitch?: number;
   seed: number;
   outDir: string;
   ref: string;
+}
+
+/** Sentences of a text, never cut inside an abbreviation, a number or a brand (« Systeme.io », « 2.5 », « etc. »). */
+export function splitSentences(text: string): string[] {
+  const out: string[] = [];
+  const parts = text.split(/(?<=[.!?…])\s+(?=[«"A-ZÀ-ÖØ-Þ0-9])/u);
+  for (const p of parts) {
+    const prev = out[out.length - 1];
+    if (prev && /\b(etc|ex|cf|p\. ex|M|Mme|Dr|n°)\.$/i.test(prev)) out[out.length - 1] = `${prev} ${p}`;
+    else if (p.trim()) out.push(p.trim());
+  }
+  return out;
 }
 
 /** Order of voices to try. Paid voices only when named explicitly (studio rule: never put Google first unasked). */
 export function voiceChain(req: Pick<SynthesisRequest, 'voice' | 'gender' | 'language'>): VoiceDef[] {
   const all = loadMedia().voices;
   const lang = req.language.toLowerCase();
-  const local = all.filter((v) => (v.engine === 'chatterbox' || v.engine === 'kokoro') && v.language.toLowerCase() === lang);
+  const speaks = (v: VoiceDef) => v.language.toLowerCase() === lang || (v.languages ?? []).some((l) => l.toLowerCase() === lang);
+  // Native voices of the language first, then multilingual ones (which keep their French accent).
+  const local = all.filter((v) => (v.engine === 'chatterbox' || v.engine === 'kokoro') && speaks(v)).sort((a, b) => Number(b.language.toLowerCase() === lang) - Number(a.language.toLowerCase() === lang));
   const byGender = (g: string) => local.filter((v) => v.gender === g);
   if (req.voice && req.voice !== 'auto') {
     const named = all.find((v) => v.id === req.voice);
@@ -147,7 +163,8 @@ async function takeLocal(def: VoiceDef, req: SynthesisRequest, file: string): Pr
         out: file,
         modelDir: FILES.chatterbox,
         whisperModel: FILES.whisper,
-        reference: FILES.claireRef,
+        reference: path.join(MODELS, 'voice-refs', def.ref ?? 'claire.wav'),
+        language: req.language.slice(0, 2).toLowerCase(),
         seed: req.seed,
         exaggeration: EXAGGERATION[req.intonation],
         targetWpm: Math.round(160 * req.speed),
@@ -160,14 +177,32 @@ async function takeLocal(def: VoiceDef, req: SynthesisRequest, file: string): Pr
     );
     return {file, seconds: r.seconds, partSeconds: r.partSeconds, gapSeconds: r.gapSeconds, chars, costEur: 0, meta: {worstError: r.worstError, speedup: r.speedup, elapsedSec: r.elapsedSec}};
   }
-  const r = await runPython(
+  // One TTS part per sentence: a short breath between sentences, a longer pause between scenes, longer after « … ».
+  const sentences: string[] = [];
+  const gapsMs: number[] = [];
+  const owner: number[] = [];
+  req.parts.forEach((part, i) => {
+    const ss = splitSentences(part);
+    (ss.length ? ss : [part]).forEach((x, k, arr) => {
+      sentences.push(x);
+      owner.push(i);
+      gapsMs.push(k < arr.length - 1 ? (x.endsWith('…') ? 420 : 190) : SCENE_GAP_MS);
+    });
+  });
+  const raw = await runPython(
     PY_VOICE,
     'voice_local.py',
     'tts',
-    {parts: req.parts, out: file, model: FILES.kokoroModel, voices: FILES.kokoroVoices, voice: def.voice ?? 'ff_siwis', speed: req.speed, lang: 'fr-fr', sceneBreakMs: SCENE_GAP_MS},
+    {parts: sentences, gapsMs, out: file, model: FILES.kokoroModel, voices: FILES.kokoroVoices, voice: def.voice ?? 'ff_siwis', speed: req.speed, lang: def.kokoroLang ?? 'fr-fr', sceneBreakMs: SCENE_GAP_MS},
     req.outDir,
     10 * 60_000,
   );
+  // Back to one duration per scene (its sentences and the pauses between them).
+  const partSeconds = req.parts.map(() => 0);
+  (raw.partSeconds as number[]).forEach((d, k) => {
+    partSeconds[owner[k]] += d + (k < sentences.length - 1 && owner[k + 1] === owner[k] ? gapsMs[k] / 1000 : 0);
+  });
+  const r = {...raw, partSeconds, gapSeconds: SCENE_GAP_MS / 1000};
   if (def.transform) {
     const tmp = file.replace(/\.wav$/, '.raw.wav');
     fs.renameSync(file, tmp);
@@ -349,7 +384,13 @@ export async function synthesize(db: Db, req: SynthesisRequest): Promise<VoiceTr
       continue;
     }
     logCall(db, {provider: def.id, kind: 'tts', ref: req.ref, ok: true, units: take.chars, unit: 'caractères', costEur: take.costEur, ms: Date.now() - t0});
-    const stt = await runPython(PY_VOICE, 'voice_local.py', 'stt', {model: FILES.whisper, audio: file, language: req.language.slice(0, 2)}, req.outDir, 10 * 60_000);
+    if (req.pitch && Math.abs(req.pitch) >= 0.25) {
+      const tmp = file.replace(/\.wav$/, '.pitch.wav');
+      const t = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-af', `rubberband=pitch=${Math.pow(2, req.pitch / 12).toFixed(4)}:formant=preserved:pitchq=quality`, tmp]);
+      if (t.status === 0) fs.renameSync(tmp, file);
+      else warnings.push('réglage du ton impossible (FFmpeg rubberband)');
+    }
+    const stt = await runPython(PY_VOICE, 'voice_local.py', 'stt', {model: FILES.whisper, audio: file, language: req.language.slice(0, 2).toLowerCase()}, req.outDir, 10 * 60_000);
     const bounds: Array<{start: number; end: number}> = [];
     let acc = 0;
     take.partSeconds.forEach((d, i) => {
@@ -375,4 +416,33 @@ export async function synthesize(db: Db, req: SynthesisRequest): Promise<VoiceTr
     return {provider: def.id, voice: def.label, file, seconds, words, parts: bounds, mismatch, costEur: take.costEur, assetId, warnings};
   }
   throw new VoiceUnavailable(`Aucune voix disponible : ${warnings.join(' ; ') || 'aucune voix pour cette langue'}`);
+}
+
+/** A sample sentence per language, read by a voice so the user can listen before choosing. */
+const SAMPLE: Record<string, string> = {
+  fr: 'Bonjour ! Voici ma voix pour tes vidéos : claire, posée, et facile à suivre jusqu’au bout.',
+  en: 'Hi! This is how I sound in your videos: clear, natural and easy to follow to the end.',
+  es: '¡Hola! Así suena mi voz en tus vídeos: clara, natural y fácil de seguir hasta el final.',
+  it: 'Ciao! Ecco la mia voce per i tuoi video: chiara, naturale e facile da seguire fino alla fine.',
+  pt: 'Olá! Esta é a minha voz para os seus vídeos: clara, natural e fácil de acompanhar até o fim.',
+  de: 'Hallo! So klingt meine Stimme in deinen Videos: klar, natürlich und leicht zu verstehen.',
+};
+
+export async function voicePreview(db: Db, voiceId: string, opts: {language?: string; text?: string; speed?: number; pitch?: number; outDir: string}): Promise<{file: string; seconds: number; voice: string}> {
+  const def = loadMedia().voices.find((v) => v.id === voiceId);
+  if (!def) throw new Error(`Voix inconnue : ${voiceId}`);
+  const language = opts.language ?? def.language;
+  const text = opts.text?.trim() || SAMPLE[language.slice(0, 2).toLowerCase()] || SAMPLE.fr;
+  const dir = ensureDir(path.join(opts.outDir, `tmp-${voiceId}-${Date.now()}`));
+  try {
+    const v = await synthesize(db, {parts: [text], voice: voiceId, gender: def.gender === 'male' ? 'male' : 'female', speed: opts.speed ?? 1, intonation: 'expressive', language, pitch: opts.pitch, seed: 7, outDir: dir, ref: `apercu:${voiceId}`});
+    if (v.provider !== voiceId) throw new Error(`${def.label} indisponible (${v.warnings.join(' ; ')})`);
+    const name = `voice-${voiceId}${language !== def.language ? '-' + language : ''}${opts.text ? '-perso' : ''}.mp3`;
+    const out = path.join(ensureDir(opts.outDir), name);
+    const t = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', v.file, '-ac', '1', '-ar', '44100', '-c:a', 'libmp3lame', '-b:a', '96k', out]);
+    if (t.status !== 0) throw new Error('conversion MP3 impossible');
+    return {file: out, seconds: v.seconds, voice: def.label};
+  } finally {
+    fs.rmSync(dir, {recursive: true, force: true});
+  }
 }

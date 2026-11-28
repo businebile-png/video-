@@ -38,37 +38,69 @@ export function extractStill(clip: string, at: number, file: string, width: numb
 }
 
 /**
- * Sound: narration, original music ducked under the voice (side-chain), sound effects on the cuts, then
- * a two-pass loudness normalisation to -14 LUFS / -1.5 dBTP (the level TikTok, Instagram and YouTube play at).
+ * Sound, in three buses. Voice: high-pass, gentle compression and de-essing, then its level. Music + ambience
+ * beds: their level, ducked under the voice by a side-chain compressor (light / normal / strong). Effects: placed
+ * by the timeline. Then a two-pass loudness normalisation to -14 LUFS with true peaks under -1.5 dBTP (the level
+ * TikTok, Instagram and YouTube play at), so nothing clips and every video sounds as loud as the next.
  */
-export function mixAudio(opts: {out: string; duration: number; voice?: string; voiceOffset: number; music?: string; sfx: Timeline['sfx']}): {lufs: number; peak: number} {
+export interface MixInput {
+  out: string;
+  duration: number;
+  voice?: string;
+  voiceOffset: number;
+  music?: string;
+  /** Licensed tracks get their fades here (original music is composed with them). */
+  musicFades?: {in: number; out: number};
+  sfx: Array<{file: string; at: number; gain: number; bed?: boolean}>;
+  musicVolume?: number;
+  voiceVolume?: number;
+  ducking?: 'leger' | 'normal' | 'fort';
+}
+
+const DUCK = {leger: {threshold: 0.05, ratio: 3}, normal: {threshold: 0.02, ratio: 6}, fort: {threshold: 0.01, ratio: 10}};
+
+export function mixAudio(m: MixInput): {lufs: number; peak: number} {
   const inputs: string[] = [];
   const filters: string[] = [];
   const mixIn: string[] = [];
   let k = 0;
-  const D = opts.duration.toFixed(3);
+  const D = m.duration.toFixed(3);
   let voiceKey = '';
-  if (opts.voice) {
-    inputs.push('-i', opts.voice);
-    const ms = Math.round(opts.voiceOffset * 1000);
-    filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=mono,adelay=${ms}:all=1,apad,atrim=0:${D},asplit=2[voice][vkey]`);
+  if (m.voice) {
+    inputs.push('-i', m.voice);
+    const ms = Math.round(m.voiceOffset * 1000);
+    filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=mono,highpass=f=70,acompressor=threshold=-20dB:ratio=3:attack=8:release=140:makeup=2,deesser=i=0.35,volume=${(m.voiceVolume ?? 1).toFixed(2)},adelay=${ms}:all=1,apad,atrim=0:${D},asplit=2[voice][vkey]`);
     voiceKey = '[vkey]';
     mixIn.push('[voice]');
     k++;
   }
-  if (opts.music) {
-    inputs.push('-i', opts.music);
-    filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=stereo,apad,atrim=0:${D},volume=${opts.voice ? 0.3 : 0.8}[mus0]`);
-    if (voiceKey) {
-      filters.push(`[mus0]${voiceKey}sidechaincompress=threshold=0.015:ratio=6:attack=25:release=450:makeup=1[mus]`);
-      voiceKey = '';
-    } else filters.push('[mus0]anull[mus]');
-    mixIn.push('[mus]');
+  const musicBus: string[] = [];
+  if (m.music) {
+    inputs.push('-i', m.music);
+    const fades = m.musicFades ? `,afade=t=in:d=${m.musicFades.in},afade=t=out:st=${Math.max(0, m.duration - m.musicFades.out).toFixed(3)}:d=${m.musicFades.out}` : '';
+    filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=stereo,apad,atrim=0:${D}${fades},volume=${(m.voice ? m.musicVolume ?? 0.3 : Math.min(1, (m.musicVolume ?? 0.3) * 2.6)).toFixed(3)}[mus0]`);
+    musicBus.push('[mus0]');
     k++;
   }
+  for (const c of m.sfx.filter((x) => x.bed)) {
+    if (!fs.existsSync(c.file)) continue;
+    inputs.push('-stream_loop', '-1', '-i', c.file);
+    filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=0:${D},afade=t=in:d=1,afade=t=out:st=${Math.max(0, m.duration - 1.5).toFixed(3)}:d=1.5,volume=${c.gain}[bed${k}]`);
+    musicBus.push(`[bed${k}]`);
+    k++;
+  }
+  if (musicBus.length) {
+    filters.push(`${musicBus.join('')}amix=inputs=${musicBus.length}:normalize=0:duration=longest[musall]`);
+    if (voiceKey) {
+      const d = DUCK[m.ducking ?? 'normal'];
+      filters.push(`[musall]${voiceKey}sidechaincompress=threshold=${d.threshold}:ratio=${d.ratio}:attack=25:release=450:makeup=1[mus]`);
+      voiceKey = '';
+    } else filters.push('[musall]anull[mus]');
+    mixIn.push('[mus]');
+  }
   if (voiceKey) filters.push(`${voiceKey}anullsink`);
-  for (const c of opts.sfx) {
-    if (!fs.existsSync(c.file) || c.at >= opts.duration) continue;
+  for (const c of m.sfx.filter((x) => !x.bed)) {
+    if (!fs.existsSync(c.file) || c.at >= m.duration) continue;
     inputs.push('-i', c.file);
     const ms = Math.round(c.at * 1000);
     filters.push(`[${k}:a]aresample=48000,aformat=channel_layouts=stereo,volume=${c.gain},adelay=${ms}:all=1[s${k}]`);
@@ -79,19 +111,19 @@ export function mixAudio(opts: {out: string; duration: number; voice?: string; v
     inputs.push('-f', 'lavfi', '-i', `anullsrc=r=48000:cl=stereo`);
     mixIn.push(`[${k}:a]`);
   }
-  const mix = opts.out.replace(/\.wav$/, '.mix.wav');
-  filters.push(`${mixIn.join('')}amix=inputs=${mixIn.length}:normalize=0:duration=longest,atrim=0:${D},aformat=channel_layouts=stereo,afade=t=out:st=${Math.max(0, opts.duration - 0.6).toFixed(3)}:d=0.6[mix]`);
+  const mix = m.out.replace(/\.wav$/, '.mix.wav');
+  filters.push(`${mixIn.join('')}amix=inputs=${mixIn.length}:normalize=0:duration=longest,atrim=0:${D},aformat=channel_layouts=stereo,alimiter=limit=0.95:level=false,afade=t=out:st=${Math.max(0, m.duration - 0.6).toFixed(3)}:d=0.6[mix]`);
   ffmpeg([...inputs, '-filter_complex', filters.join(';'), '-map', '[mix]', '-ar', '48000', '-c:a', 'pcm_s16le', mix], 'Mixage du son');
   // Loudness: measure, then apply linearly.
   const probe = spawnSync('ffmpeg', ['-hide_banner', '-nostats', '-i', mix, '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], {encoding: 'utf8'});
-  const m = /\{[\s\S]*"input_i"[\s\S]*?\}/.exec(probe.stderr ?? '');
-  if (m) {
-    const j = JSON.parse(m[0]);
+  const j0 = /\{[\s\S]*"input_i"[\s\S]*?\}/.exec(probe.stderr ?? '');
+  if (j0) {
+    const j = JSON.parse(j0[0]);
     const ln = `loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
-    ffmpeg(['-i', mix, '-af', `${ln},aresample=48000`, '-c:a', 'pcm_s16le', opts.out], 'Normalisation du son');
-  } else fs.copyFileSync(mix, opts.out);
+    ffmpeg(['-i', mix, '-af', `${ln},aresample=48000`, '-c:a', 'pcm_s16le', m.out], 'Normalisation du son');
+  } else fs.copyFileSync(mix, m.out);
   fs.rmSync(mix, {force: true});
-  const meas = spawnSync('ffmpeg', ['-hide_banner', '-nostats', '-i', opts.out, '-af', 'ebur128=peak=true', '-f', 'null', '-'], {encoding: 'utf8'}).stderr ?? '';
+  const meas = spawnSync('ffmpeg', ['-hide_banner', '-nostats', '-i', m.out, '-af', 'ebur128=peak=true', '-f', 'null', '-'], {encoding: 'utf8'}).stderr ?? '';
   const lufs = Number(/I:\s+(-?[\d.]+) LUFS/.exec(meas.split('Summary:').pop() ?? '')?.[1] ?? NaN);
   const peak = Number(/Peak:\s+(-?[\d.]+) dBFS/.exec(meas.split('Summary:').pop() ?? '')?.[1] ?? NaN);
   return {lufs, peak};

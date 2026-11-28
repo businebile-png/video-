@@ -1,8 +1,7 @@
-import path from 'node:path';
-import {PATHS} from '../core/paths.js';
+import {placeSfx, type SfxCue, type SfxSettings} from './sfx.js';
 import {wordCount} from '../core/text.js';
 import type {VideoFormatDef} from './formats.js';
-import type {Aspect, SceneLayout, SceneRole, SceneText, Transition, VideoScene, VoiceTrack, WordTiming} from './types.js';
+import type {Aspect, MusicMood, SceneLayout, SceneRole, SceneText, Transition, VideoFormatId, VideoScene, VoiceTrack, WordTiming} from './types.js';
 
 /**
  * The edit decision list of one video: when each scene starts and ends (on the narration, cuts snapped to the
@@ -41,7 +40,7 @@ export interface Timeline {
   voiceOffset: number;
   scenes: TimelineScene[];
   captions: Caption[];
-  sfx: Array<{file: string; at: number; gain: number}>;
+  sfx: SfxCue[];
   beats: number[];
 }
 
@@ -49,22 +48,47 @@ const LEAD = 0.22;
 const T_IN = 0.5;
 const VOICE_OFFSET = 0.15;
 
-/** Groups the spoken words into short caption lines; a line never runs across a scene cut. */
-export function buildCaptions(words: WordTiming[], cuts: number[], style: VideoFormatDef['captions']): Caption[] {
-  const maxWords = style === 'bold' ? 3 : style === 'karaoke' ? 4 : 5;
-  const maxChars = style === 'bold' ? 18 : style === 'karaoke' ? 24 : 30;
+/** Words a caption line should not end on (the line would read as cut in the middle of a phrase). */
+const WEAK = /^(le|la|les|l'|un|une|des|du|de|d'|à|au|aux|en|et|ou|mais|pour|par|sur|sous|dans|avec|sans|que|qu'|qui|ce|cet|cette|ces|ton|ta|tes|ton|son|sa|ses|mon|ma|mes|notre|votre|leur|leurs|ne|n'|se|s'|y|tu|je|il|elle|on|nous|vous|ils|elles|est|a|c'est|the|a|an|of|to|and|or|in|on|for|with|el|la|los|las|de|y|il|lo|gli|e|o)$/i;
+
+const LIMITS: Record<string, {words: number; chars: number}> = {
+  mot: {words: 1, chars: 40},
+  tiktok: {words: 3, chars: 20},
+  minimal: {words: 5, chars: 30},
+  cinematique: {words: 4, chars: 26},
+  phrase: {words: 12, chars: 64},
+  documentaire: {words: 14, chars: 72},
+  kinetic: {words: 3, chars: 20},
+};
+
+/**
+ * Groups the spoken words into caption lines for a style: one word, a few words, or a whole sentence (split at
+ * a comma when too long). A line never runs across a scene cut or a sentence end, and never ends on a small
+ * word (« de », « la », « pour »…) that belongs with the next one.
+ */
+export function buildCaptions(words: WordTiming[], cuts: number[], style: string): Caption[] {
+  const lim = LIMITS[style] ?? LIMITS.tiktok;
   const out: Caption[] = [];
   let cur: WordTiming[] = [];
   const flush = () => {
     if (cur.length) out.push({start: cur[0].start, end: cur[cur.length - 1].end, words: cur});
     cur = [];
   };
-  for (const w of words) {
+  for (let k = 0; k < words.length; k++) {
+    const w = words[k];
     const crossesCut = cur.length > 0 && cuts.some((c) => cur[0].start < c && w.start >= c - 0.05);
     const chars = cur.map((x) => x.text).join(' ').length + w.text.length + 1;
-    if (crossesCut || cur.length >= maxWords || (cur.length && chars > maxChars)) flush();
+    if (crossesCut || cur.length >= lim.words || (cur.length && chars > lim.chars)) {
+      // Do not leave a small word dangling at the end of the line: carry it over.
+      const carry: WordTiming[] = [];
+      while (cur.length > 1 && WEAK.test(cur[cur.length - 1].text.replace(/[.,!?;:…]+$/, '')) && !crossesCut) carry.unshift(cur.pop()!);
+      flush();
+      cur = carry;
+    }
     cur.push(w);
-    if (/[.!?…:;]$/.test(w.text) || (/,$/.test(w.text) && cur.length >= 2)) flush();
+    const sentenceEnd = /[.!?…]$/.test(w.text);
+    const pause = /[,:;]$/.test(w.text) && (style === 'phrase' || style === 'documentaire' ? chars > lim.chars * 0.55 : cur.length >= 2);
+    if (sentenceEnd || pause) flush();
   }
   flush();
   // Hold each line until the next one (short pauses), never more than 0.6 s after its last word.
@@ -87,6 +111,10 @@ export interface TimelineInput {
   aspect: Aspect;
   targetSeconds: number;
   rand: () => number;
+  captionStyle: string;
+  mood: MusicMood;
+  sfx: SfxSettings;
+  format: VideoFormatId;
 }
 
 export function buildTimeline(inp: TimelineInput): Timeline {
@@ -161,17 +189,9 @@ export function buildTimeline(inp: TimelineInput): Timeline {
       media: {kind: s.visual.mode === 'images' ? 'image' : s.visual.mode},
     };
   });
-  const captions = inp.voice && inp.def.captions !== 'kinetic' ? buildCaptions(words, cuts, inp.def.captions) : [];
-  const sfx = (name: string) => path.join(PATHS.assets, 'sfx', `${name}.wav`);
-  const cues: Timeline['sfx'] = [];
-  scenes.forEach((s, i) => {
-    if (i > 0) cues.push({file: sfx(i % 2 ? 'whoosh-soft' : 'whoosh-fast'), at: Math.max(0, s.start - T_IN / 2), gain: 0.4});
-    if (s.layout === 'number' || s.layout === 'compare') cues.push({file: sfx('pop'), at: s.start + 0.18, gain: 0.32});
-    if (s.role === 'cta') {
-      cues.push({file: sfx('riser'), at: Math.max(0, s.start - 1.1), gain: 0.25});
-      cues.push({file: sfx('impact-soft'), at: s.start + 0.02, gain: 0.38});
-    }
-  });
+  const captions = inp.voice && inp.captionStyle !== 'kinetic' ? buildCaptions(words, cuts, inp.captionStyle) : [];
+  const cues = placeSfx({scenes, words, duration, format: inp.format, mood: inp.mood, settings: inp.sfx});
+  void T_IN;
   return {fps: inp.fps, width: inp.width, height: inp.height, aspect: inp.aspect, duration, voiceOffset: VOICE_OFFSET, scenes, captions, sfx: cues, beats: inp.beats.filter((b) => b < duration)};
 }
 

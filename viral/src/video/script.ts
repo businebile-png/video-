@@ -66,8 +66,9 @@ const TOPIC_BROLL: Array<[RegExp, string[]]> = [
 function brollFor(topic: string, def: VideoFormatDef, i: number, rand: () => number): string {
   const t = topic.toLowerCase();
   const own = TOPIC_BROLL.find(([re]) => re.test(t))?.[1] ?? [];
-  const pool = [...own, ...def.broll];
-  if (!pool.length) return 'abstract light';
+  // Shots about the subject first; the format's mood shots every third scene, for variety.
+  if (own.length && (i % 3 !== 2 || !def.broll.length)) return own[(i + Math.floor(rand() * own.length)) % own.length];
+  const pool = def.broll.length ? def.broll : ['laptop desk', 'notebook desk'];
   return pool[(i + Math.floor(rand() * pool.length)) % pool.length];
 }
 
@@ -87,8 +88,43 @@ export interface ScriptOptions {
   visuals?: VisualMode;
 }
 
+/** Carousel wording does not belong in a video (« ce carrousel », « slide par slide », « fais défiler »). */
+export function videoWording(text: string): string {
+  return text
+    .replace(/\b(enregistre|partage|garde|envoie)(-le| le| ce)? carrousel\b/gi, (m, v) => `${v} cette vidéo`)
+    .replace(/\bce carrousel\b/gi, 'cette vidéo')
+    .replace(/\ble carrousel\b/gi, 'la vidéo')
+    .replace(/\bcarrousels?\b/gi, 'vidéo')
+    .replace(/\bslide par slide\b/gi, 'point par point')
+    .replace(/\b(la )?dernière slide\b/gi, 'la fin de la vidéo')
+    .replace(/\bslides?\b/gi, 'points')
+    .replace(/\bfais défiler\b/gi, 'regarde jusqu’au bout')
+    .replace(/\bswipe\b/gi, 'regarde');
+}
+
+/** Link mentions inside a product line: the end card says where the link is, per network (bio, chaîne). */
+export function withoutLinkMention(text: string): string {
+  return text
+    .replace(/\s*[:.,-]?\s*(le )?lien (est )?(dans ma|en|sur ma) (bio|chaîne)\b\.?/gi, '.')
+    .replace(/\.\.+/g, '.')
+    .replace(/\s*:\s*\.$/, '.')
+    .trim();
+}
+
+function videoDraft(d: SlideshowDraft): SlideshowDraft {
+  const w = (x?: string) => (x === undefined ? x : videoWording(x));
+  return {
+    ...d,
+    hook: videoWording(d.hook),
+    title: videoWording(d.title),
+    caption: videoWording(d.caption),
+    slides: d.slides.map((s) => ({...s, label: w(s.label), title: w(s.title), body: w(s.body), note: w(s.note), left: w(s.left), right: w(s.right), product: s.product ? {title: videoWording(s.product.title), body: videoWording(s.product.body)} : undefined})),
+  };
+}
+
 /** Turns carousel-shaped content (cover, items, compare, story, call to action) into a narrated video script. */
-export function scriptFromDraft(d: SlideshowDraft, opts: ScriptOptions): VideoScript {
+export function scriptFromDraft(d0: SlideshowDraft, opts: ScriptOptions): VideoScript {
+  const d = videoDraft(d0);
   const def = formatDef(opts.format);
   const rand = rng(opts.seed);
   const budget = wordBudget(opts.duration, def.pace);
@@ -148,7 +184,7 @@ export function scriptFromDraft(d: SlideshowDraft, opts: ScriptOptions): VideoSc
 
   const cta = d.slides[d.slides.length - 1];
   if (cta?.product) {
-    const productText = cta.product.body.replace(/\s*:?\s*lien en bio\.?\s*$/i, '').replace(/\s*:\s*$/, '').trim();
+    const productText = withoutLinkMention(cta.product.body).replace(/\s*:\s*$/, '').trim();
     const brand = /^systeme\.?io$/i.test(cta.product.title.trim());
     const lead = brand ? '' : cta.product.title.replace(/[.:!]+$/, '').trim();
     const spoken = lead ? `${lead}, ${productText.charAt(0).toLowerCase() === 's' && /^systeme/i.test(productText) ? productText : productText}` : productText;

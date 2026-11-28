@@ -2,9 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type {Db} from '../core/db.js';
 import type {AppConfig} from '../core/config.js';
-import type {Account} from '../core/accounts.js';
+import {videoSettings, type Account} from '../core/accounts.js';
 import {PATHS, ensureDir} from '../core/paths.js';
-import {sleep} from '../core/util.js';
+import {parseJson, sleep} from '../core/util.js';
+import {youtubeTitle} from '../video/platforms.js';
 import {photoTitle} from '../generate/captions.js';
 
 /**
@@ -27,6 +28,16 @@ export interface Job {
   account: Account;
   scheduledFor: Date;
   images: Array<{path: string; public_url: string | null}>;
+  /** Video posts: the rendered MP4 and its cover. */
+  video?: {path: string; public_url: string | null; poster_path: string | null; cover_url: string | null; duration_s: number; coverMs: number};
+}
+
+/** Video description, title and AI / branded-content declarations for one post. */
+function videoMeta(job: Job) {
+  const spec = parseJson<any>(job.slideshow.video_json, {});
+  const vs = videoSettings(job.account);
+  const synthetic = spec?.voice?.mode === 'voix' || spec?.visuals === 'ai';
+  return {spec, ai: !!(vs.aiLabel && synthetic), title: spec?.script ? youtubeTitle(spec.script) : photoTitle(job.slideshow.hook, 100)};
 }
 
 export interface Publisher {
@@ -93,12 +104,41 @@ export class ZernioPublisher implements Publisher {
     }
   }
 
-  /** Uploads one JPEG through a presigned URL; returns the public URL Zernio serves. */
-  async upload(file: string): Promise<string> {
-    const pre = await http(`${this.base}/media/presign`, {method: 'POST', headers: this.headers(), body: JSON.stringify({filename: path.basename(file), contentType: 'image/jpeg', size: fs.statSync(file).size})});
-    const put = await fetch(pre.uploadUrl, {method: 'PUT', headers: {'Content-Type': 'image/jpeg'}, body: fs.readFileSync(file)});
-    if (!put.ok) throw new HttpError(put.status, null, `envoi de l’image refusé (HTTP ${put.status})`);
+  /** Uploads one file (JPEG or MP4) through a presigned URL; returns the public URL Zernio serves. */
+  async upload(file: string, contentType = 'image/jpeg'): Promise<string> {
+    const pre = await http(`${this.base}/media/presign`, {method: 'POST', headers: this.headers(), body: JSON.stringify({filename: path.basename(file), contentType, size: fs.statSync(file).size})});
+    const put = await fetch(pre.uploadUrl, {method: 'PUT', headers: {'Content-Type': contentType}, body: fs.readFileSync(file)});
+    if (!put.ok) throw new HttpError(put.status, null, `envoi du fichier refusé (HTTP ${put.status})`);
     return pre.publicUrl;
+  }
+
+  /** Video post: TikTok (consents, duet / stitch, branded content, AI label, cover frame), YouTube Short, Reel. */
+  videoPayload(job: Job, videoUrl: string, coverUrl: string | null) {
+    const ss = job.slideshow;
+    const settings = job.account.settings;
+    const {ai, title} = videoMeta(job);
+    const platform: any = {platform: job.account.platform, accountId: job.account.providerAccountId};
+    const item: any = {type: 'video', url: videoUrl};
+    const base: any = {content: ss.caption, mediaItems: [item], platforms: [platform], scheduledFor: job.scheduledFor.toISOString(), timezone: this.cfg?.accounts.timezone ?? 'Europe/Paris'};
+    if (job.account.platform === 'tiktok') {
+      base.tiktokSettings = {
+        privacy_level: settings.privacy ?? 'PUBLIC_TO_EVERYONE',
+        allow_comment: settings.allowComments ?? true,
+        allow_duet: true,
+        allow_stitch: true,
+        content_preview_confirmed: true,
+        express_consent_given: true,
+        commercialContentType: 'brand_content',
+        video_cover_timestamp_ms: job.video?.coverMs ?? 1200,
+        videoMadeWithAi: ai,
+      };
+    } else if (job.account.platform === 'youtube') {
+      platform.platformSpecificData = {title, visibility: 'public', madeForKids: false, categoryId: '27', containsSyntheticMedia: ai};
+      if (coverUrl && settings.youtubeCustomCover) item.thumbnail = coverUrl;
+    } else if (job.account.platform === 'instagram') {
+      platform.platformSpecificData = {shareToFeed: true, ...(coverUrl ? {instagramThumbnail: coverUrl} : {})};
+    }
+    return base;
   }
 
   payload(job: Job, urls: string[]) {
@@ -129,9 +169,18 @@ export class ZernioPublisher implements Publisher {
 
   async publish(job: Job): Promise<Outcome> {
     try {
-      const urls: string[] = [];
-      for (const im of job.images) urls.push(im.public_url ?? (await this.upload(path.join(PATHS.var, im.path))));
-      const res = await http(`${this.base}/posts`, {method: 'POST', headers: this.headers(), body: JSON.stringify(this.payload(job, urls))});
+      let body: any;
+      if (job.slideshow.kind === 'video') {
+        if (!job.video) return {kind: 'failed', reason: 'aucune vidéo montée pour ce contenu'};
+        const videoUrl = job.video.public_url ?? (await this.upload(path.join(PATHS.var, job.video.path), 'video/mp4'));
+        const coverUrl = job.video.cover_url ?? (job.video.poster_path ? await this.upload(path.join(PATHS.var, job.video.poster_path)) : null);
+        body = this.videoPayload(job, videoUrl, coverUrl);
+      } else {
+        const urls: string[] = [];
+        for (const im of job.images) urls.push(im.public_url ?? (await this.upload(path.join(PATHS.var, im.path))));
+        body = this.payload(job, urls);
+      }
+      const res = await http(`${this.base}/posts`, {method: 'POST', headers: this.headers(), body: JSON.stringify(body)});
       const post = res.post ?? res.data ?? res;
       const pid = post?._id ?? post?.id;
       if (!pid) return {kind: 'failed', reason: `réponse Zernio sans identifiant : ${JSON.stringify(res).slice(0, 200)}`};
@@ -161,6 +210,16 @@ export class MetaPublisher implements Publisher {
   }
 
   async publish(job: Job): Promise<Outcome> {
+    if (job.slideshow.kind === 'video') {
+      if (!job.video?.public_url) return {kind: 'failed', reason: 'vidéo sans adresse publique : lance « media:stage » (hébergement) avant la publication Meta'};
+      try {
+        if (job.account.platform === 'instagram') return await this.reel(job);
+        if (job.account.platform === 'threads') return await this.threadsVideo(job);
+        return {kind: 'failed', reason: `Meta ne publie pas sur ${job.account.platform}`};
+      } catch (e) {
+        return classify(e);
+      }
+    }
     const urls = job.images.map((i) => i.public_url).filter((u): u is string => !!u);
     if (urls.length !== job.images.length) return {kind: 'failed', reason: 'images sans adresse publique : lance « media:stage » (ou un hébergement) avant la publication Meta'};
     try {
@@ -198,6 +257,49 @@ export class MetaPublisher implements Publisher {
     return {kind: 'published', providerPostId: pub.id, permalink: info.permalink ?? null};
   }
 
+  /** Instagram Reel: container with the public video URL, wait for processing, then publish. */
+  private async reel(job: Job): Promise<Outcome> {
+    const {token, base} = this.ig;
+    if (!token) return {kind: 'failed', reason: 'INSTAGRAM_ACCESS_TOKEN absent'};
+    const me = await http(`${base}/me?${this.q({fields: 'user_id,username', access_token: token})}`);
+    const uid = me.user_id ?? me.id;
+    const limit = await http(`${base}/${uid}/content_publishing_limit?${this.q({fields: 'quota_usage,config', access_token: token})}`).catch(() => null);
+    const used = limit?.data?.[0]?.quota_usage;
+    const total = limit?.data?.[0]?.config?.quota_total;
+    if (typeof used === 'number' && typeof total === 'number' && used >= total) return {kind: 'deferred', until: new Date(Date.now() + 6 * 3_600_000), reason: `quota Instagram atteint (${used}/${total} sur 24 h)`};
+    const params: Record<string, string> = {media_type: 'REELS', video_url: job.video!.public_url!, caption: job.slideshow.caption, share_to_feed: 'true', access_token: token};
+    if (job.video?.cover_url) params.cover_url = job.video.cover_url;
+    else params.thumb_offset = String(job.video?.coverMs ?? 1200);
+    if (videoMeta(job).ai) params.is_ai_generated = 'true';
+    const container = await http(`${base}/${uid}/media?${this.q(params)}`, {method: 'POST'});
+    for (let i = 0; i < 60; i++) {
+      const st = await http(`${base}/${container.id}?${this.q({fields: 'status_code', access_token: token})}`);
+      if (st.status_code === 'FINISHED') break;
+      if (st.status_code === 'ERROR' || st.status_code === 'EXPIRED') return {kind: 'failed', reason: `conteneur Instagram ${st.status_code}`};
+      if (i === 59) return {kind: 'retry', reason: 'vidéo encore en traitement chez Instagram'};
+      await sleep(5000);
+    }
+    const pub = await http(`${base}/${uid}/media_publish?${this.q({creation_id: container.id, access_token: token})}`, {method: 'POST'});
+    const info = await http(`${base}/${pub.id}?${this.q({fields: 'permalink', access_token: token})}`).catch(() => ({}));
+    return {kind: 'published', providerPostId: pub.id, permalink: info.permalink ?? null};
+  }
+
+  private async threadsVideo(job: Job): Promise<Outcome> {
+    const {token, base} = this.th;
+    if (!token) return {kind: 'failed', reason: 'THREADS_ACCESS_TOKEN absent'};
+    const container = await http(`${base}/me/threads?${this.q({media_type: 'VIDEO', video_url: job.video!.public_url!, text: job.slideshow.caption.slice(0, 500), access_token: token})}`, {method: 'POST'});
+    for (let i = 0; i < 40; i++) {
+      const st = await http(`${base}/${container.id}?${this.q({fields: 'status,error_message', access_token: token})}`);
+      if (st.status === 'FINISHED') break;
+      if (st.status === 'ERROR' || st.status === 'EXPIRED') return {kind: 'failed', reason: `conteneur Threads ${st.status} ${st.error_message ?? ''}`.trim()};
+      if (i === 39) return {kind: 'retry', reason: 'vidéo encore en traitement chez Threads'};
+      await sleep(6000);
+    }
+    const pub = await http(`${base}/me/threads_publish?${this.q({creation_id: container.id, access_token: token})}`, {method: 'POST'});
+    const info = await http(`${base}/${pub.id}?${this.q({fields: 'permalink', access_token: token})}`).catch(() => ({}));
+    return {kind: 'published', providerPostId: pub.id, permalink: info.permalink ?? null};
+  }
+
   private async threads(job: Job, urls: string[]): Promise<Outcome> {
     const {token, base} = this.th;
     if (!token) return {kind: 'failed', reason: 'THREADS_ACCESS_TOKEN absent'};
@@ -223,6 +325,11 @@ export class ManualPublisher implements Publisher {
     return {ok: true};
   }
   async publish(job: Job): Promise<Outcome> {
+    if (job.slideshow.kind === 'video') {
+      const {exportVideo} = await import('../video/export.js');
+      const v = exportVideo(this.db, this.cfg, job.slideshow.id);
+      return {kind: 'failed', reason: `publication manuelle requise : paquet prêt (${path.relative(PATHS.var, v.zip)})`};
+    }
     const {exportSlideshow} = await import('../render/export.js');
     const r = await exportSlideshow(this.db, this.cfg, job.slideshow.id);
     ensureDir(PATHS.exports);

@@ -120,8 +120,12 @@ async function searchPexels(db: Db, query: string, key: string, opts: {perPage?:
 }
 
 /** Best clip for a scene: long enough, sharp enough, vertical if possible, no person when the product is mentioned, not used recently. */
-export function pickClip(clips: StockClip[], opts: {minSeconds: number; aspect: '9:16' | '1:1' | '16:9'; noPeople: boolean; avoid: Set<string>; rand: () => number}): StockClip | null {
+export function pickClip(clips: StockClip[], opts: {minSeconds: number; aspect: '9:16' | '1:1' | '16:9'; noPeople: boolean; avoid: Set<string>; rand: () => number; query?: string}): StockClip | null {
+  // Relevance: share of the search words found in the clip's tags (Pixabay often returns loosely related clips).
+  const words = (opts.query ?? '').toLowerCase().split(/\s+/).filter((w) => w.length > 2);
+  const relevance = (c: StockClip) => (!words.length || !c.tags.length ? 0.5 : words.filter((w) => c.tags.some((t) => t.includes(w) || w.includes(t))).length / words.length);
   const scored = clips
+    .filter((c) => !words.length || !c.tags.length || relevance(c) >= 0.5)
     .filter((c) => c.duration >= Math.min(opts.minSeconds, 6) && !opts.avoid.has(`${c.provider}:${c.id}`))
     .filter((c) => !WEALTH.test(c.tags.join(' ')))
     .filter((c) => !(opts.noPeople && PEOPLE.test(c.tags.join(' '))))
@@ -130,7 +134,7 @@ export function pickClip(clips: StockClip[], opts: {minSeconds: number; aspect: 
       const want = opts.aspect === '9:16' ? vertical : opts.aspect === '16:9' ? !vertical : true;
       const sharp = Math.min(c.width, c.height) >= 1080 ? 1 : Math.min(c.width, c.height) >= 720 ? 0.7 : 0.3;
       const people = PEOPLE.test(c.tags.join(' ')) ? -0.4 : 0;
-      return {c, s: (want ? 1 : 0.55) + sharp + people + Math.min(c.duration, 20) / 40 + opts.rand() * 0.3};
+      return {c, s: (want ? 1 : 0.55) + sharp + people + relevance(c) * 1.5 + Math.min(c.duration, 20) / 40 + opts.rand() * 0.3};
     })
     .sort((a, b) => b.s - a.s);
   return scored[0]?.c ?? null;

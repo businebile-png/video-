@@ -16,12 +16,16 @@
     analytics: '<path d="M4 19h16v2H2V3h2v16zm3-2V9h3v8H7zm5 0V5h3v12h-3zm5 0v-6h3v6h-3z"/>',
     parametres: '<path d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.6c-.6.3-1.2.6-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/>',
     integrations: '<path d="M7 7h4v2H7a3 3 0 0 0 0 6h4v2H7A5 5 0 0 1 7 7zm6 0h4a5 5 0 0 1 0 10h-4v-2h4a3 3 0 0 0 0-6h-4V7zm-4 4h6v2H9z"/>',
+    videos: '<path d="M4 5h11a2 2 0 0 1 2 2v2.5l4-2.5v10l-4-2.5V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>',
+    audio: '<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zm7 9a7 7 0 0 1-6 6.9V21h-2v-2.1A7 7 0 0 1 5 12h2a5 5 0 0 0 10 0h2z"/>',
   };
   const PAGES = [
     ['dashboard', 'Dashboard', 'Vue d’ensemble'],
     ['comptes', 'Comptes', 'Un tableau de bord par compte'],
     ['concurrence', 'Analyse concurrentielle', 'Ce qui marche dans la niche'],
     ['base', 'Base de publications', 'Publications analysées et notées sur 100'],
+    ['videos', 'Vidéos', 'Production par lots, contrôle qualité et lecteur'],
+    ['audio', 'Audio Studio', 'Voix, musique, effets sonores et sous-titres, par compte'],
     ['generateur', 'Générateur de slideshows', 'Idées et carrousels, par compte'],
     ['templates', 'Bibliothèque de templates', '10 styles visuels'],
     ['calendrier', 'Calendrier', 'Programmation par compte'],
@@ -223,6 +227,110 @@
       <div class="card" style="margin-top:16px"><h2>Idées en réserve</h2>${m.ideas.length ? `<table><tr><th>Accroche</th><th>Structure</th><th>Modèle</th><th class="num">Prévu</th></tr>${m.ideas.map((i) => `<tr><td>${esc(i.hook)}</td><td>${esc(i.structure)}</td><td>${esc(i.template)}</td><td class="num">${Math.round(i.predicted)}</td></tr>`).join('')}</table>` : '<div class="empty">Aucune idée en réserve</div>'}</div>`;
   };
 
+
+  /* ---------------- vidéos ---------------- */
+
+  const VST = {en_cours: ['En production', 'b-info']};
+  const vbadge = (s) => (VST[s] ? `<span class="badge ${VST[s][1]}">${VST[s][0]}</span>` : badge(s));
+  let videoFilter = '';
+
+  views.videos = async () => {
+    const m = await api('/api/videos');
+    if (!m) return '<div class="empty">Aucune vidéo dans cet instantané</div>';
+    const c = m.counts;
+    const tiles = [['generees', 'Générées', ''], ['en_cours', 'En cours', 'en_cours'], ['terminees', 'Terminées', 'ok'], ['a_verifier', 'À vérifier', 'awaiting_approval'], ['programmees', 'Programmées', 'scheduled'], ['publiees', 'Publiées', 'published'], ['echouees', 'Échouées', 'qc_failed']];
+    const list = m.videos.filter((v) => !videoFilter || (videoFilter === 'ok' ? v.video && v.qc && v.qc.ok : v.status === videoFilter));
+    const cost = (m.costs || []).reduce((a, r) => a + (r.cost_eur || 0), 0);
+    return `<div class="grid g4">${tiles.map(([k, l, f]) => `<div class="card kpi" data-vf="${f}" style="cursor:pointer"><span class="l">${l}</span><span class="v">${fmt(c[k])}</span></div>`).join('')}<div class="card kpi"><span class="l">Coûts de génération</span><span class="v">${cost.toFixed(2)} €</span><span class="s">voix, plans et IA payants</span></div></div>
+      ${RO ? '<div class="notice">Instantané en lecture seule : la production se lance depuis le tableau de bord local (npm run dashboard) ou en ligne de commande (factory:run).</div>' : ''}
+      <div class="card act" style="margin-top:16px"><h2>Nouvelle production</h2><div class="form">
+        <label>Compte<select id="v-acc">${m.accounts.map((a) => `<option value="${esc(a.id)}">${esc(a.label)}</option>`).join('')}</select></label>
+        <label>Nombre de vidéos<select id="v-qty">${[1, 5, 10, 50, 100, 500].map((q) => `<option>${q}</option>`).join('')}</select></label>
+        <label>Format<select id="v-format"><option value="">mélange choisi par la machine</option>${m.formats.map((f) => `<option value="${esc(f.id)}">${esc(f.label)}</option>`).join('')}</select></label>
+        <label>Durée<select id="v-dur"><option value="">selon le compte</option>${[15, 30, 45, 60, 90].map((d) => `<option value="${d}">${d} s</option>`).join('')}</select></label>
+        <label>Visuels<select id="v-vis"><option value="auto">automatique</option><option value="motion">animation 3D</option><option value="stock">plans vidéo sous licence</option><option value="images">images animées</option><option value="ai">séquences IA${m.aiVideo.some((p) => p.configured) ? '' : ' (aucune clé : plans sous licence)'}</option></select></label>
+        <label>Budget payant (€)<input id="v-budget" type="number" min="0" step="0.5" value="0"></label>
+      </div><div class="row" style="margin-top:14px"><button class="btn primary" id="v-go">Lancer la production</button><span class="small muted">Voix, musique et sous-titres : réglages de l’Audio Studio du compte.</span></div><div id="v-job" style="margin-top:12px"></div></div>
+      ${m.jobs.length ? `<div class="card" style="margin-top:16px"><h2>En cours</h2><table><tr><th>Vidéo</th><th>Format</th><th>Étape</th><th class="num">Avancement</th><th>Dernières lignes</th></tr>${m.jobs.map((j) => `<tr><td>${esc(j.slideshow_id || '—')}</td><td>${esc(j.params.format)} ${esc(j.params.duration)} s</td><td>${esc(j.step || 'en attente')}</td><td class="num">${Math.round(j.progress * 100)} %</td><td class="small">${j.log.map(esc).join('<br>')}</td></tr>`).join('')}</table></div>` : ''}
+      <div class="card" style="margin-top:16px"><h2>Bibliothèque${videoFilter ? ` · filtre « ${esc(videoFilter)} » <a href="#videos" data-vf="">(tout voir)</a>` : ''}</h2>${list.length ? `<div class="thumbs">${list.map((v) => `<div class="thumb" data-vid="${esc(v.id)}"><div class="img" style="${v.poster ? `background-image:url('${esc(v.poster)}')` : ''}">${v.poster ? '' : 'pas encore montée'}</div><div class="meta"><div class="t">${esc(v.hook)}</div><div class="row">${vbadge(v.status)}${v.qc ? `<span class="badge ${v.qc.ok ? 'b-good' : 'b-bad'}">QC ${v.qc.score}</span>` : ''}</div><div class="small muted">${esc(v.formatLabel)} · ${v.duration ? `${v.duration} s` : '—'} · ${esc(v.voice)} · ${esc(v.music)}</div><div class="small muted">${esc(v.account)}${v.perf ? ` · ${fmt(v.perf.views)} vues` : ''}${v.costEur ? ` · ${v.costEur} €` : ''}</div></div></div>`).join('')}</div>` : '<div class="empty">Aucune vidéo</div>'}</div>
+      ${m.batches.length ? `<div class="card" style="margin-top:16px"><h2>Lots</h2><table><tr><th>Lot</th><th>Compte</th><th class="num">Faites</th><th class="num">Échouées</th><th class="num">Quantité</th><th>Statut</th><th class="num">Dépense</th></tr>${m.batches.map((b) => `<tr><td>${esc(b.id)}</td><td>${esc(b.account_id)}</td><td class="num">${b.done}</td><td class="num">${b.failed}</td><td class="num">${b.quantity}</td><td>${esc(b.status)}</td><td class="num">${(b.spent_eur || 0).toFixed(2)} €</td></tr>`).join('')}</table></div>` : ''}`;
+  };
+
+  async function openVideo(id) {
+    const v = await api(`/api/videos/${id}`);
+    if (!v) return toast('Vidéo indisponible dans cet instantané');
+    const f = (v.files || [])[0] || {};
+    const qc = f.qc;
+    const m = document.createElement('div');
+    m.className = 'modal';
+    m.innerHTML = `<div class="box"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0">${esc(v.hook)}</h2><div class="small muted">${esc(v.account)} · ${esc(v.spec.format)} · ${esc(v.spec.aspect)} · voix ${esc(v.spec.voice && v.spec.voice.id)} · musique ${esc(v.spec.music && v.spec.music.mood)}</div></div><button class="btn" data-close>Fermer</button></div>
+      <div class="grid g2" style="margin-top:14px"><div>${f.url ? `<video controls playsinline preload="metadata" src="${esc(f.url)}" poster="${esc(f.poster || '')}" style="width:100%;max-height:70vh;background:#000;border-radius:12px"></video>` : '<div class="empty">Pas encore montée</div>'}
+        <div class="small muted" style="margin-top:6px">${(v.files || []).map((x) => `${esc(x.aspect)} : ${x.duration ? x.duration.toFixed(1) : '—'} s, ${x.mo} Mo${x.srt ? ` · <a href="${esc(x.srt)}">sous-titres</a>` : ''}`).join(' · ')}</div></div>
+        <div>${badge(v.status)} ${qc ? `<span class="badge ${qc.ok ? 'b-good' : 'b-bad'}">Contrôle ${qc.score}/100</span>` : ''}
+        <h3>Contrôle qualité</h3>${qc ? `<div class="small">${Object.entries(qc.checks).map(([k, s]) => `<span class="badge ${s === 'ok' ? 'b-good' : s === 'échec' ? 'b-bad' : s === 'avertissement' ? 'b-warn' : ''}">${esc(k)}</span>`).join(' ')}</div><ul class="list">${qc.errors.map((e) => `<li><span class="badge b-bad">Bloquant</span> ${esc(e.message)}</li>`).join('')}${qc.warnings.map((e) => `<li><span class="badge b-warn">À voir</span> ${esc(e.message)}</li>`).join('')}</ul><div class="small muted">${Object.entries(qc.measures || {}).map(([k, x]) => `${esc(k)} : ${esc(x)}`).join(' · ')}</div>` : '<div class="empty">Non contrôlée</div>'}
+        <h3>Script</h3><ol class="small">${v.script.map((x) => `<li><b>${esc(x.role)}</b> — ${esc(x.narration || x.title)}</li>`).join('')}</ol>
+        <h3>Droits des médias</h3><ul class="list small">${v.assets.map((a) => `<li>${esc(a.role)} : ${esc(a.provider)}${a.author ? ` (${esc(a.author)})` : ''} — ${esc(a.license)}</li>`).join('')}</ul>
+        <h3>Description</h3><pre class="caption">${esc(v.caption)}</pre></div></div>
+      <div class="row act" style="margin-top:16px"><button class="btn primary" data-va="approve">Valider</button><button class="btn" data-va="schedule">Programmer au prochain créneau</button><button class="btn" data-va="render">Remonter + contrôler</button><button class="btn" data-va="export">Paquet manuel (ZIP)</button><button class="btn danger" data-va="reject">Refuser</button></div></div>`;
+    document.body.appendChild(m);
+    m.addEventListener('click', async (e) => {
+      if (e.target === m || e.target.dataset.close !== undefined) return m.remove();
+      const a = e.target.dataset.va;
+      if (!a) return;
+      try {
+        if (a === 'approve') await post(`/api/slideshows/${id}/approve`, {});
+        if (a === 'reject') await post(`/api/slideshows/${id}/reject`, {reason: prompt('Raison du refus ?') || 'refusé'});
+        if (a === 'schedule') toast(`Programmée : ${dt((await post(`/api/slideshows/${id}/schedule`, {})).at)}`);
+        if (a === 'render') pollJob((await post(`/api/videos/${id}/render`, {})).id, m.querySelector('.act'));
+        if (a === 'export') toast(`Paquet prêt : ${(await post(`/api/videos/${id}/export`, {})).zip}`, 6000);
+        if (a !== 'render' && a !== 'export') (m.remove(), route());
+      } catch (err) {
+        toast(err.message, 6000);
+      }
+    });
+  }
+
+  /* ---------------- Audio Studio ---------------- */
+
+  let audioAccount = null;
+  views.audio = async () => {
+    const m = await api('/api/audio');
+    if (!m) return '<div class="empty">Audio Studio indisponible</div>';
+    const acc = m.accounts.find((a) => a.id === audioAccount) || m.accounts[0];
+    audioAccount = acc.id;
+    const A = acc.audio, C = acc.captions, V = acc.voice;
+    const langs = [...new Set(m.voices.flatMap((v) => v.languages))];
+    const opt = (vals, cur, lab = (x) => x) => vals.map((x) => `<option value="${esc(x)}" ${String(x) === String(cur) ? 'selected' : ''}>${esc(lab(x))}</option>`).join('');
+    const player = (u) => (u ? `<audio controls preload="none" src="${esc(u)}" style="width:100%;height:34px"></audio>` : '<span class="small muted">aperçu : npm run viral -- audio:previews</span>');
+    return `${RO ? '<div class="notice">Instantané en lecture seule : les aperçus s’écoutent ici ; les réglages se changent depuis le tableau de bord local ou par « audio:set ».</div>' : ''}
+      <div class="card act"><div class="form"><label>Compte<select id="au-acc">${m.accounts.map((a) => `<option value="${esc(a.id)}" ${a.id === acc.id ? 'selected' : ''}>${esc(a.platform)} @${esc(a.handle)}</option>`).join('')}</select></label>
+        <label>Mode<select id="au-auto"><option value="true" ${A.auto ? 'selected' : ''}>AUTOMATIQUE : la machine choisit tout selon le script</option><option value="false" ${!A.auto ? 'selected' : ''}>Manuel : mes choix ci-dessous</option></select></label></div></div>
+      <div class="card" style="margin-top:16px"><h2>Voix</h2><div class="form act"><label>Voix du compte<select id="au-voice"><option value="auto">automatique (${V.gender === 'male' ? 'masculine' : 'féminine'})</option>${m.voices.map((v) => `<option value="${esc(v.id)}" ${v.id === V.id ? 'selected' : ''}>${esc(v.label)} · ${v.gender === 'male' ? 'homme' : v.gender === 'female' ? 'femme' : '—'} · ${esc(v.language)}</option>`).join('')}</select></label>
+        <label>Genre (voix automatique)<select id="au-gender">${opt(['female', 'male'], V.gender, (x) => (x === 'male' ? 'masculine' : 'féminine'))}</select></label>
+        <label>Langue<select id="au-lang">${opt(langs, V.language)}</select></label>
+        <label>Vitesse<input id="au-speed" type="number" min="0.7" max="1.4" step="0.05" value="${V.speed}"></label>
+        <label>Ton (demi-tons)<input id="au-pitch" type="number" min="-4" max="4" step="0.5" value="${A.pitch}"></label>
+        <label>Intonation<select id="au-into">${opt(['neutre', 'expressive', 'calme'], V.intonation)}</select></label></div>
+        <table style="margin-top:12px"><tr><th>Voix</th><th>Langue · accent</th><th>Style</th><th>Licence</th><th style="width:260px">Écouter</th></tr>${m.voices.map((v) => `<tr><td><b>${esc(v.label)}</b><div class="small muted">${v.gender === 'male' ? 'homme' : v.gender === 'female' ? 'femme' : '—'} · ${v.local ? 'locale, gratuite' : 'service en ligne'}</div></td><td>${esc(v.language)}${v.languages.length > 1 ? ` <span class="small muted">(+${v.languages.length - 1})</span>` : ''} · ${esc(v.accent)}</td><td class="small">${esc(v.style)}<div class="muted">${esc(v.speed)}</div></td><td class="small">${esc(v.license)}<div class="muted">usage commercial : ${esc(v.commercial)}</div></td><td>${player(v.preview)}</td></tr>`).join('')}</table>
+        <div class="form act" style="margin-top:12px"><label style="grid-column:1/-1">Écouter une phrase à moi<input id="au-text" maxlength="400" placeholder="Tape une phrase, puis « Écouter » (voix, vitesse et ton ci-dessus)"></label></div><div class="row act"><button class="btn" id="au-try">Écouter</button><span id="au-tryout"></span></div></div>
+      <div class="card" style="margin-top:16px"><h2>Musique</h2><div class="form act"><label>Ambiance<select id="au-music"><option value="auto" ${A.musicCategory === 'auto' ? 'selected' : ''}>automatique selon le sujet</option>${m.music.map((x) => `<option value="${esc(x.id)}" ${x.id === A.musicCategory ? 'selected' : ''}>${esc(x.label)}</option>`).join('')}</select></label>
+        <label>Source<select id="au-msrc">${opt(['original', 'licence', 'aucune'], acc.music, (x) => ({original: 'musique originale (aucun droit tiers)', licence: 'pistes sous licence (bibliothèque)', aucune: 'pas de musique'})[x])}</select></label>
+        <label>Volume sous la voix<input id="au-mvol" type="range" min="0" max="1" step="0.05" value="${A.musicVolume}"></label>
+        <label>Baisse pendant la voix<select id="au-duck">${opt(['leger', 'normal', 'fort'], A.ducking, (x) => ({leger: 'légère', normal: 'normale', fort: 'forte'})[x])}</select></label>
+        <label>Fondu d’entrée (s)<input id="au-fin" type="number" min="0" max="5" step="0.1" value="${A.fadeIn}"></label>
+        <label>Fondu de sortie (s)<input id="au-fout" type="number" min="0" max="8" step="0.1" value="${A.fadeOut}"></label></div>
+        <div class="grid g3" style="margin-top:12px">${m.music.map((x) => `<div class="card" style="padding:12px"><b>${esc(x.label)}</b><div class="small muted">${esc(x.description)}</div>${player(x.preview)}</div>`).join('')}</div>
+        <h3>Pistes sous licence</h3>${m.tracks.length ? `<ul class="list small">${m.tracks.map((t) => `<li>${esc(t.title)} — ${esc(t.artist)} · ${esc(t.license)} · ${esc((t.platforms || []).join(', ') || 'tous réseaux')}${t.problems.length ? ` <span class="badge b-bad">${esc(t.problems.join(' ; '))}</span>` : ''}</li>`).join('')}</ul>` : '<div class="small muted">Aucune : ajoutez une piste avec sa preuve de licence (music:add). La musique originale est utilisée en attendant.</div>'}</div>
+      <div class="card" style="margin-top:16px"><h2>Effets sonores</h2><div class="form act"><label>Effets<select id="au-sfx">${opt(['true', 'false'], String(A.sfx), (x) => (x === 'true' ? 'activés (placés automatiquement)' : 'désactivés'))}</select></label><label>Volume des effets<input id="au-sfxv" type="range" min="0" max="2" step="0.1" value="${A.sfxVolume}"></label><label>Ambiances de fond<select id="au-amb">${opt(['true', 'false'], String(A.ambience), (x) => (x === 'true' ? 'oui' : 'non'))}</select></label><label>Volume de la voix<input id="au-vvol" type="range" min="0.5" max="1.5" step="0.05" value="${A.voiceVolume}"></label></div>
+        <div class="grid g3" style="margin-top:12px">${m.sfx.map((x) => `<div><div class="small">${esc(x.label)}</div>${player(x.preview)}</div>`).join('')}</div></div>
+      <div class="card" style="margin-top:16px"><h2>Sous-titres</h2><div class="form act"><label>Style<select id="au-cst">${opt(m.captionStyles, C.style, (x) => ({auto: 'selon le format', mot: 'mot par mot', phrase: 'phrase par phrase', tiktok: 'style TikTok', documentaire: 'documentaire', minimal: 'minimaliste', cinematique: 'cinématique'})[x])}</select></label>
+        <label>Police<select id="au-cfont"><option value="">selon le modèle</option>${opt(['Inter', 'Montserrat', 'Poppins', 'Anton', 'Archivo Black', 'Space Grotesk', 'Playfair Display', 'DM Serif Display', 'Lora', 'Caveat'], C.font || '')}</select></label>
+        <label>Couleur<input id="au-ccol" type="color" value="${esc(C.color)}"></label><label>Mots importants<input id="au-chi" type="color" value="${esc(C.highlight || '#FFC857')}"></label>
+        <label>Taille<input id="au-csize" type="range" min="0.6" max="1.6" step="0.05" value="${C.size}"></label><label>Position<select id="au-cpos">${opt(['haut', 'milieu', 'bas'], C.position)}</select></label>
+        <label>Animation<select id="au-canim">${opt(m.animations, C.animation)}</select></label><label>Mettre en évidence<select id="au-cemph">${opt(['true', 'false'], String(C.emphasis), (x) => (x === 'true' ? 'chiffres, marque, mots clés' : 'non'))}</select></label></div></div>
+      <div class="row act" style="margin-top:16px"><button class="btn primary" id="au-save">Enregistrer pour ce compte</button><span class="small muted">Synchronisation automatique : coupes calées sur la voix et le rythme, sous-titres sur chaque mot dit.</span></div>`;
+  };
+
   views.templates = async () => {
     const list = await api('/api/templates');
     return `<div class="grid g2">${list.map((t) => `<div class="card"><h2>${esc(t.name)} <span class="badge">${esc(t.category)}</span></h2><div class="small">${esc(t.description)}</div><div class="small muted" style="margin:6px 0 10px">Polices : ${esc(t.fonts.heading)} / ${esc(t.fonts.body)} · idéal pour : ${t.bestFor.map(esc).join(', ')}</div><div class="slides">${t.previews.length ? t.previews.map((p) => `<img src="${esc(p)}" style="height:240px" alt="">`).join('') : '<div class="empty">Aperçus : npm run viral -- dashboard:previews</div>'}</div></div>`).join('')}</div>`;
@@ -303,6 +411,37 @@
   document.addEventListener('click', async (e) => {
     const t = e.target;
     try {
+      if (t.closest && t.closest('[data-vid]')) return openVideo(t.closest('[data-vid]').dataset.vid);
+      if (t.closest && t.closest('[data-vf]')) {
+        videoFilter = t.closest('[data-vf]').dataset.vf;
+        return route();
+      }
+      if (t.id === 'v-go') {
+        const f = $('#v-format').value, d = $('#v-dur').value;
+        const job = await post('/api/factory', {accountId: $('#v-acc').value, quantity: Number($('#v-qty').value), formats: f ? [f] : undefined, durations: d ? [Number(d)] : undefined, visuals: $('#v-vis').value, budgetEur: Number($('#v-budget').value || 0)});
+        toast(`Lot ${job.batchId} lancé : ${job.plan.length} vidéo(s)`);
+        pollJob(job.id, $('#v-job'));
+      }
+      if (t.id === 'au-try') {
+        const job = await post('/api/audio/preview', {voice: $('#au-voice').value === 'auto' ? undefined : $('#au-voice').value, text: $('#au-text').value, speed: $('#au-speed').value, pitch: $('#au-pitch').value, language: $('#au-lang').value});
+        $('#au-tryout').textContent = 'synthèse en cours…';
+        const wait = async () => {
+          const j = await api(`/api/jobs/${job.id}`);
+          if (j.status === 'running') return setTimeout(wait, 1500);
+          $('#au-tryout').innerHTML = j.status === 'done' ? `<audio controls autoplay src="${esc(j.result.url)}?t=${Date.now()}"></audio>` : `<span class="badge b-bad">${esc(j.error)}</span>`;
+        };
+        wait();
+      }
+      if (t.id === 'au-save') {
+        const v = (id) => $(id).value;
+        await post(`/api/audio/settings/${encodeURIComponent(audioAccount)}`, {
+          voice: {id: v('#au-voice'), gender: v('#au-gender'), language: v('#au-lang'), speed: Number(v('#au-speed')), intonation: v('#au-into')},
+          audio: {auto: v('#au-auto') === 'true', musicCategory: v('#au-music'), musicVolume: Number(v('#au-mvol')), ducking: v('#au-duck'), fadeIn: Number(v('#au-fin')), fadeOut: Number(v('#au-fout')), sfx: v('#au-sfx') === 'true', sfxVolume: Number(v('#au-sfxv')), ambience: v('#au-amb') === 'true', voiceVolume: Number(v('#au-vvol')), pitch: Number(v('#au-pitch'))},
+          captions: {style: v('#au-cst'), font: v('#au-cfont') || undefined, color: v('#au-ccol'), highlight: v('#au-chi'), size: Number(v('#au-csize')), position: v('#au-cpos'), animation: v('#au-canim'), emphasis: v('#au-cemph') === 'true'},
+          music: v('#au-msrc'),
+        });
+        toast('Identité sonore enregistrée pour ce compte');
+      }
       if (t.id === 'g-go') {
         const v = (id) => $(id).value || undefined;
         const job = await post('/api/generate', {accountId: v('#g-acc'), topic: v('#g-topic'), slides: v('#g-slides'), template: v('#g-tpl'), structure: v('#g-structure'), format: v('#g-format'), tone: v('#g-tone'), language: v('#g-lang'), quantity: Number(v('#g-qty')), mode: v('#g-mode'), engine: v('#g-engine')});
@@ -379,6 +518,13 @@
       view.innerHTML = `<div class="notice warn">${esc(err.message)}</div>`;
     }
   }
+
+  document.addEventListener('change', (e) => {
+    if (e.target.id === 'au-acc') {
+      audioAccount = e.target.value;
+      route();
+    }
+  });
 
   window.addEventListener('hashchange', route);
   route();

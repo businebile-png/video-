@@ -13,14 +13,16 @@ import {templateById} from '../render/templates.js';
 import {drawCharacter, nameInText} from './characters.js';
 import {formatDef} from './formats.js';
 import {linkAsset, recordAsset} from './media.js';
-import {composeMusic} from './music.js';
+import {MUSIC_CATEGORIES, composeMusic, musicCandidates, musicGrid} from './music.js';
+import {pickTrack, trackPath} from './music-library.js';
+import {choose} from '../analytics/learn.js';
 import {buildVideoPage} from './page.js';
 import {profileFor, videoCaption} from './platforms.js';
 import {extractFrames, extractStill, mixAudio, renderFrames, writeSubtitles} from './render.js';
 import {scriptFromDraft} from './script.js';
 import {downloadClip, pickClip, searchStock} from './stock.js';
 import {buildTimeline} from './timeline.js';
-import type {Aspect, DurationTarget, SceneVisual, VideoFormatId, VideoSpec, VisualMode} from './types.js';
+import type {Aspect, AudioSettings, CaptionSettings, DurationTarget, MusicMood, SceneVisual, VideoFormatId, VideoSpec, VisualMode} from './types.js';
 import {VoiceUnavailable, synthesize} from './voice.js';
 import {envelope} from './wav.js';
 import {generateAiClip, aiVideoAvailable} from './aigen.js';
@@ -67,14 +69,24 @@ export function createProject(db: Db, cfg: AppConfig, d: SlideshowDraft, opts: P
   const seed = opts.seed ?? `${d.hook}:${opts.format}:${Date.now()}`;
   const script = scriptFromDraft(d, {format: opts.format, duration: opts.duration, cta: profile.cta, linkHint: profile.linkHint, seed, visuals: opts.visuals && opts.visuals !== 'auto' ? opts.visuals : undefined});
   const voiceMode = def.voice;
+  // Sound identity: the account's Audio Studio choices, or the machine's choice from the script (mode automatique).
+  const audio: AudioSettings = {musicVolume: vs.audio.musicVolume, voiceVolume: vs.audio.voiceVolume, ducking: vs.audio.ducking, fadeIn: vs.audio.fadeIn, fadeOut: vs.audio.fadeOut, sfx: vs.audio.sfx, sfxVolume: vs.audio.sfxVolume, ambience: vs.audio.ambience, pitch: vs.audio.pitch};
+  const captions: CaptionSettings = {...vs.captions, style: vs.captions.style === 'auto' ? def.captions : vs.captions.style} as CaptionSettings;
+  if (def.voice !== 'voix') captions.style = 'kinetic';
+  const text = script.scenes.map((x) => `${x.narration} ${x.text.title ?? ''}`).join(' ');
+  const candidates = musicCandidates(opts.format, d.structure, `${d.hook} ${text}`, def.music);
+  const fixedMood = !vs.audio.auto && vs.audio.musicCategory !== 'auto' && vs.audio.musicCategory in MUSIC_CATEGORIES ? (vs.audio.musicCategory as MusicMood) : null;
+  const mood = fixedMood ?? (choose(db, {dimension: 'music', values: candidates, accountId: account.id, rand: rng(seed + ':music'), epsilon: 0.25}).value as MusicMood);
   const spec: VideoSpec = {
     format: opts.format,
     duration: opts.duration,
     aspect,
     profile: Object.entries(cfg.platforms.videoProfiles).find(([, p]) => p === profile)?.[0] ?? 'tiktok',
-    voice: {mode: voiceMode, id: opts.voice ?? vs.voice.id, gender: opts.gender ?? vs.voice.gender, speed: (opts.speed ?? vs.voice.speed) * def.pace, intonation: opts.intonation ?? vs.voice.intonation, language: vs.voice.language},
+    voice: {mode: voiceMode, id: opts.voice ?? vs.voice.id, gender: opts.gender ?? vs.voice.gender, speed: (opts.speed ?? vs.voice.speed) * def.pace, intonation: opts.intonation ?? vs.voice.intonation, language: vs.voice.language, pitch: vs.audio.pitch},
     visuals: opts.visuals && opts.visuals !== 'auto' ? opts.visuals : vs.visuals !== 'auto' ? vs.visuals : def.visuals,
-    music: {mode: opts.music ?? vs.music, mood: def.music},
+    music: {mode: opts.music ?? vs.music, mood, candidates},
+    audio,
+    captions,
     template: def.template,
     transitions: def.transitions,
     script,
@@ -107,7 +119,7 @@ export async function stepVoice(db: Db, id: string): Promise<string> {
   if (spec.voice.mode !== 'voix') return 'format sans voix';
   const parts = spec.script.scenes.map((s) => s.narration || s.text.title || '…');
   try {
-    const v = await synthesize(db, {parts, voice: spec.voice.id, gender: spec.voice.gender, speed: spec.voice.speed, intonation: spec.voice.intonation, language: spec.voice.language, seed: seedNum(id) % 100000, outDir: workDir(id), ref: id});
+    const v = await synthesize(db, {parts, voice: spec.voice.id, gender: spec.voice.gender, speed: spec.voice.speed, intonation: spec.voice.intonation, language: spec.voice.language, pitch: spec.voice.pitch ?? 0, seed: seedNum(id) % 100000, outDir: workDir(id), ref: id});
     prod.voice = v;
     linkAsset(db, id, v.assetId, 'voix');
     prod.notes.push(...v.warnings);
@@ -172,7 +184,7 @@ export async function stepVisuals(db: Db, cfg: AppConfig, id: string): Promise<s
       const clips = await searchStock(db, s.visual.query, {ref: id});
       const noPeople = s.role === 'product' || s.role === 'cta' || s.role === 'proof';
       const avoid = new Set([...recent, ...used]);
-      const clip = pickClip(clips, {minSeconds: perScene + 1, aspect: spec.aspect, noPeople, avoid, rand}) ?? pickClip(clips, {minSeconds: 3, aspect: spec.aspect, noPeople, avoid: used, rand});
+      const clip = pickClip(clips, {minSeconds: perScene + 1, aspect: spec.aspect, noPeople, avoid, rand, query: s.visual.query}) ?? pickClip(clips, {minSeconds: 3, aspect: spec.aspect, noPeople, avoid: used, rand, query: s.visual.query});
       if (!clip) throw new Error(`aucun plan adapté pour « ${s.visual.query} »`);
       used.add(`${clip.provider}:${clip.id}`);
       const {file, assetId} = await downloadClip(db, clip, id);
@@ -196,24 +208,46 @@ export async function stepVisuals(db: Db, cfg: AppConfig, id: string): Promise<s
   return prod.steps.visuals.note!;
 }
 
-/** Step « musique » : original music for the measured length (or a licensed track listed with its proof). */
+/**
+ * Step « musique » : a licensed track allowed on this network when the account asks for one, otherwise original
+ * music in the chosen category. The beat grid is fixed now (the edit snaps its cuts to it); the original track is
+ * composed again at the edit, with the real cut times, so drums come in after the hook and accents land on cuts.
+ */
 export function stepMusic(db: Db, id: string): string {
-  const {spec} = loadSpec(db, id);
+  const {spec, account} = loadSpec(db, id);
   const prod = spec.production!;
   if (spec.music.mode === 'aucune') {
     prod.steps.music = {at: nowIso(), note: 'sans musique'};
     saveSpec(db, id, spec);
     return 'sans musique';
   }
-  const file = path.join(workDir(id), 'music.wav');
   const seconds = estimatedSeconds(spec) + 1.5;
-  const m = composeMusic(file, {mood: spec.music.mood, seconds, seed: seedNum(id, 'music')});
-  const assetId = recordAsset(db, {kind: 'music', provider: 'viral-synth', file, license: 'Création originale de la machine (synthèse note par note, aucun échantillon ni morceau tiers)', commercialOk: true, meta: {mood: m.mood, bpm: m.bpm, seconds, seed: m.seed}});
+  if (spec.music.mode === 'licence') {
+    const t = pickTrack(spec.music.mood, account.platform, rng(id + ':track'));
+    if (t) {
+      const assetId = recordAsset(db, {kind: 'music', provider: 'licence', sourceId: t.id, file: trackPath(t), license: t.license, licenseUrl: t.licenseUrl, commercialOk: t.commercial, attribution: t.attribution, meta: {title: t.title, artist: t.artist, proof: t.proof, platforms: t.platforms}});
+      linkAsset(db, id, assetId, 'musique');
+      prod.musicFile = trackPath(t);
+      prod.musicAssetId = assetId;
+      prod.beats = [];
+      spec.music.trackId = t.id;
+      prod.steps.music = {at: nowIso(), note: `${t.title} — ${t.artist} (${t.license})`};
+      saveSpec(db, id, spec);
+      return prod.steps.music.note!;
+    }
+    prod.notes.push('Aucune piste sous licence autorisée sur ce réseau pour cette ambiance : musique originale à la place.');
+    spec.music.mode = 'original';
+  }
+  const file = path.join(workDir(id), 'music.wav');
+  const seed = seedNum(id, 'music');
+  const grid = musicGrid(spec.music.mood, seed, seconds);
+  const m = composeMusic(file, {mood: spec.music.mood, seconds, seed, fadeIn: spec.audio?.fadeIn, fadeOut: spec.audio?.fadeOut});
+  const assetId = recordAsset(db, {kind: 'music', provider: 'viral-synth', sourceId: `${id}:music`, file, license: 'Création originale de la machine (synthèse note par note, aucun échantillon ni morceau tiers) : publiable sur tous les réseaux', commercialOk: true, meta: {mood: m.mood, category: MUSIC_CATEGORIES[m.mood].label, bpm: m.bpm, seconds, seed}});
   linkAsset(db, id, assetId, 'musique');
   prod.musicFile = file;
   prod.musicAssetId = assetId;
-  prod.beats = m.beats;
-  prod.steps.music = {at: nowIso(), note: `${m.mood}, ${m.bpm} BPM`};
+  prod.beats = grid.beats;
+  prod.steps.music = {at: nowIso(), note: `${MUSIC_CATEGORIES[m.mood].label} (${m.mood}), ${m.bpm} BPM`};
   saveSpec(db, id, spec);
   return prod.steps.music.note!;
 }
@@ -241,7 +275,9 @@ export async function stepRender(db: Db, cfg: AppConfig, id: string, opts: {fps?
   const sub = aspect === spec.aspect ? '' : `-${aspect.replace(':', 'x')}`;
   const rand = rng(id + ':timeline');
   const voice = spec.voice.mode === 'voix' ? prod.voice : undefined;
-  const tl = buildTimeline({scenes: spec.script.scenes, def, transitions: spec.transitions, voice, beats: prod.beats ?? [], fps, width: size.width, height: size.height, aspect, targetSeconds: spec.duration, rand});
+  const audio = spec.audio ?? {musicVolume: 0.3, voiceVolume: 1, ducking: 'normal', fadeIn: 0.4, fadeOut: 1.6, sfx: true, sfxVolume: 1, ambience: true, pitch: 0};
+  const captions = spec.captions ?? ({style: def.captions, color: '#FFFFFF', size: 1, position: 'bas', animation: 'pop', emphasis: true} as CaptionSettings);
+  const tl = buildTimeline({scenes: spec.script.scenes, def, transitions: spec.transitions, voice, beats: prod.beats ?? [], fps, width: size.width, height: size.height, aspect, targetSeconds: spec.duration, rand, captionStyle: captions.style, mood: spec.music.mood, sfx: {enabled: audio.sfx, volume: audio.sfxVolume, ambience: audio.ambience}, format: spec.format});
   // Footage frames for the scenes that use licensed or AI clips.
   const framesRoot = path.join(dir, `frames${sub}`);
   fs.rmSync(framesRoot, {recursive: true, force: true});
@@ -271,18 +307,27 @@ export async function stepRender(db: Db, cfg: AppConfig, id: string, opts: {fps?
   }
   const total = Math.round(tl.duration * fps);
   const mouth = character && voice ? envelope(voice.file, fps, total, tl.voiceOffset) : undefined;
-  const html = buildVideoPage({timeline: tl, def, palette, fonts: tpl.fonts, safe: size.safe, disclosure: cfg.compliance.disclosure.badge, handle: account.brand.handle, character, mouth, seed: seedNum(id, 'page')});
+  const emphasis = [...new Set(spec.script.scenes.flatMap((x) => x.emphasis))];
+  const html = buildVideoPage({timeline: tl, def, palette, fonts: tpl.fonts, safe: size.safe, disclosure: cfg.compliance.disclosure.badge, handle: account.brand.handle, character, mouth, seed: seedNum(id, 'page'), captions, emphasis});
   const htmlFile = path.join(dir, `video${sub}.html`);
   fs.writeFileSync(htmlFile, html);
   // Sound.
-  const audio = path.join(dir, `audio${sub}.wav`);
-  const music = spec.music.mode !== 'aucune' && prod.musicFile && fs.existsSync(prod.musicFile) ? prod.musicFile : undefined;
-  const {lufs, peak} = mixAudio({out: audio, duration: tl.duration, voice: voice?.file, voiceOffset: tl.voiceOffset, music, sfx: tl.sfx});
+  const audioFile = path.join(dir, `audio${sub}.wav`);
+  let music = spec.music.mode !== 'aucune' && prod.musicFile && fs.existsSync(prod.musicFile) ? prod.musicFile : undefined;
+  if (music && spec.music.mode === 'original') {
+    // Original music composed on the real cuts: drums after the hook, an accent on each cut, outro under the call to action.
+    const cuts = tl.scenes.slice(1).map((x) => x.start);
+    const cta = tl.scenes.find((x) => x.role === 'cta');
+    const file = path.join(dir, `music${sub}.wav`);
+    composeMusic(file, {mood: spec.music.mood, seconds: tl.duration + 0.4, seed: seedNum(id, 'music'), cues: {drop: tl.scenes[1]?.start ?? 2, cuts: cuts.filter((c) => c !== cta?.start), outro: cta?.start}, fadeIn: audio.fadeIn, fadeOut: audio.fadeOut});
+    music = file;
+  }
+  const {lufs, peak} = mixAudio({out: audioFile, duration: tl.duration, voice: voice?.file, voiceOffset: tl.voiceOffset, music, musicFades: spec.music.mode === 'licence' ? {in: audio.fadeIn, out: audio.fadeOut} : undefined, sfx: tl.sfx, musicVolume: audio.musicVolume, voiceVolume: audio.voiceVolume, ducking: audio.ducking});
   // Pictures.
   const file = path.join(dir, `video${sub}.mp4`);
   const cover = path.join(dir, `cover${sub}.jpg`);
   const coverAt = Math.min(tl.scenes[0].end - 0.15, Math.max(1.2, (tl.scenes[0].speechStart ?? 0) + 1.3));
-  const r = await renderFrames({html: htmlFile, timeline: tl, pageOpt: null, audio, out: file, workers: opts.workers ?? Math.max(2, Math.min(4, os.cpus().length)), preset: opts.draft ? 'veryfast' : 'medium', crf: opts.draft ? 26 : 20, coverAt, coverFile: cover, onProgress: opts.onProgress});
+  const r = await renderFrames({html: htmlFile, timeline: tl, pageOpt: null, audio: audioFile, out: file, workers: opts.workers ?? Math.max(2, Math.min(4, os.cpus().length)), preset: opts.draft ? 'veryfast' : 'medium', crf: opts.draft ? 26 : 20, coverAt, coverFile: cover, onProgress: opts.onProgress});
   fs.rmSync(framesRoot, {recursive: true, force: true});
   let srt: string | undefined;
   if (tl.captions.length) {

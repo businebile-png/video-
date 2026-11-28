@@ -7,6 +7,7 @@ import {PATHS, ROOT, ensureDir} from '../core/paths.js';
 import {nowIso, parseJson} from '../core/util.js';
 import {photoTitle} from '../generate/captions.js';
 import {runQc} from '../qc/qc.js';
+import {runVideoQc} from '../video/qc.js';
 import {ManualPublisher, MetaPublisher, ZernioPublisher, type Job, type Outcome, type Publisher} from './publishers.js';
 
 /**
@@ -55,7 +56,8 @@ export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?:
     const ss = db.get('SELECT * FROM slideshows WHERE id = ?', row.slideshow_id);
     const account = getAccount(db, row.account_id);
     // Re-check just before publishing: facts may have expired (prices are valid 7 days) or the text changed.
-    const qc = ss && ss.status === 'scheduled' ? runQc(db, cfg, ss.id) : parseJson<any>(ss?.qc_json, {}).report;
+    const isVideo = ss?.kind === 'video';
+    const qc = ss && ss.status === 'scheduled' ? (isVideo ? runVideoQc(db, cfg, ss.id) : runQc(db, cfg, ss.id)) : isVideo ? parseJson<any>(ss?.qc_json, {}).video : parseJson<any>(ss?.qc_json, {}).report;
     if (!ss || ss.status !== 'scheduled' || !qc?.ok) {
       report.skipped.push({id: row.id, reason: 'carrousel modifié ou contrôle qualité non valide : reprogrammation nécessaire'});
       db.run("UPDATE schedule SET status = 'cancelled', last_error = ?, updated_at = ? WHERE id = ?", 'contrôle qualité non valide', nowIso(), row.id);
@@ -63,6 +65,18 @@ export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?:
     }
     const images = db.all<{path: string; public_url: string | null}>('SELECT path, public_url FROM images WHERE slideshow_id = ? ORDER BY slide_index', ss.id);
     const job: Job = {scheduleId: row.id, slideshow: ss, account, scheduledFor: new Date(row.scheduled_for), images};
+    if (isVideo) {
+      const spec = parseJson<any>(ss.video_json, {});
+      const v = db.get<any>('SELECT * FROM videos WHERE slideshow_id = ? AND aspect = ?', ss.id, spec.aspect ?? '9:16');
+      if (!v) {
+        report.skipped.push({id: row.id, reason: 'vidéo non montée'});
+        continue;
+      }
+      const tlFile = path.join(PATHS.var, path.dirname(v.path), 'timeline.json');
+      const tl = fs.existsSync(tlFile) ? JSON.parse(fs.readFileSync(tlFile, 'utf8')) : null;
+      const coverMs = tl ? Math.round(Math.min(tl.scenes[0].end - 0.15, Math.max(1.2, tl.scenes[0].speechStart + 1.3)) * 1000) : 1200;
+      job.video = {path: v.path, public_url: v.public_url, poster_path: v.poster_path, cover_url: v.cover_url, duration_s: v.duration_s, coverMs};
+    }
     if (!account.settings.autoPublish) {
       if (new Date(row.scheduled_for).getTime() > now.getTime()) {
         report.skipped.push({id: row.id, reason: 'publication automatique désactivée pour ce compte : attente de l’heure prévue pour préparer le paquet manuel'});
@@ -158,9 +172,27 @@ export function retry(db: Db, scheduleId: string): void {
   db.run("UPDATE slideshows SET status = 'scheduled', updated_at = ? WHERE id = ?", nowIso(), r.slideshow_id);
 }
 
-/** Copies rendered slides into viral/media/<id>/ (published by git) and records their public URLs. */
+/** Copies rendered slides (or the video and its cover) into viral/media/<id>/ (published by git) and records their public URLs. */
 export function stageMedia(db: Db, slideshowId: string, baseUrl = process.env.VIRAL_MEDIA_BASE_URL): {dir: string; urls: string[]} {
-  if (!baseUrl) throw new Error('VIRAL_MEDIA_BASE_URL absente (ex. https://raw.githubusercontent.com/<compte>/<dépôt>/<branche>/viral/media)');
+  if (!baseUrl) throw new Error('VIRAL_MEDIA_BASE_URL absente (ex. https://cdn.jsdelivr.net/gh/<compte>/<dépôt>@<branche>/viral/media)');
+  const vids = db.all('SELECT v.* FROM videos v JOIN slideshows s ON s.id = v.slideshow_id WHERE v.slideshow_id = ? AND s.kind = ?', slideshowId, 'video');
+  if (vids.length) {
+    const dir = ensureDir(path.join(ROOT, 'media', slideshowId));
+    const urls: string[] = [];
+    for (const v of vids) {
+      const tag = v.aspect.replace(':', 'x');
+      fs.copyFileSync(path.join(PATHS.var, v.path), path.join(dir, `video-${tag}.mp4`));
+      const url = `${baseUrl.replace(/\/$/, '')}/${slideshowId}/video-${tag}.mp4`;
+      let cover: string | null = null;
+      if (v.poster_path && fs.existsSync(path.join(PATHS.var, v.poster_path))) {
+        fs.copyFileSync(path.join(PATHS.var, v.poster_path), path.join(dir, `cover-${tag}.jpg`));
+        cover = `${baseUrl.replace(/\/$/, '')}/${slideshowId}/cover-${tag}.jpg`;
+      }
+      db.run('UPDATE videos SET public_url = ?, cover_url = ? WHERE id = ?', url, cover, v.id);
+      urls.push(url);
+    }
+    return {dir, urls};
+  }
   const images = db.all('SELECT * FROM images WHERE slideshow_id = ? ORDER BY slide_index', slideshowId);
   if (!images.length) throw new Error(`${slideshowId} : aucune image rendue`);
   const dir = ensureDir(path.join(ROOT, 'media', slideshowId));
