@@ -358,7 +358,9 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
         report.push({compte: a.id, lot: b.batchId, faites: r.done, echouees: r.failed, programmees: planned.length});
       }
       const handed = await runDue(db, cfg, {leadMinutes: 400 * 60});
-      out({comptes: report, publication: {confiees: handed.queued, publiees: handed.published, manuelles: handed.manual, reportees: handed.deferred, echecs: handed.failed}});
+      const since = new Date(Date.now() - 12 * 3_600_000).toISOString();
+      const creneaux = db.all("SELECT s.slideshow_id AS video, s.account_id AS compte, s.scheduled_for AS creneau, s.status AS statut, s.provider_post_id AS zernio, s.last_error AS erreur FROM schedule s JOIN slideshows x ON x.id = s.slideshow_id WHERE x.kind = 'video' AND s.created_at >= ? ORDER BY s.scheduled_for", since);
+      out({comptes: report, publication: {confiees: handed.queued, publiees: handed.published, manuelles: handed.manual, reportees: handed.deferred, echecs: handed.failed}, creneaux});
       return true;
     }
     case 'state:export': {
