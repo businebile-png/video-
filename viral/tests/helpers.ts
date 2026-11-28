@@ -10,6 +10,8 @@ export function tmpDb() {
   const db = new Db(path.join(dir, 'test.db'));
   const cfg = loadConfig();
   syncAccountsFromConfig(db, cfg);
+  // The live accounts publish videos now; the carousel engine is still tested, on every account but YouTube.
+  db.run("UPDATE accounts SET slideshows_enabled = 1 WHERE id != 'youtube-zzetu'");
   return {db, cfg, dir};
 }
 

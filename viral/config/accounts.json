@@ -19,7 +19,7 @@
       "providerProfileId": "6b0162e60e01dff608cb04f0",
       "niche": "business-en-ligne",
       "language": "fr",
-      "slideshows": true,
+      "slideshows": false,
       "brand": {
         "name": "z.zir",
         "handle": "@12eure21",
@@ -99,7 +99,7 @@
       "providerAccountId": null,
       "niche": "business-en-ligne",
       "language": "fr",
-      "slideshows": true,
+      "slideshows": false,
       "brand": {
         "name": "12eu125",
         "handle": "@12eu125",
@@ -176,7 +176,7 @@
       "providerAccountId": null,
       "niche": "business-en-ligne",
       "language": "fr",
-      "slideshows": true,
+      "slideshows": false,
       "brand": {
         "name": "12eu125",
         "handle": "@12eu125",

@@ -30,7 +30,8 @@ if ! "$VENV/bin/python" -I -c "import kokoro_onnx, faster_whisper, soundfile" >/
 fi
 # Voix « Claire » : Chatterbox Multilingual sur PyTorch processeur (Python 3.11, environnement séparé).
 CB=.venv-chatterbox
-if ! "$CB/bin/python" -I -c "import chatterbox.mtl_tts, faster_whisper, perth; assert perth.PerthImplicitWatermarker" >/dev/null 2>&1; then
+# Viral machine: SKIP_CHATTERBOX=1 (GitHub Actions) installs only the fast voices (Kokoro) and faster-whisper.
+if [ "${SKIP_CHATTERBOX:-}" != "1" ] && ! "$CB/bin/python" -I -c "import chatterbox.mtl_tts, faster_whisper, perth; assert perth.PerthImplicitWatermarker" >/dev/null 2>&1; then
   echo "Voix Claire : installation de l'environnement (PyTorch processeur, Chatterbox)…"
   if command -v uv >/dev/null 2>&1; then
     uv venv --quiet --allow-existing --python 3.11 "$CB"
@@ -43,5 +44,5 @@ if ! "$CB/bin/python" -I -c "import chatterbox.mtl_tts, faster_whisper, perth; a
   fi
 fi
 echo "Voix : vérification des modèles…"
-HF_HUB_DISABLE_XET=1 HF_HUB_DISABLE_TELEMETRY=1 "$VENV/bin/python" -I scripts/fetch_voice_models.py "$PWD/models"
+HF_HUB_DISABLE_XET=1 HF_HUB_DISABLE_TELEMETRY=1 "$VENV/bin/python" -I scripts/fetch_voice_models.py "$PWD/models" ${SKIP_CHATTERBOX:+--sans-claire}
 echo "Voix gratuites prêtes (Claire et Siwis)."

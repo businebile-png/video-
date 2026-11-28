@@ -1,7 +1,7 @@
 import type {Db} from '../core/db.js';
 import type {AppConfig} from '../core/config.js';
 import {platformSpec} from '../core/config.js';
-import {getAccount, listAccounts, type Account} from '../core/accounts.js';
+import {getAccount, listAccounts, videoSettings, type Account} from '../core/accounts.js';
 import {addDays, id as newId, isoInZone, nowIso, rng, zonedInstant, zonedParts} from '../core/util.js';
 import {choose} from '../analytics/learn.js';
 
@@ -132,9 +132,12 @@ export function schedule(db: Db, cfg: AppConfig, slideshowId: string, at?: Date)
 /** Fills free slots with approved slideshows, best predicted first, account by account. */
 export function autoSchedule(db: Db, cfg: AppConfig, opts: {accountId?: string; max?: number; horizonDays?: number} = {}): Array<{slideshowId: string; scheduleId: string; at: string}> {
   const out: Array<{slideshowId: string; scheduleId: string; at: string}> = [];
-  const accounts = opts.accountId ? [getAccount(db, opts.accountId)] : listAccounts(db, true);
+  const accounts = opts.accountId ? [getAccount(db, opts.accountId)] : listAccounts(db).filter((a) => a.active && (a.slideshows || videoSettings(a).enabled));
   for (const account of accounts) {
-    const approved = db.all("SELECT id FROM slideshows WHERE account_id = ? AND status = 'approved' ORDER BY COALESCE(predicted, 50) DESC, qc_score DESC, created_at", account.id);
+    // Only the kinds this account publishes: videos when videos are on, carousels only while carousels are on.
+    const kinds = [...(videoSettings(account).enabled ? ["'video'"] : []), ...(account.slideshows ? ["'carousel'"] : [])];
+    if (!kinds.length) continue;
+    const approved = db.all(`SELECT id FROM slideshows WHERE account_id = ? AND status = 'approved' AND kind IN (${kinds.join(', ')}) ORDER BY COALESCE(predicted, 50) DESC, qc_score DESC, created_at`, account.id);
     for (const s of approved) {
       if (opts.max && out.length >= opts.max) return out;
       const at = nextSlot(db, cfg, account, new Date(), opts.horizonDays ?? 14);

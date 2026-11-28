@@ -38,11 +38,12 @@ function log(db: Db, scheduleId: string, message: string, level: 'info' | 'warn'
   db.event('publish', message, {ref: scheduleId, level, data});
 }
 
-export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?: boolean; leadMinutes?: number; only?: string} = {}): Promise<RunReport> {
+export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?: boolean; leadMinutes?: number; metaLeadMinutes?: number; only?: string} = {}): Promise<RunReport> {
   const now = opts.now ?? new Date();
   // Zernio schedules on its side (scheduledFor): hand items over up to 36 h ahead. Meta has no scheduling: 90 min.
   const lead = (opts.leadMinutes ?? 36 * 60) * 60_000;
-  const metaLead = (opts.leadMinutes ?? 90) * 60_000;
+  // Meta publishes at once (no remote scheduling): never hand an item over long before its time.
+  const metaLead = (opts.metaLeadMinutes ?? 90) * 60_000;
   const rows0 = db.all(
     `SELECT * FROM schedule WHERE status IN ('planned', 'deferred') AND scheduled_for <= ? AND (next_attempt_at IS NULL OR next_attempt_at <= ?) ${opts.only ? 'AND id = ?' : ''} ORDER BY scheduled_for`,
     new Date(now.getTime() + lead).toISOString(),
