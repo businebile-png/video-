@@ -365,6 +365,7 @@
   }
 
   async function route() {
+    document.querySelectorAll('.modal').forEach((m) => m.remove());
     const id = (location.hash.replace(/^#\/?/, '').split('?')[0] || 'dashboard').trim();
     const page = PAGES.find((p) => p[0] === id) || PAGES[0];
     nav(page[0]);

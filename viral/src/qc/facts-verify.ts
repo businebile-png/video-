@@ -20,11 +20,29 @@ async function pageText(src: FactSource & {render?: {waitMs?: number; clickBetwe
     try {
       await page.goto(src.url, {waitUntil: 'domcontentloaded', timeout: 60_000});
       await page.waitForTimeout(src.render.waitMs ?? 2000);
-      if (src.render.clickBetween) {
-        await page.click(src.render.clickBetween, {timeout: 15_000});
-        await page.waitForTimeout(1500);
+      // Scroll to the bottom so lazy sections (comparison table, FAQ) are in the DOM.
+      for (let i = 0; i < 12; i++) {
+        await page.mouse.wheel(0, 1600);
+        await page.waitForTimeout(250);
       }
-      const text: string = await page.innerText('body');
+      if (src.render.clickBetween) {
+        // Same method as the video studio: click the switch between the two labels (monthly | annual).
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForTimeout(500);
+        const els = page.locator(`${src.render.clickBetween} >> visible=true`);
+        if ((await els.count()) < 2) throw new Error(`élément « ${src.render.clickBetween} » introuvable`);
+        const a = await els.nth(0).boundingBox();
+        const b = await els.nth(1).boundingBox();
+        if (!a || !b) throw new Error(`élément « ${src.render.clickBetween} » non affiché`);
+        await page.mouse.click((a.x + a.width + b.x) / 2, a.y + a.height / 2);
+        await page.waitForTimeout(2500);
+      }
+      // innerText for the readable snapshot, plus textContent (without scripts) for collapsed FAQ answers.
+      const text: string = await page.evaluate(() => {
+        const clone = document.body.cloneNode(true) as HTMLElement;
+        clone.querySelectorAll('script,style,noscript,svg').forEach((n) => n.remove());
+        return `${document.body.innerText}\n\n${clone.textContent ?? ''}`;
+      });
       if (src.render.expectText && !norm(text).includes(norm(src.render.expectText))) throw new Error(`texte attendu absent (« ${src.render.expectText} »)`);
       return text;
     } finally {
@@ -59,7 +77,8 @@ export async function verifyFacts(dir = PATHS.facts, now = new Date()): Promise<
       fs.writeFileSync(path.join(dir, 'snapshots', `${src.id}.meta.json`), JSON.stringify({id: src.id, url: src.url, fetchedAt: now.toISOString(), chars: text.length}, null, 1));
       for (const f of facts) {
         out.checked++;
-        if (text.includes(norm(f.evidence!))) {
+        // Whitespace-insensitive: block elements are glued together in textContent.
+        if (text.includes(norm(f.evidence!)) || text.replace(/\s+/g, '').includes(norm(f.evidence!).replace(/\s+/g, ''))) {
           f.status = 'verified';
           f.verifiedAt = now.toISOString();
           out.verified++;

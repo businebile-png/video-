@@ -3,7 +3,7 @@
   "dailyBudgetUsd": 2.0,
   "providers": {
     "anthropic": {"kind": "anthropic", "keyEnv": ["ANTHROPIC_API_KEY"], "free": false, "dailyBudgetUsd": 2.0, "dailyCallLimit": 300},
-    "github-models": {"kind": "openai", "baseUrl": "https://models.github.ai/inference", "keyEnv": ["GITHUB_MODELS_TOKEN", "GITHUB_TOKEN"], "free": true, "dailyCallLimit": 120, "headers": {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}},
+    "github-models": {"kind": "openai", "baseUrl": "https://models.github.ai/inference", "keyEnv": ["GITHUB_MODELS_TOKEN"], "free": true, "dailyCallLimit": 120, "headers": {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}},
     "google-ai-studio": {"kind": "openai", "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai", "keyEnv": ["GOOGLE_AI_API_KEY", "GEMINI_API_KEY"], "free": true, "dailyCallLimit": 200},
     "groq": {"kind": "openai", "baseUrl": "https://api.groq.com/openai/v1", "keyEnv": ["GROQ_API_KEY"], "free": true, "dailyCallLimit": 300},
     "openrouter": {"kind": "openai", "baseUrl": "https://openrouter.ai/api/v1", "keyEnv": ["OPENROUTER_API_KEY"], "free": true, "dailyCallLimit": 50},

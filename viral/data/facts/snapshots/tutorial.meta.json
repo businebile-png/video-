@@ -1,10 +1,6 @@
 {
-  "sourceId": "tutorial",
-  "url": "https://systeme.io/fr/tutorial",
-  "finalUrl": "https://systeme.io/fr/tutorial",
-  "fetchedAt": "2026-11-27T23:01:21.666Z",
-  "status": 200,
-  "sha256": "37cf4b8273c4f104dcfd0a5833e508b7548df378eb237acdd541bfb6def58ea5",
-  "chars": 4048,
-  "method": "http"
+ "id": "tutorial",
+ "url": "https://systeme.io/fr/tutorial",
+ "fetchedAt": "2026-11-28T06:19:58.024Z",
+ "chars": 4048
 }
