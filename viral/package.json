@@ -5,11 +5,11 @@
   "description": "Viral Content Machine : veille concurrentielle, détection de mécanismes viraux, génération et publication de carrousels (slideshows) pour plusieurs comptes.",
   "type": "module",
   "engines": {
-    "node": ">=22.5"
+    "node": ">=22.21"
   },
   "scripts": {
-    "viral": "node --no-warnings=ExperimentalWarning --import tsx src/cli.ts",
-    "dashboard": "node --no-warnings=ExperimentalWarning --import tsx src/cli.ts dashboard",
+    "viral": "node --no-warnings --use-env-proxy --import tsx src/cli.ts",
+    "dashboard": "node --no-warnings --use-env-proxy --import tsx src/cli.ts dashboard",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

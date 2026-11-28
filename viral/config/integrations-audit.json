@@ -1,11 +1,41 @@
 {
   "checkedOn": "2026-11-28",
   "connectors": [
-    {"name": "Zernio", "status": "connecté", "use": "Publication TikTok (carrousels photo jusqu'à 35 images) et YouTube ; statistiques de nos publications ; santé des comptes", "note": "2 comptes sains (TikTok @12eure21, YouTube @zzetu). Connecteur MCP opérationnel. La clé de l'API REST enregistrée dans l'environnement cloud est refusée (401) : la publication autonome hors session Claude demande une nouvelle clé ZERNIO_API_KEY."},
-    {"name": "Metricool", "status": "connecté", "use": "Instagram et Threads (@12eu125) ; analyse des concurrents Instagram ; meilleurs horaires", "note": "Marque z.zir (7791839). Aucune publication programmée au 28/11. Aucun concurrent configuré (analyse concurrentielle Instagram vide). Formule gratuite : 20 publications par mois, quota de novembre épuisé selon le studio."},
-    {"name": "Firecrawl", "status": "connecté", "use": "Recherche web ; données publiques de publications (fournisseur ScrapeCreators) pour la veille concurrentielle", "note": "Testé : 60 publications TikTok publiques collectées pour 2 crédits. Source tierce (pas l'API officielle des plateformes) : à utiliser avec modération et à la demande de l'utilisateur."},
-    {"name": "Perspective AI", "status": "connecté", "use": "Non utilisé (questionnaires conversationnels)", "note": "Pas de rôle dans la machine pour l'instant ; pourrait servir à interroger l'audience."},
-    {"name": "Claude Docs", "status": "connecté", "use": "Documents partagés (rapports)", "note": "Disponible pour les rapports."},
-    {"name": "Stoleez", "status": "introuvable", "use": "Demandé par l'utilisateur", "note": "Absent du registre des connecteurs, de npm, de PyPI et des résultats de recherche web au 28/11/2026. Aucune connexion fictive : il faut son adresse officielle (endpoint MCP) ou sa documentation pour l'intégrer."}
+    {
+      "name": "Zernio",
+      "status": "connecté",
+      "use": "Publication TikTok (carrousels photo jusqu'à 35 images) et YouTube ; statistiques de nos publications ; santé des comptes",
+      "note": "2 comptes sains (TikTok @12eure21, YouTube @zzetu). Connecteur MCP opérationnel. API REST : nouvelle clé enregistrée le 28/11/2026 dans l'environnement cloud, testée (comptes lus, 25 statistiques synchronisées). Pour GitHub Actions, l'ajouter aussi comme secret ZERNIO_API_KEY."
+    },
+    {
+      "name": "Metricool",
+      "status": "connecté",
+      "use": "Instagram et Threads (@12eu125) ; analyse des concurrents Instagram ; meilleurs horaires",
+      "note": "Marque z.zir (7791839). Aucune publication programmée au 28/11. Aucun concurrent configuré (analyse concurrentielle Instagram vide). Formule gratuite : 20 publications par mois, quota de novembre épuisé selon le studio."
+    },
+    {
+      "name": "Firecrawl",
+      "status": "connecté",
+      "use": "Recherche web ; données publiques de publications (fournisseur ScrapeCreators) pour la veille concurrentielle",
+      "note": "Testé : 60 publications TikTok publiques collectées pour 2 crédits. Source tierce (pas l'API officielle des plateformes) : à utiliser avec modération et à la demande de l'utilisateur."
+    },
+    {
+      "name": "Perspective AI",
+      "status": "connecté",
+      "use": "Non utilisé (questionnaires conversationnels)",
+      "note": "Pas de rôle dans la machine pour l'instant ; pourrait servir à interroger l'audience."
+    },
+    {
+      "name": "Claude Docs",
+      "status": "connecté",
+      "use": "Documents partagés (rapports)",
+      "note": "Disponible pour les rapports."
+    },
+    {
+      "name": "Stoleez",
+      "status": "introuvable",
+      "use": "Demandé par l'utilisateur",
+      "note": "Absent du registre des connecteurs, de npm, de PyPI et des résultats de recherche web au 28/11/2026. Aucune connexion fictive : il faut son adresse officielle (endpoint MCP) ou sa documentation pour l'intégrer."
+    }
   ]
 }

@@ -25,7 +25,7 @@
 
 | Connecteur | État | Constat |
 |---|---|---|
-| Zernio | connecté | 2 comptes sains ; validation réelle d'un carrousel TikTok de 8 images : « aucun problème ». **La clé de l'API REST enregistrée dans l'environnement cloud est refusée (401).** |
+| Zernio | connecté | 2 comptes sains ; validation réelle d'un carrousel TikTok de 8 images : « aucun problème ». La clé de l'API REST refusée (401) a été remplacée le 28/11 : nouvelle clé testée, 25 statistiques synchronisées par l'API. |
 | Metricool | connecté | Aucune publication programmée, aucun concurrent configuré. Formule gratuite : 20 publications par mois (quota de novembre épuisé selon le studio). |
 | Firecrawl | connecté | Recherche web et données publiques (ScrapeCreators) : 60 publications TikTok de la niche collectées pour 2 crédits. Source tierce, pas l'API officielle des plateformes. |
 | Perspective AI | connecté | Sans rôle pour l'instant. |
@@ -50,7 +50,7 @@
 
 ## Plan d'amélioration (par priorité)
 
-1. Créer une nouvelle clé API Zernio et l'enregistrer (environnement cloud + secret GitHub `ZERNIO_API_KEY`).
+1. ~~Créer une nouvelle clé API Zernio~~ (fait le 28/11, environnement cloud) ; l'ajouter aussi comme secret GitHub `ZERNIO_API_KEY` quand l'automatisation sera activée.
 2. Valider les 30 carrousels en attente dans le tableau de bord, puis autoriser la publication automatique compte par
    compte quand le résultat convient.
 3. Ajouter une clé d'IA gratuite (Google AI Studio) ou activer GitHub Models dans le workflow pour diversifier les

@@ -204,7 +204,7 @@ export function integrationsPage(db: Db, cfg: AppConfig) {
     checkedOn: audit.checkedOn ?? null,
     mcp: audit.connectors ?? [],
     apis: [
-      {name: 'Zernio (API REST)', use: 'Publication TikTok (carrousels photo), statistiques', configured: key('ZERNIO_API_KEY'), note: 'Clé ZERNIO_API_KEY. La clé enregistrée dans l’environnement cloud a été refusée (401) le 28/11/2026.'},
+      {name: 'Zernio (API REST)', use: 'Publication TikTok (carrousels photo), statistiques', configured: key('ZERNIO_API_KEY') || !!process.env.HTTPS_PROXY, note: 'Clé ZERNIO_API_KEY. Dans l’environnement cloud, la clé est injectée par le proxy (nouvelle clé testée le 28/11/2026) ; pour GitHub Actions, l’ajouter comme secret.'},
       {name: 'Instagram (API officielle)', use: 'Publication de carrousels, statistiques', configured: key('INSTAGRAM_ACCESS_TOKEN'), note: 'Jeton INSTAGRAM_ACCESS_TOKEN (même mise en route que le studio : docs/publication-meta.md).'},
       {name: 'Threads (API officielle)', use: 'Publication de carrousels, statistiques', configured: key('THREADS_ACCESS_TOKEN'), note: 'Jeton THREADS_ACCESS_TOKEN.'},
       {name: 'Instagram Graph (Facebook Login)', use: 'Veille officielle : Business Discovery, hashtags', configured: key('META_GRAPH_TOKEN') && key('IG_BUSINESS_ID'), note: 'META_GRAPH_TOKEN + IG_BUSINESS_ID.'},
