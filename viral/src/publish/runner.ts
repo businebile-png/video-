@@ -38,13 +38,16 @@ function log(db: Db, scheduleId: string, message: string, level: 'info' | 'warn'
 
 export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?: boolean; leadMinutes?: number; only?: string} = {}): Promise<RunReport> {
   const now = opts.now ?? new Date();
-  const lead = (opts.leadMinutes ?? 90) * 60_000;
-  const rows = db.all(
+  // Zernio schedules on its side (scheduledFor): hand items over up to 36 h ahead. Meta has no scheduling: 90 min.
+  const lead = (opts.leadMinutes ?? 36 * 60) * 60_000;
+  const metaLead = (opts.leadMinutes ?? 90) * 60_000;
+  const rows0 = db.all(
     `SELECT * FROM schedule WHERE status IN ('planned', 'deferred') AND scheduled_for <= ? AND (next_attempt_at IS NULL OR next_attempt_at <= ?) ${opts.only ? 'AND id = ?' : ''} ORDER BY scheduled_for`,
     new Date(now.getTime() + lead).toISOString(),
     now.toISOString(),
     ...(opts.only ? [opts.only] : []),
   );
+  const rows = rows0.filter((r) => r.provider === 'zernio' || new Date(r.scheduled_for).getTime() <= now.getTime() + metaLead);
   const report: RunReport = {considered: rows.length, published: 0, queued: 0, deferred: 0, failed: 0, manual: 0, skipped: [], dryRun: !!opts.dryRun};
   const readiness = new Map<string, {ok: boolean; reason?: string}>();
   for (const row of rows) {

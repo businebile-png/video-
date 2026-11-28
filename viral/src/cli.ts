@@ -55,7 +55,7 @@ const HELP = `Viral Content Machine — commandes (npm run viral -- <commande>)
   Publication   schedule <id> [--at 2026-12-01T12:30:00+01:00] · schedule:auto [--account id] [--max n] · unschedule <scheduleId>
                 publish:run [--dry-run] · publish:plan (pour une session Claude avec Zernio) · publish:retry <scheduleId>
                 publish:record <scheduleId> --status published|queued_remote|failed [--post-id x] [--url u] [--error e]
-                media:stage <id> [--base-url url]
+                media:stage <id> [--base-url url] · media:stage-due
   Mesure        analytics:import <fichier.json> · analytics:sync · learn
   IA            ai:status · ai:enable <modèle> · ai:disable <modèle> · ai:test [--role writing]
   Faits         facts:verify (relit les pages officielles de systeme.io)
@@ -188,6 +188,11 @@ async function main() {
       return out('remis en file');
     case 'media:stage':
       return out(stageMedia(db, pos[0], flags['base-url'] as string | undefined));
+    case 'media:stage-due': {
+      // Images of everything scheduled in the next 48 h that has no public address yet.
+      const due = db.all("SELECT DISTINCT s.slideshow_id AS id FROM schedule s JOIN images i ON i.slideshow_id = s.slideshow_id WHERE s.status IN ('planned', 'deferred') AND s.scheduled_for <= ? AND i.public_url IS NULL", new Date(Date.now() + 48 * 3_600_000).toISOString());
+      return out(due.map((d) => ({id: d.id, ...stageMedia(db, d.id, flags['base-url'] as string | undefined)})));
+    }
     case 'analytics:import':
       return out(importAnalyticsFile(db, cfg, pos[0]));
     case 'analytics:sync':
@@ -221,7 +226,7 @@ async function main() {
     }
     case 'dashboard:snapshot': {
       const {writeSnapshot} = await import('./dashboard/snapshot.js');
-      return out(await writeSnapshot(db, cfg, (flags.out as string) ?? path.join(PATHS.exports, 'tableau-de-bord.html')));
+      return out(await writeSnapshot(db, cfg, (flags.out as string) ?? path.join(PATHS.exports, 'tableau-de-bord.html'), {artifact: !!flags.artifact}));
     }
     default:
       out(HELP);

@@ -142,6 +142,7 @@
   /* ---------------- pages ---------------- */
 
   const views = {};
+  let baseParams = new URLSearchParams('limit=100');
 
   views.dashboard = async () => {
     const d = await api('/api/overview');
@@ -156,7 +157,7 @@
       <div class="card"><h2>Vues de nos publications (45 jours)</h2>${barChart(d.viewsByDay, 'views', 'day')}</div>
       <div class="card"><h2>Ce qui marche dans la niche</h2>${d.insights.length ? `<ul class="list">${d.insights.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>` : '<div class="empty">Importe des publications concurrentes (Analyse concurrentielle)</div>'}</div>
     </div>
-    <div class="card" style="margin-top:16px"><h2>Meilleurs contenus prêts <a href="#/generateur" class="small">tout voir</a></h2>${thumbs(d.best)}</div>
+    <div class="card" style="margin-top:16px"><h2>Meilleurs contenus prêts <a href="#generateur" class="small">tout voir</a></h2>${thumbs(d.best)}</div>
     <div class="grid g2" style="margin-top:16px">
       <div class="card"><h2>Tendances détectées</h2>${d.trends.length ? `<table><tr><th>Tendance</th><th>Statut</th><th class="num">Récents</th><th class="num">Évolution</th></tr>${d.trends.map((t) => `<tr><td>${esc(t.kind === 'hook_type' ? 'Accroche' : t.kind === 'topic' ? 'Sujet' : 'Hashtag')} : <b>${esc(t.label)}</b></td><td><span class="badge ${t.status === 'emergente' || t.status === 'nouvelle' ? 'b-good' : t.status === 'en baisse' ? 'b-bad' : 'b-info'}">${esc(t.status)}</span></td><td class="num">${t.recent_n}</td><td class="num">${t.growth > 0 ? '+' : ''}${Math.round(t.growth * 100)} %</td></tr>`).join('')}</table>` : '<div class="empty">Pas assez de publications datées</div>'}</div>
       <div class="card"><h2>Nos meilleures publications</h2>${d.bestOwn.length ? `<table><tr><th>Publication</th><th class="num">Vues</th><th class="num">Score</th></tr>${d.bestOwn.map((p) => `<tr><td>${esc(p.platform)} · ${esc((p.hook || '').slice(0, 70))}</td><td class="num">${fmt(p.views)}</td><td class="num">${scoreBadge(p.score)}</td></tr>`).join('')}</table>` : '<div class="empty">Importe les statistiques (Analytics)</div>'}</div>
@@ -194,7 +195,7 @@
   };
 
   views.base = async () => {
-    const params = new URLSearchParams(location.hash.split('?')[1] || '');
+    const params = baseParams;
     const d = await api(`/api/posts?${params.toString() || 'limit=100'}`);
     return `<div class="card"><div class="row act" style="margin-bottom:12px"><select id="fpf"><option value="">Toutes plateformes</option>${['tiktok', 'instagram', 'threads', 'youtube'].map((p) => `<option ${params.get('platform') === p ? 'selected' : ''}>${p}</option>`).join('')}</select><select id="fown"><option value="">Tout</option><option value="0" ${params.get('own') === '0' ? 'selected' : ''}>Concurrents</option><option value="1" ${params.get('own') === '1' ? 'selected' : ''}>Nos publications</option></select><input id="fq" placeholder="Rechercher…" value="${esc(params.get('q') || '')}"><select id="fsort"><option value="score">Tri : score</option><option value="views" ${params.get('sort') === 'views' ? 'selected' : ''}>Tri : vues</option><option value="date" ${params.get('sort') === 'date' ? 'selected' : ''}>Tri : date</option></select><button class="btn" id="fgo">Filtrer</button></div>
       <div class="small muted" style="margin-bottom:8px">${fmt(d.total)} publications</div><div class="scroll"><table><tr><th class="num">Score</th><th>Plateforme</th><th>Compte</th><th>Accroche</th><th>Type</th><th>Structure</th><th>CTA</th><th class="num">Slides</th><th class="num">Vues</th><th class="num">J’aime</th><th class="num">Comm.</th><th class="num">Partages</th><th class="num">Relatif</th><th>Date</th></tr>
@@ -314,7 +315,8 @@
         if ($('#fq').value) p.set('q', $('#fq').value);
         p.set('sort', $('#fsort').value);
         p.set('limit', '200');
-        location.hash = `#/base?${p}`;
+        baseParams = p;
+        route();
       }
       if (t.id === 'impbtn') {
         const r = await post('/api/import', await readFile($('#imp')));
@@ -361,7 +363,7 @@
   /* ---------------- router ---------------- */
 
   function nav(current) {
-    $('#nav').innerHTML = PAGES.map(([id, label]) => `<a href="#/${id === 'dashboard' ? '' : id}" class="${id === current ? 'on' : ''}"><svg viewBox="0 0 24 24" fill="currentColor">${ICONS[id]}</svg>${label}</a>`).join('');
+    $('#nav').innerHTML = PAGES.map(([id, label]) => `<a href="#${id}" class="${id === current ? 'on' : ''}"><svg viewBox="0 0 24 24" fill="currentColor">${ICONS[id]}</svg>${label}</a>`).join('');
   }
 
   async function route() {

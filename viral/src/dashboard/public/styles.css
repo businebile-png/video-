@@ -81,7 +81,7 @@ a:hover { text-decoration: underline; }
 .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); min-width: 0; overflow-x: auto; }
 .card h2 { margin: 0 0 12px; font-size: 15px; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .card h3 { margin: 14px 0 8px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .kpi { display: flex; flex-direction: column; gap: 4px; }
@@ -98,7 +98,7 @@ a:hover { text-decoration: underline; }
 .b-accent { background: var(--accent-soft); color: var(--accent); }
 table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
 tr:last-child td { border-bottom: 0; }
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .scroll { overflow-x: auto; }
@@ -153,7 +153,7 @@ pre.caption { white-space: pre-wrap; background: var(--panel-2); padding: 12px 1
   .nav { display: flex; gap: 4px; overflow-x: auto; }
   .nav a { white-space: nowrap; }
   .side-foot { display: none; }
-  .main { padding: 18px 16px 50px; }
+  .main { padding-block: 18px 50px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .g3, .g2, .g4 { grid-template-columns: 1fr; }
   .form { grid-template-columns: 1fr; }
   .cal { grid-template-columns: 1fr; }

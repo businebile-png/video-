@@ -1,0 +1,99 @@
+# Viral Content Machine — boucle quotidienne (à copier dans .github/workflows/ de la branche PAR DÉFAUT, avec ton accord).
+# ANALYSER → COMPRENDRE → GÉNÉRER → CONTRÔLER → PROGRAMMER → PUBLIER → MESURER → OPTIMISER.
+# Rien n'est publié sur un compte tant que « publication automatique » n'y est pas autorisée (tableau de bord → Comptes) ;
+# les limites de chaque compte et des plateformes s'appliquent à chaque étape.
+name: Viral Content Machine
+
+on:
+  schedule:
+    - cron: '23 6 * * *'    # 7:23 à Paris (heure d'hiver)
+    - cron: '41 15 * * *'   # 16:41 à Paris
+  workflow_dispatch:
+    inputs:
+      per_account:
+        description: Carrousels à générer par compte
+        default: '3'
+      publish:
+        description: Publier ce qui est dû (comptes autorisés uniquement)
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  models: read
+
+concurrency:
+  group: viral-machine
+  cancel-in-progress: false
+
+jobs:
+  boucle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: viral
+    env:
+      ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      FREELLMAPI_URL: ${{ vars.FREELLMAPI_URL }}
+      FREELLMAPI_KEY: ${{ secrets.FREELLMAPI_KEY }}
+      GITHUB_MODELS_TOKEN: ${{ github.token }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      META_GRAPH_TOKEN: ${{ secrets.META_GRAPH_TOKEN }}
+      IG_BUSINESS_ID: ${{ secrets.IG_BUSINESS_ID }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      VIRAL_MEDIA_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/viral/media
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: viral/package-lock.json
+      - name: Base de données de la machine (conservée entre deux passages)
+        uses: actions/cache@v4
+        with:
+          path: viral/var
+          key: viral-var-${{ github.run_id }}
+          restore-keys: viral-var-
+      - name: Installer
+        run: |
+          npm ci
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Faits Systeme.io relus sur les pages officielles
+        run: npm run -s viral -- facts:verify
+      - name: Veille officielle (selon les clés présentes)
+        run: npm run -s viral -- collect || true
+      - name: Boucle (analyse, génération, rendu, contrôle, programmation, statistiques, apprentissage)
+        run: npm run -s viral -- pipeline --per-account ${{ inputs.per_account || '3' }}
+      - name: Images publiques des publications des 48 prochaines heures
+        run: npm run -s viral -- media:stage-due
+      - name: Enregistrer images et faits
+        run: |
+          git config user.name "Viral Content Machine"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add media data/facts 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Viral : images programmées et faits revérifiés"
+            for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*5)); done
+          fi
+      - name: Publier ce qui est dû (comptes où la publication automatique est autorisée)
+        if: github.event_name == 'schedule' || inputs.publish
+        run: npm run -s viral -- publish:run
+      - name: Instantané du tableau de bord
+        if: always()
+        run: npm run -s viral -- dashboard:snapshot --out var/exports/tableau-de-bord.html
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tableau-de-bord
+          retention-days: 14
+          path: viral/var/exports/tableau-de-bord.html

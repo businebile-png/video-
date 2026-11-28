@@ -67,7 +67,7 @@ async function thumbnails(files: string[], width = 300): Promise<Map<string, str
  * Self-contained, read-only copy of the dashboard (one HTML file with its data and thumbnails), suitable for
  * sharing as a private page. It shows the state at the time it was taken; actions need the local dashboard.
  */
-export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opts: {maxSlideshows?: number} = {}): Promise<{file: string; bytes: number}> {
+export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opts: {maxSlideshows?: number; artifact?: boolean} = {}): Promise<{file: string; bytes: number}> {
   const recent = db.all("SELECT id FROM slideshows WHERE status NOT IN ('rejected') ORDER BY COALESCE(predicted, 0) DESC, created_at DESC LIMIT ?", opts.maxSlideshows ?? 24).map((r) => r.id);
   const slideshows: Record<string, any> = {};
   for (const id of recent) slideshows[id] = data.slideshowDetail(db, id);
@@ -98,9 +98,17 @@ export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opt
   const js = fs.readFileSync(path.join(PATHS.dashboardPublic, 'app.js'), 'utf8');
   const html = fs
     .readFileSync(path.join(PATHS.dashboardPublic, 'index.html'), 'utf8')
-    .replace('<link rel="stylesheet" href="styles.css" />', `<style>${css}</style>`)
-    .replace('<script src="app.js"></script>', `<script>window.__SNAPSHOT__=${json.replace(/<\/script/gi, '<\\/script')};</script><script>${js}</script>`);
+    .replace('<link rel="stylesheet" href="styles.css" />', () => `<style>${css}</style>`)
+    .replace('<script src="app.js"></script>', () => `<script>window.__SNAPSHOT__=${json.replace(/<\/script/gi, '<\\/script')};</script><script>${js}</script>`);
   ensureDir(path.dirname(outFile));
-  fs.writeFileSync(outFile, html);
-  return {file: outFile, bytes: Buffer.byteLength(html)};
+  // For a claude.ai Artifact the host adds the document skeleton: keep only title, styles and body content.
+  const out = opts.artifact
+    ? html
+        .replace(/<!doctype html>\s*<html[^>]*>\s*<head>[\s\S]*?<title>/i, '<title>')
+        .replace('</title>', '</title>\n<meta name="claude:viewport-fit-sides" content="cover" />')
+        .replace(/<\/head>\s*<body>/i, '')
+        .replace(/<\/body>\s*<\/html>\s*$/i, '')
+    : html;
+  fs.writeFileSync(outFile, out);
+  return {file: outFile, bytes: Buffer.byteLength(out)};
 }
