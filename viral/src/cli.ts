@@ -53,7 +53,7 @@ const HELP = `Viral Content Machine — commandes (npm run viral -- <commande>)
                 render <id…|--batch b|--status draft> · qc <id…|--batch b> · export <id> [--pdf]
   Validation    approve <id…> [--by nom] · reject <id> --reason "…"
   Publication   schedule <id> [--at 2026-12-01T12:30:00+01:00] · schedule:auto [--account id] [--max n] · unschedule <scheduleId>
-                publish:run [--dry-run] · publish:plan (pour une session Claude avec Zernio) · publish:retry <scheduleId>
+                publish:run [--dry-run] [--lead-hours 400] · account:set <id> [--auto-publish true] [--approval false] · publish:plan (pour une session Claude avec Zernio) · publish:retry <scheduleId>
                 publish:record <scheduleId> --status published|queued_remote|failed [--post-id x] [--url u] [--error e]
                 media:stage <id> [--base-url url] · media:stage-due
   Mesure        analytics:import <fichier.json> · analytics:sync · learn
@@ -177,7 +177,17 @@ async function main() {
       cancel(db, pos[0], String(flags.reason ?? 'annulé à la main'));
       return out('annulé');
     case 'publish:run':
-      return out(await runDue(db, cfg, {dryRun: !!flags['dry-run']}));
+      return out(await runDue(db, cfg, {dryRun: !!flags['dry-run'], leadMinutes: flags['lead-hours'] ? Number(flags['lead-hours']) * 60 : undefined}));
+    case 'account:set': {
+      // e.g. account:set tiktok-12eure21 --auto-publish true --approval false
+      const bool = (v: unknown) => (v === undefined ? undefined : String(v) === 'true');
+      const settings: Record<string, unknown> = {};
+      if (flags['auto-publish'] !== undefined) settings.autoPublish = bool(flags['auto-publish']);
+      if (flags.approval !== undefined) settings.requireApproval = bool(flags.approval);
+      const {updateAccount} = await import('./core/accounts.js');
+      const a = updateAccount(db, pos[0], {settings});
+      return out({id: a.id, validationHumaine: a.settings.requireApproval, publicationAuto: a.settings.autoPublish});
+    }
     case 'publish:plan':
       return out(bridgePlan(db, cfg, Number(flags.hours ?? 36)));
     case 'publish:record':
