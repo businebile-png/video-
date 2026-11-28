@@ -62,8 +62,10 @@ export function runQc(db: Db, cfg: AppConfig, slideshowId: string): QcReport {
   // Structure.
   if (slides[0]?.kind !== 'cover') err('structure', 'slide 1', 'la première slide doit être la couverture (accroche)');
   if (slides.at(-1)?.kind !== 'cta') err('structure', `slide ${slides.length}`, 'la dernière slide doit être l’appel à l’action');
-  if (slides.length < spec.minSlides) err('structure', 'carrousel', `${slides.length} slides : minimum ${spec.minSlides} sur ${spec.label}`);
-  if (slides.length > spec.maxSlides) err('structure', 'carrousel', `${slides.length} slides : maximum ${spec.maxSlides} sur ${spec.label}`);
+  // Videos have scenes, not slides: the carousel limits of the network do not apply to them.
+  const isVideo = ss.kind === 'video';
+  if (!isVideo && slides.length < spec.minSlides) err('structure', 'carrousel', `${slides.length} slides : minimum ${spec.minSlides} sur ${spec.label}`);
+  if (!isVideo && slides.length > spec.maxSlides) err('structure', 'carrousel', `${slides.length} slides : maximum ${spec.maxSlides} sur ${spec.label}`);
   slides.forEach((s, i) => {
     const content = [s.title, s.body, s.left, s.right].filter(Boolean).join(' ').trim();
     if (!content) err('structure', where(i), 'slide vide');
@@ -87,8 +89,8 @@ export function runQc(db: Db, cfg: AppConfig, slideshowId: string): QcReport {
   if (caption.length > spec.captionMax) err('regles-plateforme', 'légende', `${caption.length} caractères : maximum ${spec.captionMax} sur ${spec.label}`);
   const tags = parseJson<string[]>(ss.hashtags_json, []);
   if (tags.length > spec.hashtagsMax) err('regles-plateforme', 'hashtags', `${tags.length} hashtags : maximum ${spec.hashtagsMax}`);
-  if (!spec.carousel) err('regles-plateforme', 'plateforme', `${spec.label} ne publie pas de carrousel`);
-  if (!spec.formats.includes(ss.format)) err('regles-plateforme', 'format', `format ${ss.format} non prévu pour ${spec.label}`);
+  if (!spec.carousel && !isVideo) err('regles-plateforme', 'plateforme', `${spec.label} ne publie pas de carrousel`);
+  if (!isVideo && !spec.formats.includes(ss.format)) err('regles-plateforme', 'format', `format ${ss.format} non prévu pour ${spec.label}`);
   if (!spec.linksClickable && /https?:\/\//.test(caption)) warn('regles-plateforme', 'légende', `les liens ne sont pas cliquables sur ${spec.label} : préfère « lien en bio »`);
 
   // Legal compliance and misleading content.

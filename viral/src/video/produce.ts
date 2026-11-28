@@ -26,7 +26,7 @@ import {downloadClip, pickClip, searchStock} from './stock.js';
 import {buildTimeline} from './timeline.js';
 import type {Aspect, AudioSettings, CaptionSettings, DurationTarget, MusicMood, SceneVisual, VideoFormatId, VideoSpec, VisualMode} from './types.js';
 import {VoiceUnavailable, synthesize} from './voice.js';
-import {envelope} from './wav.js';
+import {envelope, readWav, writeWav} from './wav.js';
 import {generateAiClip, aiVideoAvailable} from './aigen.js';
 
 /**
@@ -302,7 +302,7 @@ export async function stepRender(db: Db, cfg: AppConfig, id: string, opts: {fps?
     } else if (v.kind === 'image' && v.file && fs.existsSync(v.file)) sc.media = {kind: 'image', image: 'file://' + v.file};
     else sc.media = {kind: 'motion'};
   });
-  const tpl = templateById(def.template);
+  const tpl = templateById(spec.template ?? def.template);
   const palette = resolvePalette(tpl, account.brand);
   let character: {svg: string; name: string; mode: 'narrator' | 'story'} | undefined;
   if (def.character) {
@@ -372,4 +372,42 @@ export async function stepRender(db: Db, cfg: AppConfig, id: string, opts: {fps?
   db.event('render', `Vidéo montée (${tl.duration.toFixed(1)} s, ${aspect}, ${(buf.length / 1e6).toFixed(1)} Mo)`, {ref: id});
   void row;
   return {file, cover, srt, duration: tl.duration, frames: r.frames, ms: r.ms, lufs, peak};
+}
+
+/**
+ * Adapted copy whose spoken call to action changes (« lien sur ma chaîne » on YouTube): only the last scene is
+ * voiced again, with the same voice, and spliced after the original narration. Falls back to a full narration
+ * when the original take is not available or the voice differs.
+ */
+export async function stepVoiceCta(db: Db, id: string): Promise<string> {
+  const {spec} = loadSpec(db, id);
+  const prod = spec.production!;
+  const src = (prod as any).sourceVoice as import('./types.js').VoiceTrack | undefined;
+  const scenes = spec.script.scenes;
+  const last = scenes.length - 1;
+  if (!src || !fs.existsSync(src.file) || src.parts.length !== scenes.length) return stepVoice(db, id);
+  const dir = ensureDir(path.join(workDir(id), 'cta'));
+  const voiceId = loadMedia().voices.find((v) => v.label === src.voice || v.id === src.provider)?.id ?? src.provider;
+  const v = await synthesize(db, {parts: [scenes[last].narration || scenes[last].text.title || '…'], voice: voiceId, gender: spec.voice.gender, speed: spec.voice.speed, intonation: spec.voice.intonation, language: spec.voice.language, pitch: spec.voice.pitch ?? 0, seed: seedNum(id) % 100000, outDir: dir, ref: id});
+  if (v.provider !== src.provider) return stepVoice(db, id);
+  const a = readWav(src.file);
+  const b = readWav(v.file);
+  if (a.sampleRate !== b.sampleRate || a.channels !== b.channels) return stepVoice(db, id);
+  const offset = src.parts[last].start;
+  const cut = Math.round(offset * a.sampleRate) * a.channels;
+  const data = new Float32Array(cut + b.data.length);
+  data.set(a.data.subarray(0, cut));
+  data.set(b.data, cut);
+  const file = path.join(workDir(id), 'voice.wav');
+  writeWav(file, {sampleRate: a.sampleRate, channels: a.channels, data});
+  const seconds = data.length / a.channels / a.sampleRate;
+  const words = [...src.words.filter((w) => w.start < offset - 0.02), ...v.words.map((w) => ({text: w.text, start: Math.round((w.start + offset) * 1000) / 1000, end: Math.round((w.end + offset) * 1000) / 1000}))];
+  const parts = [...src.parts.slice(0, last), {start: offset, end: Math.round((offset + v.parts[0].end) * 1000) / 1000}];
+  prod.voice = {...src, file, seconds, words, parts, mismatch: Math.round(((src.mismatch * last + v.mismatch) / scenes.length) * 1000) / 1000, costEur: v.costEur, assetId: v.assetId, warnings: v.warnings};
+  delete (prod as any).sourceVoice;
+  linkAsset(db, id, src.assetId, 'voix');
+  linkAsset(db, id, v.assetId, 'voix (fin)');
+  prod.steps.voice = {at: nowIso(), note: `${src.voice}, fin réenregistrée`};
+  saveSpec(db, id, spec);
+  return `${src.voice} : fin réenregistrée (${seconds.toFixed(1)} s)`;
 }

@@ -94,8 +94,11 @@ export function adaptProject(db: Db, cfg: AppConfig, sourceId: string, targetAcc
   copy.script.cta = profile.cta;
   copy.profile = profileId(cfg, target);
   const revoice = oldCta !== profile.cta || videoSettings(target).voice.id !== spec.voice.id;
-  copy.production = {steps: {}, notes: [`Adaptation de ${sourceId} pour ${target.platform} @${target.handle}`], ...(revoice ? {} : {voice: spec.production?.voice}), visuals: spec.production?.visuals};
-  const caption = videoCaption(cfg, target, copy.script, profile);
+  copy.production = {steps: {}, notes: [`Adaptation de ${sourceId} pour ${target.platform} @${target.handle}`], ...(revoice ? {sourceVoice: spec.production?.voice} : {voice: spec.production?.voice}), visuals: spec.production?.visuals} as any;
+  // Its own look: another template of the target account (fonts, layout), with the target's colours and handle.
+  const pool = (target.brand.templates?.length ? target.brand.templates : ['minimaliste', 'educatif', 'business', 'liste', 'luxe', 'curiosite']).filter((t) => t !== spec.template);
+  copy.template = pool[Math.abs([...sourceId].reduce((h, c) => h * 31 + c.charCodeAt(0), 7)) % pool.length] ?? spec.template;
+  const caption = withCredits(videoCaption(cfg, target, copy.script, profile), rights.credits, profile.captionMax);
   const id = `ss_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
   const now = nowIso();
   db.upsert('slideshows', {
@@ -112,6 +115,7 @@ export function adaptProject(db: Db, cfg: AppConfig, sourceId: string, targetAcc
     render_dir: null,
     export_path: null,
     parent_id: sourceId,
+    template: copy.template,
     video_json: JSON.stringify(copy),
     created_at: now,
     updated_at: now,

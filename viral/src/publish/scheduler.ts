@@ -33,8 +33,10 @@ export function checkSlot(db: Db, cfg: AppConfig, account: Account, at: Date, ex
   const p = zonedParts(at, tz);
   const minute = p.hour * 60 + p.minute;
   const spec = platformSpec(cfg, account.platform);
-  if (!spec.carousel) return {ok: false, reason: `${spec.label} : pas de carrousel`};
-  if (account.limits.maxPerDay <= 0) return {ok: false, reason: 'compte sans publication de carrousels (maximum 0 par jour)'};
+  // Accounts that publish videos are not bound by the network's carousel support or carousel daily cap.
+  const videos = videoSettings(account).enabled;
+  if (!spec.carousel && !videos) return {ok: false, reason: `${spec.label} : pas de carrousel`};
+  if (account.limits.maxPerDay <= 0) return {ok: false, reason: 'compte sans publication (maximum 0 par jour)'};
   if (at.getTime() < Date.now() + 10 * 60_000) return {ok: false, reason: 'créneau passé ou trop proche (moins de 10 minutes)'};
   const [w0, w1] = account.limits.window.map(toMinutes);
   if (minute < w0 || minute > w1) return {ok: false, reason: `hors de la plage ${account.limits.window.join('–')}`};
@@ -47,7 +49,7 @@ export function checkSlot(db: Db, cfg: AppConfig, account: Account, at: Date, ex
   const dayStart = zonedInstant(p.dateKey, '00:00', tz).toISOString();
   const dayEnd = zonedInstant(addDays(p.dateKey, 1), '00:00', tz).toISOString();
   const sameDay = db.get<{n: number}>(`SELECT COUNT(*) AS n FROM schedule WHERE account_id = ? AND status IN ${ACTIVE} AND scheduled_for >= ? AND scheduled_for < ? AND id != ?`, account.id, dayStart, dayEnd, excludeId ?? '')!.n;
-  const dailyCap = Math.min(account.limits.maxPerDay, spec.dailyCap || Infinity);
+  const dailyCap = Math.min(account.limits.maxPerDay, (!videos && spec.dailyCap) || Infinity);
   if (sameDay >= dailyCap) return {ok: false, reason: `plafond du jour atteint (${dailyCap})`};
   const weekStart = new Date(at.getTime() - 6 * 86_400_000).toISOString();
   const week = db.get<{n: number}>(`SELECT COUNT(*) AS n FROM schedule WHERE account_id = ? AND status IN ${ACTIVE} AND scheduled_for >= ? AND scheduled_for <= ? AND id != ?`, account.id, weekStart, at.toISOString(), excludeId ?? '')!.n;

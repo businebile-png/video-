@@ -15,6 +15,7 @@ bash scripts/setup-voice.sh > "$OUT/voix.log" 2>&1 || say "Voix : installation i
 mkdir -p var && cp state/seed.db var/viral.db
 npm run -s viral -- facts:verify > "$OUT/faits.json" 2>&1 || say "Faits : relecture de systeme.io impossible aujourd'hui (les faits déjà vérifiés restent valables 7 jours)."
 npm run -s viral -- publish:sync-remote > "$OUT/sync.json" 2>&1 || { say "Échec : Zernio injoignable."; ok=0; }
+npm run -s viral -- publish:guard-facts > "$OUT/garde.json" 2>&1 && grep -q '"video"' "$OUT/garde.json" && say "Faits changés sur systeme.io : vidéo(s) retirée(s) avant publication."
 if [ "$ok" = 1 ]; then
   npm run -s viral -- factory:daily --per-account 1 > "$OUT/jour.json" 2> "$OUT/jour.log" || { say "Échec : production du jour (voir $OUT/jour.log)."; ok=0; }
 fi

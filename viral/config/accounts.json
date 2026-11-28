@@ -272,18 +272,20 @@
         "defaultFormat": "9:16"
       },
       "limits": {
-        "maxPerDay": 0,
-        "maxPerWeek": 0,
-        "minGapMinutes": 0,
+        "maxPerDay": 1,
+        "maxPerWeek": 7,
+        "minGapMinutes": 180,
         "window": [
           "08:00",
           "22:00"
         ],
-        "preferredTimes": []
+        "preferredTimes": [
+          "13:30"
+        ]
       },
       "settings": {
-        "requireApproval": true,
-        "autoPublish": false,
+        "requireApproval": false,
+        "autoPublish": true,
         "disclosure": true
       },
       "video": {

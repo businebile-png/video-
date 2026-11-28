@@ -226,6 +226,85 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
       out({copie: a.id, revoix: a.revoice, ...steps, fichier: r.file, controle: {ok: q.ok, score: q.score, erreurs: q.errors}});
       return true;
     }
+    case 'video:adapt-all': {
+      // Adapted copies of an account's videos for another account (own look, caption, end card), produced, checked, scheduled.
+      const {getAccount} = await import('../core/accounts.js');
+      const {schedule} = await import('../publish/scheduler.js');
+      const {nextSlot} = await import('../publish/scheduler.js');
+      const {runDue} = await import('../publish/runner.js');
+      const {stepVoiceCta} = await import('./produce.js');
+      const from = getAccount(db, String(flags.from));
+      const to = getAccount(db, String(flags.to));
+      const start = flags.start ? new Date(String(flags.start)) : new Date();
+      const max = flags.max ? Number(flags.max) : Infinity;
+      const sources = db
+        .all(
+          `SELECT s.id FROM slideshows s LEFT JOIN schedule h ON h.slideshow_id = s.id AND h.status != 'cancelled'
+           WHERE s.kind = 'video' AND s.account_id = ? AND s.status IN ('scheduled', 'approved', 'published')
+             AND s.id NOT IN (SELECT parent_id FROM slideshows WHERE account_id = ? AND parent_id IS NOT NULL AND status NOT IN ('rejected', 'qc_failed'))
+           GROUP BY s.id ORDER BY MIN(h.scheduled_for), s.created_at`,
+          from.id,
+          to.id,
+        )
+        .map((r) => r.id as string);
+      const results: unknown[] = [];
+      for (const src of sources.slice(0, max)) {
+        try {
+          const a = adaptProject(db, cfg, src, to.id);
+          const voice = a.revoice ? await stepVoiceCta(db, a.id) : 'voix reprise telle quelle';
+          stepMusic(db, a.id);
+          await stepRender(db, cfg, a.id, {});
+          const q = runVideoQc(db, cfg, a.id);
+          if (!q.ok) {
+            db.run("UPDATE slideshows SET status = 'rejected', rejected_reason = ? WHERE id = ?", 'contrôle qualité de l’adaptation', a.id);
+            throw new Error(`contrôle qualité : ${q.errors.map((e) => e.message).join(' ; ')}`);
+          }
+          let planned: unknown = null;
+          if (flags.schedule) {
+            if (to.provider === 'zernio') await syncRemote(db).catch(() => null);
+            // Never the same content on two accounts within 24 h: the copy goes out at least a day after its source.
+            const srcSlot = db.get<{t: string | null}>("SELECT MIN(scheduled_for) AS t FROM schedule WHERE slideshow_id = ? AND status != 'cancelled'", src)?.t;
+            const after = Math.max(start.getTime(), Date.now(), srcSlot ? Date.parse(srcSlot) + 24 * 3_600_000 + 5 * 60_000 : 0);
+            const at = nextSlot(db, cfg, to, new Date(after));
+            const sch = schedule(db, cfg, a.id, at ?? undefined);
+            if (to.provider === 'zernio') {
+              await runDue(db, cfg, {only: sch.id, leadMinutes: 400 * 60});
+              const row = db.get('SELECT status, provider_post_id, last_error FROM schedule WHERE id = ?', sch.id);
+              planned = {creneau: sch.at, statut: row?.status, zernio: row?.provider_post_id ?? null, erreur: row?.last_error ?? null};
+            } else planned = {creneau: sch.at, statut: 'planned', note: 'à confier à Metricool (metricool:plan)'};
+          }
+          results.push({source: src, copie: a.id, voix: voice, controle: q.score, programmation: planned});
+          log(`✓ ${src} → ${a.id} ${JSON.stringify(planned)}`);
+        } catch (e) {
+          results.push({source: src, ok: false, erreur: (e as Error).message});
+          log(`✗ ${src} : ${(e as Error).message}`);
+        }
+      }
+      out(results);
+      return true;
+    }
+    case 'metricool:plan': {
+      // For a Claude session with the Metricool connector: each planned video of an account, with public media URLs.
+      const {getAccount} = await import('../core/accounts.js');
+      const {ZernioPublisher} = await import('../publish/publishers.js');
+      const pathm = await import('node:path');
+      const {PATHS} = await import('../core/paths.js');
+      const acc = getAccount(db, String(flags.account ?? 'instagram-12eu125'));
+      const rows = db.all("SELECT h.id AS sched, h.scheduled_for, s.id, s.caption, s.video_json FROM schedule h JOIN slideshows s ON s.id = h.slideshow_id WHERE h.account_id = ? AND h.status = 'planned' AND s.kind = 'video' ORDER BY h.scheduled_for", acc.id);
+      const z = new ZernioPublisher(process.env.ZERNIO_API_KEY ?? null, cfg);
+      const plan = [];
+      for (const r of rows.slice(0, flags.max ? Number(flags.max) : rows.length)) {
+        const spec = parseJson<any>(r.video_json, {});
+        const v = db.get<any>('SELECT * FROM videos WHERE slideshow_id = ? AND aspect = ?', r.id, spec.aspect ?? '9:16');
+        if (!v) continue;
+        const url = v.public_url ?? (await z.upload(pathm.join(PATHS.var, v.path), 'video/mp4'));
+        db.run('UPDATE videos SET public_url = ? WHERE id = ?', url, v.id);
+        const local = new Date(r.scheduled_for).toLocaleString('sv-SE', {timeZone: 'Europe/Paris'}).replace(' ', 'T');
+        plan.push({schedule: r.sched, video: r.id, date: local, url, ai: spec.voice?.mode === 'voix', text: r.caption});
+      }
+      out(plan);
+      return true;
+    }
     case 'video:export':
       out(exportVideo(db, cfg, pos[0]));
       return true;
@@ -331,6 +410,30 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
     case 'publish:sync-remote':
       out(await syncRemote(db));
       return true;
+    case 'publish:guard-facts': {
+      // Facts are read again on systeme.io every morning: a scheduled video whose fact is no longer confirmed
+      // (a price changed, a feature moved) is withdrawn from Zernio before it goes out.
+      const {loadFacts} = await import('../core/facts.js');
+      const {cancel} = await import('../publish/scheduler.js');
+      const ok = new Set(loadFacts().facts.filter((f) => f.status === 'verified').map((f) => f.id));
+      const rows = db.all("SELECT h.id, h.provider, h.provider_post_id, h.scheduled_for, s.id AS video, s.fact_ids_json, s.video_json FROM schedule h JOIN slideshows s ON s.id = h.slideshow_id WHERE h.status IN ('planned', 'queued_remote') AND h.scheduled_for > ?", new Date().toISOString());
+      const withdrawn: unknown[] = [];
+      for (const r of rows) {
+        const spec = parseJson<any>(r.video_json, {});
+        const facts = new Set([...parseJson<string[]>(r.fact_ids_json, []), ...(spec?.script?.factIds ?? [])]);
+        const lost = [...facts].filter((f) => !ok.has(f));
+        if (!lost.length) continue;
+        let remote = 'aucun';
+        if (r.provider === 'zernio' && r.provider_post_id && !String(r.provider_post_id).startsWith('metricool:')) {
+          const res = await fetch(`https://zernio.com/api/v1/posts/${r.provider_post_id}`, {method: 'DELETE', headers: {Authorization: `Bearer ${process.env.ZERNIO_API_KEY ?? 'proxy'}`}, signal: AbortSignal.timeout(30_000)});
+          remote = res.ok ? 'retiré de Zernio' : `Zernio HTTP ${res.status}`;
+        } else if (String(r.provider_post_id ?? '').startsWith('metricool:')) remote = 'à retirer de Metricool (session avec le connecteur)';
+        cancel(db, r.id, `faits plus confirmés : ${lost.join(', ')}`);
+        withdrawn.push({video: r.video, creneau: r.scheduled_for, faits: lost, distant: remote});
+      }
+      out({verifiees: rows.length, retirees: withdrawn});
+      return true;
+    }
     case 'factory:daily': {
       // The daily task: for every account whose videos may be published automatically, make N videos and hand them over.
       const {listAccounts, videoSettings} = await import('../core/accounts.js');
