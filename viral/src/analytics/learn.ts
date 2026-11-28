@@ -11,7 +11,13 @@ import {hourBucket, slideBucket} from '../intel/features.js';
  * as evidence grows. ANALYSER → COMPRENDRE → GÉNÉRER → PUBLIER → MESURER → OPTIMISER.
  */
 
-export const LEARN_DIMENSIONS = ['topic', 'structure', 'hook_type', 'template', 'slides', 'hour', 'weekday', 'cta', 'format'] as const;
+export const LEARN_DIMENSIONS = ['topic', 'structure', 'hook_type', 'template', 'slides', 'hour', 'weekday', 'cta', 'format', 'video_format', 'duration', 'voice', 'visuals', 'music'] as const;
+
+/** Duration bucket of a video, shared by our videos and the competitors' (pattern detector). */
+export function durationBucket(seconds: number | null | undefined): string | null {
+  if (!seconds || seconds <= 0) return null;
+  return seconds < 20 ? '0-20s' : seconds < 35 ? '20-35s' : seconds < 50 ? '35-50s' : seconds < 75 ? '50-75s' : seconds < 120 ? '75-120s' : '120s+';
+}
 export type LearnDimension = (typeof LEARN_DIMENSIONS)[number];
 
 interface Stat {
@@ -30,8 +36,8 @@ function addSample(s: Stat, x: number): Stat {
 /** Rebuilds the learning table from every scored own post (idempotent: safe to run after each analytics sync). */
 export function rebuildLearning(db: Db): {samples: number; rows: number} {
   const posts = db.all(
-    `SELECT p.id, p.account_id, p.score, p.published_at, p.hook_type, p.topic, p.structure, p.media_type, p.slide_count, p.cta_type,
-            s.template, s.structure AS ss_structure, s.topic AS ss_topic, s.hook_type AS ss_hook, s.cta AS ss_cta, s.slides_json
+    `SELECT p.id, p.account_id, p.score, p.published_at, p.hook_type, p.topic, p.structure, p.media_type, p.slide_count, p.cta_type, p.duration_s, p.completion_rate,
+            s.template, s.structure AS ss_structure, s.topic AS ss_topic, s.hook_type AS ss_hook, s.cta AS ss_cta, s.slides_json, s.kind, s.video_json
        FROM posts p LEFT JOIN slideshows s ON s.id = p.slideshow_id
       WHERE p.is_own = 1 AND p.score IS NOT NULL`,
   );
@@ -42,22 +48,30 @@ export function rebuildLearning(db: Db): {samples: number; rows: number} {
     stats.set(k, addSample(stats.get(k) ?? {n: 0, mean: 0, m2: 0}, x));
   };
   for (const p of posts) {
-    const slides = p.slides_json ? parseJson<any[]>(p.slides_json, []).length : p.slide_count;
+    const video = p.kind === 'video' ? parseJson<any>(p.video_json, null) : null;
+    const slides = p.slides_json && !video ? parseJson<any[]>(p.slides_json, []).length : p.slide_count;
     const {hour, weekday} = hourBucket(p.published_at);
     const dims: Record<string, string | null> = {
       topic: p.ss_topic ?? p.topic,
       structure: p.ss_structure ?? p.structure,
       hook_type: p.ss_hook ?? p.hook_type,
       template: p.template ?? null,
-      slides: p.slides_json ? slideBucket(slides, 'carousel') : null,
+      slides: p.slides_json && !video ? slideBucket(slides, 'carousel') : null,
       hour,
       weekday,
       cta: p.ss_cta ?? p.cta_type,
-      format: p.slides_json ? 'carousel' : p.media_type,
+      format: video ? 'video' : p.slides_json ? 'carousel' : p.media_type,
+      video_format: video?.format ?? null,
+      duration: durationBucket(p.duration_s ?? video?.production?.voice?.seconds),
+      voice: video ? (video.voice?.mode === 'voix' ? `voix:${video.production?.voice?.provider ?? video.voice.id}` : 'sans-voix') : null,
+      visuals: video?.visuals ?? null,
+      music: video ? (video.music?.mode === 'aucune' ? 'aucune' : video.music?.mood) : null,
     };
+    // Retention counts when the network gives it (share of the video watched on average).
+    const x = p.completion_rate != null ? 0.7 * p.score + 30 * Math.min(1, p.completion_rate) : p.score;
     for (const scope of ['global', p.account_id ? `account:${p.account_id}` : null]) {
       if (!scope) continue;
-      for (const [dim, value] of Object.entries(dims)) add(scope, dim, value, p.score);
+      for (const [dim, value] of Object.entries(dims)) add(scope, dim, value, x);
     }
   }
   const now = new Date().toISOString();
@@ -84,7 +98,7 @@ const PRIOR_K = 5;
 
 /** Market prior for a dimension value (pattern detector output), on the 0-100 score scale. */
 function marketPrior(db: Db, dimension: string, value: string, platform: string): number | null {
-  const dimMap: Record<string, string> = {hook_type: 'hook_type', structure: 'structure', topic: 'topic', slides: 'slides', hour: 'hour', weekday: 'weekday', cta: 'cta_type', format: 'format'};
+  const dimMap: Record<string, string> = {hook_type: 'hook_type', structure: 'structure', topic: 'topic', slides: 'slides', hour: 'hour', weekday: 'weekday', cta: 'cta_type', format: 'format', duration: 'duration', music: 'music'};
   const d = dimMap[dimension];
   if (!d) return null;
   const r =

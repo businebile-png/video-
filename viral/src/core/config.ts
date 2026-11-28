@@ -47,6 +47,34 @@ export const AccountSettingsSchema = z
   .passthrough();
 export type AccountSettings = z.infer<typeof AccountSettingsSchema>;
 
+/** Video choices of an account (the factory reads them; every field can be changed per batch). */
+export const VideoAccountSchema = z
+  .object({
+    enabled: z.boolean().default(true),
+    /** Publication profile: tiktok, reels or shorts. */
+    profile: z.enum(['tiktok', 'reels', 'shorts', 'threads']).optional(),
+    aspects: z.array(z.enum(['9:16', '1:1', '16:9'])).default(['9:16']),
+    durations: z.array(z.number().int()).default([30, 45]),
+    /** Allowed video formats (empty = all). */
+    formats: z.array(z.string()).default([]),
+    voice: z
+      .object({
+        id: z.string().default('auto'),
+        gender: z.enum(['female', 'male']).default('female'),
+        speed: z.number().min(0.7).max(1.4).default(1),
+        intonation: z.enum(['neutre', 'expressive', 'calme']).default('neutre'),
+        language: z.string().default('fr-FR'),
+      })
+      .prefault({}),
+    visuals: z.enum(['auto', 'motion', 'stock', 'images', 'ai']).default('auto'),
+    music: z.enum(['original', 'licence', 'aucune']).default('original'),
+    maxPerDay: z.number().int().min(0).default(1),
+    /** Declare synthetic voice / AI visuals on the platform (TikTok, YouTube, Instagram labels). */
+    aiLabel: z.boolean().default(true),
+  })
+  .passthrough();
+export type VideoAccountSettings = z.infer<typeof VideoAccountSchema>;
+
 export const AccountConfigSchema = z.object({
   id: z.string(),
   platform: z.enum(PLATFORMS),
@@ -63,6 +91,7 @@ export const AccountConfigSchema = z.object({
   brand: BrandSchema,
   limits: LimitsSchema,
   settings: AccountSettingsSchema,
+  video: VideoAccountSchema.optional(),
 });
 export type AccountConfig = z.infer<typeof AccountConfigSchema>;
 
@@ -99,10 +128,30 @@ const SizeSchema = z.object({
 });
 export type SizeSpec = z.infer<typeof SizeSchema>;
 
+const VideoProfileSchema = z.object({
+  label: z.string(),
+  platform: z.string(),
+  aspect: z.enum(['9:16', '1:1', '16:9']),
+  minDuration: z.number(),
+  maxDuration: z.number(),
+  captionMax: z.number(),
+  titleMax: z.number().nullable(),
+  hashtags: z.tuple([z.number(), z.number()]),
+  cta: z.string(),
+  linkHint: z.string(),
+  cover: z.enum(['frame', 'image', 'none']),
+  captionScale: z.number(),
+  hookMaxSeconds: z.number(),
+  sources: z.array(z.string()),
+});
+export type VideoProfile = z.infer<typeof VideoProfileSchema>;
+
 export const PlatformsFileSchema = z.object({
   checkedOn: z.string(),
   platforms: z.record(z.string(), PlatformSpecSchema),
   sizes: z.record(z.string(), SizeSchema),
+  videoSizes: z.record(z.string(), SizeSchema).default({}),
+  videoProfiles: z.record(z.string(), VideoProfileSchema).default({}),
 });
 export type PlatformsFile = z.infer<typeof PlatformsFileSchema>;
 

@@ -238,9 +238,13 @@ async function main() {
       const {writeSnapshot} = await import('./dashboard/snapshot.js');
       return out(await writeSnapshot(db, cfg, (flags.out as string) ?? path.join(PATHS.exports, 'tableau-de-bord.html'), {artifact: !!flags.artifact}));
     }
-    default:
-      out(HELP);
+    default: {
+      const {videoCommand} = await import('./video/cli.js');
+      if (await videoCommand(cmd, pos, flags, db, cfg, out)) return;
+      const {VIDEO_HELP} = await import('./video/cli.js');
+      out(HELP + VIDEO_HELP);
       process.exitCode = 1;
+    }
   }
 }
 

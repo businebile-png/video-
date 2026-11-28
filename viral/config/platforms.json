@@ -4,7 +4,11 @@
     "tiktok": {
       "label": "TikTok (mode photo)",
       "carousel": true,
-      "formats": ["9:16", "4:5", "1:1"],
+      "formats": [
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
       "defaultFormat": "9:16",
       "minSlides": 2,
       "maxSlides": 35,
@@ -24,7 +28,10 @@
     "instagram": {
       "label": "Instagram (carrousel)",
       "carousel": true,
-      "formats": ["4:5", "1:1"],
+      "formats": [
+        "4:5",
+        "1:1"
+      ],
       "defaultFormat": "4:5",
       "minSlides": 2,
       "maxSlides": 10,
@@ -44,7 +51,10 @@
     "threads": {
       "label": "Threads (carrousel)",
       "carousel": true,
-      "formats": ["4:5", "1:1"],
+      "formats": [
+        "4:5",
+        "1:1"
+      ],
       "defaultFormat": "4:5",
       "minSlides": 2,
       "maxSlides": 20,
@@ -63,7 +73,9 @@
     "youtube": {
       "label": "YouTube",
       "carousel": false,
-      "formats": ["9:16"],
+      "formats": [
+        "9:16"
+      ],
       "defaultFormat": "9:16",
       "minSlides": 0,
       "maxSlides": 0,
@@ -74,12 +86,163 @@
       "hashtagsMax": 15,
       "linksClickable": true,
       "dailyCap": 0,
-      "sources": ["L'API YouTube Data ne publie pas de posts « communauté » à images : pas de carrousel automatique possible."]
+      "sources": [
+        "L'API YouTube Data ne publie pas de posts « communauté » à images : pas de carrousel automatique possible."
+      ]
     }
   },
   "sizes": {
-    "9:16": {"width": 1080, "height": 1920, "safe": {"top": 170, "bottom": 430, "left": 80, "right": 150}},
-    "4:5": {"width": 1080, "height": 1350, "safe": {"top": 96, "bottom": 120, "left": 88, "right": 88}},
-    "1:1": {"width": 1080, "height": 1080, "safe": {"top": 88, "bottom": 104, "left": 88, "right": 88}}
+    "9:16": {
+      "width": 1080,
+      "height": 1920,
+      "safe": {
+        "top": 170,
+        "bottom": 430,
+        "left": 80,
+        "right": 150
+      }
+    },
+    "4:5": {
+      "width": 1080,
+      "height": 1350,
+      "safe": {
+        "top": 96,
+        "bottom": 120,
+        "left": 88,
+        "right": 88
+      }
+    },
+    "1:1": {
+      "width": 1080,
+      "height": 1080,
+      "safe": {
+        "top": 88,
+        "bottom": 104,
+        "left": 88,
+        "right": 88
+      }
+    }
+  },
+  "videoSizes": {
+    "9:16": {
+      "width": 1080,
+      "height": 1920,
+      "safe": {
+        "top": 210,
+        "bottom": 440,
+        "left": 60,
+        "right": 150
+      }
+    },
+    "1:1": {
+      "width": 1080,
+      "height": 1080,
+      "safe": {
+        "top": 80,
+        "bottom": 90,
+        "left": 80,
+        "right": 80
+      }
+    },
+    "16:9": {
+      "width": 1920,
+      "height": 1080,
+      "safe": {
+        "top": 70,
+        "bottom": 90,
+        "left": 120,
+        "right": 120
+      }
+    }
+  },
+  "videoProfiles": {
+    "tiktok": {
+      "label": "TikTok",
+      "platform": "tiktok",
+      "aspect": "9:16",
+      "minDuration": 3,
+      "maxDuration": 600,
+      "captionMax": 2200,
+      "titleMax": null,
+      "hashtags": [
+        3,
+        5
+      ],
+      "cta": "Lien en bio",
+      "linkHint": "bio",
+      "cover": "frame",
+      "captionScale": 1.0,
+      "hookMaxSeconds": 1.5,
+      "sources": [
+        "Zernio, page TikTok : vidéo de 3 secondes à 10 minutes, 9:16 recommandé ; couverture par instant (video_cover_timestamp_ms) ou image (docs.zernio.com, consulté le 28/11/2026)",
+        "TikTok Content Posting API : légende de 2 200 caractères au plus pour une vidéo"
+      ]
+    },
+    "reels": {
+      "label": "Instagram Reels",
+      "platform": "instagram",
+      "aspect": "9:16",
+      "minDuration": 3,
+      "maxDuration": 180,
+      "captionMax": 2200,
+      "titleMax": null,
+      "hashtags": [
+        3,
+        5
+      ],
+      "cta": "Lien en bio",
+      "linkHint": "bio",
+      "cover": "image",
+      "captionScale": 0.95,
+      "hookMaxSeconds": 2,
+      "sources": [
+        "Meta Graph API (Reels) : 3 s à 15 min, 9:16 recommandé ; la machine se limite à 3 min pour l'onglet Reels",
+        "Zernio, page Instagram : couverture personnalisée instagramThumbnail, 1080 x 1920 recommandé (consulté le 28/11/2026)"
+      ]
+    },
+    "shorts": {
+      "label": "YouTube Shorts",
+      "platform": "youtube",
+      "aspect": "9:16",
+      "minDuration": 3,
+      "maxDuration": 180,
+      "captionMax": 5000,
+      "titleMax": 100,
+      "hashtags": [
+        2,
+        3
+      ],
+      "cta": "Lien sur ma chaîne",
+      "linkHint": "chaîne",
+      "cover": "none",
+      "captionScale": 0.95,
+      "hookMaxSeconds": 2,
+      "sources": [
+        "Zernio, page YouTube : un Short = 3 min au plus, vertical ou carré ; titre de 100 caractères ; containsSyntheticMedia (consulté le 28/11/2026)",
+        "YouTube : liens non cliquables dans les descriptions et commentaires des Shorts depuis le 31/08/2023, d'où « lien sur ma chaîne »",
+        "Couverture : refusée par YouTube tant que la chaîne n'a pas les couvertures de Shorts personnalisées (constat du studio)"
+      ]
+    },
+    "threads": {
+      "label": "Threads (vidéo)",
+      "platform": "threads",
+      "aspect": "9:16",
+      "minDuration": 3,
+      "maxDuration": 300,
+      "captionMax": 500,
+      "titleMax": null,
+      "hashtags": [
+        0,
+        1
+      ],
+      "cta": "Lien en bio",
+      "linkHint": "bio",
+      "cover": "none",
+      "captionScale": 0.95,
+      "hookMaxSeconds": 2,
+      "sources": [
+        "API Threads : vidéo de 5 minutes au plus, texte de 500 caractères, un seul sujet (tag) par publication"
+      ]
+    }
   }
 }

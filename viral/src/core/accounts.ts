@@ -1,5 +1,5 @@
 import type {Db, Row} from './db.js';
-import type {AccountConfig, AppConfig, Brand, Limits, AccountSettings} from './config.js';
+import {VideoAccountSchema, type AccountConfig, type AppConfig, type Brand, type Limits, type AccountSettings, type VideoAccountSettings} from './config.js';
 import {parseJson} from './util.js';
 
 export interface Account {
@@ -57,6 +57,7 @@ export function syncAccountsFromConfig(db: Db, cfg: AppConfig, overwrite = false
     const existing = db.get('SELECT * FROM accounts WHERE id = ?', a.id);
     const settings = {
       ...a.settings,
+      video: VideoAccountSchema.parse(a.video ?? {}),
       __fallbackProvider: a.fallbackProvider ?? null,
       __providerProfileId: a.providerProfileId ?? null,
       __notes: a.notes ?? null,
@@ -88,7 +89,7 @@ export function syncAccountsFromConfig(db: Db, cfg: AppConfig, overwrite = false
         'UPDATE accounts SET provider = ?, provider_account_id = COALESCE(?, provider_account_id), settings_json = ?, updated_at = ? WHERE id = ?',
         a.provider,
         a.providerAccountId ?? null,
-        JSON.stringify({...settings, ...kept, __fallbackProvider: settings.__fallbackProvider, __providerProfileId: settings.__providerProfileId, __notes: settings.__notes}),
+        JSON.stringify({...settings, ...kept, video: {...settings.video, ...(kept.video ?? {})}, __fallbackProvider: settings.__fallbackProvider, __providerProfileId: settings.__providerProfileId, __notes: settings.__notes}),
         now,
         a.id,
       );
@@ -139,4 +140,9 @@ export function recordHealth(db: Db, report: any): number {
     n++;
   }
   return n;
+}
+
+/** Video choices of an account, with defaults filled in. */
+export function videoSettings(a: Account): VideoAccountSettings {
+  return VideoAccountSchema.parse(a.settings?.video ?? {});
 }

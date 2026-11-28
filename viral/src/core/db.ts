@@ -255,6 +255,117 @@ const MIGRATIONS: string[] = [
   ALTER TABLE posts ADD COLUMN provider_post_id TEXT;
   CREATE INDEX IF NOT EXISTS idx_posts_provider ON posts(provider_post_id);
   `,
+  `
+  CREATE TABLE IF NOT EXISTS videos (
+    id TEXT PRIMARY KEY,
+    slideshow_id TEXT NOT NULL,
+    path TEXT NOT NULL,
+    width INTEGER, height INTEGER, fps INTEGER,
+    duration_s REAL, bytes INTEGER, sha256 TEXT,
+    public_url TEXT,
+    created_at TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_videos_ss ON videos(slideshow_id);
+  `,
+  // 4 — video factory: a video project is a content row (kind = 'video') with its script and choices in
+  // video_json; renders, media rights, production batches, jobs and paid-provider calls get their own tables.
+  `
+  ALTER TABLE slideshows ADD COLUMN kind TEXT NOT NULL DEFAULT 'carousel';
+  ALTER TABLE slideshows ADD COLUMN video_json TEXT;
+  ALTER TABLE slideshows ADD COLUMN parent_id TEXT;
+  CREATE INDEX IF NOT EXISTS idx_ss_kind ON slideshows(kind, account_id, status);
+  CREATE TABLE videos_v2 (
+    id TEXT PRIMARY KEY,
+    slideshow_id TEXT NOT NULL,
+    aspect TEXT NOT NULL DEFAULT '9:16',
+    path TEXT NOT NULL,
+    width INTEGER, height INTEGER, fps INTEGER,
+    duration_s REAL, bytes INTEGER, sha256 TEXT,
+    poster_path TEXT, subtitles_path TEXT,
+    public_url TEXT, cover_url TEXT,
+    qc_status TEXT, qc_json TEXT,
+    render_ms INTEGER, frame_hashes TEXT,
+    cost_eur REAL NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL
+  );
+  INSERT INTO videos_v2 (id, slideshow_id, path, width, height, fps, duration_s, bytes, sha256, public_url, created_at)
+    SELECT id, slideshow_id, path, width, height, fps, duration_s, bytes, sha256, public_url, created_at FROM videos;
+  DROP TABLE videos;
+  ALTER TABLE videos_v2 RENAME TO videos;
+  CREATE INDEX IF NOT EXISTS idx_videos_ss ON videos(slideshow_id);
+  CREATE TABLE IF NOT EXISTS media_assets (
+    id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    source_id TEXT, source_url TEXT, author TEXT, author_url TEXT,
+    path TEXT,
+    license TEXT NOT NULL, license_url TEXT,
+    commercial_ok INTEGER NOT NULL,
+    attribution TEXT,
+    meta_json TEXT,
+    cost_eur REAL NOT NULL DEFAULT 0,
+    sha256 TEXT,
+    created_at TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_assets_source ON media_assets(provider, source_id);
+  CREATE TABLE IF NOT EXISTS slideshow_assets (
+    slideshow_id TEXT NOT NULL,
+    asset_id TEXT NOT NULL,
+    role TEXT NOT NULL,
+    PRIMARY KEY (slideshow_id, asset_id, role)
+  );
+  CREATE TABLE IF NOT EXISTS video_batches (
+    id TEXT PRIMARY KEY,
+    account_id TEXT NOT NULL,
+    niche TEXT,
+    quantity INTEGER NOT NULL,
+    params_json TEXT NOT NULL,
+    status TEXT NOT NULL,
+    budget_eur REAL,
+    spent_eur REAL NOT NULL DEFAULT 0,
+    done INTEGER NOT NULL DEFAULT 0,
+    failed INTEGER NOT NULL DEFAULT 0,
+    note TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS video_jobs (
+    id TEXT PRIMARY KEY,
+    batch_id TEXT NOT NULL,
+    account_id TEXT NOT NULL,
+    slideshow_id TEXT,
+    position INTEGER NOT NULL,
+    params_json TEXT NOT NULL,
+    status TEXT NOT NULL,
+    step TEXT,
+    progress REAL NOT NULL DEFAULT 0,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    error TEXT,
+    cost_eur REAL NOT NULL DEFAULT 0,
+    log_json TEXT,
+    started_at TEXT, finished_at TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_jobs_batch ON video_jobs(batch_id, position);
+  CREATE INDEX IF NOT EXISTS idx_jobs_status ON video_jobs(status);
+  CREATE TABLE IF NOT EXISTS provider_calls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    at TEXT NOT NULL,
+    provider TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    ref TEXT,
+    ok INTEGER NOT NULL,
+    units REAL, unit TEXT,
+    cost_eur REAL NOT NULL DEFAULT 0,
+    ms INTEGER,
+    error TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_pcalls ON provider_calls(provider, at);
+  ALTER TABLE posts ADD COLUMN avg_watch_s REAL;
+  ALTER TABLE posts ADD COLUMN completion_rate REAL;
+  ALTER TABLE posts ADD COLUMN new_followers INTEGER;
+  `,
 ];
 
 export class Db {

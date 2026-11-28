@@ -4,3 +4,8 @@ var/
 *.log
 .env
 .env.*
+.venv-voice/
+.venv-chatterbox/
+models/
+__pycache__/
+.cache/

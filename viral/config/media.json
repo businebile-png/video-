@@ -1,0 +1,84 @@
+{
+  "checkedOn": "2026-11-28",
+  "note": "Fournisseurs de voix, d'images et de vidéos de l'usine. Un fournisseur n'est utilisé que si sa licence autorise l'usage commercial (publicité affiliée) et s'il a répondu à un vrai essai (npm run viral -- video:providers). Ordre = ordre de repli.",
+  "voices": [
+    {
+      "id": "claire", "label": "Claire", "engine": "chatterbox", "language": "fr-FR", "gender": "female", "accent": "France",
+      "license": "Chatterbox Multilingual (Resemble AI, MIT) ; timbre de référence : base SIWIS (CC BY 4.0, comédienne enregistrée pour la synthèse vocale)",
+      "licenseUrl": "https://github.com/resemble-ai/chatterbox/blob/master/LICENSE",
+      "credit": "SIWIS French Speech Synthesis Database (Honnet et al., Idiap / Université de Genève / Université d'Édimbourg)",
+      "commercial": true, "eurPerMChar": 0, "speed": "lente (accélérée sans changer la hauteur)", "notes": "Locale, gratuite, tatouage inaudible Perth (contenu généré par IA)."
+    },
+    {
+      "id": "siwis", "label": "Siwis", "engine": "kokoro", "voice": "ff_siwis", "language": "fr-FR", "gender": "female", "accent": "France",
+      "license": "Kokoro-82M (Apache-2.0), voix ff_siwis entraînée sur la base SIWIS (CC BY 4.0)",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "credit": "SIWIS French Speech Synthesis Database (Honnet et al., Idiap / Université de Genève / Université d'Édimbourg)",
+      "commercial": true, "eurPerMChar": 0, "speed": "rapide", "notes": "Locale, gratuite, voix de secours du studio."
+    },
+    {
+      "id": "hugo", "label": "Hugo (voix grave)", "engine": "kokoro", "voice": "ff_siwis", "language": "fr-FR", "gender": "male", "accent": "France",
+      "transform": {"pitch": 0.8, "formant": "shifted"},
+      "license": "Dérivée de Siwis (Kokoro-82M, Apache-2.0 ; base SIWIS, CC BY 4.0) par abaissement de la hauteur et des formants (FFmpeg rubberband)",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M",
+      "credit": "SIWIS French Speech Synthesis Database (Honnet et al., Idiap / Université de Genève / Université d'Édimbourg)",
+      "commercial": true, "eurPerMChar": 0, "speed": "rapide", "notes": "Voix masculine de synthèse sans imitation d'une personne réelle ; timbre plus artificiel que Claire."
+    },
+    {
+      "id": "elevenlabs", "label": "ElevenLabs", "engine": "elevenlabs", "language": "multi", "gender": "any", "accent": "selon la voix",
+      "host": "api.elevenlabs.io", "headerNote": "clé à enregistrer dans l'en-tête xi-api-key (pas Authorization: Bearer)",
+      "license": "Conditions ElevenLabs : usage commercial seulement avec une offre payante (le plan gratuit l'interdit et exige un crédit)",
+      "licenseUrl": "https://elevenlabs.io/terms-of-use",
+      "commercial": "paid-plan", "eurPerMChar": 165, "model": "eleven_multilingual_v2", "notes": "Utilisée seulement si l'abonnement lu par l'API n'est pas « free »."
+    },
+    {
+      "id": "google", "label": "Google Cloud Text-to-Speech", "engine": "google", "language": "multi", "gender": "any", "accent": "selon la voix",
+      "host": "texttospeech.googleapis.com",
+      "license": "Conditions Google Cloud : l'audio produit appartient au client (facturation Google requise au-delà de l'offre gratuite)",
+      "licenseUrl": "https://cloud.google.com/terms",
+      "commercial": true, "eurPerMChar": 15, "voices": {"female": "fr-FR-Neural2-F", "male": "fr-FR-Neural2-G"},
+      "notes": "Branchement du studio inutilisé à la demande de l'utilisateur (facturation Google) : jamais en tête sans nouvelle demande."
+    }
+  ],
+  "stock": [
+    {
+      "id": "pixabay", "label": "Pixabay (vidéos)", "keyEnv": "PIXABAY_API_KEY", "host": "pixabay.com",
+      "license": "Licence de contenu Pixabay : usage commercial autorisé sans attribution ; interdit de revendre ou redistribuer les vidéos telles quelles, de laisser croire qu'une personne filmée recommande un produit, de la montrer sous un jour dégradant",
+      "licenseUrl": "https://pixabay.com/service/license-summary/",
+      "commercial": true, "attribution": false, "cacheHours": 24
+    },
+    {
+      "id": "pexels", "label": "Pexels (vidéos)", "keyEnv": "PEXELS_API_KEY", "host": "api.pexels.com",
+      "license": "Licence Pexels : usage commercial autorisé sans attribution ; mêmes interdictions (revente telle quelle, faux témoignage d'une personne filmée)",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "commercial": true, "attribution": false, "cacheHours": 24
+    },
+    {
+      "id": "coverr", "label": "Coverr", "host": "api.coverr.co",
+      "license": "Licence Coverr (usage commercial autorisé) — non utilisée : la clé enregistrée est refusée (« Invalid API_KEY », 28/11/2026)",
+      "licenseUrl": "https://coverr.co/license",
+      "commercial": true, "attribution": false, "disabled": "clé refusée"
+    }
+  ],
+  "aiVideo": [
+    {
+      "id": "veo", "label": "Google Veo (API Gemini)", "keyEnv": ["GEMINI_API_KEY", "GOOGLE_AI_API_KEY"], "host": "generativelanguage.googleapis.com",
+      "model": "veo-3.0-fast-generate-001", "eurPerSecond": 0.15, "maxSeconds": 8,
+      "license": "Conditions Gemini API : le contenu généré peut être utilisé commercialement (offre payante) ; tatouage SynthID",
+      "licenseUrl": "https://ai.google.dev/gemini-api/terms",
+      "commercial": true, "tested": false
+    },
+    {
+      "id": "runway", "label": "Runway (Gen-4 Turbo)", "keyEnv": ["RUNWAYML_API_SECRET"], "host": "api.dev.runwayml.com",
+      "model": "gen4_turbo", "eurPerSecond": 0.05, "maxSeconds": 10,
+      "license": "Conditions Runway : les sorties appartiennent à l'utilisateur, usage commercial autorisé sur les offres payantes",
+      "licenseUrl": "https://runwayml.com/terms-of-use",
+      "commercial": true, "tested": false
+    }
+  ],
+  "music": {
+    "default": "original",
+    "licensedDir": "data/assets/music",
+    "rules": "Musique originale générée par la machine (aucun droit tiers). Une piste externe n'est utilisée que si data/assets/music/manifest.json la décrit avec sa licence et sa preuve."
+  }
+}
