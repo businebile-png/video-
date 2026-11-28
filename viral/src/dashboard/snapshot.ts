@@ -12,6 +12,7 @@ import {TEMPLATES} from '../render/templates.js';
 import {composeBatch} from '../generate/composer.js';
 import type {Slide} from '../generate/types.js';
 import * as data from './data.js';
+import * as vdata from './video-data.js';
 
 /** Renders two sample slides per template (cover + one content slide) into var/previews for the template library. */
 export async function renderPreviews(db: Db, cfg: AppConfig): Promise<string[]> {
@@ -67,7 +68,7 @@ async function thumbnails(files: string[], width = 300): Promise<Map<string, str
  * Self-contained, read-only copy of the dashboard (one HTML file with its data and thumbnails), suitable for
  * sharing as a private page. It shows the state at the time it was taken; actions need the local dashboard.
  */
-export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opts: {maxSlideshows?: number; artifact?: boolean} = {}): Promise<{file: string; bytes: number}> {
+export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opts: {maxSlideshows?: number; artifact?: boolean} = {}): Promise<{file: string; bytes: number; files: Record<string, string>}> {
   const recent = db.all("SELECT id FROM slideshows WHERE status NOT IN ('rejected') ORDER BY COALESCE(predicted, 0) DESC, created_at DESC LIMIT ?", opts.maxSlideshows ?? 24).map((r) => r.id);
   const slideshows: Record<string, any> = {};
   for (const id of recent) slideshows[id] = data.slideshowDetail(db, id);
@@ -85,10 +86,26 @@ export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opt
     settings: data.settingsPage(db, cfg),
     integrations: data.integrationsPage(db, cfg),
     slideshows,
+    videos: vdata.videosPage(db, cfg),
+    audio: vdata.audioStudio(db, cfg),
   };
+  for (const v of snapshot.videos.videos) snapshot[`videos/${v.id}`] = vdata.videoDetail(db, v.id);
+  // Audio and video files are published next to the page (relative media/… paths), never embedded.
+  const files = new Map<string, string>();
+  const rel = (x: unknown): unknown => {
+    if (typeof x === 'string' && x.startsWith('/media/') && /\.(mp3|mp4|srt|vtt|jpg)$/.test(x)) {
+      const local = path.join(PATHS.var, decodeURIComponent(x.slice('/media/'.length)));
+      if (fs.existsSync(local)) files.set(x.slice(1), local);
+      return x.slice(1);
+    }
+    if (Array.isArray(x)) return x.map(rel);
+    if (x && typeof x === 'object') return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, rel(v)]));
+    return x;
+  };
+  for (const k of Object.keys(snapshot)) if (k === 'videos' || k === 'audio' || k.startsWith('videos/')) snapshot[k] = rel(snapshot[k]);
   // Replace media/… URLs by embedded thumbnails (only the images the snapshot actually shows).
   let json = JSON.stringify(snapshot);
-  const urls = [...new Set(json.match(/media\/[^"\\]+?\.jpg/g) ?? [])];
+  const urls = [...new Set(json.match(/media\/[^"\\]+?\.jpg/g) ?? [])].filter((u) => !files.has(u));
   const thumbs = await thumbnails(urls.map((u) => path.join(PATHS.var, u.slice('media/'.length))));
   for (const u of urls) {
     const t = thumbs.get(path.join(PATHS.var, u.slice('media/'.length)));
@@ -110,5 +127,5 @@ export async function writeSnapshot(db: Db, cfg: AppConfig, outFile: string, opt
         .replace(/<\/body>\s*<\/html>\s*$/i, '')
     : html;
   fs.writeFileSync(outFile, out);
-  return {file: outFile, bytes: Buffer.byteLength(out)};
+  return {file: outFile, bytes: Buffer.byteLength(out), files: Object.fromEntries(files)};
 }

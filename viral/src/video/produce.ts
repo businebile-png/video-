@@ -12,12 +12,14 @@ import {resolvePalette} from '../render/html.js';
 import {templateById} from '../render/templates.js';
 import {drawCharacter, nameInText} from './characters.js';
 import {formatDef} from './formats.js';
-import {linkAsset, recordAsset} from './media.js';
+import {linkAsset, loadMedia, recordAsset} from './media.js';
 import {MUSIC_CATEGORIES, composeMusic, musicCandidates, musicGrid} from './music.js';
 import {pickTrack, trackPath} from './music-library.js';
 import {choose} from '../analytics/learn.js';
 import {buildVideoPage} from './page.js';
-import {profileFor, videoCaption} from './platforms.js';
+import {profileFor, videoCaption, withCredits} from './platforms.js';
+import {loadConfig} from '../core/config.js';
+const cfgFor = () => loadConfig();
 import {extractFrames, extractStill, mixAudio, renderFrames, writeSubtitles} from './render.js';
 import {scriptFromDraft} from './script.js';
 import {downloadClip, pickClip, searchStock} from './stock.js';
@@ -122,6 +124,12 @@ export async function stepVoice(db: Db, id: string): Promise<string> {
     const v = await synthesize(db, {parts, voice: spec.voice.id, gender: spec.voice.gender, speed: spec.voice.speed, intonation: spec.voice.intonation, language: spec.voice.language, pitch: spec.voice.pitch ?? 0, seed: seedNum(id) % 100000, outDir: workDir(id), ref: id});
     prod.voice = v;
     linkAsset(db, id, v.assetId, 'voix');
+    // The French voices come from recordings under CC BY 4.0: the credit goes in the description (studio practice).
+    const credit = loadMedia().voices.find((x) => x.id === v.provider)?.credit;
+    if (credit) {
+      const {row, account} = loadSpec(db, id);
+      db.run('UPDATE slideshows SET caption = ? WHERE id = ?', withCredits(row.caption ?? '', [credit], profileFor(cfgFor(), account).captionMax), id);
+    }
     prod.notes.push(...v.warnings);
     if (v.mismatch > 0.2) prod.notes.push(`La voix s’écarte du script (${Math.round(v.mismatch * 100)} % de mots mal entendus) : à réécouter.`);
     prod.steps.voice = {at: nowIso(), note: `${v.voice}, ${v.seconds.toFixed(1)} s`};

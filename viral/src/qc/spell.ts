@@ -9,6 +9,7 @@ const WHITELIST = new Set(
   `systeme io systeme.io e-mail e-mails email emails e-book e-books ebook checklist checklists newsletter newsletters webinaire webinaires
    tunnel tunnels workflow workflows crm a/b startup illimité upsell upsells order bump bumps replay replays lead magnet tiktok instagram threads youtube
    carrousel carrousels copywriting slide slides swipe pseudo bio liens post posts hashtag hashtags quiz coaching coach coachs freelance freelances
+   siwis french speech synthesis database honnet idiap
    inès malik sarah paul léa ttc tva rgpd pdf mp3 ia app apps stories reel reels live lives podcast podcasts template templates kit kits
    pas-à-pas tout-en-un prévends prévendre précommande désinscrire désabonne désabonner mails mail réabonnement préinscription pratico-pratique
    apprendras recevras construiras retrouveras renseigne-toi abonne-toi inscris-toi envoie-le dis-moi pose-la garde-la vends-la facilite-leur`

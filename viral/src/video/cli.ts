@@ -22,8 +22,9 @@ export const VIDEO_HELP = `
                 factory:run --account <id> --quantity 100 [--formats a,b] [--durations 30,45] [--budget 5] [--draft]
                 factory:status [lot] · factory:resume <lot> · factory:retry <lot> · factory:cancel <lot>
                 video:from <id> --format <f> --duration 30 (un carrousel devient une vidéo) · video:produce <id…>
-                video:render <id> [--aspect 1:1|16:9] [--draft] · video:qc <id> [--aspect] · video:adapt <id> --to <compte>
+                video:render <id> [--aspect 1:1|16:9] [--draft] · video:qc <id> [--aspect] · video:caption <id> · video:adapt <id> --to <compte>
                 video:export <id> (paquet de publication manuelle) · video:costs
+                intel:videos <réponses.json…> (analyse des vidéos concurrentes) · intel:video-report
   Audio         audio:voices · audio:previews [--voices claire,hugo] (aperçus d'écoute : voix, musiques, effets)
                 audio:preview --voice <id> [--text "…"] [--speed 1.1] [--pitch -2] [--language en-US]
                 audio:set <compte> [--voice hugo] [--music-category auto|cinematic|…] [--music-volume 0.3] [--sfx true]
@@ -147,6 +148,21 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
       out({...r, controle: {ok: q.ok, score: q.score, erreurs: q.errors, remarques: q.warnings}});
       return true;
     }
+    case 'video:caption': {
+      // Rebuilds the description of a video for its network, with the credits its media require.
+      const {loadSpec} = await import('./produce.js');
+      const {profileFor, videoCaption, withCredits, rightsCheck} = await import('./platforms.js');
+      const res: Record<string, string> = {};
+      for (const id of pos) {
+        const {spec, account} = loadSpec(db, id);
+        const profile = profileFor(cfg, account);
+        const caption = withCredits(videoCaption(cfg, account, spec.script, profile), rightsCheck(db, id).credits, profile.captionMax);
+        db.run('UPDATE slideshows SET caption = ?, updated_at = ? WHERE id = ?', caption, new Date().toISOString(), id);
+        res[id] = caption;
+      }
+      out(res);
+      return true;
+    }
     case 'video:qc':
       out(runVideoQc(db, cfg, pos[0], flags.aspect as string | undefined));
       return true;
@@ -242,6 +258,26 @@ export async function videoCommand(cmd: string, pos: string[], flags: Record<str
           attribution: flags.attribution as string | undefined,
         }),
       );
+      return true;
+    }
+    case 'intel:videos': {
+      // Answers of the public data providers (tiktok/video, youtube/video, youtube/search) saved as JSON.
+      const fs = await import('node:fs');
+      const {importVideoAnalysis} = await import('../intel/video-features.js');
+      const {computePatterns, savePatterns} = await import('../intel/patterns.js');
+      const res = [];
+      for (const f of pos) res.push({fichier: f, ...importVideoAnalysis(db, cfg, JSON.parse(fs.readFileSync(f, 'utf8')))});
+      savePatterns(db, computePatterns(db), 'market');
+      out(res);
+      return true;
+    }
+    case 'intel:video-report': {
+      const {parseJson} = await import('../core/util.js');
+      const rows = db.all("SELECT author, platform, views, score, duration_s, features_json FROM posts WHERE is_own = 0 AND media_type = 'video' AND features_json LIKE '%\"video\"%' ORDER BY score DESC");
+      out(rows.map((r) => {
+        const v = parseJson<any>(r.features_json, {}).video ?? {};
+        return {compte: r.author, reseau: r.platform, score: r.score, vues: r.views, duree: r.duration_s, premiere_phrase: v.firstSentence, trois_premieres_secondes: v.first3s, accroche: v.hookType, debit: v.wordsPerSecond, sous_titres: v.captions, musique: v.music, storytelling: v.storytelling, structure: v.structure, conclusion: v.conclusion, appel: v.ctaType, rythme_montage: v.editingRhythm};
+      }));
       return true;
     }
     case 'video:costs':

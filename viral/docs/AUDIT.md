@@ -59,3 +59,19 @@
 5. Clé YouTube Data API et concurrents dans Metricool : veille officielle quotidienne, vers des dizaines de milliers
    de publications analysées.
 6. Donner l'adresse ou la documentation du MCP Stoleez.
+
+## Audit vidéo et audio — 28 novembre 2026 (essais réels)
+
+| Service | État | Constat |
+|---|---|---|
+| Voix Claire, Hugo (Chatterbox, locales) | **fonctionnent** | Installées (`bash scripts/setup-voice.sh`), environ 1 min par phrase sur 4 processeurs, chaque phrase réécoutée et refaite si besoin. |
+| Voix Siwis, Hugo rapide et 10 voix étrangères (Kokoro, locales) | **fonctionnent** | Quelques secondes par vidéo ; anglais américain et britannique, espagnol, italien, portugais du Brésil, femmes et hommes. |
+| ElevenLabs | **refusée (401)** | La clé enregistrée part dans l'en-tête `Authorization: Bearer` alors qu'ElevenLabs l'attend dans `xi-api-key`. Et sur le plan gratuit, ElevenLabs interdit l'usage commercial : la machine ne l'utiliserait qu'avec une offre payante. |
+| Google Text-to-Speech | **refusée (400 « API key not valid »)** | Clé à remplacer, et facturation Google nécessaire ; laissée de côté à la demande de l'utilisateur (studio). |
+| Pixabay (plans vidéo) | **fonctionne** | Licence vérifiée (usage commercial sans attribution) ; recherches mises en cache 24 h. |
+| Coverr | **refusée (401 « Invalid API_KEY »)** | Non utilisée. |
+| Pexels | absente | Clé `PEXELS_API_KEY` non configurée (facultative). |
+| Veo (Google), Runway | **non configurés** | Payants, aucune clé : jamais appelés ; les scènes « IA » passent en plans sous licence et le disent. |
+| Musique | **originale** | 13 ambiances composées par la machine, aucun droit tiers. Aucune piste externe enregistrée. |
+| Statistiques vidéo (Zernio) | **fonctionnent** | Temps de visionnage moyen, taux de visionnage complet et abonnements gagnés importés : sur 25 vidéos du studio, 1,5 s de visionnage moyen et 0,6 % vues jusqu'au bout. |
+| Vidéos concurrentes (Firecrawl / ScrapeCreators) | **fonctionne** | 6 vidéos analysées (7 crédits) : durée, sous-titres, accroche, structure, appel à l'action. Les transcriptions n'ont pas été renvoyées par ce service ; la recherche de Shorts YouTube « systeme.io » est revenue vide. |

@@ -203,6 +203,11 @@ export function fromZernioAnalytics(data: any, accounts: Account[]): NormalizedP
       comments: a.comments ?? null,
       shares: a.shares ?? null,
       saves: a.saves ?? null,
+      // Video retention when the network gives it (Zernio: average watch time in ms, share watched to the end, follows).
+      durationS: typeof a.videoDurationSeconds === 'number' ? a.videoDurationSeconds : null,
+      avgWatchS: typeof a.igReelsAvgWatchTime === 'number' ? Math.round(a.igReelsAvgWatchTime) / 1000 : typeof a.averageViewDuration === 'number' ? a.averageViewDuration : null,
+      completionRate: typeof a.completionRate === 'number' ? a.completionRate : null,
+      newFollowers: typeof a.follows === 'number' ? a.follows : typeof a.subscribersGained === 'number' ? a.subscribersGained : null,
     });
   }
   return out;

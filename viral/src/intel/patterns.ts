@@ -28,6 +28,36 @@ export const DIMENSIONS: Record<string, {label: string; get: (p: any) => string[
     const h = parseJson<any>(p.features_json, {}).hashtagCount ?? 0;
     return [h === 0 ? '0' : h <= 3 ? '1-3' : h <= 6 ? '4-6' : '7+'];
   }},
+  // Video dimensions (public metadata and captions of the videos, never the video files).
+  duration: {label: 'Durée de la vidéo', get: (p) => {
+    const d = p.duration_s;
+    if (!d || p.media_type !== 'video') return [];
+    return [d < 20 ? '0-20s' : d < 35 ? '20-35s' : d < 50 ? '35-50s' : d < 75 ? '50-75s' : d < 120 ? '75-120s' : '120s+'];
+  }},
+  first3s: {label: 'Mots dits dans les 3 premières secondes', get: (p) => {
+    const w = parseJson<any>(p.features_json, {}).video?.first3sWords;
+    return w === null || w === undefined ? [] : [w <= 3 ? '0-3 mots' : w <= 7 ? '4-7 mots' : '8 mots et plus'];
+  }},
+  pace: {label: 'Débit de parole', get: (p) => {
+    const r = parseJson<any>(p.features_json, {}).video?.wordsPerSecond;
+    return !r ? [] : [r < 2 ? 'posé (< 2 mots/s)' : r <= 3 ? 'normal (2-3 mots/s)' : 'rapide (> 3 mots/s)'];
+  }},
+  captions: {label: 'Sous-titres', get: (p) => {
+    const c = parseJson<any>(p.features_json, {}).video?.captions;
+    return c && c !== 'inconnu' ? [c === 'oui' ? 'avec sous-titres' : 'sans sous-titres'] : [];
+  }},
+  music: {label: 'Son', get: (p) => {
+    const m = parseJson<any>(p.features_json, {}).video?.music;
+    return !m || m.original === null || m.original === undefined ? [] : [m.original ? 'son original (voix)' : 'musique connue'];
+  }},
+  storytelling: {label: 'Storytelling', get: (p) => {
+    const v = parseJson<any>(p.features_json, {}).video;
+    return v ? [v.storytelling >= 0.5 ? 'récit' : 'sans récit'] : [];
+  }},
+  conclusion: {label: 'Conclusion', get: (p) => {
+    const v = parseJson<any>(p.features_json, {}).video;
+    return v && v.conclusion !== 'inconnue' ? [v.conclusion] : [];
+  }},
 };
 
 export interface Pattern {

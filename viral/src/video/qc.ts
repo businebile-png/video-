@@ -10,7 +10,7 @@ import {runQc} from '../qc/qc.js';
 import {findForbidden} from '../qc/rules.js';
 import {spellCheck} from '../qc/spell.js';
 import {loadSpec} from './produce.js';
-import {profileFor, rightsCheck} from './platforms.js';
+import {hasCredit, profileFor, rightsCheck} from './platforms.js';
 import {ffprobe} from './render.js';
 import {spokenTokens} from './voice.js';
 import type {Caption} from './timeline.js';
@@ -201,6 +201,7 @@ export function runVideoQc(db: Db, cfg: AppConfig, id: string, aspect?: string):
     if (vv.kind !== 'motion' && !vv.assetId) err('droits', `plan ${i + 1} sans licence enregistrée`);
   });
   measures.credits = rights.credits.join(' · ') || null;
+  if (rights.credits.length && !hasCredit(String(row.caption ?? ''))) err('droits', 'crédit obligatoire (CC BY 4.0) absent de la description');
   // Script: content checks of the carousel engine + the narration itself.
   const content = runQc(db, cfg, id);
   for (const e of content.errors) err('script', `${e.where} : ${e.message}`);

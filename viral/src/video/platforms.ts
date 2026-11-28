@@ -120,3 +120,23 @@ export function adaptProject(db: Db, cfg: AppConfig, sourceId: string, targetAcc
   if (!revoice && spec.production?.voice) db.upsert('slideshow_assets', {slideshow_id: id, asset_id: spec.production.voice.assetId, role: 'voix'}, ['slideshow_id', 'asset_id', 'role']);
   return {id, revoice};
 }
+
+/** CC BY credits (the SIWIS recordings behind the French voices) at the end of a description, within its limit. */
+export function withCredits(caption: string, credits: string[], max: number): string {
+  if (!credits.length) return caption;
+  const long = credits.some((c) => /SIWIS/.test(c)) ? 'Voix de synthèse IA, d’après « SIWIS French Speech Synthesis Database » (Honnet et al., CC BY 4.0), modifiée.' : `Crédits : ${credits.join(' · ')}.`;
+  const short = credits.some((c) => /SIWIS/.test(c)) ? 'Voix IA d’après SIWIS (CC BY 4.0).' : `Crédits : ${credits.join(' · ')}.`;
+  if (caption.includes(long) || caption.includes(short)) return caption;
+  const lines = caption.split('\n');
+  const tagLine = lines.length && /^#/.test(lines[lines.length - 1].trim()) ? lines.pop()! : null;
+  for (const c of [long, short]) {
+    const next = [...lines, c, ...(tagLine ? ['', tagLine] : [])].join('\n').replace(/\n{3,}/g, '\n\n');
+    if (next.length <= max) return next;
+  }
+  // Too long even with the short credit: drop the hashtags rather than the credit.
+  return [...lines, short].join('\n').slice(0, max);
+}
+
+export function hasCredit(caption: string): boolean {
+  return /SIWIS/.test(caption) || /Crédits :/.test(caption);
+}

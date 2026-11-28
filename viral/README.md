@@ -1,9 +1,10 @@
 # Viral Content Machine
 
-Machine de production de carrousels (slideshows) pour faire découvrir **Systeme.io** avec le lien affilié du compte,
-sur plusieurs comptes à la fois : elle étudie la niche, comprend ce qui rend une publication virale, génère des
-carrousels originaux, les contrôle, les programme en respectant les limites de chaque compte, puis apprend des
-statistiques réelles.
+Machine de production de **vidéos** (et de carrousels) pour faire découvrir **Systeme.io** avec le lien affilié du
+compte, sur plusieurs comptes à la fois : elle étudie la niche, comprend ce qui rend une publication virale, écrit des
+scripts originaux, leur donne une voix, une musique, des effets et des sous-titres, monte des vidéos animées en 3D, les
+contrôle, les programme en respectant les limites de chaque compte, puis apprend des statistiques réelles.
+Usine vidéo et moteur audio : [docs/USINE-VIDEO.md](docs/USINE-VIDEO.md).
 
 ```
 ANALYSER → COMPRENDRE → GÉNÉRER → CONTRÔLER → PUBLIER → MESURER → OPTIMISER
@@ -22,7 +23,9 @@ Tableau de bord (copie en lecture seule, privée) : https://claude.ai/artifact/W
 | Contrôle qualité | Orthographe, grammaire, cohérence, faits vérifiés, lisibilité, contraste, dimensions, doublons (nos carrousels et ceux des concurrents), règles des plateformes, promesses interdites ; validation humaine réglable par compte | `src/qc/`, `src/review.ts` |
 | Publication | Calendrier, plafonds par compte, créneaux vidéo réservés, file d'attente, Zernio / Meta / paquet manuel, reprises seulement sur erreur passagère, jamais de contournement d'une limite | `src/publish/` |
 | Boucle d'apprentissage | Statistiques de nos publications → score → apprentissage par dimension (échantillonnage de Thompson) → choix des prochains sujets, accroches, modèles, nombres de slides, horaires | `src/analytics/` |
-| Tableau de bord | 11 pages : Dashboard, Comptes, Analyse concurrentielle, Base de publications, Générateur, Templates, Calendrier, Publications, Analytics, Paramètres, Intégrations MCP | `src/dashboard/` |
+| Usine vidéo | 13 formats (storytelling, éducatif, motivation, business, faits, top 5, top 10, anecdotes, documentaire, voix IA, sans voix, images animées, séquences IA), scripts 15 à 90 s orientés rétention, plans Pixabay, personnages fictifs, transitions 3D, 9:16 / 1:1 / 16:9, lots de 1 à 1 000 vidéos avec reprise, coûts et quotas | `src/video/` |
+| Moteur audio | 16 voix (français, anglais US/UK, espagnol, italien, portugais ; femmes et hommes) avec aperçus, 13 musiques originales calées sur le montage, 14 effets sonores, mixage avec baisse automatique sous la voix et normalisation -14 LUFS, 6 styles de sous-titres personnalisables | `src/video/voice.ts`, `music.ts`, `sfx.ts`, `render.ts` |
+| Tableau de bord | 13 pages : Dashboard, Vidéos (lecteur, production, contrôle), Audio Studio, Comptes, Analyse concurrentielle, Base de publications, Générateur, Templates, Calendrier, Publications, Analytics, Paramètres, Intégrations MCP | `src/dashboard/` |
 
 ## Démarrer
 

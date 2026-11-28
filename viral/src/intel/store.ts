@@ -32,6 +32,10 @@ export interface NormalizedPost {
   saves?: number | null;
   followers?: number | null;
   isPaid?: boolean;
+  /** Own videos: average watch time (s), share of viewers who watched to the end (0-1), follows it brought. */
+  avgWatchS?: number | null;
+  completionRate?: number | null;
+  newFollowers?: number | null;
 }
 
 export interface SaveReport {
@@ -81,6 +85,9 @@ export function savePosts(db: Db, posts: NormalizedPost[]): SaveReport {
         saves: n(p.saves),
         followers: n(p.followers),
         is_paid: p.isPaid ? 1 : 0,
+        avg_watch_s: typeof p.avgWatchS === 'number' ? p.avgWatchS : null,
+        completion_rate: typeof p.completionRate === 'number' ? p.completionRate : null,
+        new_followers: n(p.newFollowers),
       };
       if (existing) {
         const cols = Object.keys(row).filter((c) => c !== 'id');

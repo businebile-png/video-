@@ -65,16 +65,34 @@ jobs:
           restore-keys: viral-var-
       - name: Installer
         run: |
-          npm ci
-          npm install --no-save playwright@1.49.1
-          npx playwright install --with-deps chromium
+          npm ci --no-audit --no-fund
+          npx -y playwright@1.49.1 install --with-deps chromium
+      - name: Modèles de voix (conservés entre deux passages)
+        uses: actions/cache@v4
+        with:
+          path: |
+            viral/models
+            viral/.venv-voice
+          key: voix-${{ hashFiles('viral/scripts/fetch_voice_models.py', 'viral/scripts/setup-voice.sh') }}
+      - name: Voix gratuites (Siwis et Hugo rapide ; Claire et Hugo si le temps le permet)
+        run: bash scripts/setup-voice.sh
       - name: Faits Systeme.io relus sur les pages officielles
         run: npm run -s viral -- facts:verify
       - name: Veille officielle (selon les clés présentes)
         run: npm run -s viral -- collect || true
-      - name: Boucle (analyse, génération, rendu, contrôle, programmation, statistiques, apprentissage)
-        run: npm run -s viral -- pipeline --per-account ${{ inputs.per_account || '3' }}
-      - name: Images publiques des publications des 48 prochaines heures
+      - name: Vidéos du jour (script, voix, plans, musique, montage, contrôle), compte par compte
+        env:
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: |
+          for acc in tiktok-12eure21 youtube-zzetu; do
+            npm run -s viral -- factory:run --account "$acc" --quantity ${{ inputs.per_account || '1' }} --voice siwis || true
+          done
+      - name: Programmation et statistiques
+        run: |
+          npm run -s viral -- schedule:auto || true
+          npm run -s viral -- analytics:sync || true
+          npm run -s viral -- learn || true
+      - name: Médias publics des publications des 48 prochaines heures
         run: npm run -s viral -- media:stage-due
       - name: Enregistrer images et faits
         run: |
