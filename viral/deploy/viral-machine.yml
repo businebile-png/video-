@@ -27,7 +27,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Without the Zernio key the run is skipped (no failure e-mail every morning), and the summary says why.
+  verifier:
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.cle.outputs.ok }}
+    steps:
+      - id: cle
+        env:
+          CLE: ${{ secrets.ZERNIO_API_KEY }}
+        run: |
+          if [ -n "$CLE" ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "Secret ZERNIO_API_KEY absent : tâche sautée (Settings → Secrets and variables → Actions)." >> "$GITHUB_STEP_SUMMARY"
+          fi
   videos:
+    needs: verifier
+    if: needs.verifier.outputs.ok == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 300
     defaults:
@@ -47,12 +63,6 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: viral/package-lock.json
-      - name: Clé Zernio présente ?
-        run: |
-          if [ -z "$ZERNIO_API_KEY" ]; then
-            echo "::error::Secret ZERNIO_API_KEY absent : ajoutez-le dans Settings → Secrets and variables → Actions. Rien n'est produit ni publié."
-            exit 1
-          fi
       - name: État de la machine (conservé d'un passage à l'autre)
         uses: actions/cache@v4
         with:
