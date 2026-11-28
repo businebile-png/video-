@@ -6,6 +6,7 @@ import {getAccount} from '../core/accounts.js';
 import {PATHS, ROOT, ensureDir} from '../core/paths.js';
 import {nowIso, parseJson} from '../core/util.js';
 import {photoTitle} from '../generate/captions.js';
+import {runQc} from '../qc/qc.js';
 import {ManualPublisher, MetaPublisher, ZernioPublisher, type Job, type Outcome, type Publisher} from './publishers.js';
 
 /**
@@ -53,7 +54,8 @@ export async function runDue(db: Db, cfg: AppConfig, opts: {now?: Date; dryRun?:
   for (const row of rows) {
     const ss = db.get('SELECT * FROM slideshows WHERE id = ?', row.slideshow_id);
     const account = getAccount(db, row.account_id);
-    const qc = parseJson<any>(ss?.qc_json, {}).report;
+    // Re-check just before publishing: facts may have expired (prices are valid 7 days) or the text changed.
+    const qc = ss && ss.status === 'scheduled' ? runQc(db, cfg, ss.id) : parseJson<any>(ss?.qc_json, {}).report;
     if (!ss || ss.status !== 'scheduled' || !qc?.ok) {
       report.skipped.push({id: row.id, reason: 'carrousel modifié ou contrôle qualité non valide : reprogrammation nécessaire'});
       db.run("UPDATE schedule SET status = 'cancelled', last_error = ?, updated_at = ? WHERE id = ?", 'contrôle qualité non valide', nowIso(), row.id);

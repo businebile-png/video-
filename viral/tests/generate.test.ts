@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import fs from 'node:fs';
 import {generate} from '../src/generate/generate.js';
-import {composeBatch, slideText} from '../src/generate/composer.js';
+import {composeBatch, coreText, slideText} from '../src/generate/composer.js';
 import {draftsFromAi} from '../src/generate/llm.js';
 import {loadLibrary} from '../src/generate/library.js';
 import {getAccount} from '../src/core/accounts.js';
@@ -43,6 +43,17 @@ describe('générateur hors ligne', () => {
     const fps = drafts.map((d) => shingles(slideText(d.slides), 4));
     for (let i = 0; i < fps.length; i++) for (let j = i + 1; j < fps.length; j++) expect(jaccard(fps[i], fps[j])).toBeLessThan(0.72);
     expect(new Set(drafts.map((d) => d.template)).size).toBeGreaterThan(2);
+  });
+  it('ne répète ni une accroche, ni une histoire, ni un contenu sur un même compte', () => {
+    const {db, cfg} = tmpDb();
+    const acc = getAccount(db, 'threads-12eu125');
+    const drafts = composeBatch(db, cfg, acc, {accountId: acc.id, quantity: 40, seed: 'doublons'});
+    const hooks = drafts.map((d) => d.hook.toLowerCase());
+    expect(new Set(hooks).size).toBe(hooks.length);
+    const stories = drafts.filter((d) => d.structure === 'histoire').map((d) => d.topic);
+    expect(new Set(stories).size).toBe(stories.length);
+    const core = drafts.map((d) => shingles(coreText(d.slides), 4));
+    for (let i = 0; i < core.length; i++) for (let j = i + 1; j < core.length; j++) expect(jaccard(core[i], core[j])).toBeLessThan(0.6);
   });
   it('respecte le nombre de slides et le modèle demandés', () => {
     const {db, cfg} = tmpDb();

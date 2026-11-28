@@ -28,6 +28,11 @@ export function slideText(slides: Slide[]): string {
   return slides.map((s) => [s.label, s.title, s.body, s.left, s.right, s.product?.title, s.product?.body].filter(Boolean).join(' ')).join('\n');
 }
 
+/** Core content of a slideshow (call-to-action slide left out): what makes two slideshows the same. */
+export function coreText(slides: Slide[]): string {
+  return slideText(slides.filter((s) => s.kind !== 'cta'));
+}
+
 function itemsFor(t: LibTopic, s: GenStructure): LibItem[] {
   switch (s) {
     case 'liste':
@@ -61,7 +66,7 @@ export interface ComposeContext {
   cfg: AppConfig;
   account: Account;
   rand: () => number;
-  existing: Array<{account_id: string; hook: string; fp: Set<string>}>;
+  existing: Array<{account_id: string; hook: string; fp: Set<string>; story?: string}>;
 }
 
 export function composeOne(ctx: ComposeContext, req: GenerateRequest, attempt = 0): SlideshowDraft | null {
@@ -99,7 +104,10 @@ export function composeOne(ctx: ComposeContext, req: GenerateRequest, attempt = 
     return cap >= contentCount(s, wanted);
   });
   if (structures.length === 0) return null;
-  const structure = choose(db, {dimension: 'structure', values: structures, accountId: account.id, platform: account.platform, rand}).value as GenStructure;
+  const toldStories = new Set(db.all<{topic: string}>("SELECT topic FROM slideshows WHERE account_id = ? AND structure = 'histoire' AND status NOT IN ('rejected', 'qc_failed')", account.id).map((r) => r.topic));
+  const allowed = structures.filter((s) => s !== 'histoire' || (!toldStories.has(topic!.id) && !ctx.existing.some((e) => e.account_id === account.id && e.story === topic!.id)));
+  if (allowed.length === 0) return attempt < 6 ? composeOne(ctx, req, attempt + 1) : null;
+  const structure = choose(db, {dimension: 'structure', values: allowed, accountId: account.id, platform: account.platform, rand}).value as GenStructure;
 
   // 3. Number of slides: requested, else learned preference among what the topic can fill.
   const cap = capacity(topic, structure);
@@ -135,7 +143,8 @@ export function composeOne(ctx: ComposeContext, req: GenerateRequest, attempt = 
   if (hookTypes.length === 0) return null;
   const hookType = choose(db, {dimension: 'hook_type', values: hookTypes, accountId: account.id, platform: account.platform, rand}).value;
   const hookChoices = shuffle(rand, hookTemplates.filter((h) => h.type === hookType));
-  const hookTpl = hookChoices.find((h) => !usedHooks.has(fillTemplate(h.t, vars).toLowerCase())) ?? hookChoices[0];
+  const hookTpl = hookChoices.find((h) => !usedHooks.has(fillTemplate(h.t, vars).toLowerCase()));
+  if (!hookTpl) return attempt < 6 ? composeOne(ctx, req, attempt + 1) : null;
   const hook = fillTemplate(hookTpl.t, vars);
 
   // 6. Visual template: requested, else the account's templates suited to the structure, learned.
@@ -187,8 +196,8 @@ export function composeOne(ctx: ComposeContext, req: GenerateRequest, attempt = 
   slides.push({kind: 'cta', title: engagement.title, body: engagement.body, product: product ? {title: product.title, body: product.body} : undefined, factIds: product?.factIds});
 
   // 9. Near-duplicate guard for this account.
-  const fp = shingles(slideText(slides), 4);
-  const dup = ctx.existing.find((e) => e.account_id === account.id && jaccard(e.fp, fp) >= 0.72);
+  const fp = shingles(coreText(slides), 4);
+  const dup = ctx.existing.find((e) => e.account_id === account.id && jaccard(e.fp, fp) >= 0.6);
   if (dup) return attempt < 6 ? composeOne(ctx, req, attempt + 1) : null;
 
   const factIds = [...new Set(slides.flatMap((s) => s.factIds ?? []))];
@@ -199,7 +208,7 @@ export function composeOne(ctx: ComposeContext, req: GenerateRequest, attempt = 
   const caption = buildCaption(cfg, {platform: account.platform, hook, slides, engagement: `${engagement.title} ${engagement.body}`.replace(/\s+/g, ' ').trim(), productSentence, hashtags});
   const tone: Tone = req.tone ?? 'direct';
   const predicted = predictScore(ctx, {topic: topic.id, structure, hookType, template, slides: slides.length});
-  ctx.existing.push({account_id: account.id, hook, fp});
+  ctx.existing.push({account_id: account.id, hook, fp, story: structure === 'histoire' ? topic.id : undefined});
   return {
     accountId: account.id,
     platform: account.platform,
@@ -241,8 +250,8 @@ export function predictScore(ctx: ComposeContext, d: {topic: string; structure: 
 export function composeBatch(db: Db, cfg: AppConfig, account: Account, req: GenerateRequest): SlideshowDraft[] {
   const rand = rng(req.seed ?? `${account.id}:${Date.now()}`);
   const existing = db
-    .all('SELECT account_id, hook, slides_json FROM slideshows WHERE account_id = ?', account.id)
-    .map((r) => ({account_id: r.account_id, hook: r.hook ?? '', fp: shingles(slideText(JSON.parse(r.slides_json)), 4)}));
+    .all("SELECT account_id, hook, slides_json FROM slideshows WHERE account_id = ? AND status NOT IN ('rejected', 'qc_failed')", account.id)
+    .map((r) => ({account_id: r.account_id, hook: r.hook ?? '', fp: shingles(coreText(JSON.parse(r.slides_json)), 4)}));
   const ctx: ComposeContext = {db, cfg, account, rand, existing};
   const out: SlideshowDraft[] = [];
   let misses = 0;

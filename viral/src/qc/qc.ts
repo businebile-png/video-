@@ -9,7 +9,7 @@ import {PATHS} from '../core/paths.js';
 import {containment, jaccard, normalize, readabilityFr, shingles, wordCount} from '../core/text.js';
 import {nowIso, parseJson} from '../core/util.js';
 import type {Slide} from '../generate/types.js';
-import {slideText} from '../generate/composer.js';
+import {coreText, slideText} from '../generate/composer.js';
 import {CLAIM_PATTERNS, PRODUCT_CONTEXT, STAT_PATTERN, WEALTH_IMAGERY, claimNumbers, findCompetitors, findForbidden} from './rules.js';
 import {grammarCheck, spellCheck} from './spell.js';
 import {jpegSize} from '../render/renderer.js';
@@ -156,10 +156,15 @@ export function runQc(db: Db, cfg: AppConfig, slideshowId: string): QcReport {
 
   // Duplicates: our own slideshows, other accounts, and competitors' posts (never copy their text).
   const fp = shingles(text, 4);
-  const others = db.all('SELECT id, account_id, template, slides_json, status FROM slideshows WHERE id != ? AND status NOT IN (?, ?)', slideshowId, 'rejected', 'qc_failed');
+  const core = shingles(coreText(slides), 4);
+  const others = db.all('SELECT id, account_id, template, slides_json, status, hook, created_at FROM slideshows WHERE id != ? AND status NOT IN (?, ?)', slideshowId, 'rejected', 'qc_failed');
   for (const o of others) {
-    const sim = jaccard(fp, shingles(slideText(parseJson<Slide[]>(o.slides_json, [])), 4));
-    if (o.account_id === ss.account_id && sim >= 0.72) err('doublons', 'carrousel', `presque identique au carrousel ${o.id} du même compte (${Math.round(sim * 100)} %)`);
+    const oSlides = parseJson<Slide[]>(o.slides_json, []);
+    const sim = jaccard(fp, shingles(slideText(oSlides), 4));
+    const coreSim = jaccard(core, shingles(coreText(oSlides), 4));
+    // Only the newer of two look-alikes is blocked, so the one already planned stays valid.
+    const newer = o.created_at < ss.created_at || (o.created_at === ss.created_at && o.id < ss.id);
+    if (o.account_id === ss.account_id && newer && (coreSim >= 0.6 || (o.hook ?? '').toLowerCase() === (ss.hook ?? '').toLowerCase())) err('doublons', 'carrousel', `même contenu ou même accroche que le carrousel ${o.id} du même compte (${Math.round(coreSim * 100)} % du contenu)`);
     else if (o.account_id === ss.account_id && sim >= 0.5) warn('doublons', 'carrousel', `proche du carrousel ${o.id} (${Math.round(sim * 100)} %)`);
     else if (o.account_id !== ss.account_id && sim >= 0.9 && o.template === ss.template) err('doublons', 'carrousel', `identique au carrousel ${o.id} d’un autre compte : adapte le modèle, l’accroche ou la légende avant de publier`);
   }
