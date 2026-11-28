@@ -1,0 +1,33 @@
+{
+ "note": "Captures de pages officielles de systeme.io faites par le studio (copie). Utilisables avec leur date de capture.",
+ "captures": [
+  {
+   "id": "tarifs-page",
+   "file": "tarifs-page.png",
+   "type": "image",
+   "feature": "pricing",
+   "title": "Page tarifs officielle",
+   "description": "Grille officielle des formules Systeme.io en facturation mensuelle, page systeme.io/fr/pricing lue dans un navigateur le 06/11/2026",
+   "capturedAt": "2026-11-06T17:23:30.218Z",
+   "source": "public-page",
+   "sourceUrl": "https://systeme.io/fr/pricing",
+   "width": 1280,
+   "height": 1100,
+   "personalDataChecked": true
+  },
+  {
+   "id": "tarifs-mobile-startup",
+   "file": "tarifs-mobile-startup.png",
+   "type": "image",
+   "feature": "pricing",
+   "title": "Carte officielle (mobile) : formule Startup",
+   "description": "Carte complète de la formule Startup en facturation mensuelle (titre, description, 17 €, bouton), rien de coupé — page systeme.io/fr/pricing en affichage étroit (600 px), lue dans un navigateur le 11/11/2026",
+   "capturedAt": "2026-11-11",
+   "source": "public-page",
+   "sourceUrl": "https://systeme.io/fr/pricing",
+   "width": 1668,
+   "height": 1548,
+   "personalDataChecked": true
+  }
+ ]
+}

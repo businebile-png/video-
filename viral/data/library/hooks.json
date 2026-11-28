@@ -1,0 +1,74 @@
+{
+  "note": "Formules d'accroche originales, classées par structure. {n} = nombre d'éléments ; les variables viennent du sujet (topics.json). Pas de superlatif, pas de promesse de gain.",
+  "templates": {
+    "liste": [
+      {"type": "liste", "t": "{n} conseils pour {action}"},
+      {"type": "liste", "t": "{n} idées simples pour {action}"},
+      {"type": "question", "t": "Tu veux {action} ? Voici {n} conseils"},
+      {"type": "liste", "t": "{n} choses à savoir sur {theme}"},
+      {"type": "curiosite", "t": "Ce qu'on oublie souvent avec {sujet}"}
+    ],
+    "erreurs": [
+      {"type": "erreur", "t": "{n} erreurs qui sabotent {sujet}"},
+      {"type": "erreur", "t": "{n} erreurs à éviter avec {sujet}"},
+      {"type": "question", "t": "Pourquoi {probleme} ? {n} erreurs fréquentes"},
+      {"type": "erreur", "t": "Tu fais peut-être ces {n} erreurs avec {sujet}"},
+      {"type": "curiosite", "t": "Ce qui bloque {sujet}, et comment corriger"}
+    ],
+    "etapes": [
+      {"type": "tutoriel", "t": "Comment {action} en {n} étapes"},
+      {"type": "tutoriel", "t": "{Theme} : le pas-à-pas en {n} étapes"},
+      {"type": "question", "t": "{Theme} : par où commencer ?"},
+      {"type": "tutoriel", "t": "La méthode simple pour {action}"}
+    ],
+    "mythe-realite": [
+      {"type": "contre-pied", "t": "{n} idées reçues sur {theme}"},
+      {"type": "contre-pied", "t": "{Theme} : mythe ou réalité ?"},
+      {"type": "curiosite", "t": "Ce que tu crois savoir sur {theme}"}
+    ],
+    "avant-apres": [
+      {"type": "avant-apres", "t": "Avant / après : {theme}"},
+      {"type": "avant-apres", "t": "{Theme} : avant, après"},
+      {"type": "question", "t": "Et si tu changeais ça dans {sujet} ?"}
+    ],
+    "histoire": [
+      {"type": "histoire", "t": "Exemple : {storyTitle}"},
+      {"type": "question", "t": "Pourquoi {probleme} ? Un exemple"},
+      {"type": "histoire", "t": "Une petite histoire sur {theme}"}
+    ],
+    "definition": [
+      {"type": "definition", "t": "C'est quoi, {objet} ?"},
+      {"type": "definition", "t": "{Theme}, expliqué simplement"},
+      {"type": "question", "t": "{Theme} : tu sais vraiment ce que c'est ?"}
+    ],
+    "faits": [
+      {"type": "curiosite", "t": "Ce que contient vraiment {sujet}"},
+      {"type": "question", "t": "{Theme} : qu'est-ce qui est inclus ?"},
+      {"type": "liste", "t": "{n} choses à savoir sur {sujet}"}
+    ]
+  },
+  "topicHooks": {
+    "systeme-io-gratuit": [
+      {"type": "chiffre", "t": "0 € et jusqu'à 2 000 contacts : le plan gratuit de Systeme.io", "factIds": ["plan.free.price", "plan.free.contacts"]},
+      {"type": "question", "t": "Que peux-tu faire avec Systeme.io sans payer ?", "factIds": ["plan.free.exists"]}
+    ],
+    "systeme-io-formules": [
+      {"type": "comparaison", "t": "Systeme.io : gratuit, Startup, Webinaire ou Illimité ?", "factIds": ["plan.free.exists"]},
+      {"type": "question", "t": "Combien coûte Systeme.io ? Les formules en clair", "factIds": ["plan.startup.price"]}
+    ],
+    "systeme-io-fonctions": [
+      {"type": "question", "t": "Systeme.io, ça sert à quoi ?"},
+      {"type": "liste", "t": "{n} choses que tu peux faire avec Systeme.io"}
+    ]
+  },
+  "subtitles": {
+    "liste": ["Enregistre-le pour plus tard", "À garder sous la main"],
+    "erreurs": ["Et quoi faire à la place", "Avec la correction pour chacune"],
+    "etapes": ["Le pas-à-pas, slide par slide", "Dans l'ordre, sans jargon"],
+    "mythe-realite": ["Ce qui est vrai, ce qui ne l'est pas"],
+    "avant-apres": ["Ce qui change concrètement"],
+    "histoire": ["Un exemple fictif, une vraie leçon"],
+    "definition": ["Expliqué en quelques slides"],
+    "faits": ["Vérifié sur systeme.io le {verifiedOn}"]
+  }
+}

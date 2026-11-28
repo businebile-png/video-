@@ -1,0 +1,97 @@
+Loading
+© 2026 systeme.io Help Center · help.systeme.io
+How automation rules work | systeme.io Help Center
+Categories
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General ›
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+On this page
+1. Creating an automation rule
+2. Adding a trigger
+3. Adding actions
+4. Additional information
+Categories · General
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+General
+English
+العربية
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Français
+हिन्दी
+Magyar
+Bahasa Indonesia
+Italiano
+日本語
+Nederlands
+Norsk
+Polski
+Português
+Română
+Русский
+Slovenčina
+Slovenščina
+Shqip
+Српски
+Svenska
+ไทย
+Türkçe
+Українська
+中文
+How automation rules work
+In this article, you will learn how to automate your business using systeme.io automation rules.
+1. Creating an automation rule
+Click Rules (1) under the automations tab.
+Click Create (2) to create a new rule.
+Inside the rule editor, you will see two columns: Trigger (3) and Action (4).
+2. Adding a trigger
+The trigger is an event that specifies when to activate the automation rule.
+To select a trigger, click the + icon (1).
+Select a trigger from the Add trigger list according to your use case.
+Note: For the Email link clicked trigger, the system applies a 1-minute cooldown after the first recorded click. This prevents the rule from executing multiple times due to accidental double-clicks or automated background security checks performed by email providers (like Gmail).
+Example: Ask yourself, who should receive these emails?
+To send emails to prospects who register through an opt-in page, form, or popup, select Funnel step form subscribed (2), then select the page.
+To send emails to customers who have purchased a product, select New sale (3).
+To send emails to contacts who have been assigned a specific tag, select Tag added (4).
+Notes:
+The tag must be added to the contacts after the rule is set up.
+A trigger can only be activated a maximum of 20 times by the same contact. After the 20th time, the trigger will be deactivated, and automation rules and workflows will be disabled for that contact.
+3. Adding actions
+Actions are events in systeme.io that occur after a trigger is activated.
+To add an action, click the blue + icon (1).
+Example: To automatically send an email after someone registers, select the Send email (2).
+Then create an email by clicking the + icon (3), or choose an existing email from the list (4).
+Click Save rule (5) to save your changes.
+You can also create automation rules directly inside your funnels editor.
+4. Additional information
+Automation rule task history is stored for only one month. After this period, it will be automatically removed from the system as part of data cleanup and optimization.
+If you can't find a past task in a contact's profile, it is likely older than 30 days and has been removed.
+Did this answer your question?
+Last updated on November 10, 2026

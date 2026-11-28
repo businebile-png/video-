@@ -1,0 +1,479 @@
+{
+  "version": 1,
+  "note": "Contenu original écrit pour le studio. Aucune phrase reprise d'un concurrent. Toute affirmation sur Systeme.io (prix, limites, fonctions) porte l'identifiant d'un fait vérifié (data/facts). Les « exemples » sont des scénarios fictifs présentés comme tels.",
+  "topics": [
+    {
+      "id": "tunnel-de-vente",
+      "label": "Tunnel de vente",
+      "hashtagTopic": "tunnel-de-vente",
+      "vars": {"sujet": "ton tunnel de vente", "theme": "le tunnel de vente", "objet": "un tunnel de vente", "action": "créer ton premier tunnel de vente", "probleme": "tes visiteurs repartent sans rien acheter", "public": "tu veux vendre en ligne"},
+      "definition": {"title": "Un tunnel de vente, c'est quoi ?", "body": "Le chemin que suit un visiteur : il te découvre, laisse son e-mail, reçoit tes conseils, puis achète quand il est prêt."},
+      "steps": [
+        {"title": "Une page de capture", "body": "Tu offres quelque chose d'utile (guide, checklist, mini-formation) en échange d'une adresse e-mail."},
+        {"title": "Une page de remerciement", "body": "Elle confirme l'inscription et dit quoi faire ensuite : ouvrir l'e-mail, regarder une vidéo, rejoindre un groupe."},
+        {"title": "Une suite d'e-mails", "body": "Quelques e-mails qui aident vraiment, puis qui présentent ton offre au bon moment."},
+        {"title": "Une page de vente", "body": "Le problème, ta solution, ce que contient l'offre, le prix et les questions fréquentes."},
+        {"title": "Une page de paiement", "body": "Garde-la simple : chaque champ en trop est une raison d'hésiter."},
+        {"title": "Un suivi après l'achat", "body": "Un e-mail de bienvenue, l'accès au produit, puis une offre complémentaire si elle a du sens."}
+      ],
+      "tips": [
+        {"title": "Commence petit", "body": "Une page de capture, un e-mail de bienvenue, une page de vente. Tu compliqueras plus tard."},
+        {"title": "Un seul objectif par page", "body": "Chaque page demande une seule action : s'inscrire, lire, ou payer."},
+        {"title": "Mesure trois chiffres", "body": "Combien s'inscrivent, combien ouvrent tes e-mails, combien achètent."},
+        {"title": "Parle d'un problème précis", "body": "« Trouver ses premiers clients » parle plus que « réussir en ligne »."},
+        {"title": "Relance sans pression", "body": "Deux ou trois rappels honnêtes, sans fausse urgence ni compte à rebours inventé."},
+        {"title": "Teste sur téléphone", "body": "Tes visiteurs arrivent souvent depuis les réseaux : vérifie chaque page sur mobile."}
+      ],
+      "mistakes": [
+        {"title": "Commencer par la page de vente", "fix": "Sans liste e-mail, tu parles à des inconnus. Commence par récolter des contacts."},
+        {"title": "Demander trop d'informations", "fix": "Un prénom et un e-mail suffisent pour démarrer."},
+        {"title": "Bâcler la page de remerciement", "fix": "La personne vient de dire oui : dis-lui exactement quoi faire ensuite."},
+        {"title": "Ne jamais relancer", "fix": "Une seule annonce ne suffit pas toujours. Prévois des rappels honnêtes."},
+        {"title": "Copier le tunnel d'un autre", "fix": "Inspire-toi de la structure, pas des mots : ton audience et ton offre sont différentes."},
+        {"title": "Tout construire avant de vendre", "fix": "Vérifie d'abord la demande avec une page simple, puis améliore."}
+      ],
+      "myths": [
+        {"myth": "Il faut une grosse audience.", "reality": "Un tunnel sert justement à transformer une petite audience en contacts, puis en clients."},
+        {"myth": "C'est réservé aux experts du marketing.", "reality": "Une page, un formulaire, quelques e-mails : les étapes sont simples, et des modèles existent."},
+        {"myth": "Un tunnel se fait une fois pour toutes.", "reality": "Tu l'ajustes avec tes chiffres : inscriptions, ouvertures, ventes."},
+        {"myth": "Plus la page est longue, mieux elle vend.", "reality": "La bonne longueur répond aux questions de ton client. Ni plus, ni moins."}
+      ],
+      "beforeAfter": [
+        {"before": "Un lien en bio vers une page de paiement", "after": "Un lien vers un guide offert, puis des e-mails qui préparent l'achat"},
+        {"before": "Des posts sans suite", "after": "Chaque post invite à rejoindre ta liste e-mail"},
+        {"before": "Des ventes au hasard", "after": "Un parcours que tu peux mesurer et améliorer"},
+        {"before": "Tu relances chaque personne à la main", "after": "Les e-mails partent automatiquement après l'inscription"}
+      ],
+      "story": {"title": "Inès et ses cours de couture", "setup": "Exemple fictif : Inès vend des cours de couture en ligne.", "problem": "Ses vidéos plaisent, mais le lien de sa bio mène directement au paiement. Les visiteurs regardent, puis partent.", "turn": "Elle ajoute une étape : un patron offert en échange de l'e-mail, puis trois e-mails de conseils.", "lesson": "On achète plus facilement à quelqu'un qu'on connaît déjà. Le tunnel crée ce lien."},
+      "facts": ["feature.funnels", "plan.table.funnels", "feature.auto-email-on-subscribe"],
+      "productLine": {"text": "Sur Systeme.io, tu crées tes tunnels à partir de modèles.", "factIds": ["feature.funnels"]}
+    },
+    {
+      "id": "page-de-capture",
+      "label": "Page de capture",
+      "hashtagTopic": "page-de-capture",
+      "vars": {"sujet": "ta page de capture", "theme": "la page de capture", "objet": "une page de capture", "action": "créer une page de capture qui donne envie de s'inscrire", "probleme": "personne ne laisse son e-mail", "public": "tu veux construire ta liste"},
+      "definition": {"title": "Une page de capture, c'est quoi ?", "body": "Une page avec un seul but : obtenir l'e-mail d'un visiteur, en échange de quelque chose d'utile."},
+      "tips": [
+        {"title": "Un seul objectif", "body": "Pas de menu, pas de liens qui partent ailleurs : un titre, une promesse, un formulaire."},
+        {"title": "Un titre qui parle du résultat", "body": "« La checklist pour publier ta première formation » parle plus que « Ma newsletter »."},
+        {"title": "Un cadeau précis", "body": "Mieux vaut régler un petit problème concret que promettre de tout changer."},
+        {"title": "Un formulaire court", "body": "Prénom et e-mail. Le reste, tu le demanderas plus tard."},
+        {"title": "Un bouton qui dit ce qui se passe", "body": "« Je reçois la checklist » plutôt que « Envoyer »."},
+        {"title": "Montre le contenu", "body": "Une couverture, un aperçu ou un sommaire : on veut voir ce qu'on va recevoir."},
+        {"title": "Un consentement clair", "body": "Dis ce que la personne recevra et comment se désinscrire. C'est la règle en Europe, et ça rassure."}
+      ],
+      "mistakes": [
+        {"title": "Promettre trop", "fix": "Une promesse exagérée attire des inscrits déçus. Promets ce que ton contenu tient vraiment."},
+        {"title": "Proposer plusieurs choses", "fix": "Une page, une action. Le choix fait hésiter."},
+        {"title": "Un cadeau trop long", "fix": "Un guide de 80 pages fait peur. Une checklist d'une page se lit en deux minutes."},
+        {"title": "Oublier le mobile", "fix": "Vérifie ta page sur téléphone : c'est là qu'arrivent tes visiteurs venus des réseaux."},
+        {"title": "Ne rien tester", "fix": "Change un seul élément à la fois (titre, bouton, image) et compare les inscriptions."}
+      ],
+      "beforeAfter": [
+        {"before": "Titre : « Inscris-toi à ma newsletter »", "after": "Titre : « Reçois 7 modèles d'e-mails prêts à copier »"},
+        {"before": "Un formulaire de six champs", "after": "Prénom + e-mail, c'est tout"},
+        {"before": "Bouton « Valider »", "after": "Bouton « Je veux la checklist »"},
+        {"before": "Une page avec menu et liens partout", "after": "Une page qui mène à une seule action"}
+      ],
+      "myths": [
+        {"myth": "Plus il y a de champs, mieux tu connais tes inscrits.", "reality": "Chaque champ en plus freine l'inscription. Tu apprendras le reste avec tes e-mails."},
+        {"myth": "Une belle page suffit.", "reality": "Ce qui compte d'abord, c'est un cadeau que ton public veut vraiment."}
+      ],
+      "story": {"title": "Malik et sa newsletter", "setup": "Exemple fictif : Malik, coach sportif, propose « sa newsletter » en bio.", "problem": "Personne ne voit ce qu'il y gagnerait à s'inscrire.", "turn": "Il remplace la newsletter par un programme offert : « 10 minutes d'exercices pour le dos, chaque matin pendant 7 jours ».", "lesson": "On ne s'inscrit pas à une newsletter : on s'inscrit pour obtenir un résultat précis."},
+      "facts": ["feature.funnels", "feature.ab-testing"],
+      "productLine": {"text": "Systeme.io permet de faire des tests A/B pour comparer deux versions.", "factIds": ["feature.ab-testing"]}
+    },
+    {
+      "id": "idees-cadeau",
+      "label": "Idées de cadeaux pour ta liste",
+      "hashtagTopic": "page-de-capture",
+      "vars": {"sujet": "ton cadeau d'inscription", "theme": "le cadeau d'inscription", "objet": "un cadeau qui donne envie de s'inscrire", "action": "trouver un cadeau qui donne envie de s'inscrire", "probleme": "ton cadeau n'attire personne", "public": "tu veux plus d'inscrits"},
+      "tips": [
+        {"title": "Une checklist", "body": "Les étapes à cocher pour réussir une tâche précise."},
+        {"title": "Un modèle à copier", "body": "Un modèle d'e-mail, de post ou de planning, prêt à remplir."},
+        {"title": "Un mini-guide", "body": "Quelques pages qui règlent un seul problème, sans détour."},
+        {"title": "Une mini-formation par e-mail", "body": "Une leçon par jour pendant cinq jours, directement dans la boîte mail."},
+        {"title": "Un quiz", "body": "On aime se découvrir. Et toi, tu apprends à connaître ton audience."},
+        {"title": "Un atelier enregistré", "body": "Une vidéo courte où tu montres une méthode en direct."},
+        {"title": "Un planning sur 30 jours", "body": "Une action simple par jour pour avancer sur un objectif."},
+        {"title": "Ta boîte à outils", "body": "La liste commentée des outils que tu recommandes, et pourquoi."},
+        {"title": "Un défi de 7 jours", "body": "Une petite action chaque jour, avec un e-mail pour guider."}
+      ],
+      "mistakes": [
+        {"title": "Un cadeau sans lien avec ton offre", "fix": "Il doit attirer les personnes qui auront besoin de ce que tu vends ensuite."},
+        {"title": "Un cadeau trop général", "fix": "« Réussir sur Instagram » est flou. « 30 idées de posts pour une boulangerie » est précis."},
+        {"title": "Un cadeau qu'on ne finit pas", "fix": "S'il demande des heures, personne n'en voit le bénéfice. Vise une victoire rapide."}
+      ],
+      "beforeAfter": [
+        {"before": "« Mon e-book complet sur le marketing »", "after": "« La checklist pour publier ton premier carrousel »"},
+        {"before": "Un PDF envoyé à la main", "after": "Le cadeau livré automatiquement dès l'inscription"}
+      ],
+      "facts": ["feature.auto-email-on-subscribe"],
+      "productLine": {"text": "Avec une règle d'automatisation, Systeme.io peut envoyer le cadeau dès l'inscription.", "factIds": ["feature.auto-email-on-subscribe"]}
+    },
+    {
+      "id": "liste-email",
+      "label": "Liste e-mail",
+      "hashtagTopic": "liste-email",
+      "vars": {"sujet": "ta liste e-mail", "theme": "la liste e-mail", "objet": "une liste e-mail", "action": "construire une liste e-mail qui te lit vraiment", "probleme": "tes e-mails ne sont pas ouverts", "public": "tu veux garder le contact avec ton audience"},
+      "definition": {"title": "Pourquoi une liste e-mail ?", "body": "Ce sont des personnes qui t'ont donné leur adresse pour te lire. Aucun algorithme de réseau social ne décide qui voit ton message."},
+      "steps": [
+        {"title": "E-mail 1 : la livraison", "body": "Le cadeau promis, et ce que la personne va recevoir ensuite."},
+        {"title": "E-mail 2 : ton histoire", "body": "Pourquoi tu fais ça, en quelques lignes sincères."},
+        {"title": "E-mail 3 : un conseil utile", "body": "Une astuce qu'on peut appliquer tout de suite."},
+        {"title": "E-mail 4 : une erreur courante", "body": "Ce qui bloque souvent, et comment l'éviter."},
+        {"title": "E-mail 5 : ton offre", "body": "Ce que tu proposes, pour qui, et comment l'essayer."}
+      ],
+      "tips": [
+        {"title": "Un e-mail de bienvenue tout de suite", "body": "Envoie-le juste après l'inscription, quand l'intérêt est encore frais."},
+        {"title": "Un rythme régulier", "body": "Un jour fixe chaque semaine : tes abonnés s'habituent à te lire."},
+        {"title": "Des objets honnêtes", "body": "L'objet donne envie d'ouvrir, sans mentir sur le contenu."},
+        {"title": "Plus d'aide que de vente", "body": "Des conseils utiles la plupart du temps. Ton offre quand elle répond au sujet."},
+        {"title": "Un seul lien principal", "body": "Un e-mail, une action. Plusieurs liens dispersent l'attention."},
+        {"title": "Écris à une seule personne", "body": "« Tu », des phrases courtes, des exemples concrets."},
+        {"title": "Fais le ménage", "body": "Les contacts qui n'ouvrent plus rien depuis des mois : relance-les une fois, puis retire-les."}
+      ],
+      "mistakes": [
+        {"title": "N'écrire que pour vendre", "fix": "On quitte une liste qui ne fait que vendre. Aide d'abord."},
+        {"title": "Acheter des adresses", "fix": "Sans consentement, c'est interdit en Europe, et ça abîme ta réputation d'expéditeur."},
+        {"title": "Disparaître entre deux lancements", "fix": "Ta liste t'oublie si tu ne lui écris jamais. Garde le contact."},
+        {"title": "Des e-mails trop longs", "fix": "Une idée par e-mail, et va droit au but."}
+      ],
+      "myths": [
+        {"myth": "L'e-mail, c'est dépassé.", "reality": "Une adresse e-mail reste un contact direct, qui ne dépend d'aucun réseau social."},
+        {"myth": "Il faut des milliers d'inscrits pour vendre.", "reality": "Une petite liste qui te lit vaut mieux qu'une grande liste qui n'ouvre rien."},
+        {"myth": "Écrire chaque semaine, c'est déranger.", "reality": "Si ton e-mail est utile, il est attendu. On se désabonne d'un contenu inutile, pas d'un rythme."}
+      ],
+      "beforeAfter": [
+        {"before": "Un e-mail seulement quand tu lances un produit", "after": "Un conseil chaque semaine, et ton offre quand elle aide"},
+        {"before": "Objet : « Newsletter n°12 »", "after": "Objet : « Une question rapide sur ton projet »"},
+        {"before": "Tu envoies chaque e-mail de bienvenue à la main", "after": "Une suite de bienvenue part toute seule"}
+      ],
+      "story": {"title": "Sarah et ses lancements", "setup": "Exemple fictif : Sarah n'écrit à sa liste que lorsqu'elle lance un atelier.", "problem": "À chaque lancement, ses abonnés ont oublié qui elle est.", "turn": "Elle envoie désormais un conseil court chaque mardi, et parle de ses ateliers quand le sujet s'y prête.", "lesson": "Une liste, ça s'entretient. La confiance se construit entre les ventes."},
+      "facts": ["feature.email-marketing", "plan.table.emails-sent", "plan.free.contacts", "feature.auto-email-on-subscribe"],
+      "productLine": {"text": "Sur Systeme.io, les e-mails envoyés sont illimités, même avec le plan gratuit.", "factIds": ["plan.table.emails-sent"]}
+    },
+    {
+      "id": "formation-en-ligne",
+      "label": "Formation en ligne",
+      "hashtagTopic": "formation-en-ligne",
+      "vars": {"sujet": "ta formation en ligne", "theme": "la formation en ligne", "objet": "une formation en ligne", "action": "créer ta première formation en ligne", "probleme": "ta formation ne se vend pas", "public": "tu veux transmettre ce que tu sais"},
+      "steps": [
+        {"title": "Choisis un résultat précis", "body": "« Monter sa première vidéo » plutôt que « Tout sur la vidéo »."},
+        {"title": "Vérifie la demande", "body": "Les questions qu'on te pose souvent sont de bons sujets. Demande à ton audience ce qui la bloque."},
+        {"title": "Fais un plan court", "body": "Des modules dans l'ordre des étapes, du plus simple au plus avancé."},
+        {"title": "Des leçons courtes", "body": "Une leçon, une idée. C'est plus facile à suivre et à terminer."},
+        {"title": "Enregistre simplement", "body": "Un téléphone, un micro correct et une bonne lumière suffisent pour commencer."},
+        {"title": "Ajoute des exercices", "body": "Une fiche, un modèle, une checklist : on apprend en faisant."},
+        {"title": "Lance une première version", "body": "Vends-la à un petit groupe, écoute les retours, puis améliore."}
+      ],
+      "mistakes": [
+        {"title": "Tout mettre dans la formation", "fix": "Trop de contenu noie l'élève. Garde ce qui mène au résultat."},
+        {"title": "Créer avant de vendre", "fix": "Teste l'intérêt avec une page de présentation ou une liste d'attente."},
+        {"title": "Négliger l'accueil", "fix": "Un e-mail de bienvenue et une première leçon facile donnent envie de continuer."},
+        {"title": "Fixer un prix au hasard", "fix": "Pense à ce que vaut le résultat pour ton élève, et regarde ce qui existe sur ton sujet."}
+      ],
+      "myths": [
+        {"myth": "Il faut être un grand expert pour enseigner.", "reality": "Il faut savoir faire ce que tu enseignes et l'expliquer clairement."},
+        {"myth": "Une formation doit durer des heures.", "reality": "Elle doit mener au résultat promis. Parfois, une heure bien construite suffit."},
+        {"myth": "Il faut du matériel professionnel.", "reality": "Un contenu clair compte plus qu'une image parfaite."}
+      ],
+      "beforeAfter": [
+        {"before": "« Tout sur Instagram » : 12 heures de vidéos", "after": "« Organiser ton contenu du mois » : 5 leçons courtes"},
+        {"before": "Des vidéos envoyées par lien privé", "after": "Un espace de formation avec accès à l'achat"},
+        {"before": "Tu crées pendant six mois sans rien vendre", "after": "Tu prévends, puis tu crées avec tes premiers élèves"}
+      ],
+      "story": {"title": "Paul et sa formation de 40 vidéos", "setup": "Exemple fictif : Paul passe l'hiver à tourner 40 vidéos sur la photo.", "problem": "Au lancement, personne n'en voulait : le sujet était trop large.", "turn": "Il recommence avec une promesse précise : « Réussir les photos de tes produits avec ton téléphone ».", "lesson": "Une promesse précise se vend plus facilement qu'un programme qui parle de tout."},
+      "facts": ["feature.courses", "plan.table.courses"],
+      "productLine": {"text": "Systeme.io permet de créer et de vendre des formations en ligne.", "factIds": ["feature.courses"]}
+    },
+    {
+      "id": "produit-numerique",
+      "label": "Produit numérique",
+      "hashtagTopic": "produit-numerique",
+      "vars": {"sujet": "ton produit numérique", "theme": "le produit numérique", "objet": "un produit numérique", "action": "trouver l'idée de ton premier produit numérique", "probleme": "ton produit ne trouve pas d'acheteurs", "public": "tu veux vendre ce que tu sais faire"},
+      "tips": [
+        {"title": "Un e-book pratique", "body": "Un guide court qui règle un problème précis."},
+        {"title": "Des modèles", "body": "Planning, tableaux, modèles d'e-mails ou de posts : on achète du temps gagné."},
+        {"title": "Une formation vidéo", "body": "Une méthode pas à pas, avec des exercices."},
+        {"title": "Un atelier en ligne", "body": "Une session en direct, puis son enregistrement à vendre."},
+        {"title": "Une communauté", "body": "Un espace d'échange, avec du contenu régulier."},
+        {"title": "Un accompagnement en groupe", "body": "Plusieurs personnes, un même objectif, un prix plus accessible qu'en individuel."},
+        {"title": "Un pack de ressources", "body": "Plusieurs petits outils réunis autour d'un même besoin."},
+        {"title": "Une petite offre de découverte", "body": "Un produit simple à prix doux, pour faire connaissance."}
+      ],
+      "mistakes": [
+        {"title": "Créer pour toi, pas pour ton client", "fix": "Pars d'un problème que ton audience exprime, pas d'une idée qui te plaît."},
+        {"title": "Une promesse floue", "fix": "En une phrase : pour qui, et quel résultat."},
+        {"title": "Une livraison à la main", "fix": "Le client doit recevoir son accès tout de suite, même la nuit."},
+        {"title": "Viser tout le monde", "fix": "Un produit pour « tout le monde » ne parle à personne. Choisis ton client."}
+      ],
+      "myths": [
+        {"myth": "Il faut une idée unique.", "reality": "Ton angle, ton exemple et ta façon d'expliquer suffisent à te distinguer."},
+        {"myth": "Un produit numérique se vend tout seul.", "reality": "Il faut une audience, une page claire et un suivi. Le produit n'est qu'une partie."}
+      ],
+      "beforeAfter": [
+        {"before": "« Mon guide sur le bien-être »", "after": "« 21 recettes de déjeuners à préparer en 15 minutes »"},
+        {"before": "Tu envoies chaque fichier par e-mail", "after": "Le paiement déclenche l'accès automatiquement"}
+      ],
+      "facts": ["feature.payments", "feature.courses", "plan.transaction-fees"],
+      "productLine": {"text": "Systeme.io n'ajoute pas de frais sur tes paiements (ceux du processeur de paiement restent dus).", "factIds": ["plan.transaction-fees"]}
+    },
+    {
+      "id": "automatisation",
+      "label": "Automatisation",
+      "hashtagTopic": "automatisation",
+      "vars": {"sujet": "tes automatisations", "theme": "l'automatisation", "objet": "une automatisation", "action": "automatiser ton business sans t'y perdre", "probleme": "tu fais encore tout à la main", "public": "tu manques de temps"},
+      "definition": {"title": "Une automatisation, c'est quoi ?", "body": "Une règle : « quand il se passe ceci, fais cela ». Par exemple : quand quelqu'un s'inscrit, envoie-lui l'e-mail de bienvenue."},
+      "tips": [
+        {"title": "Le bienvenue automatique", "body": "Inscription → e-mail de bienvenue avec le cadeau promis."},
+        {"title": "Classer tes contacts", "body": "Inscription sur une page précise → une étiquette « intéressé par ce sujet »."},
+        {"title": "L'accès après l'achat", "body": "Paiement → accès au produit et e-mail de confirmation."},
+        {"title": "Les rappels de webinaire", "body": "Inscription au webinaire → rappels avant le direct."},
+        {"title": "Une suite selon l'intérêt", "body": "Clic sur un lien → une série d'e-mails sur ce sujet."},
+        {"title": "La relance des inactifs", "body": "Aucune ouverture depuis longtemps → un e-mail de relance, puis retrait de la liste."}
+      ],
+      "mistakes": [
+        {"title": "Tout automatiser d'un coup", "fix": "Commence par une règle utile (le bienvenue), puis ajoute au fur et à mesure."},
+        {"title": "Oublier de tester", "fix": "Inscris-toi toi-même avec une adresse de test avant de lancer."},
+        {"title": "Des messages impersonnels", "fix": "Utilise le prénom et parle de ce que la personne a demandé."}
+      ],
+      "steps": [
+        {"title": "Choisis le déclencheur", "body": "Par exemple : l'inscription au formulaire de ta page de capture."},
+        {"title": "Choisis l'action", "body": "Par exemple : envoyer l'e-mail qui contient le cadeau promis."},
+        {"title": "Écris l'e-mail", "body": "Court, chaleureux, avec le lien du cadeau bien visible."},
+        {"title": "Teste avec ta propre adresse", "body": "Inscris-toi et vérifie que tout arrive, sur ordinateur et sur téléphone."},
+        {"title": "Laisse tourner, puis observe", "body": "Regarde les ouvertures et les clics, et ajuste."}
+      ],
+      "beforeAfter": [
+        {"before": "Tu envoies le cadeau à chaque inscrit, à la main", "after": "Une règle l'envoie dès l'inscription"},
+        {"before": "Tu oublies de relancer", "after": "Les rappels partent seuls, au bon moment"}
+      ],
+      "facts": ["feature.automations", "rule.trigger", "rule.action-send-email", "feature.auto-email-on-subscribe", "plan.table.automation-rules", "plan.table.workflows"],
+      "productLine": {"text": "Systeme.io propose des règles d'automatisation et des workflows.", "factIds": ["feature.automations"]}
+    },
+    {
+      "id": "contenu",
+      "label": "Création de contenu",
+      "hashtagTopic": "contenu",
+      "vars": {"sujet": "ton contenu", "theme": "la création de contenu", "objet": "un contenu qui fait venir des clients", "action": "publier du contenu qui fait grandir ta liste", "probleme": "tes posts ne t'amènent aucun client", "public": "tu publies sans résultat"},
+      "tips": [
+        {"title": "Une idée par post", "body": "Une seule idée claire par publication. Le reste fera d'autres posts."},
+        {"title": "Le problème dès le début", "body": "Tu as un instant pour arrêter le pouce : commence par ce qui bloque ton lecteur."},
+        {"title": "Termine par une action", "body": "Enregistrer, commenter, ou récupérer ton cadeau en bio."},
+        {"title": "Recycle tes meilleurs contenus", "body": "Un carrousel devient une vidéo, un e-mail ou un article."},
+        {"title": "Regroupe ta production", "body": "Écris plusieurs posts d'un coup, programme-les, et libère ta semaine."},
+        {"title": "Parle de ton client", "body": "Ses problèmes, ses questions, ses mots. Pas ton parcours en boucle."},
+        {"title": "Un lien en bio utile", "body": "Envoie vers ton cadeau d'inscription, pas vers une page générique."},
+        {"title": "Regarde les enregistrements", "body": "Un post enregistré est un post jugé utile : refais ce format."}
+      ],
+      "mistakes": [
+        {"title": "Publier sans objectif", "fix": "Avant d'écrire, décide ce que le lecteur doit faire après."},
+        {"title": "Suivre une tendance sans l'adapter", "fix": "Garde le format, change le fond : ton sujet, ton expérience."},
+        {"title": "Promettre des revenus", "fix": "Annoncer des revenus chiffrés attire les mauvaises personnes, et c'est souvent interdit."},
+        {"title": "Ne jamais inviter à l'action", "fix": "Sans invitation, même un lecteur conquis passe au post suivant."}
+      ],
+      "myths": [
+        {"myth": "Il faut publier tous les jours.", "reality": "La régularité compte plus que la fréquence : choisis un rythme que tu tiens."},
+        {"myth": "Les likes font les ventes.", "reality": "Les ventes viennent souvent de la relation : liste e-mail, messages, conseils."},
+        {"myth": "Il faut être sur tous les réseaux.", "reality": "Un réseau bien tenu vaut mieux que cinq abandonnés."}
+      ],
+      "beforeAfter": [
+        {"before": "« Lien en bio » vers ta page d'accueil", "after": "« Lien en bio » vers un cadeau utile"},
+        {"before": "Tu écris chaque post le jour même", "after": "Tu prépares la semaine en une séance"},
+        {"before": "Des posts sur ton parcours", "after": "Des posts sur les problèmes de ton client"}
+      ],
+      "facts": ["feature.blog"],
+      "productLine": {"text": "Systeme.io permet aussi de tenir un blog pour recycler tes contenus.", "factIds": ["feature.blog"]}
+    },
+    {
+      "id": "webinaire",
+      "label": "Webinaire",
+      "hashtagTopic": "webinaire",
+      "vars": {"sujet": "ton webinaire", "theme": "le webinaire", "objet": "un webinaire", "action": "préparer un webinaire qui aide vraiment", "probleme": "les gens quittent ton webinaire avant la fin", "public": "tu veux présenter ton offre en direct"},
+      "steps": [
+        {"title": "L'accueil", "body": "Pour qui est ce webinaire, et ce qu'on va voir ensemble."},
+        {"title": "Ton histoire, en bref", "body": "Pourquoi tu es bien placé pour en parler."},
+        {"title": "Trois idées utiles", "body": "Des enseignements qui servent, même à qui n'achète pas."},
+        {"title": "La transition", "body": "« Si tu veux aller plus loin, voici comment je peux t'aider. »"},
+        {"title": "L'offre", "body": "Ce qu'elle contient, pour qui, et son prix. Sans pression."},
+        {"title": "Les questions", "body": "Réponds aux doutes avec honnêteté, même quand la réponse est « ce n'est pas pour toi »."}
+      ],
+      "tips": [
+        {"title": "Un titre qui promet un apprentissage", "body": "« Comment préparer ta première formation » plutôt que « Présentation de mon offre »."},
+        {"title": "Des rappels", "body": "La veille, une heure avant, et au début du direct."},
+        {"title": "Un replay limité honnêtement", "body": "Si tu annonces une date de fin, respecte-la."},
+        {"title": "Le webinaire automatique", "body": "Enregistré une fois, diffusé à des horaires prévus ou à la demande."}
+      ],
+      "mistakes": [
+        {"title": "Vendre pendant tout le webinaire", "fix": "Si tout est une publicité, les gens partent. Donne d'abord."},
+        {"title": "Ne pas prévoir de rappels", "fix": "Sans rappel, des inscrits oublient tout simplement l'heure."},
+        {"title": "Une fausse urgence", "fix": "Annoncer des places limitées qui ne le sont pas : c'est interdit, et ça détruit la confiance."}
+      ],
+      "beforeAfter": [
+        {"before": "45 minutes de présentation de ton offre", "after": "30 minutes utiles, puis ton offre en 10 minutes"},
+        {"before": "Tu refais le même direct chaque semaine", "after": "Un webinaire enregistré, diffusé automatiquement"}
+      ],
+      "facts": ["feature.webinars", "plan.table.webinars"],
+      "productLine": {"text": "Systeme.io propose des webinaires automatiques (à partir de la formule Webinaire).", "factIds": ["feature.webinars", "plan.table.webinars"]}
+    },
+    {
+      "id": "copywriting",
+      "label": "Copywriting",
+      "hashtagTopic": "copywriting",
+      "vars": {"sujet": "tes textes de vente", "theme": "le copywriting", "objet": "un texte de vente", "action": "écrire des textes qui donnent envie d'agir", "probleme": "tes textes ne font pas réagir", "public": "tu écris tes pages toi-même"},
+      "tips": [
+        {"title": "Le bénéfice avant la fonction", "body": "« Tes e-mails partent tout seuls » parle plus que « automatisation des e-mails »."},
+        {"title": "Les mots de ton client", "body": "Reprends les phrases qu'il emploie dans ses messages et ses commentaires."},
+        {"title": "Le problème d'abord", "body": "Montre que tu comprends sa situation avant de proposer ta solution."},
+        {"title": "Des preuves vraies", "body": "Chiffres réels, avis réels, exemples réels. Jamais inventés."},
+        {"title": "Une phrase, une idée", "body": "Des phrases courtes se lisent facilement sur téléphone."},
+        {"title": "Un appel à l'action clair", "body": "Dis exactement quoi faire : « Inscris-toi », « Réponds à cet e-mail »."},
+        {"title": "Relis à voix haute", "body": "Si tu bloques en lisant, ton lecteur aussi."}
+      ],
+      "steps": [
+        {"title": "P comme Problème", "body": "Nomme la difficulté de ton lecteur avec ses mots."},
+        {"title": "A comme Agitation", "body": "Montre ce que ce problème lui coûte au quotidien, sans dramatiser."},
+        {"title": "S comme Solution", "body": "Présente ta solution comme la suite logique, avec ce qu'elle contient."}
+      ],
+      "mistakes": [
+        {"title": "Parler de toi", "fix": "Le lecteur se demande ce qu'il y gagne. Réponds à cette question."},
+        {"title": "Le jargon", "fix": "« Stratégie omnicanale de conversion » : personne ne parle comme ça. Fais simple."},
+        {"title": "Les superlatifs", "fix": "Les grands mots sans preuve éloignent plus qu'ils ne convainquent."},
+        {"title": "Les fausses promesses", "fix": "Une promesse qu'on ne tient pas, c'est un client perdu, et parfois un problème légal."}
+      ],
+      "beforeAfter": [
+        {"before": "« Notre outil dispose d'un éditeur glisser-déposer »", "after": "« Crée ta page en déplaçant des blocs, sans coder »"},
+        {"before": "« Formation complète en 12 modules »", "after": "« Ta première vente en ligne, étape par étape »"},
+        {"before": "« Achetez maintenant »", "after": "« Je commence la formation »"}
+      ],
+      "facts": [],
+      "productLine": null
+    },
+    {
+      "id": "systeme-io-gratuit",
+      "label": "Plan gratuit de Systeme.io",
+      "hashtagTopic": "systeme-io",
+      "vars": {"sujet": "le plan gratuit de Systeme.io", "theme": "le plan gratuit de Systeme.io", "objet": "un compte Systeme.io gratuit", "action": "démarrer sans payer avec Systeme.io", "probleme": "tu hésites à payer un outil avant d'avoir vendu", "public": "tu débutes avec un petit budget"},
+      "factItems": [
+        {"title": "0 €, sans carte bancaire", "body": "Le plan gratuit est à 0 € et l'inscription ne demande pas de carte bancaire.", "factIds": ["plan.free.price", "plan.free.no-card"]},
+        {"title": "Jusqu'à 2 000 contacts", "body": "Ta liste peut grandir jusqu'à 2 000 contacts avant de devoir changer de formule.", "factIds": ["plan.free.contacts"]},
+        {"title": "3 tunnels de vente", "body": "De quoi tester une page de capture, une page de vente et une offre.", "factIds": ["plan.table.funnels"]},
+        {"title": "Des e-mails illimités", "body": "Le nombre d'e-mails envoyés est illimité, même avec le plan gratuit.", "factIds": ["plan.table.emails-sent"]},
+        {"title": "1 formation en ligne", "body": "Une formation pour vendre ce que tu sais faire.", "factIds": ["plan.table.courses"]},
+        {"title": "1 règle d'automatisation et 1 workflow", "body": "Assez pour envoyer automatiquement ton cadeau de bienvenue.", "factIds": ["plan.table.automation-rules", "plan.table.workflows"]},
+        {"title": "1 domaine personnalisé", "body": "Tes pages peuvent s'afficher sous ton propre nom de domaine.", "factIds": ["plan.free.limits"]},
+        {"title": "1 communauté", "body": "Un espace pour rassembler tes membres.", "factIds": ["plan.table.communities"]},
+        {"title": "Aucun frais ajouté sur les paiements", "body": "Systeme.io ne prend rien sur tes ventes. Les frais du processeur de paiement restent dus.", "factIds": ["plan.transaction-fees"]}
+      ],
+      "mistakes": [
+        {"title": "Payer avant d'avoir testé", "fix": "Le plan gratuit permet de construire un premier tunnel et de vérifier ton idée.", "factIds": ["plan.free.exists", "plan.table.funnels"]},
+        {"title": "Rester gratuit trop longtemps", "fix": "Au-delà de 2 000 contacts ou 3 tunnels, la formule Startup prend le relais.", "factIds": ["plan.free.contacts", "plan.table.funnels", "plan.startup.limits"]}
+      ],
+      "facts": ["plan.free.exists", "plan.free.price", "plan.free.no-card", "plan.free.contacts", "plan.free.limits", "plan.table.emails-sent", "plan.table.funnels", "plan.table.courses"],
+      "productLine": {"text": "Plan gratuit à 0 €, sans carte bancaire.", "factIds": ["plan.free.price", "plan.free.no-card"]}
+    },
+    {
+      "id": "systeme-io-formules",
+      "label": "Formules payantes de Systeme.io",
+      "hashtagTopic": "systeme-io",
+      "vars": {"sujet": "les formules de Systeme.io", "theme": "les formules de Systeme.io", "objet": "la bonne formule Systeme.io", "action": "choisir la bonne formule Systeme.io", "probleme": "tu hésites entre gratuit et payant", "public": "ton activité grandit"},
+      "factItems": [
+        {"title": "Startup : 17 € par mois", "body": "Jusqu'à 10 tunnels, 10 règles d'automatisation, 3 domaines et 5 000 contacts.", "factIds": ["plan.startup.price", "plan.startup.limits"]},
+        {"title": "Webinaire : 47 € par mois", "body": "Les webinaires, jusqu'à 50 tunnels, 100 automatisations, 10 domaines et 10 000 contacts.", "factIds": ["plan.webinar.price", "plan.webinar.limits"]},
+        {"title": "Illimité : 97 € par mois", "body": "Tunnels, contacts, règles d'automatisation et domaines sans limite.", "factIds": ["plan.unlimited.price", "plan.unlimited.limits"]},
+        {"title": "2 mois offerts à l'année", "body": "En facturation annuelle : 170 €, 470 € ou 970 € par an.", "factIds": ["plan.annual-discount", "plan.startup.price-annual", "plan.webinar.price-annual", "plan.unlimited.price-annual"]},
+        {"title": "Prix toutes taxes comprises", "body": "Les prix sont affichés TTC, avec la TVA française de 20 %.", "factIds": ["plan.prices.ttc"]},
+        {"title": "Migration gratuite", "body": "Systeme.io propose une migration gratuite.", "factIds": ["service.migration"]},
+        {"title": "Support 24 h/24, 7 j/7", "body": "Un support par e-mail disponible 24 h/24 et 7 j/7.", "factIds": ["service.support"]}
+      ],
+      "mistakes": [
+        {"title": "Passer à Illimité trop tôt", "fix": "Si ta liste compte moins de 5 000 contacts, Startup suffit souvent.", "factIds": ["plan.startup.contacts"]},
+        {"title": "Oublier la facturation annuelle", "fix": "Elle offre 2 mois quand tu sais que tu restes.", "factIds": ["plan.annual-discount"]},
+        {"title": "Choisir sans regarder tes limites", "fix": "Compte tes contacts et tes tunnels : ce sont eux qui décident de la formule.", "factIds": ["plan.table.funnels", "plan.startup.contacts", "plan.free.contacts"]}
+      ],
+      "beforeAfter": [
+        {"before": "Plan gratuit : 2 000 contacts, 3 tunnels", "after": "Startup : 5 000 contacts, 10 tunnels, 17 € par mois", "factIds": ["plan.free.contacts", "plan.table.funnels", "plan.startup.price", "plan.startup.limits"]},
+        {"before": "Startup : pas de webinaire automatique", "after": "Webinaire : 10 webinaires automatiques, 47 € par mois", "factIds": ["plan.table.webinars", "plan.webinar.price"]}
+      ],
+      "facts": ["plan.startup.price", "plan.webinar.price", "plan.unlimited.price", "plan.annual-discount", "plan.prices.ttc"],
+      "productLine": {"text": "Commence gratuitement, puis passe à Startup (17 € par mois) quand tu as besoin de plus.", "factIds": ["plan.free.exists", "plan.startup.price"]}
+    },
+    {
+      "id": "systeme-io-fonctions",
+      "label": "Ce que fait Systeme.io",
+      "hashtagTopic": "systeme-io",
+      "vars": {"sujet": "Systeme.io", "theme": "Systeme.io", "objet": "Systeme.io", "action": "comprendre ce que fait Systeme.io", "probleme": "tu jongles entre plusieurs outils", "public": "tu cherches un outil pour vendre en ligne"},
+      "factItems": [
+        {"title": "Des tunnels de vente", "body": "Tu les crées à partir de modèles.", "factIds": ["feature.funnels"]},
+        {"title": "Des e-mails et des newsletters", "body": "Pour écrire à tes contacts et envoyer des campagnes.", "factIds": ["feature.email-marketing"]},
+        {"title": "Des automatisations", "body": "Des règles et des workflows pour que les tâches répétitives se fassent seules.", "factIds": ["feature.automations"]},
+        {"title": "Des formations en ligne", "body": "Pour créer et vendre tes cours.", "factIds": ["feature.courses"]},
+        {"title": "Des communautés", "body": "Un espace pour réunir tes membres.", "factIds": ["feature.community"]},
+        {"title": "Un site web et un blog", "body": "Pour publier tes pages et tes articles.", "factIds": ["feature.website", "feature.blog"]},
+        {"title": "Des webinaires automatiques", "body": "Selon la formule choisie.", "factIds": ["feature.webinars", "plan.table.webinars"]},
+        {"title": "Ton programme d'affiliation", "body": "Pour que d'autres recommandent tes produits.", "factIds": ["feature.affiliate-program"]},
+        {"title": "Codes promo et tests A/B", "body": "Pour tes offres et pour comparer deux versions d'une page.", "factIds": ["feature.coupons", "feature.ab-testing"]},
+        {"title": "Les paiements", "body": "Systeme.io se connecte à des processeurs de paiement.", "factIds": ["feature.payments"]},
+        {"title": "La gestion des contacts", "body": "Un CRM pour suivre tes contacts.", "factIds": ["feature.contacts"]}
+      ],
+      "facts": ["feature.funnels", "feature.email-marketing", "feature.courses", "feature.automations"],
+      "productLine": {"text": "Il existe un plan gratuit, sans carte bancaire.", "factIds": ["plan.free.exists", "plan.free.no-card"]}
+    },
+    {
+      "id": "affiliation",
+      "label": "Programme d'affiliation",
+      "hashtagTopic": "affiliation",
+      "vars": {"sujet": "ton programme d'affiliation", "theme": "l'affiliation", "objet": "un programme d'affiliation", "action": "faire recommander ton produit par d'autres", "probleme": "tu es seul à parler de ton produit", "public": "tu as déjà des clients contents"},
+      "tips": [
+        {"title": "Commence par tes clients", "body": "Un client convaincu en parle mieux qu'un grand compte qui n'a jamais essayé."},
+        {"title": "Donne-leur le matériel", "body": "Visuels, textes, idées d'e-mails : facilite-leur la vie."},
+        {"title": "Fixe des règles claires", "body": "Commission, durée du suivi, date de paiement : écris-le noir sur blanc."},
+        {"title": "Suis les résultats", "body": "Qui envoie des visiteurs, qui envoie des ventes : remercie et accompagne."},
+        {"title": "Rappelle la mention publicité", "body": "En France, un affilié doit signaler clairement la publicité."}
+      ],
+      "mistakes": [
+        {"title": "Laisser promettre n'importe quoi", "fix": "Tu restes concerné par ce qui est dit sur ton produit : donne des consignes."},
+        {"title": "Recruter des affiliés sans lien avec ton sujet", "fix": "Leur audience doit ressembler à tes clients."},
+        {"title": "Les oublier après l'inscription", "fix": "Un e-mail par mois avec des idées et des nouveautés les garde actifs."}
+      ],
+      "facts": ["feature.affiliate-program", "feature.affiliate-funnels"],
+      "productLine": {"text": "Systeme.io permet de créer ton propre programme d'affiliation, relié à tes tunnels.", "factIds": ["feature.affiliate-program", "feature.affiliate-funnels"]}
+    },
+    {
+      "id": "debuter",
+      "label": "Se lancer en ligne",
+      "hashtagTopic": "debuter",
+      "vars": {"sujet": "ton lancement en ligne", "theme": "le lancement d'une activité en ligne", "objet": "une activité en ligne", "action": "lancer ton activité en ligne", "probleme": "tu n'arrives pas à te lancer", "public": "tu veux te lancer"},
+      "steps": [
+        {"title": "Choisis un public précis", "body": "« Les photographes de mariage » plutôt que « tout le monde »."},
+        {"title": "Trouve un problème qui revient", "body": "Écoute les questions qu'on te pose sans arrêt."},
+        {"title": "Crée une offre simple", "body": "Une seule offre claire pour commencer."},
+        {"title": "Construis ta liste", "body": "Un cadeau utile et une page de capture, dès le premier jour."},
+        {"title": "Publie avec régularité", "body": "Un rythme tenable, des conseils concrets."},
+        {"title": "Parle à tes premiers clients", "body": "Écoute-les et améliore ton offre avec leurs mots."},
+        {"title": "Mesure et ajuste", "body": "Inscriptions, ouvertures, ventes : trois chiffres pour progresser."}
+      ],
+      "mistakes": [
+        {"title": "Attendre d'être prêt", "fix": "Ta première version sera imparfaite. C'est elle qui t'apprend le plus."},
+        {"title": "Multiplier les outils", "fix": "Moins d'outils, c'est moins d'abonnements et moins de temps passé à tout relier."},
+        {"title": "Viser tout le monde", "fix": "Un message pour tout le monde ne touche personne."},
+        {"title": "Oublier le cadre légal", "fix": "Statut, mentions légales, conditions de vente : renseigne-toi avant de vendre."},
+        {"title": "Croire aux gains rapides", "fix": "Une activité se construit. Méfie-toi des promesses de résultats rapides."}
+      ],
+      "myths": [
+        {"myth": "Il faut beaucoup d'argent pour se lancer en ligne.", "reality": "On peut démarrer avec des outils gratuits et investir quand les premières ventes arrivent.", "factIds": ["plan.free.exists"]},
+        {"myth": "Il faut être sur tous les réseaux.", "reality": "Un réseau bien tenu vaut mieux que cinq abandonnés."},
+        {"myth": "Il faut un site complet avant de vendre.", "reality": "Une page de capture et une page de vente suffisent pour commencer."}
+      ],
+      "beforeAfter": [
+        {"before": "Six mois à préparer un site parfait", "after": "Une page simple en ligne, et des retours dès la première semaine"},
+        {"before": "Cinq outils différents à relier", "after": "Pages, e-mails et formation au même endroit", "factIds": ["feature.funnels", "feature.email-marketing", "feature.courses"]}
+      ],
+      "story": {"title": "Léa et son site parfait", "setup": "Exemple fictif : Léa veut lancer ses ateliers de céramique en ligne.", "problem": "Elle passe des mois sur son site, et n'a toujours parlé à aucun client.", "turn": "Elle publie une page simple avec une liste d'attente, et pose une question à ses abonnés : « Qu'est-ce qui te bloque ? »", "lesson": "Les premiers retours valent plus qu'une page parfaite."},
+      "facts": ["plan.free.exists"],
+      "productLine": {"text": "Systeme.io a un plan gratuit pour démarrer sans carte bancaire.", "factIds": ["plan.free.exists", "plan.free.no-card"]}
+    }
+  ]
+}

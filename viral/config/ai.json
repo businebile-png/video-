@@ -1,0 +1,38 @@
+{
+  "note": "Clés jamais écrites ici : seulement le NOM de la variable d'environnement (secrets GitHub ou environnement). Coûts en dollars US par million de jetons.",
+  "dailyBudgetUsd": 2.0,
+  "providers": {
+    "anthropic": {"kind": "anthropic", "keyEnv": ["ANTHROPIC_API_KEY"], "free": false, "dailyBudgetUsd": 2.0, "dailyCallLimit": 300},
+    "github-models": {"kind": "openai", "baseUrl": "https://models.github.ai/inference", "keyEnv": ["GITHUB_MODELS_TOKEN", "GITHUB_TOKEN"], "free": true, "dailyCallLimit": 120, "headers": {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}},
+    "google-ai-studio": {"kind": "openai", "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai", "keyEnv": ["GOOGLE_AI_API_KEY", "GEMINI_API_KEY"], "free": true, "dailyCallLimit": 200},
+    "groq": {"kind": "openai", "baseUrl": "https://api.groq.com/openai/v1", "keyEnv": ["GROQ_API_KEY"], "free": true, "dailyCallLimit": 300},
+    "openrouter": {"kind": "openai", "baseUrl": "https://openrouter.ai/api/v1", "keyEnv": ["OPENROUTER_API_KEY"], "free": true, "dailyCallLimit": 50},
+    "freellmapi": {"kind": "openai", "baseUrlEnv": "FREELLMAPI_URL", "keyEnv": ["FREELLMAPI_KEY"], "free": true, "dailyCallLimit": 500},
+    "pollinations": {"kind": "openai", "baseUrl": "https://text.pollinations.ai/openai", "keyEnv": [], "free": true, "dailyCallLimit": 100, "maxPromptChars": 15000},
+    "offline": {"kind": "offline", "keyEnv": [], "free": true}
+  },
+  "models": [
+    {"id": "anthropic:claude-opus-5-5", "provider": "anthropic", "model": "claude-opus-5-5", "inputPerMTok": 4.0, "outputPerMTok": 20.0, "effort": "medium", "enabled": true, "roles": ["research", "trends", "ideas", "writing", "qc", "optimization"]},
+    {"id": "anthropic:claude-sonnet-5-5", "provider": "anthropic", "model": "claude-sonnet-5-5", "inputPerMTok": 2.0, "outputPerMTok": 10.0, "effort": "medium", "enabled": false, "roles": ["research", "trends", "ideas", "writing", "qc", "optimization"]},
+    {"id": "anthropic:claude-haiku-5-5", "provider": "anthropic", "model": "claude-haiku-5-5", "inputPerMTok": 0.1, "outputPerMTok": 0.5, "effort": "medium", "enabled": false, "roles": ["research", "trends", "qc"]},
+    {"id": "google:gemini-2.5-flash", "provider": "google-ai-studio", "model": "gemini-2.5-flash", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "ideas", "writing", "qc", "optimization"]},
+    {"id": "github:openai/gpt-4.1", "provider": "github-models", "model": "openai/gpt-4.1", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "ideas", "writing", "qc", "optimization"]},
+    {"id": "github:openai/gpt-4.1-mini", "provider": "github-models", "model": "openai/gpt-4.1-mini", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "qc"]},
+    {"id": "groq:llama-3.3-70b-versatile", "provider": "groq", "model": "llama-3.3-70b-versatile", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "ideas", "qc"]},
+    {"id": "openrouter:free", "provider": "openrouter", "model": "openrouter/free", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": false, "roles": ["ideas", "writing"]},
+    {"id": "freellmapi:auto", "provider": "freellmapi", "model": "auto", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "ideas", "writing", "qc"]},
+    {"id": "pollinations:openai-fast", "provider": "pollinations", "model": "openai-fast", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["ideas", "qc"]},
+    {"id": "offline:composer", "provider": "offline", "model": "composer", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["ideas", "writing"]},
+    {"id": "offline:rules", "provider": "offline", "model": "rules", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["research", "trends", "qc", "optimization"]},
+    {"id": "offline:renderer", "provider": "offline", "model": "renderer", "inputPerMTok": 0, "outputPerMTok": 0, "enabled": true, "roles": ["visuals"]}
+  ],
+  "roles": {
+    "research": {"label": "IA 1 — Recherche et analyse concurrentielle", "order": ["anthropic:claude-opus-5-5", "google:gemini-2.5-flash", "github:openai/gpt-4.1-mini", "groq:llama-3.3-70b-versatile", "freellmapi:auto", "offline:rules"]},
+    "trends": {"label": "IA 2 — Détection des tendances", "order": ["anthropic:claude-opus-5-5", "google:gemini-2.5-flash", "github:openai/gpt-4.1-mini", "groq:llama-3.3-70b-versatile", "offline:rules"]},
+    "ideas": {"label": "IA 3 — Génération des idées", "order": ["anthropic:claude-opus-5-5", "google:gemini-2.5-flash", "github:openai/gpt-4.1", "groq:llama-3.3-70b-versatile", "freellmapi:auto", "pollinations:openai-fast", "offline:composer"]},
+    "writing": {"label": "IA 4 — Rédaction des slideshows", "order": ["anthropic:claude-opus-5-5", "google:gemini-2.5-flash", "github:openai/gpt-4.1", "freellmapi:auto", "offline:composer"]},
+    "visuals": {"label": "IA 5 — Création des visuels", "order": ["offline:renderer"]},
+    "qc": {"label": "IA 6 — Contrôle qualité", "order": ["anthropic:claude-opus-5-5", "google:gemini-2.5-flash", "github:openai/gpt-4.1-mini", "groq:llama-3.3-70b-versatile", "offline:rules"]},
+    "optimization": {"label": "IA 7 — Optimisation des publications", "order": ["offline:rules", "anthropic:claude-opus-5-5", "google:gemini-2.5-flash"]}
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "timezone": "Europe/Paris",
+  "reservedTimes": {
+    "note": "Créneaux des vidéos du studio (10:00 et 20:00) sur les mêmes comptes : les carrousels restent à au moins 90 minutes de ces heures.",
+    "times": ["10:00", "20:00"],
+    "gapMinutes": 90
+  },
+  "accounts": [
+    {
+      "id": "tiktok-12eure21",
+      "platform": "tiktok",
+      "handle": "12eure21",
+      "displayName": "z.zir",
+      "provider": "zernio",
+      "providerAccountId": "6b0162fe81f9f8a5d9dffeb0",
+      "providerProfileId": "6b0162e60e01dff608cb04f0",
+      "niche": "business-en-ligne",
+      "language": "fr",
+      "slideshows": true,
+      "brand": {
+        "name": "z.zir",
+        "handle": "@12eure21",
+        "palette": {"bg": "#0E1116", "fg": "#F5F7FA", "accent": "#FF5A36", "accent2": "#FFC857", "muted": "#9AA4B2"},
+        "fonts": {"heading": "Archivo Black", "body": "Inter"},
+        "templates": ["curiosite", "liste", "educatif", "avant-apres", "minimaliste", "storytelling"],
+        "defaultFormat": "9:16"
+      },
+      "limits": {"maxPerDay": 2, "maxPerWeek": 10, "minGapMinutes": 180, "window": ["08:00", "22:00"], "preferredTimes": ["12:30", "17:30"]},
+      "settings": {"requireApproval": true, "autoPublish": false, "disclosure": true, "privacy": "PUBLIC_TO_EVERYONE", "autoAddMusic": true, "allowComments": true}
+    },
+    {
+      "id": "instagram-12eu125",
+      "platform": "instagram",
+      "handle": "12eu125",
+      "displayName": "12eu125",
+      "provider": "meta",
+      "fallbackProvider": "metricool",
+      "providerAccountId": null,
+      "niche": "business-en-ligne",
+      "language": "fr",
+      "slideshows": true,
+      "brand": {
+        "name": "12eu125",
+        "handle": "@12eu125",
+        "palette": {"bg": "#FBF7F0", "fg": "#1B1B1F", "accent": "#5B4BFF", "accent2": "#FF8A5B", "muted": "#6B6B76"},
+        "fonts": {"heading": "Space Grotesk", "body": "Inter"},
+        "templates": ["educatif", "minimaliste", "business", "liste", "luxe", "anecdotes"],
+        "defaultFormat": "4:5"
+      },
+      "limits": {"maxPerDay": 1, "maxPerWeek": 6, "minGapMinutes": 240, "window": ["08:00", "22:00"], "preferredTimes": ["12:30", "18:00"]},
+      "settings": {"requireApproval": true, "autoPublish": false, "disclosure": true}
+    },
+    {
+      "id": "threads-12eu125",
+      "platform": "threads",
+      "handle": "12eu125",
+      "displayName": "12eu125",
+      "provider": "meta",
+      "fallbackProvider": "metricool",
+      "providerAccountId": null,
+      "niche": "business-en-ligne",
+      "language": "fr",
+      "slideshows": true,
+      "brand": {
+        "name": "12eu125",
+        "handle": "@12eu125",
+        "palette": {"bg": "#111111", "fg": "#FAFAFA", "accent": "#34D399", "accent2": "#A78BFA", "muted": "#A1A1AA"},
+        "fonts": {"heading": "Montserrat", "body": "Inter"},
+        "templates": ["minimaliste", "curiosite", "motivation", "liste"],
+        "defaultFormat": "4:5"
+      },
+      "limits": {"maxPerDay": 1, "maxPerWeek": 5, "minGapMinutes": 240, "window": ["08:00", "22:00"], "preferredTimes": ["13:00"]},
+      "settings": {"requireApproval": true, "autoPublish": false, "disclosure": true}
+    },
+    {
+      "id": "youtube-zzetu",
+      "platform": "youtube",
+      "handle": "zzetu",
+      "displayName": "Zzetu_off",
+      "provider": "zernio",
+      "providerAccountId": "6b01633881f9f8a5d9dffec8",
+      "providerProfileId": "6b0162e60e01dff608cb04f0",
+      "niche": "business-en-ligne",
+      "language": "fr",
+      "slideshows": false,
+      "notes": "YouTube ne publie pas de carrousels d'images par API (pas de posts « communauté » via l'API) : compte suivi pour les statistiques des vidéos du studio, sans slideshow.",
+      "brand": {"name": "Zzetu_off", "handle": "@zzetu", "palette": {"bg": "#0F0F0F", "fg": "#FFFFFF", "accent": "#FF0033", "accent2": "#FFD166", "muted": "#AAAAAA"}, "fonts": {"heading": "Montserrat", "body": "Inter"}, "templates": ["business"], "defaultFormat": "9:16"},
+      "limits": {"maxPerDay": 0, "maxPerWeek": 0, "minGapMinutes": 0, "window": ["08:00", "22:00"], "preferredTimes": []},
+      "settings": {"requireApproval": true, "autoPublish": false, "disclosure": true}
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "engagement": [
+    {"kind": "enregistrer", "title": "Enregistre ce carrousel", "body": "Tu le retrouveras le jour où tu t'y mets."},
+    {"kind": "commentaire", "title": "Et toi ?", "body": "Dis en commentaire ce qui te bloque le plus."},
+    {"kind": "partager", "title": "Envoie-le à quelqu'un", "body": "qui veut se lancer en ligne cette année."},
+    {"kind": "abonnement", "title": "Abonne-toi", "body": "Chaque semaine, un nouveau pas-à-pas pour vendre en ligne."},
+    {"kind": "commentaire", "title": "Une question ?", "body": "Pose-la en commentaire."}
+  ],
+  "product": [
+    {"title": "Pour construire tout ça", "body": "Systeme.io réunit tunnels, e-mails et formations. Plan gratuit, sans carte bancaire : lien en bio.", "factIds": ["feature.funnels", "feature.email-marketing", "feature.courses", "plan.free.exists", "plan.free.no-card"]},
+    {"title": "Envie de tester ?", "body": "Systeme.io a un plan gratuit, sans carte bancaire. Le lien est dans ma bio.", "factIds": ["plan.free.exists", "plan.free.no-card"]},
+    {"title": "Quand tu seras prêt", "body": "La formule Startup de Systeme.io : 17 € par mois pour 10 tunnels et 5 000 contacts. Lien en bio.", "factIds": ["plan.startup.price", "plan.startup.limits"]}
+  ]
+}

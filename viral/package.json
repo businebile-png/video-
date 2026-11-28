@@ -1,0 +1,39 @@
+{
+  "name": "viral-content-machine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Viral Content Machine : veille concurrentielle, détection de mécanismes viraux, génération et publication de carrousels (slideshows) pour plusieurs comptes.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "viral": "node --no-warnings=ExperimentalWarning --import tsx src/cli.ts",
+    "dashboard": "node --no-warnings=ExperimentalWarning --import tsx src/cli.ts dashboard",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "@fontsource/anton": "^5.2.6",
+    "@fontsource/archivo-black": "^5.2.6",
+    "@fontsource/caveat": "^5.2.6",
+    "@fontsource/dm-serif-display": "^5.2.6",
+    "@fontsource/inter": "^5.2.6",
+    "@fontsource/lora": "^5.2.6",
+    "@fontsource/montserrat": "^5.2.6",
+    "@fontsource/playfair-display": "^5.2.6",
+    "@fontsource/poppins": "^5.2.6",
+    "@fontsource/space-grotesk": "^5.2.6",
+    "dictionary-fr": "^3.0.0",
+    "fflate": "^0.8.2",
+    "nspell": "^2.1.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.1"
+  }
+}

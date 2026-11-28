@@ -1,0 +1,13 @@
+{
+  "brandName": "Systeme.io",
+  "affiliateUrl": "https://systeme.io/fr?sa=sa0284377331559446b0fd317c047c9b41281fb597",
+  "affiliateNote": "Lien sans « www » : condition du suivi des commissions (fait vérifié affiliate.link-format).",
+  "disclosure": {
+    "badge": "Publicité",
+    "captionPrefix": "Publicité · Systeme.io",
+    "everySlide": true,
+    "law": "Loi n° 2023-451 du 9 juin 2023 (influence commerciale) : la mention « Publicité » doit être claire, lisible et identifiable pendant toute la présentation du contenu."
+  },
+  "competitorBrands": ["clickfunnels", "kajabi", "mailchimp", "shopify", "teachable", "podia", "kartra", "thinkific", "activecampaign", "sendinblue", "brevo", "learnybox", "convertkit", "getresponse", "wix", "wordpress", "squarespace", "webflow", "calendly", "zapier", "hubspot", "leadpages", "unbounce", "samcart", "gumroad", "thrivecart", "stripe", "paypal", "gohighlevel", "stan store", "stanstore", "beacons", "chariow", "selar", "maketou", "hotmart"],
+  "requireHumanApprovalForFactsOlderThanDays": 30
+}

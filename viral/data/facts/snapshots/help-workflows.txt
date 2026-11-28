@@ -1,0 +1,183 @@
+Loading
+© 2026 systeme.io Help Center · help.systeme.io
+How to create workflows in systeme.io | systeme.io Help Center
+Categories
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General ›
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+On this page
+1. Creating a new workflow
+2. Navigating the editor
+3. Adding a trigger
+4. Adding a workflow step
+a. Action
+b. Decision
+c. Delay
+d. Goal
+5. Sample workflow example
+6. Managing your workflows
+7. Additional information
+Categories · General
+Affiliation
+Blog
+Booking calendar
+Contact management
+Courses
+Customer support
+Deliverability
+Editor
+Emails
+General
+Migrating to systeme.io
+Model Context Protocol (MCP)
+Payments
+Sales funnels
+General
+English
+العربية
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Français
+हिन्दी
+Magyar
+Bahasa Indonesia
+Italiano
+日本語
+Nederlands
+Norsk
+Polski
+Português
+Română
+Русский
+Slovenčina
+Slovenščina
+Shqip
+Српски
+Svenska
+ไทย
+Türkçe
+Українська
+中文
+How to create workflows in systeme.io
+In this article, you will learn how to create and manage automated workflows in systeme.io .
+What you will need:
+A systeme.io account
+Existing assets to automate (e.g., a funnel with an opt-in page, tags, or a course)
+1. Creating a new workflow
+Click Workflows (1) under the automations tab.
+Click the + Create button (2).
+A popup will appear. Enter a name for your workflow (3), then click Create (4).
+2. Navigating the editor
+When you open your new workflow, you will be taken to our modern, node-based canvas editor. This interface is designed to make building and visualizing complex automations effortless.
+Canvas controls: Use the controls in the bottom-left corner to zoom in, zoom out, reset to 100%, or fit the entire workflow to your screen.
+Free movement: You can click and drag anywhere on the background to pan around your workflow freely.
+3. Adding a trigger
+A trigger is necessary, as it is the event that starts the workflow. For example, when a user purchases a product or subscribes to your campaign.
+To start your automation, click the + Add a trigger box (1).
+A panel will open where you can search or browse through the available triggers.
+Once you select your trigger, choose the specific asset (e.g., the exact tag or funnel step), and click Create (in the example below, we chose the trigger "Add a tag").
+Notes:
+No retroactive action: Workflows only trigger for events that happen after the workflow is activated. They will not apply to contacts who met the trigger criteria in the past.
+Multiple triggers: You can define multiple triggers to occur simultaneously.
+Email link clicked cooldown: For the Email link clicked trigger, the system applies a 1-minute cooldown after the first recorded click. This prevents the trigger from executing multiple times due to accidental double-clicks or automated background security checks performed by email providers (like Gmail).
+4. Adding a workflow step
+After setting your trigger, click the (+) icon (1) to add the next step.
+A menu will appear allowing you to choose between four types of steps (2): Action, Decision, Delay, or Goal.
+a. Action
+An action performs a specific operation on the contact.
+In the example below, we chose the action "Enroll in course".
+b. Decision
+A decision splits the workflow into two different paths (Yes/No) based on the contact's information.
+You can filter contacts based on contact fields , tags , email activity , registration dates , contact state , or overall activity .
+You can also combine multiple rules using + Add a condition or + Add another group of conditions . Once all set click Create .
+c. Delay
+A delay inserts a waiting period before the contact moves to the next step in the workflow. You can set the delay in:
+Minutes, Hours, or Days.
+Exact date: Pick a specific date and time (up to one year in advance).
+Once your delay is set, click Save .
+Notes:
+Editing the duration of a delay step will only affect new contacts entering that step. Contacts already waiting will complete their original 7-day delay.
+When choosing an exact date, a timezone selector will appear next to the date field. Your account's default timezone is pre-selected, but you can change it to any timezone you need (this selection applies only to this specific delay step).
+d. Goal
+A goal allows contacts to jump directly to a specific step in the workflow when they meet certain conditions, skipping the steps in between. This helps you move contacts forward when they have already completed an action you want them to take, such as making a purchase or booking a meeting.
+To configure this step, click Goal (3).
+A popup will appear where you can configure the following:
+Name (4): Enter a name for the goal step. This name is only visible to you in the workflow builder.
+Jump to this step when (5): Define the conditions that contacts must meet to jump to this goal step.
+Click + Add Goal trigger to add a trigger, following the same process as when adding a workflow trigger.
+You can add up to 5 goal triggers. If you add more than one, meeting any one of them is enough for the contact to jump to this step.
+You can edit or delete the goal trigger you add.
+Contacts can jump from (6): Choose where contacts can jump from:
+Anywhere : Contacts can jump to this goal step from any position in the workflow, including other branches.
+Only preceding steps: Contacts can jump to this goal step only from steps on paths that lead directly to it.
+If a contact reaches this step without activating a goal trigger (7): Choose what happens if a contact reaches the goal step without meeting any of its conditions:
+Continue anyway: The contact moves directly to the next step.
+Wait for a goal trigger: The contact waits at this step until a goal trigger occurs. If no trigger occurs within one year, the contact exits the workflow.
+End workflow: The contact exits the workflow immediately.
+Once you have configured the goal step, click Save .
+Notes:
+Only goal triggers that occur after a contact enters the workflow will apply.
+A contact can jump to a specific goal step only once during the same workflow entry.
+If a goal trigger occurs while the contact is on a delay step, the contact jumps to the goal step immediately.
+5. Sample workflow example
+Let's create a simple workflow to illustrate how to use these elements together.
+a. Background scenario:
+You are selling two offers:
+You have two campaigns: Campaign 1 promotes Offer #1, and Campaign 2 promotes Offer #2.
+An automation rule assigns the tag "Customer 1" to every buyer of Offer #1.
+b. Workflow sequence:
+When a lead subscribes through the opt-in page, subscribe them to Campaign 1 to promote Offer #1.
+Wait 7 days.
+If the contact purchases Offer #1 during the 7-day waiting period, move them directly to the goal step, skipping the remaining delay.
+If they haven't purchased after 7 days, they continue to the Decision step, which checks whether they have the "Customer 1" tag.
+If they did (Yes): Unsubscribe them from Campaign 1 and subscribe them to Campaign 2 to promote Offer #2.
+If they didn't (No): Do nothing. They continue receiving Campaign 1.
+c. Steps to build this
+Create a trigger: Choose " Funnel form subscribed " and select the opt-in page. Under the Details section, you can specify if this trigger should apply to standard input fields (Field) or the unified Form element on your page.
+Add an action: Choose " Subscribe to campaign " and select Campaign 1.
+Add a delay: Set a wait time of 7 days.
+Add a Goal: Configure the following settings:
+Name: Enter a name for the goal, such as "Purchased Offer #1".
+Jump to this step when : Click + Add Goal trigger, choose Tag added, and select the "Customer 1" tag.
+Contacts can jump from: Select Anywhere , so contacts can jump to this goal step from any position in the workflow, including while waiting at the delay step.
+If a contact reaches this step without activating a goal trigger: Select Continue anyway , so contacts who haven't purchased after 7 days move directly to the next step.
+Add a decision: Use the filter Tag -> Contact tagged with -> choose the "Customer 1" tag.
+After the decision, there are two possible paths:
+No: The contact doesn't have the Customer 1 tag (they haven’t purchased yet)
+Yes: The contact has the tag (they’ve purchased)
+Under the "Yes" path: Add two actions: Unsubscribe from campaign (Campaign 1), and Subscribe to campaign (Campaign 2).
+Here is the completed workflow:
+6. Managing your workflows
+a. Activating the workflow: Workflows are inactive by default. To activate a workflow, go to the Workflows list, click the three-dots menu (...) next to your workflow, and click Activate (1).
+b. Deactivating the workflow To pause a workflow, click the three dots menu (...) and select Deactivate (2).
+You will be given two options (3):
+Deactivate workflow: Stops new contacts from entering, but contacts currently inside the workflow will continue progressing normally.
+Deactivate workflow and cancel related scheduled tasks: Prevents any further scheduled actions from being executed for all contacts.
+Click Confirm (4).
+c. Sharing the workflow: You can share a template of your workflow with other systeme.io accounts using a simple shareable link. Click the three dots menu (...) and select Share (5).
+A popup will appear with a URL you can copy and send (6).
+When the recipient clicks the link, the workflow will begin importing into their account, and they will receive a notification in their dashboard showing the sharing progress. They can cancel the import by clicking the X (7).
+Once the sharing is complete, a final Workflow was imported successfully (8) notification will appear.
+The imported workflow can then be accessed directly from their workflows page.
+Important: Most workflow triggers, actions, and conditions are fully shareable. However, because some elements rely on highly specific external connections or upcoming platform changes, the following elements are not included when a workflow is shared:
+Triggers: "Blog page form subscribed" and "Creator store form subscribed".
+Actions: "Add a new row to a Google Sheet" and "Send webhook".
+7. Additional information
+Execution history: Workflow execution history is stored for one month only. After this period, it is automatically removed from the system for data optimization. If you can't find a past workflow task in a contact's profile, it means the task was over one month old and was removed during cleanup.
+Timezones: The dates and times displayed throughout your workflows (including scheduled delays and execution logs) automatically follow the format and timezone configured in your main account settings .
+Did this answer your question?
+Last updated on November 21, 2026

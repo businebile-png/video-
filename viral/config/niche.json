@@ -1,0 +1,51 @@
+{
+  "id": "business-en-ligne",
+  "label": "Business en ligne et outils pour vendre (Systeme.io)",
+  "language": "fr",
+  "audience": "Débutants et indépendants francophones qui veulent vendre une formation, un service ou un produit numérique en ligne.",
+  "keywords": ["tunnel de vente", "systeme.io", "business en ligne", "marketing digital", "liste e-mail", "formation en ligne", "produit digital", "page de capture", "automatisation", "affiliation", "entrepreneur", "webinaire", "newsletter"],
+  "hashtags": {
+    "core": ["#businessenligne", "#marketingdigital", "#entrepreneur", "#tunneldevente"],
+    "byTopic": {
+      "tunnel-de-vente": ["#tunneldevente", "#pagedevente"],
+      "page-de-capture": ["#pagedecapture", "#leadmagnet"],
+      "liste-email": ["#emailmarketing", "#newsletter"],
+      "formation-en-ligne": ["#formationenligne", "#infopreneur"],
+      "produit-numerique": ["#produitdigital", "#produitnumerique"],
+      "automatisation": ["#automatisation", "#marketingautomation"],
+      "affiliation": ["#affiliation", "#programmedaffiliation"],
+      "contenu": ["#creationdecontenu", "#strategiedecontenu"],
+      "webinaire": ["#webinaire"],
+      "copywriting": ["#copywriting"],
+      "systeme-io": ["#systemeio"],
+      "debuter": ["#lancersonbusiness", "#entrepreneuriat"]
+    }
+  },
+  "topics": [
+    {"id": "tunnel-de-vente", "label": "Tunnel de vente", "keywords": ["tunnel", "funnel", "entonnoir", "page de vente", "parcours client", "embudo"]},
+    {"id": "page-de-capture", "label": "Page de capture", "keywords": ["page de capture", "landing", "opt in", "optin", "lead magnet", "aimant", "freebie", "gratuit en echange"]},
+    {"id": "liste-email", "label": "Liste e-mail", "keywords": ["email", "e mail", "mail", "newsletter", "liste", "sequence", "abonnes"]},
+    {"id": "formation-en-ligne", "label": "Formation en ligne", "keywords": ["formation", "cours", "course", "module", "eleve", "infoproduit"]},
+    {"id": "produit-numerique", "label": "Produit numérique", "keywords": ["produit digital", "produits digitaux", "produit numerique", "ebook", "digital product", "template", "modele", "pack"]},
+    {"id": "automatisation", "label": "Automatisation", "keywords": ["automatis", "automation", "workflow", "regle", "autopilot", "24h"]},
+    {"id": "affiliation", "label": "Affiliation", "keywords": ["affili", "commission", "affiliate"]},
+    {"id": "contenu", "label": "Création de contenu", "keywords": ["contenu", "content", "post", "video", "tiktok", "instagram", "audience", "algorithme"]},
+    {"id": "webinaire", "label": "Webinaire", "keywords": ["webinaire", "webinar", "live"]},
+    {"id": "copywriting", "label": "Copywriting", "keywords": ["copywriting", "texte", "accroche", "titre", "persuasion", "convaincre"]},
+    {"id": "systeme-io", "label": "Systeme.io", "keywords": ["systeme", "system io", "systemeio"]},
+    {"id": "debuter", "label": "Se lancer en ligne", "keywords": ["debutant", "lancer", "commencer", "beginner", "start", "reconversion", "se lancer"]},
+    {"id": "outils", "label": "Outils et comparatifs", "keywords": ["outil", "plateforme", "vs", "versus", "comparatif", "stack", "tool", "platform"]}
+  ],
+  "searchQueries": {
+    "tiktok": ["tunnel de vente", "systeme.io", "business en ligne conseils", "marketing digital astuces", "vendre une formation en ligne", "liste email business", "page de capture", "produit digital"],
+    "instagram": ["#tunneldevente", "#businessenligne", "#marketingdigital", "#produitdigital"],
+    "youtube": ["tunnel de vente tutoriel", "systeme.io tutoriel", "vendre une formation en ligne"],
+    "threads": ["tunnel de vente", "business en ligne"]
+  },
+  "competitorSeeds": {
+    "tiktok": ["kapta_officiel", "baya.caux", "businessenlignefrance", "lea.lmy", "romualdceo", "justinmortode", "virginiequignard"],
+    "instagram": [],
+    "youtube": [],
+    "threads": []
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "checkedOn": "2026-11-28",
+  "platforms": {
+    "tiktok": {
+      "label": "TikTok (mode photo)",
+      "carousel": true,
+      "formats": ["9:16", "4:5", "1:1"],
+      "defaultFormat": "9:16",
+      "minSlides": 2,
+      "maxSlides": 35,
+      "imageType": "jpeg",
+      "maxImageBytes": 20000000,
+      "captionMax": 4000,
+      "titleMax": 90,
+      "hashtagsRecommended": 4,
+      "hashtagsMax": 8,
+      "linksClickable": false,
+      "dailyCap": 15,
+      "sources": [
+        "Zernio, page TikTok : carrousel photo jusqu'à 35 images, titre 90 caractères, description 4 000 caractères (docs.zernio.com, consulté le 28/11/2026)",
+        "Zernio, limites de publication : 15 vidéos et 15 photos par 24 h glissantes sur les connexions Business, 25 publications par heure et par compte"
+      ]
+    },
+    "instagram": {
+      "label": "Instagram (carrousel)",
+      "carousel": true,
+      "formats": ["4:5", "1:1"],
+      "defaultFormat": "4:5",
+      "minSlides": 2,
+      "maxSlides": 10,
+      "imageType": "jpeg",
+      "maxImageBytes": 8000000,
+      "captionMax": 2200,
+      "hashtagsRecommended": 5,
+      "hashtagsMax": 30,
+      "linksClickable": false,
+      "dailyCap": 50,
+      "sources": [
+        "Meta, IG User Content Publishing Limit : quota_total « currently 50 » par 24 h ; un carrousel compte pour une publication (developers.facebook.com, consulté le 28/11/2026). Le plafond réel du compte se lit sur GET /<IG_ID>/content_publishing_limit.",
+        "Carrousel par API : 10 éléments retenus par prudence (l'appli en accepte 20 ; la limite de l'API n'a pas pu être confirmée sur la page officielle).",
+        "Images : JPEG uniquement pour la publication par API."
+      ]
+    },
+    "threads": {
+      "label": "Threads (carrousel)",
+      "carousel": true,
+      "formats": ["4:5", "1:1"],
+      "defaultFormat": "4:5",
+      "minSlides": 2,
+      "maxSlides": 20,
+      "imageType": "jpeg",
+      "maxImageBytes": 8000000,
+      "captionMax": 500,
+      "hashtagsRecommended": 1,
+      "hashtagsMax": 1,
+      "linksClickable": true,
+      "dailyCap": 250,
+      "sources": [
+        "Zernio, limites : Threads 250 publications par jour ; texte limité à 500 caractères (déjà appliqué par le studio : condenseForThreads)",
+        "Threads n'affiche qu'un seul sujet (tag) par publication."
+      ]
+    },
+    "youtube": {
+      "label": "YouTube",
+      "carousel": false,
+      "formats": ["9:16"],
+      "defaultFormat": "9:16",
+      "minSlides": 0,
+      "maxSlides": 0,
+      "imageType": "jpeg",
+      "maxImageBytes": 0,
+      "captionMax": 5000,
+      "hashtagsRecommended": 3,
+      "hashtagsMax": 15,
+      "linksClickable": true,
+      "dailyCap": 0,
+      "sources": ["L'API YouTube Data ne publie pas de posts « communauté » à images : pas de carrousel automatique possible."]
+    }
+  },
+  "sizes": {
+    "9:16": {"width": 1080, "height": 1920, "safe": {"top": 170, "bottom": 430, "left": 80, "right": 150}},
+    "4:5": {"width": 1080, "height": 1350, "safe": {"top": 96, "bottom": 120, "left": 88, "right": 88}},
+    "1:1": {"width": 1080, "height": 1080, "safe": {"top": 88, "bottom": 104, "left": 88, "right": 88}}
+  }
+}
